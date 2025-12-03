@@ -271,7 +271,8 @@
 }
 
 body{
- font-family: var(--font-sans);
+  cursor: default !important; 
+  font-family: var(--font-sans);
   font-weight: 400;
   letter-spacing: 0.01em;
   color: var(--text);
@@ -287,8 +288,7 @@ body{
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  cursor: none !important;
+  
 }
 
 @keyframes neonShift {
@@ -826,6 +826,17 @@ h1, h2, h3, h4 {
       #cursorGlow {
         display: none;
       }
+      #cursorDot {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: transform 0.05s linear;
+      }
       .work-categories {
         justify-content: center;
       }
@@ -836,6 +847,8 @@ h1, h2, h3, h4 {
 
   <!-- Cursor Glow -->
   <div id="cursorGlow"></div>
+  <div id="cursorDot"></div>
+
 
   <!-- Navigation -->
   <nav>
@@ -1194,6 +1207,12 @@ h1, h2, h3, h4 {
     const body = document.body;
     let mouseX = 0, mouseY = 0;
     let glowVisible = false;
+    const cursorDot = document.getElementById("cursorDot");
+
+    document.addEventListener("mousemove", (e) => {
+    cursorDot.style.left = e.clientX + "px";
+    cursorDot.style.top = e.clientY + "px";
+   });
 
     // Track mouse movement
     document.addEventListener('mousemove', (e) => {
