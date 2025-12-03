@@ -139,23 +139,6 @@
       <i class="fas fa-arrow-left"></i> Back to Home
     </a>
     
-    <!-- Detection Rule Template -->
-    <article class="detection-rule" id="detection-template" style="display: none;">
-      <div class="detection-header">
-        <h1>Detection Rule Title</h1>
-        <div class="detection-meta">
-          <span class="date">Date • Platform</span>
-        </div>
-        <div class="detection-tags">
-          <!-- Tags will be added here -->
-        </div>
-      </div>
-      
-      <div class="detection-content">
-        <!-- Content will be added here -->
-      </div>
-    </article>
-    
     <!-- Individual Detection Rules will be loaded here -->
     <div id="detection-rules-list"></div>
   </div>
@@ -223,14 +206,6 @@ tags:
             <li>Service configuration changes</li>
             <li>Service start commands from non-standard locations</li>
           </ul>
-          
-          <h2>Testing</h2>
-          <p>Test the rule with:</p>
-          <div class="code-block">
-            <div class="code-header">powershell</div>
-            <pre><code class="language-powershell"># Create a test service
-sc.exe create TestService binPath= "C:\\Windows\\System32\\notepad.exe"</code></pre>
-          </div>
         `
       },
       {
@@ -281,50 +256,96 @@ sc.exe create TestService binPath= "C:\\Windows\\System32\\notepad.exe"</code></
             <li>Tor network references</li>
             <li>Common ransomware file extensions</li>
           </ul>
+        `
+      },
+      {
+        id: "suspicious-powershell",
+        title: "Suspicious PowerShell Execution Patterns",
+        date: "Mar 1, 2024",
+        platform: "Windows",
+        tags: ["powershell", "sigma", "obfuscation", "T1059.001"],
+        content: `
+          <h2>Rule Description</h2>
+          <p>Detects suspicious PowerShell execution patterns commonly used in attacks.</p>
           
-          <h2>Usage</h2>
-          <p>Scan files with:</p>
+          <h2>Sigma Rule</h2>
           <div class="code-block">
-            <div class="code-header">bash</div>
-            <pre><code class="language-bash">yara ransomware_rules.yar suspicious_file.exe</code></pre>
+            <div class="code-header">yaml</div>
+            <pre><code class="language-yaml">title: Suspicious PowerShell Execution
+id: 56789012-3456-7890-abcd-ef1234567890
+status: production
+description: Detects suspicious PowerShell execution patterns
+author: Swetha Devi
+date: 2024/03/01
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\\powershell.exe'
+        CommandLine|contains|all:
+            - 'Hidden'
+            - 'WindowStyle'
+            - 'Hidden'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts
+level: medium
+tags:
+    - attack.execution
+    - attack.t1059.001</code></pre>
           </div>
+          
+          <h2>Detection Patterns</h2>
+          <ul>
+            <li>Hidden window execution</li>
+            <li>Encoded command parameters</li>
+            <li>Download string operations</li>
+            <li>Bypass execution policy flags</li>
+          </ul>
         `
       }
     ];
 
-    // Function to display detection rules
-    function displayDetectionRules() {
+    // Function to display all detection rules
+    function displayAllDetectionRules() {
       const container = document.getElementById('detection-rules-list');
       
+      if (!container) return;
+      
       detectionRulesData.forEach(rule => {
-        const template = document.getElementById('detection-template');
-        const ruleElement = template.cloneNode(true);
+        const ruleElement = document.createElement('article');
+        ruleElement.className = 'detection-rule';
         ruleElement.id = rule.id;
-        ruleElement.style.display = 'block';
         
-        ruleElement.querySelector('h1').textContent = rule.title;
-        ruleElement.querySelector('.date').textContent = `${rule.date} • ${rule.platform}`;
+        ruleElement.innerHTML = `
+          <div class="detection-header">
+            <h1>${rule.title}</h1>
+            <div class="detection-meta">
+              <span class="date">${rule.date} • ${rule.platform}</span>
+            </div>
+            <div class="detection-tags">
+              ${rule.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+          </div>
+          
+          <div class="detection-content">
+            ${rule.content}
+          </div>
+        `;
         
-        const tagsContainer = ruleElement.querySelector('.detection-tags');
-        rule.tags.forEach(tag => {
-          const tagElement = document.createElement('span');
-          tagElement.className = 'tag';
-          tagElement.textContent = tag;
-          tagsContainer.appendChild(tagElement);
-        });
-        
-        ruleElement.querySelector('.detection-content').innerHTML = rule.content;
         container.appendChild(ruleElement);
       });
       
+      // Apply syntax highlighting
       if (window.Prism) {
         Prism.highlightAll();
       }
     }
 
-    // Initialize based on current page
+    // Display detection rules when page loads
     if (document.getElementById('detection-rules-list')) {
-      displayDetectionRules();
+      displayAllDetectionRules();
     }
   </script>
 </body>
