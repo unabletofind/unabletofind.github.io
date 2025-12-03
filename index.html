@@ -960,6 +960,7 @@
   </div>
   
   <!-- Writeups Category -->
+  <!-- Writeups Category -->
   <div class="work-content active" id="writeups-content">
     <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Security Writeups</h3>
     
@@ -968,12 +969,8 @@
       <i class="fas fa-search search-icon"></i>
     </div>
     
-    <!-- Writeups will be loaded here dynamically -->
     <div class="category-items" id="writeups-container">
-      <div class="loading-spinner" style="text-align: center; padding: 40px; color: var(--muted);">
-        <i class="fas fa-spinner fa-spin fa-2x"></i>
-        <p style="margin-top: 15px;">Loading writeups...</p>
-      </div>
+      <!-- Content will be loaded dynamically -->
     </div>
     
     <div class="view-all-link">
@@ -984,102 +981,65 @@
   </div>
           
           <!-- Detection Rules Category -->
-          <div class="work-content" id="detection-rules-content">
-            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Detection Rules</h3>
-            
-            <div class="category-search">
-              <input type="text" id="rulesSearch" placeholder="Search detection rules by technique, platform, or tags...">
-              <i class="fas fa-search search-icon"></i>
-            </div>
-            
-            <div class="category-items">
-              <div class="category-item card-hover-glow" data-tags="sigma windows privilege-escalation 2024-02-10">
-                <h4>Sigma: Suspicious Service Installation</h4>
-                <div class="date">Feb 10, 2024 • Windows • MITRE T1543.003</div>
-                <p>Detection rule for suspicious service installations often used for persistence and privilege escalation. Compatible with SIEMs supporting Sigma rules.</p>
-                <a href="detection-rules.html#service-installation" class="category-link">View Rule Details →</a>
-              </div>
-              
-              <div class="category-item card-hover-glow" data-tags="yara malware ransomware 2024-02-05">
-                <h4>YARA: Ransomware String Patterns</h4>
-                <div class="date">Feb 5, 2024 • Malware Detection</div>
-                <p>YARA rule set for detecting common ransomware string patterns in binaries and memory. Includes entropy checks and obfuscation detection.</p>
-                <a href="detection-rules.html#ransomware-yara" class="category-link">View Rule Details →</a>
-              </div>
-            </div>
-            
-            <div class="view-all-link">
-              <a href="detection-rules.html">
-                <i class="fas fa-external-link-alt"></i> View All Detection Rules
-              </a>
-            </div>
-          </div>
+  <div class="work-content" id="detection-rules-content">
+    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Detection Rules</h3>
+    
+    <div class="category-search">
+      <input type="text" id="rulesSearch" placeholder="Search detection rules by technique, platform, or tags...">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+    
+    <div class="category-items" id="detection-rules-container">
+      <!-- Content will be loaded dynamically -->
+    </div>
+    
+    <div class="view-all-link">
+      <a href="detection-rules.html">
+        <i class="fas fa-external-link-alt"></i> View All Detection Rules
+      </a>
+    </div>
+  </div>
           
           <!-- Malware Research Category -->
-          <div class="work-content" id="malware-research-content">
-            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Malware Research</h3>
-            
-            <div class="category-search">
-              <input type="text" id="malwareSearch" placeholder="Search malware research by family, technique, or IOC...">
-              <i class="fas fa-search search-icon"></i>
-            </div>
-            
-            <div class="category-items">
-              <div class="category-item card-hover-glow" data-tags="stealer infostealer discord token 2024-02-12">
-                <h4>Discord Token Stealer Malware Analysis</h4>
-                <div class="date">Feb 12, 2024 • InfoStealer • Python-based</div>
-                <p>In-depth analysis of a Discord token stealing malware. Includes static/dynamic analysis, IOC extraction, and detection recommendations.</p>
-                <a href="malware-research.html#discord-stealer" class="category-link">Read Full Research →</a>
-              </div>
-              
-              <div class="category-item card-hover-glow" data-tags="loader dropper evasion 2024-02-08">
-                <h4>Multi-Stage Loader with Anti-Analysis</h4>
-                <div class="date">Feb 8, 2024 • Loader • Anti-Debug Techniques</div>
-                <p>Analysis of a sophisticated loader using multiple stages and anti-analysis techniques. Includes unpacking methodology and behavioral analysis.</p>
-                <a href="malware-research.html#multi-stage-loader" class="category-link">Read Full Research →</a>
-              </div>
-            </div>
-            
-            <div class="view-all-link">
-              <a href="malware-research.html">
-                <i class="fas fa-external-link-alt"></i> View All Malware Research
-              </a>
-            </div>
-          </div>
+  <div class="work-content" id="malware-research-content">
+    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Malware Research</h3>
+    
+    <div class="category-search">
+      <input type="text" id="malwareSearch" placeholder="Search malware research by family, technique, or IOC...">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+    
+    <div class="category-items" id="malware-research-container">
+      <!-- Content will be loaded dynamically -->
+    </div>
+    
+    <div class="view-all-link">
+      <a href="malware-research.html">
+        <i class="fas fa-external-link-alt"></i> View All Malware Research
+      </a>
+    </div>
+  </div>
           
           <!-- Projects Category -->
-          <div class="work-content" id="projects-content">
-            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Projects</h3>
-            
-            <div class="category-search">
-              <input type="text" id="projectsSearch" placeholder="Search projects by technology, category, or description...">
-              <i class="fas fa-search search-icon"></i>
-            </div>
-            
-            <div class="category-items">
-              <div class="category-item card-hover-glow" data-tags="python dos detection firewall 2024-01-20">
-                <h4>DoS Detection & Response System</h4>
-                <div class="date">Python • Windows Firewall • Real-time Detection</div>
-                <p>Python-based system for detecting and responding to DoS attacks. Features request rate tracking, automatic IP blocking, and cooldown mechanisms.</p>
-                <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="category-link">View on GitHub →</a>
-              </div>
-              
-              <div class="category-item card-hover-glow" data-tags="telegram bot threat-intel python 2024-01-25">
-                <h4>CyberPulse Threat Intelligence Bot</h4>
-                <div class="date">Telegram Bot • Python • Threat Intelligence</div>
-                <p>Real-time threat intelligence aggregation bot for Telegram. Sources include CVE databases, CISA alerts, and security advisories.</p>
-                <a href="#" class="category-link">View Project Details →</a>
-              </div>
-              
-              <div class="category-item card-hover-glow" data-tags="phishing simulation gophish awareness 2024-01-15">
-                <h4>Phishing Simulation & Awareness Platform</h4>
-                <div class="date">GoPhish • Security Awareness • Email Analysis</div>
-                <p>Comprehensive phishing simulation platform for testing and improving organizational security awareness. Includes analytics and reporting.</p>
-                <a href="#" class="category-link">View Project Details →</a>
-              </div>
-            </div>
-          </div>
-        </section>
+  <div class="work-content" id="projects-content">
+    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Projects</h3>
+    
+    <div class="category-search">
+      <input type="text" id="projectsSearch" placeholder="Search projects by technology, category, or description...">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+    
+    <div class="category-items" id="projects-container">
+      <!-- Content will be loaded dynamically -->
+    </div>
+    
+    <div class="view-all-link">
+      <a href="projects.html">
+        <i class="fas fa-external-link-alt"></i> View All Projects
+      </a>
+    </div>
+  </div>
+</section>
 
         <!-- Contact -->
         <section id="contact">
