@@ -1,211 +1,577 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Swetha Devi – Security Analyst Portfolio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swetha Devi Sai Priya Bonu - SOC Analyst</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #0a0e17; color: #e0e0e0; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); padding: 45px 20px; border-bottom: 3px solid #00d4aa; }
-        .hero { text-align: center; padding: 30px 20px; }
-        h1 { color: #00d4aa; font-size: 2.8em; margin-bottom: 10px; }
-        h2 { color: #00d4aa; margin-top: 40px; }
-        h3 { color: #58a6ff; }
-        .tagline { font-size: 1.2em; color: #8b949e; margin-bottom: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        /* NAVBAR */
-        .navbar { text-align: center; margin-top: 15px; }
-        .navbar a {
-            color: #58a6ff;
-            margin: 0 15px;
-            font-size: 1em;
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-card: #1a1f3a;
+            --accent: #00d9ff;
+            --accent-glow: rgba(0, 217, 255, 0.3);
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --border: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--accent) 0%, #00a8cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .specialty-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .tag {
+            background: var(--bg-card);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 1.5em;
+            transition: all 0.3s ease;
             text-decoration: none;
         }
-        .navbar a:hover { text-decoration: underline; color: #00d4aa; }
 
-        .section-card { background: #161b22; padding: 25px; border-radius: 8px; border: 1px solid #30363d; margin-top: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-top: 25px; }
-        .card { background: #161b22; padding: 25px; border-radius: 8px; border: 1px solid #30363d; transition: 0.3s; }
-        .card:hover { transform: translateY(-6px); border-color: #00d4aa; }
-        .metrics { background: #0d1117; padding: 30px; border-radius: 8px; margin: 30px 0; }
-        .metric { text-align: center; }
-        .metric-value { font-size: 2em; color: #00d4aa; font-weight: bold; }
-        .metric-label { color: #8b949e; }
+        .social-links a:hover {
+            color: var(--accent);
+            transform: scale(1.2);
+        }
 
-        footer { text-align: center; padding: 30px; border-top: 1px solid #30363d; margin-top: 50px; color: #8b949e; }
+        section {
+            margin-bottom: 80px;
+        }
 
-        .badge {
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            position: relative;
             display: inline-block;
-            background: #238636;
-            color: white;
-            padding: 3px 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        .about-text {
+            background: var(--bg-secondary);
+            padding: 30px;
             border-radius: 12px;
-            font-size: 0.78em;
-            margin: 4px;
+            border-left: 4px solid var(--accent);
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 25px var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 1em;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 25px var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        .skill-card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .experience-card {
+            background: var(--bg-secondary);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            margin-bottom: 25px;
+        }
+
+        .experience-card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .experience-card ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .experience-card li {
+            padding: 10px 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 25px;
+            line-height: 1.7;
+        }
+
+        .experience-card li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .cert-list {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .cert-list ul {
+            list-style: none;
+        }
+
+        .cert-list li {
+            padding: 12px 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 30px;
+            font-size: 1.05em;
+        }
+
+        .cert-list li::before {
+            content: '🏆';
+            position: absolute;
+            left: 0;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 12px 30px var(--accent-glow);
+            transform: translateY(-8px);
+        }
+
+        .project-icon {
+            font-size: 3em;
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-card h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .project-link {
+            color: var(--accent);
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #00f0ff;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .skills-grid, .projects-grid, .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
     </style>
 </head>
-
 <body>
+    <div class="background-grid"></div>
+    <div class="glow-effect" id="glowEffect"></div>
 
-<header>
     <div class="container">
-        <div class="hero">
+        <header>
             <h1>Swetha Devi Sai Priya Bonu</h1>
-            <p class="tagline">Threat Detection • Malware Analysis • Incident Response • SIEM Engineering</p>
-            <p>Improving detection quality | Log Analysis | MITRE ATT&CK | SOC Operations | Automation</p>
-        </div>
-
-        <div class="navbar">
-            <a href="index.html">Home</a>
-            <a href="writeups.html">Technical Writeups</a>
-            <a href="malware.html">Malware Analysis</a>
-            <a href="detection.html">Detection Rules</a>
-            <a href="projects.html">Projects</a>
-        </div>
-    </div>
-</header>
-
-<div class="container">
-
-    <!-- SUMMARY -->
-    <h2>Professional Summary</h2>
-    <div class="section-card">
-        <p>
-            SOC Analyst with hands-on experience in alert triage, threat investigation, malware analysis,
-            and improving detection quality using Splunk & Elastic SIEM.
-            Skilled in correlating Windows Event Logs, Sysmon telemetry, and network traffic (Wireshark, Zeek) to detect attacker
-            behaviors including lateral movement, privilege escalation, persistence, beaconing, DNS tunneling, and data exfiltration.
-        </p>
-        <p>
-            Improved SOC efficiency through rule tuning, noise reduction, and alert enrichment.
-            Experienced in MITRE ATT&CK investigations, AD attack patterns, and incident documentation.
-            Certified Defensive Security Analyst (HTB CDSA) with strong hands-on detection and IR skills.
-        </p>
-    </div>
-
-    <!-- METRICS -->
-    <div class="metrics">
-        <div class="grid">
-            <div class="metric">
-                <div class="metric-value">&lt; 20 min</div>
-                <div class="metric-label">Alert Triage Time</div>
+            <p class="tagline">SOC Analyst | Threat Hunter | Detection Engineer</p>
+            
+            <div class="specialty-tags">
+                <span class="tag">Threat Detection</span>
+                <span class="tag">Incident Response</span>
+                <span class="tag">Digital Forensics</span>
+                <span class="tag">Malware Analysis</span>
+                <span class="tag">MITRE ATT&CK</span>
+                <span class="tag">SOC Operations</span>
+                <span class="tag">Log Analysis</span>
+                <span class="tag">Automation</span>
             </div>
-            <div class="metric">
-                <div class="metric-value">95%+</div>
-                <div class="metric-label">Accuracy</div>
+
+            <div class="social-links">
+                <a href="https://github.com/unabletofind" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:swethadevi1125@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
             </div>
-            <div class="metric">
-                <div class="metric-value">100%</div>
-                <div class="metric-label">MITRE Mapping</div>
+        </header>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="about-text">
+                <p>SOC Analyst with hands-on experience in alert triage, threat investigation, malware analysis, and improving detection quality using Splunk & Elastic SIEM. Skilled in correlating Windows Event Logs, Sysmon telemetry, and network traffic (Wireshark, Zeek) to detect attacker techniques including lateral movement, privilege escalation, persistence, beaconing, DNS tunneling, and data exfiltration.</p>
             </div>
-            <div class="metric">
-                <div class="metric-value">20%</div>
-                <div class="metric-label">Automation</div>
+            <div class="about-text">
+                <p>Improved SOC efficiency through rule tuning, noise reduction, and alert enrichment. Strong understanding of MITRE ATT&CK investigations, AD attack patterns, and incident documentation. Certified Defensive Security Analyst (HTB CDSA) with hands-on experience in advanced detection methodologies.</p>
             </div>
-        </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">&lt; 20 min</div>
+                    <div class="metric-label">Alert Triage Time</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">MITRE Coverage</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">20%</div>
+                    <div class="metric-label">Tasks Automated</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Technical Arsenal</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3><i class="fas fa-shield-alt"></i> Security Tools</h3>
+                    <p>Splunk, Elastic (Kibana), Wireshark, Suricata, Nessus, GoPhish, CrowdStrike, Microsoft Defender</p>
+                </div>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-code"></i> Scripting & Automation</h3>
+                    <p>Python (Automation, Log Parsing, Detection Scripts), Bash</p>
+                </div>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-search"></i> Detection & Analysis</h3>
+                    <p>Alert Triage, Incident Handling, Sysmon, Windows Event Logs, IOC Investigation, Network Traffic Analysis, Email Header Analysis (SPF/DKIM/DMARC), Rule Refinement, Alert Enrichment</p>
+                </div>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-crosshairs"></i> Attack Techniques</h3>
+                    <p>Lateral Movement, Privilege Escalation, Persistence, Beaconing, DNS Anomalies, AD Attacks</p>
+                </div>
+
+                <div class="skill-card">
+                    <h3><i class="fas fa-book"></i> Frameworks</h3>
+                    <p>MITRE ATT&CK, Cyber Kill Chain, Diamond Model, OWASP Top 10</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <h2>Experience</h2>
+            
+            <div class="experience-card">
+                <h3>Cybersecurity Analyst – TriArmour AI <span style="color: var(--text-secondary); font-size: 0.9em;">(2024 – Present)</span></h3>
+                <ul>
+                    <li>Monitored 6+ client environments using Splunk and Elastic SIEM, validating authentication anomalies, process execution chains, and endpoint alerts with ~95% accuracy. Identified and documented 30+ confirmed security incidents.</li>
+                    <li>Correlated Windows Event Logs (4624/4625/4672/4688), Sysmon (1, 3, 7, 11), and EDR telemetry to detect brute-force attacks, suspicious admin activity, phishing, and unauthorized tools. Mapped findings to MITRE ATT&CK techniques during escalation.</li>
+                    <li>Performed rule refinement tasks including threshold adjustments, noisy path suppression, and basic alert enrichment. Contributed to playbook updates by documenting investigation steps and false positive patterns from real incidents.</li>
+                    <li>Analyzed authentication alerts across client endpoints and AD environments (where available), including failed logons, privilege escalation attempts, and off-hours access. Investigated suspicious emails using SPF/DKIM/DMARC validation and URL reputation checks reducing repeat false-positive user reports by ~30%.</li>
+                    <li>Reviewed Zeek logs and pcaps for selected alerts to verify DNS anomalies, suspicious connections, and beaconing patterns. Tracked client alert trends and provided hardening recommendations that contributed to 15-20% reduction in repetitive alerts for select clients.</li>
+                    <li>Maintained vulnerability dashboards (Nessus), supported phishing simulations that saw click rates improve from 22% → 15%, and prepared SOC reports for client leadership. Escalated confirmed threats with clear evidence, enabling 30-45 minute response times.</li>
+                </ul>
+            </div>
+
+            <div class="experience-card">
+                <h3>Cybersecurity Intern – Gradespot IT <span style="color: var(--text-secondary); font-size: 0.9em;">(2023–2024)</span></h3>
+                <ul>
+                    <li>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations and missing patches in lab based infrastructure.</li>
+                    <li>Completed hands-on training in ethical hacking and basic SOC skills.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <div class="cert-list">
+                <ul>
+                    <li>Certified Defensive Security Analyst (CDSA) – Hack The Box</li>
+                    <li>Certified AppSec Practitioner (CAP) – SeCops Group</li>
+                    <li>Junior PenTester Path – TryHackMe</li>
+                    <li>Cisco Networking Academy Cybersecurity Training</li>
+                    <li>ICT Academy (Honeywell) – Cybersecurity Training</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Explore My Work</h2>
+            <div class="projects-grid">
+                <a href="writeups.html" class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-file-alt" style="color: var(--accent);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Technical Writeups</h3>
+                        <p>Detailed investigations, SOC case studies, and comprehensive threat analysis documentation.</p>
+                        <span class="project-link">View Writeups →</span>
+                    </div>
+                </a>
+
+                <a href="malware.html" class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-bug" style="color: #ff6b6b;"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Malware Research</h3>
+                        <p>Samples analyzed, behavioral analysis, IOC extraction, and YARA rule development.</p>
+                        <span class="project-link">View Malware Work →</span>
+                    </div>
+                </a>
+
+                <a href="Detection.html" class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-filter" style="color: #4ecdc4;"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Detection Rules</h3>
+                        <p>Suricata signatures, Sigma rules, YARA patterns, and custom detection logic implementations.</p>
+                        <span class="project-link">View Rules →</span>
+                    </div>
+                </a>
+
+                <a href="Projects.html" class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-tools" style="color: #95e1d3;"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Projects</h3>
+                        <p>Custom dashboards, automation tools, phishing simulation labs, and security research environments.</p>
+                        <span class="project-link">View Projects →</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Email:</strong> <a href="mailto:swethadevi1125@gmail.com">swethadevi1125@gmail.com</a></p>
+            <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank">linkedin.com/in/bonu-swetha-devi-sai-priya</a></p>
+            <p><strong>GitHub:</strong> <a href="https://github.com/unabletofind" target="_blank">github.com/unabletofind</a></p>
+            <p style="margin-top: 30px;">© 2025 Swetha Devi Sai Priya Bonu | Defending the Digital Frontier</p>
+        </footer>
     </div>
 
-    <!-- SKILLS -->
-    <h2>Technical Skills</h2>
-    <div class="section-card">
+    <script>
+        const glowEffect = document.getElementById('glowEffect');
+        
+        document.addEventListener('mousemove', (e) => {
+            glowEffect.style.left = e.clientX - 150 + 'px';
+            glowEffect.style.top = e.clientY - 150 + 'px';
+            glowEffect.style.opacity = '0.6';
+        });
 
-        <h3>Cybersecurity Tools</h3>
-        <p>
-            Splunk, Elastic SIEM, Wireshark, Suricata, Nessus, Zeek, GoPhish, CrowdStrike, Microsoft Defender for Endpoint
-        </p>
+        document.addEventListener('mouseleave', () => {
+            glowEffect.style.opacity = '0';
+        });
 
-        <h3>Scripting & Automation</h3>
-        <p>Python (automation, log parsing, detection scripts), Bash</p>
-
-        <h3>Detection & Analysis</h3>
-        <p>
-            Alert Triage, Incident Handling, Sysmon, Windows Event Logs, IOC Investigation,  
-            Network Traffic Analysis, Email Header Analysis (SPF/DKIM/DMARC),
-            Rule Refinement, Noise Reduction, Alert Enrichment
-        </p>
-
-        <h3>Attack Techniques</h3>
-        <p>
-            Lateral Movement, Privilege Escalation, Persistence, Beaconing, DNS Anomalies,
-            AD Authentication Attacks, Brute Force, Credential Attacks
-        </p>
-
-        <h3>Frameworks</h3>
-        <p>MITRE ATT&CK, Cyber Kill Chain, Diamond Model, OWASP Top 10</p>
-    </div>
-
-    <!-- EXPERIENCE -->
-    <h2>Experience</h2>
-    <div class="section-card">
-
-        <h3>Cybersecurity Analyst – TriArmour AI (2024 – Present)</h3>
-        <ul>
-            <li>Monitored 6+ enterprise client environments using Splunk & Elastic with ~95% triage accuracy.</li>
-            <li>Investigated 30+ confirmed security incidents mapped to MITRE ATT&CK.</li>
-            <li>Performed rule tuning, threshold refinement, noisy path suppression, and alert enrichment.</li>
-            <li>Analyzed AD authentication patterns, Sysmon events, DNS anomalies, phishing emails.</li>
-            <li>Improved alert quality and reduced repetitive false positives by ~20–30%.</li>
-            <li>Managed Nessus dashboards, phishing simulations, and SOC reporting.</li>
-        </ul>
-
-        <h3>Cybersecurity Intern – GradeSpot IT (2023–2024)</h3>
-        <ul>
-            <li>Performed vulnerability assessments using Nessus.</li>
-            <li>Completed hands-on SOC & ethical hacking training.</li>
-        </ul>
-    </div>
-
-    <!-- CERTIFICATIONS -->
-    <h2>Certifications</h2>
-    <div class="section-card">
-        <ul>
-            <li>Certified Defensive Security Analyst (CDSA) – Hack The Box</li>
-            <li>Certified AppSec Practitioner (CAP) – SeCops Group</li>
-            <li>Junior PenTester Path – TryHackMe</li>
-            <li>Cisco Networking Academy Cybersecurity Essentials</li>
-            <li>ICT Academy (Honeywell) – Cybersecurity Training</li>
-        </ul>
-    </div>
-
-    <!-- OTHER PAGES -->
-    <h2>Explore My Work</h2>
-    <div class="grid">
-        <div class="card">
-            <h3>Technical Writeups</h3>
-            <p>Investigations, case studies & SOC analysis.</p>
-            <a href="writeups.html">View Writeups →</a>
-        </div>
-
-        <div class="card">
-            <h3>Malware Research</h3>
-            <p>Malware samples, behavior notes, static/dynamic analysis.</p>
-            <a href="malware.html">View Malware Work →</a>
-        </div>
-
-        <div class="card">
-            <h3>Detection Rules</h3>
-            <p>Suricata, Sigma & YARA rules I developed.</p>
-            <a href="detection.html">View Rules →</a>
-        </div>
-
-        <div class="card">
-            <h3>Projects</h3>
-            <p>Dashboards, automation, tools & experiments.</p>
-            <a href="projects.html">View Projects →</a>
-        </div>
-    </div>
-
-</div>
-
-<footer>
-    <div class="container">
-        <p><strong>Email:</strong> swethadevi1125@gmail.com</p>
-        <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya">Profile</a></p>
-        <p><strong>GitHub:</strong> <a href="https://github.com/unabletofind">github.com/unabletofind</a></p>
-        <p style="margin-top: 20px; color: #6e7681;">© 2025 Swetha Devi • Security Analyst</p>
-    </div>
-</footer>
-
+        document.querySelectorAll('.project-card, .skill-card, .metric-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.zIndex = '10';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.zIndex = '1';
+            });
+        });
+    </script>
 </body>
 </html>
