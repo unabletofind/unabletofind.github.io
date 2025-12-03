@@ -563,6 +563,25 @@ h1, h2, h3, h4 {
       color:var(--text);
       border:1px solid var(--border);
     }
+    .skill-item {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.skill-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
+  transform: translateY(-3px);
+}
+
+.skill-item:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,217,255,0.15), transparent 60%);
+  opacity: 1;
+}
 
     .timeline{
       max-width:900px;
