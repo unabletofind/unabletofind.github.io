@@ -1,44 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Swetha Devi Sai Priya Bonu • Security Analyst Portfolio</title>
+    <title>Swetha Devi – Security Analyst Portfolio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #0a0e17; color: #e0e0e0; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); padding: 50px 20px; border-bottom: 3px solid #00d4aa; }
-        .hero { text-align: center; padding: 30px 20px; }
-        h1 { color: #00d4aa; font-size: 2.8em; margin-bottom: 10px; }
-        h2 { color: #58a6ff; margin-top: 40px; }
-        .tagline { font-size: 1.3em; color: #8b949e; margin-bottom: 20px; }
-
-        /* Boxes / Cards */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin: 40px 0; }
-        .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 25px; transition: transform 0.3s; }
+        header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); padding: 40px 20px; border-bottom: 3px solid #00d4aa; }
+        .hero { text-align: center; padding: 40px 20px; }
+        h1 { color: #00d4aa; font-size: 2.5em; margin-bottom: 10px; }
+        h2 { color: #00d4aa; margin-top: 40px; }
+        .tagline { font-size: 1.2em; color: #8b949e; margin-bottom: 20px; }
+        .section-card { background: #161b22; padding: 25px; border-radius: 8px; border: 1px solid #30363d; margin-top: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 25px; transition: 0.3s; }
         .card:hover { transform: translateY(-5px); border-color: #00d4aa; }
         .card h3 { color: #58a6ff; margin-top: 0; }
-        .card a { color: #00d4aa; text-decoration: none; }
-        .card a:hover { text-decoration: underline; }
-
-        .badge { display: inline-block; background: #238636; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 8px; margin-bottom: 8px; }
-
-        /* Footer */
+        .metrics { background: #0d1117; padding: 30px; border-radius: 8px; margin: 30px 0; }
+        .metric { text-align: center; }
+        .metric-value { font-size: 2em; color: #00d4aa; font-weight: bold; }
+        .metric-label { color: #8b949e; }
+        .badge { display: inline-block; background: #238636; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin: 4px; }
+        a { color: #58a6ff; }
         footer { text-align: center; padding: 30px; border-top: 1px solid #30363d; margin-top: 50px; color: #8b949e; }
-
-        /* Buttons */
-        .nav-buttons { text-align: center; margin: 40px 0; }
-        .nav-buttons a {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 25px;
-            border-radius: 8px;
-            background: #00d4aa;
-            color: black;
-            font-weight: bold;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-        .nav-buttons a:hover { background: #06b792; }
     </style>
 </head>
 
@@ -47,26 +31,18 @@
 <header>
     <div class="container">
         <div class="hero">
-            <h1> Swetha Devi Sai Priya Bonu</h1>
-            <p class="tagline">SOC Analyst • Threat Detection • Incident Response • Digital Forensics</p>
-            <p>MITRE ATT&CK | Blue Teaming | Malware Analysis | SIEM Engineering | Automation</p>
+            <h1>🔒 Swetha Devi – Security Analyst</h1>
+            <p class="tagline">Threat Detection • Incident Response • Digital Forensics • Malware Analysis</p>
+            <p>Improving detection quality | MITRE ATT&CK | SOC Operations | Log Analysis | Automation</p>
         </div>
     </div>
 </header>
 
 <div class="container">
 
-    <!--  Navigation Buttons -->
-    <div class="nav-buttons">
-        <a href="writeups.html"> Technical Writeups</a>
-        <a href="detections.html"> Detection Rules</a>
-        <a href="malware.html"> Malware Analysis</a>
-        <a href="research.html"> Research</a>
-    </div>
-
-    <!-- SUMMARY SECTION -->
-    <h2> Professional Summary</h2>
-    <div class="card">
+    <!-- SUMMARY -->
+    <h2>📄 Professional Summary</h2>
+    <div class="section-card">
         <p>
             SOC Analyst with hands-on experience in alert triage, threat investigation, malware analysis, 
             and improving detection quality using Splunk & Elastic SIEM.
@@ -81,107 +57,104 @@
         </p>
     </div>
 
+    <!-- METRICS -->
+    <div class="metrics">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="metric">
+                <div class="metric-value">&lt; 20 min</div>
+                <div class="metric-label">Alert Triage Time</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">95%+</div>
+                <div class="metric-label">Investigation Accuracy</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">MITRE Coverage</div>
+            </div>
+            <div class="metric">
+                <div class="metric-value">40%</div>
+                <div class="metric-label">Tasks Automated</div>
+            </div>
+        </div>
+    </div>
+
     <!-- SKILLS -->
-   <h2> Technical Skills</h2>
-<div class="card">
-    <h3>Cybersecurity Tools</h3>
-    <p>
-        Splunk • Elastic (Kibana) • Wireshark • Suricata • Nessus • GoPhish • 
-        EDR Platforms (CrowdStrike, Microsoft Defender for Endpoint)
-    </p>
+    <h2>🛠️ Technical Skills</h2>
+    <div class="section-card">
+        <h3>Cybersecurity Tools</h3>
+        <p>Splunk, Elastic (Kibana), Wireshark, Suricata, Nessus, GoPhish, CrowdStrike, Microsoft Defender</p>
 
-    <h3>Scripting & Automation</h3>
-    <p>
-        Python (Automation, Log Parsing, Custom Tools, Detection Scripts) • 
-        Bash (Basic Automation)
-    </p>
+        <h3>Scripting & Automation</h3>
+        <p>Python (Automation, Log Parsing, Detection Scripts), Bash</p>
 
-    <h3>Detection & Analysis</h3>
-    <p>
-        Alert Triage • Incident Handling • Windows Event Logs (4624, 4625, 4672, 4688) • 
-        Sysmon (1, 3, 7, 11) • Linux Logs • IOC-based Threat Investigation • 
-        Basic Detection Engineering • Network Traffic Analysis (PCAP, Wireshark, Zeek) • 
-        Email Header Analysis (SPF/DKIM/DMARC) • Rule Refinement (Threshold Tuning, Noise Reduction) • 
-        Alert Enrichment Techniques
-    </p>
+        <h3>Detection & Analysis</h3>
+        <p>
+            Alert Triage • Incident Handling • Sysmon • Windows Event Logs • IOC Investigation •  
+            Network Traffic Analysis • Email Header Analysis (SPF/DKIM/DMARC) • Rule Refinement • Alert Enrichment
+        </p>
 
-    <h3>Attack Techniques & Defenses</h3>
-    <p>
-        Lateral Movement (WMI, SMB) • Privilege Escalation Basics • Persistence Indicators • 
-        Beaconing Detection • DNS Tunneling Anomalies • 
-        Active Directory Authentication Attack Patterns • 
-        Brute Force & Credential Attack Identification
-    </p>
+        <h3>Attack Techniques</h3>
+        <p>Lateral Movement • Privilege Escalation • Persistence • Beaconing • DNS Anomalies • AD Attacks</p>
 
-    <h3>Frameworks & Methodologies</h3>
-    <p>
-        MITRE ATT&CK • Cyber Kill Chain • Diamond Model • OWASP Top 10
-    </p>
+        <h3>Frameworks</h3>
+        <p>MITRE ATT&CK • Cyber Kill Chain • Diamond Model • OWASP Top 10</p>
+    </div>
 
-    <h3>Other Technical Skills</h3>
-    <p>
-        SIEM Operations • Network Traffic Monitoring • IOC Extraction • 
-        TCP/IP Fundamentals • Playbook Documentation • 
-        Incident Reporting & Evidence Collection
-    </p>
-</div>
-
-
-    <!-- EXPERIENCE -->
-    <h2> Work Experience</h2>
-    
-    <div class="card">
-        <h3>Cybersecurity Analyst – TriArmour AI Pvt Ltd (2024 – Present)</h3>
+    <!-- EXPERIENCE SHORT -->
+    <h2>💼 Experience</h2>
+    <div class="section-card">
+        <h3>Cybersecurity Analyst – TriArmour AI (2024 – Present)</h3>
         <ul>
-            <li>Monitored 6+ client environments using Splunk and Elastic SIEM, validating authentication anomalies, process execution chains, and endpoint alerts with ~95% accuracy. Identified and documented 30+ confirmed security incidents.</li>
-            <li>Correlated Windows Event Logs (4624/4625/4672/4688), Sysmon (1, 3, 7, 11), and EDR telemetry to detect brute-force attacks, suspicious admin activity, phishing, and unauthorized tools. Mapped findings to MITRE ATT&CK techniques during escalation.</li>
-            <li>Performed rule refinement tasks including threshold adjustments, noisy path suppression, and basic alert enrichment. Contributed to playbook updates by documenting investigation steps and false positive patterns from real incidents.</li>
-            <li>Analyzed authentication alerts across client endpoints and AD environments (where available), including failed logons, privilege escalation attempts, and off-hours access. Investigated suspicious emails using SPF/DKIM/DMARC validation and URL reputation checks reducing repeat false-positive user reports by ~30%.</li>
-            <li>Reviewed Zeek logs and pcaps for selected alerts to verify DNS anomalies, suspicious connections, and beaconing patterns. Tracked client alert trends and provided hardening recommendations that contributed to 15-20% reduction in repetitive alerts for select clients.</li>
-            <li>Maintained vulnerability dashboards (Nessus), supported phishing simulations that saw click rates improve from 22% → 15%, and prepared SOC reports for client leadership. Escalated confirmed threats with clear evidence, enabling 30-45 minute response times.</li>
+            <li>Investigated 30+ security incidents across Splunk & Elastic SIEM.</li>
+            <li>Correlated Sysmon, event logs, and EDR telemetry for threat validation.</li>
+            <li>Performed rule tuning, enrichment, and noise reduction.</li>
+            <li>Analyzed DNS, beaconing, phishing, brute force & suspicious execution events.</li>
+        </ul>
+
+        <h3>Cybersecurity Intern – Gradespot IT (2023–2024)</h3>
+        <ul>
+            <li>Performed Nessus-based vulnerability assessments.</li>
+            <li>Completed hands-on SOC & Ethical Hacking training.</li>
         </ul>
     </div>
 
-    <div class="card">
-        <h3>Cybersecurity Intern – GradeSpot IT Solutions (2023 – 2024)</h3>
-        <ul>
-            <li>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations and missing patches in lab based infrastructure.</li>
-            <li>Completed hands-on training in ethical hacking, Basic SOC skills. </li>
-        </ul>
-    </div>
-
-    <!-- PROJECTS -->
-    <h2> Projects</h2>
+    <!-- NAVIGATION TO OTHER PAGES -->
+    <h2>📂 Explore My Work</h2>
     <div class="grid">
         <div class="card">
-            <h3> Phishing Campaign Analysis</h3>
-            <p>Performed header analysis, DMARC checks & payload decoding to detect phishing attacks.</p>
+            <h3>📘 Technical Writeups</h3>
+            <p>Detailed investigations, SOC cases, threat analysis.</p>
+            <a href="writeups.html">View Writeups →</a>
         </div>
 
         <div class="card">
-            <h3> DoS Detection Tool</h3>
-            <p>Python script to detect high request rates and auto-block IPs via firewall rules.</p>
+            <h3>🧪 Malware Research</h3>
+            <p>Samples analyzed, behaviors, indicators, YARA.</p>
+            <a href="malware.html">View Malware Work →</a>
         </div>
 
         <div class="card">
-            <h3> CyberPulse Threat Intel Bot</h3>
-            <p>Telegram bot aggregating real-time CVE, CISA & GitHub security alerts.</p>
+            <h3>⚙️ Detection Rules</h3>
+            <p>Suricata, Sigma, YARA & custom detection logic.</p>
+            <a href="detections.html">View Rules →</a>
         </div>
-    </div>
 
-    <!-- CONTACT -->
-    <h2> Contact</h2>
-    <div class="card">
-        <p><strong>Email:</strong> swethadevi1125@gmail.com</p>
-        <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya">linkedin.com/in/bonu-swetha-devi-sai-priya</a></p>
-        <p><strong>GitHub:</strong> <a href="https://github.com/unabletofind">github.com/unabletofind</a></p>
+        <div class="card">
+            <h3>🚀 Projects</h3>
+            <p>Dashboards, automation tools, phishing labs.</p>
+            <a href="projects.html">View Projects →</a>
+        </div>
     </div>
 
 </div>
 
 <footer>
     <div class="container">
-        <p>© Swetha Devi Sai Priya Bonu — Security Analyst Portfolio</p>
+        <p><strong>📧 Email:</strong> swethadevi1125@gmail.com</p>
+        <p><strong>🔗 LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya">Profile Link</a></p>
+        <p><strong>💻 GitHub:</strong> <a href="https://github.com/unabletofind">github.com/unabletofind</a></p>
+        <p style="margin-top: 20px; color: #6e7681;">© 2025 Swetha Devi • Security Analyst</p>
     </div>
 </footer>
 
