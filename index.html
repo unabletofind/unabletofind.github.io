@@ -766,15 +766,6 @@
       .work-categories {
         justify-content: center;
       }
-      #bgAnimation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -10;
-        background: black;
-     }
     }
   </style>
 </head>
@@ -802,6 +793,7 @@
           <li><a href="#skills">Skills</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#work">Work</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
         
         <div class="nav-cta">
@@ -1110,7 +1102,7 @@
 
         <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="200">
           <h3>Quick Links</h3>
-          <div class="link-item"><a href="#"><i class="fas fa-download"></i> Download Resume</a></div>
+          <div class="link-item"><a href="https://drive.google.com/file/d/1_CACExqdeBgy5v3BwWCtyyq4MPfuf0Hl/view?usp=sharing"><i class="fas fa-download"></i> Download Resume</a></div>
           <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
           <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Work Categories</a></div>
         </div>
@@ -1455,69 +1447,5 @@
       });
     });
   </script>
-  <script>
-const canvas = document.getElementById("bgAnimation");
-const ctx = canvas.getContext("2d");
-
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener("resize", resize);
-
-let particles = [];
-let count = 120;
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = (Math.random() - 0.5) * 0.6;
-        this.size = 1.2;
-    }
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-    }
-    draw() {
-        ctx.fillStyle = "rgba(0,200,255,0.9)";
-        ctx.fillRect(this.x, this.y, this.size, this.size);
-    }
-}
-
-for (let i = 0; i < count; i++) particles.push(new Particle());
-
-function connect() {
-    for (let a = 0; a < particles.length; a++) {
-        for (let b = a + 1; b < particles.length; b++) {
-            let dist = Math.hypot(particles[a].x - particles[b].x, particles[a].y - particles[b].y);
-            if (dist < 130) {
-                ctx.strokeStyle = "rgba(0,180,255," + (1 - dist / 130) + ")";
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(particles[a].x, particles[a].y);
-                ctx.lineTo(particles[b].x, particles[b].y);
-                ctx.stroke();
-            }
-        }
-    }
-}
-
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
-    connect();
-    requestAnimationFrame(animate);
-}
-animate();
-</script>
 </body>
 </html>
