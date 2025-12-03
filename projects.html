@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Projects - Swetha Devi</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  
+  <style>
+    :root{
+      --bg:#0a0e27; 
+      --card:#14182e; 
+      --muted:#8b95a5; 
+      --accent:#00d9ff; 
+      --accent-2:#00a896;
+      --text:#e8eef6;
+      --border:rgba(255,255,255,0.06);
+    }
+    
+    *{box-sizing:border-box; margin:0; padding:0}
+    
+    body{
+      font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      padding: 20px;
+    }
+    
+    .container{
+      max-width:1000px;
+      margin:0 auto;
+    }
+    
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--accent);
+      text-decoration:none;
+      margin-bottom:40px;
+      padding:10px 0;
+    }
+    
+    .project-header{
+      margin-bottom:40px;
+    }
+    
+    .project-header h1{
+      font-size:36px;
+      margin-bottom:16px;
+    }
+    
+    .project-meta{
+      color:var(--muted);
+      font-size:15px;
+      display:flex;
+      gap:20px;
+      margin-bottom:20px;
+    }
+    
+    .project-tags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    
+    .tag{
+      background:rgba(0,217,255,0.1);
+      border:1px solid rgba(0,217,255,0.2);
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:13px;
+      color:var(--accent);
+    }
+    
+    .project-content{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:40px;
+      margin-bottom:60px;
+    }
+    
+    .project-content h2{
+      color:var(--accent);
+      margin:30px 0 15px;
+      font-size:24px;
+    }
+    
+    .project-content h3{
+      color:var(--text);
+      margin:25px 0 12px;
+      font-size:20px;
+    }
+    
+    .project-content p{
+      margin-bottom:16px;
+      color:var(--muted);
+    }
+    
+    .code-block{
+      margin:20px 0;
+      background:rgba(0,0,0,0.3);
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+    }
+    
+    .code-header{
+      padding:12px 20px;
+      background:rgba(0,0,0,0.4);
+      border-bottom:1px solid var(--border);
+      font-size:14px;
+      color:var(--muted);
+    }
+    
+    pre{
+      margin:0;
+      padding:20px;
+      overflow-x:auto;
+    }
+    
+    .github-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--accent);
+      text-decoration:none;
+      margin-top:20px;
+      padding:10px 20px;
+      border:1px solid var(--accent);
+      border-radius:8px;
+      transition:all 0.3s ease;
+    }
+    
+    .github-link:hover{
+      background:rgba(0,217,255,0.1);
+      transform:translateY(-2px);
+    }
+    
+    @media (max-width: 768px){
+      .project-header h1{
+        font-size:28px;
+      }
+      .project-content{
+        padding:24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+    
+    <!-- Project Template -->
+    <article class="project" id="project-template" style="display: none;">
+      <div class="project-header">
+        <h1>Project Title</h1>
+        <div class="project-meta">
+          <span class="date">Date • Technologies</span>
+        </div>
+        <div class="project-tags">
+          <!-- Tags will be added here -->
+        </div>
+      </div>
+      
+      <div class="project-content">
+        <!-- Content will be added here -->
+      </div>
+    </article>
+    
+    <!-- Individual Projects will be loaded here -->
+    <div id="projects-list"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script>
+    // Projects Data
+    const projectsData = [
+      {
+        id: "dos-detection",
+        title: "DoS Detection & Response System",
+        date: "Jan 20, 2024",
+        technologies: "Python • Windows Firewall • Real-time Detection",
+        tags: ["python", "dos", "detection", "firewall", "security"],
+        github: "https://github.com/unabletofind/security-scripts",
+        content: `
+          <h2>Project Overview</h2>
+          <p>A Python-based system for detecting and automatically responding to DoS attacks in real-time.</p>
+          
+          <h2>Features</h2>
+          <ul>
+            <li>Real-time request rate monitoring</li>
+            <li>Automatic IP blocking via Windows Firewall</li>
+            <li>Configurable threshold settings</li>
+            <li>Cooldown period for blocked IPs</li>
+            <li>Logging and alerting system</li>
+          </ul>
+          
+          <h2>Key Code Snippet</h2>
+          <div class="code-block">
+            <div class="code-header">python</div>
+            <pre><code class="language-python">def block_ip(ip_address):
+    """Block an IP address using Windows Firewall"""
+    rule_name = f"Block_DOS_{ip_address}"
+    
+    # Create firewall rule
+    cmd = f'netsh advfirewall firewall add rule '
+    cmd += f'name="{rule_name}" '
+    cmd += f'dir=in action=block '
+    cmd += f'remoteip={ip_address} '
+    cmd += f'protocol=any'
+    
+    subprocess.run(cmd, shell=True, capture_output=True)
+    
+    # Schedule unblock after cooldown period
+    unblock_time = datetime.now() + timedelta(minutes=COOLDOWN_MINUTES)
+    scheduled_unblocks.append((ip_address, unblock_time))
+    
+    log_event(f"Blocked IP: {ip_address}")</code></pre>
+          </div>
+          
+          <h2>Architecture</h2>
+          <p>The system consists of three main components:</p>
+          <ol>
+            <li>Traffic Monitor: Analyzes incoming request patterns</li>
+            <li>Decision Engine: Determines if an attack is occurring</li>
+            <li>Response Module: Executes blocking and logging actions</li>
+          </ol>
+          
+          <h2>Results</h2>
+          <p>During testing, the system successfully:</p>
+          <ul>
+            <li>Detected 15+ DoS attempts</li>
+            <li>Automatically blocked abusive IPs</li>
+            <li>Maintained service availability during attacks</li>
+            <li>Generated detailed attack reports</li>
+          </ul>
+        `
+      },
+      {
+        id: "threat-intel-bot",
+        title: "CyberPulse Threat Intelligence Bot",
+        date: "Jan 25, 2024",
+        technologies: "Telegram Bot • Python • Threat Intelligence",
+        tags: ["telegram", "bot", "threat-intel", "python", "security"],
+        github: "https://github.com/unabletofind/cyberpulse-bot",
+        content: `
+          <h2>Project Description</h2>
+          <p>A Telegram bot that aggregates real-time threat intelligence from multiple sources and delivers alerts to security teams.</p>
+          
+          <h2>Data Sources</h2>
+          <ul>
+            <li>CVE databases (NVD, Mitre)</li>
+            <li>CISA alerts and advisories
