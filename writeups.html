@@ -157,29 +157,15 @@
       <i class="fas fa-arrow-left"></i> Back to Home
     </a>
     
-    <!-- Writeup Template (Hidden) -->
-    <article class="writeup" id="writeup-template" style="display: none;">
-      <div class="writeup-header">
-        <h1>Writeup Title</h1>
-        <div class="writeup-meta">
-          <span class="date">Date • Read Time</span>
-        </div>
-        <div class="writeup-tags">
-          <!-- Tags will be added here -->
-        </div>
-      </div>
-      
-      <div class="writeup-content">
-        <!-- Content will be added here -->
-      </div>
-    </article>
-    
     <!-- Individual Writeups will be loaded here -->
     <div id="writeups-list"></div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
   <script>
-    // Writeups Data - All writeups stored here
+    // Writeups Data
     const writeupsData = [
       {
         id: "phishing-powershell",
@@ -233,14 +219,6 @@ Invoke-Expression $dec</code></pre>
             <li>Unusual process chains involving Office applications and PowerShell</li>
             <li>Large Base64 strings in command line arguments</li>
           </ul>
-          
-          <h2>Mitigation Steps</h2>
-          <ol>
-            <li>Disable Office macros by default</li>
-            <li>Implement application whitelisting</li>
-            <li>Monitor PowerShell execution logs</li>
-            <li>Regular user awareness training</li>
-          </ol>
         `
       },
       {
@@ -251,27 +229,15 @@ Invoke-Expression $dec</code></pre>
         tags: ["lateral", "wmi", "detection", "windows", "movement"],
         content: `
           <h2>Introduction</h2>
-          <p>Windows Management Instrumentation (WMI) is frequently abused by attackers for lateral movement. This writeup details detection methods for WMI-based attacks.</p>
-          
-          <h2>Common WMI Attack Patterns</h2>
-          <p>Attackers typically abuse these WMI classes:</p>
-          <ul>
-            <li><strong>Win32_Process</strong> - For remote process creation</li>
-            <li><strong>Win32_Service</strong> - For service manipulation and persistence</li>
-            <li><strong>Win32_ScheduledJob</strong> - For scheduled task creation</li>
-            <li><strong>StdRegProv</strong> - For registry manipulation</li>
-            <li><strong>Win32_NetworkAdapterConfiguration</strong> - For network configuration changes</li>
-          </ul>
+          <p>Windows Management Instrumentation (WMI) is frequently abused by attackers for lateral movement.</p>
           
           <h2>Detection Rule Example</h2>
-          <p>Sigma rule for detecting suspicious WMI activity:</p>
-          
           <div class="code-block">
             <div class="code-header">yaml</div>
-            <pre><code class="language-yaml">title: Suspicious WMI Execution for Lateral Movement
+            <pre><code class="language-yaml">title: Suspicious WMI Execution
 id: 12345678-1234-1234-1234-123456789012
 status: experimental
-description: Detects suspicious WMI process creation often used for lateral movement
+description: Detects suspicious WMI process creation
 author: Swetha Devi
 date: 2024/01/16
 logsource:
@@ -279,16 +245,9 @@ logsource:
     product: windows
 detection:
     selection:
-        ParentImage|endswith: 
-            - '\\WmiPrvSE.exe'
-            - '\\wmiprvse.exe'
-        Image|endswith:
-            - '\\cmd.exe'
-            - '\\powershell.exe'
-            - '\\wmic.exe'
+        ParentImage|endswith: '\\WmiPrvSE.exe'
+        Image|endswith: '\\cmd.exe'
     condition: selection
-falsepositives:
-    - Legitimate administrative scripts using WMI
 level: high
 tags:
     - attack.lateral_movement
@@ -297,30 +256,10 @@ tags:
           
           <h2>Investigation Steps</h2>
           <ol>
-            <li>Check Windows Event Logs: WMI-Activity/Operational logs</li>
-            <li>Look for suspicious consumer bindings in WMI repository</li>
+            <li>Check Windows Event Logs: WMI-Activity/Operational</li>
             <li>Review process creation events from WmiPrvSE.exe</li>
-            <li>Check for WMI persistence mechanisms and event subscriptions</li>
             <li>Analyze network connections from compromised systems</li>
           </ol>
-          
-          <h2>Prevention & Mitigation</h2>
-          <ul>
-            <li>Restrict WMI permissions using Group Policy</li>
-            <li>Monitor WMI event subscriptions regularly</li>
-            <li>Implement network segmentation to limit lateral movement</li>
-            <li>Use endpoint detection and response (EDR) solutions</li>
-            <li>Regularly review and audit WMI activity logs</li>
-          </ul>
-          
-          <h2>Key Detection Points</h2>
-          <p>Monitor for these suspicious activities:</p>
-          <ul>
-            <li>WMI process creation from unusual parent processes</li>
-            <li>High volume of WMI queries in short time periods</li>
-            <li>WMI connections to multiple systems in sequence</li>
-            <li>Creation of WMI event subscriptions for persistence</li>
-          </ul>
         `
       },
       {
@@ -331,73 +270,37 @@ tags:
         tags: ["ransomware", "encryption", "analysis", "recovery", "incident-response"],
         content: `
           <h2>Executive Summary</h2>
-          <p>Detailed analysis of a ransomware attack affecting multiple systems across the network. The ransomware uses AES-256 encryption with RSA key exchange for file encryption.</p>
+          <p>Detailed analysis of a ransomware attack affecting multiple systems.</p>
           
           <h2>Infection Timeline</h2>
-          <p><strong>Day 1:</strong> Initial access via RDP brute force attack</p>
+          <p><strong>Day 1:</strong> Initial access via RDP brute force</p>
           <p><strong>Day 2:</strong> Discovery phase using built-in Windows tools</p>
           <p><strong>Day 3:</strong> Lateral movement via PsExec and WMI</p>
-          <p><strong>Day 4:</strong> Ransomware deployment and execution across network</p>
+          <p><strong>Day 4:</strong> Ransomware deployment across network</p>
           
           <h2>Technical Analysis</h2>
           <p>The ransomware exhibits these characteristics:</p>
           <ul>
-            <li>Disables Windows Defender and other security software</li>
+            <li>Disables Windows Defender and security software</li>
             <li>Deletes volume shadow copies using vssadmin.exe</li>
             <li>Encrypts files with .locked extension</li>
-            <li>Drops ransom note (README_DECRYPT.txt) in each directory</li>
-            <li>Uses legitimate Windows binaries for living-off-the-land attacks</li>
-          </ul>
-          
-          <h2>Indicators of Compromise</h2>
-          <div class="ioc-box">
-            <h4>File Extensions</h4>
-            <p>• .locked</p>
-            <p>• .encrypted</p>
-            <p>• .crypted</p>
-          </div>
-          
-          <div class="ioc-box">
-            <h4>Ransom Note Content</h4>
-            <p>• "Your files have been encrypted"</p>
-            <p>• Bitcoin wallet address</p>
-            <p>• Tor payment site URL</p>
-          </div>
-          
-          <h2>Recovery Recommendations</h2>
-          <ol>
-            <li>Immediately isolate affected systems from the network</li>
-            <li>Restore encrypted files from offline backups</li>
-            <li>Reset all domain and local account credentials</li>
-            <li>Conduct thorough post-incident review and analysis</li>
-            <li>Implement additional security controls based on findings</li>
-          </ol>
-          
-          <h2>Prevention Strategies</h2>
-          <ul>
-            <li>Implement multi-factor authentication for RDP</li>
-            <li>Regular offline backups tested for restoration</li>
-            <li>Network segmentation to limit lateral movement</li>
-            <li>Application whitelisting policies</li>
-            <li>Regular security awareness training</li>
+            <li>Drops ransom note in each directory</li>
           </ul>
         `
       }
     ];
 
-    // Function to display all writeups on writeups.html
+    // Function to display all writeups
     function displayAllWriteups() {
       const container = document.getElementById('writeups-list');
       
       if (!container) return;
       
       writeupsData.forEach(writeup => {
-        // Create a new writeup element
         const writeupElement = document.createElement('article');
         writeupElement.className = 'writeup';
         writeupElement.id = writeup.id;
         
-        // Build HTML structure
         writeupElement.innerHTML = `
           <div class="writeup-header">
             <h1>${writeup.title}</h1>
@@ -417,62 +320,16 @@ tags:
         container.appendChild(writeupElement);
       });
       
-      // Load Prism for syntax highlighting
-      if (!window.Prism) {
-        const prismScript = document.createElement('script');
-        prismScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js';
-        document.head.appendChild(prismScript);
-        
-        const powershellScript = document.createElement('script');
-        powershellScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js';
-        document.head.appendChild(powershellScript);
-        
-        const yamlScript = document.createElement('script');
-        yamlScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js';
-        document.head.appendChild(yamlScript);
-        
-        // Wait for Prism to load
-        setTimeout(() => {
-          if (window.Prism) {
-            Prism.highlightAll();
-          }
-        }, 500);
-      } else {
+      // Apply syntax highlighting
+      if (window.Prism) {
         Prism.highlightAll();
       }
     }
 
-    // Function to get preview writeups for index.html
-    function getWriteupPreviews() {
-      // Return first 2 writeups for preview
-      return writeupsData.slice(0, 2).map(writeup => ({
-        ...writeup,
-        preview: writeup.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...'
-      }));
-    }
-
-    // Initialize based on current page
+    // Display writeups when page loads
     if (document.getElementById('writeups-list')) {
-      // We're on writeups.html - display all writeups
       displayAllWriteups();
-      
-      // Handle hash navigation for deep linking
-      window.addEventListener('load', () => {
-        if (window.location.hash) {
-          const targetId = window.location.hash.substring(1);
-          const target = document.getElementById(targetId);
-          if (target) {
-            setTimeout(() => {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-          }
-        }
-      });
     }
-
-    // Make functions available globally for index.html to call
-    window.writeupsData = writeupsData;
-    window.getWriteupPreviews = getWriteupPreviews;
   </script>
 </body>
 </html>
