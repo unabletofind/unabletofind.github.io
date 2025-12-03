@@ -47,7 +47,7 @@
 <header>
     <div class="container">
         <div class="hero">
-            <h1>🔒 Swetha Devi Sai Priya Bonu</h1>
+            <h1> Swetha Devi Sai Priya Bonu</h1>
             <p class="tagline">SOC Analyst • Threat Detection • Incident Response • Digital Forensics</p>
             <p>MITRE ATT&CK | Blue Teaming | Malware Analysis | SIEM Engineering | Automation</p>
         </div>
@@ -56,78 +56,121 @@
 
 <div class="container">
 
-    <!-- 🔗 Navigation Buttons -->
+    <!--  Navigation Buttons -->
     <div class="nav-buttons">
-        <a href="writeups.html">📘 Technical Writeups</a>
-        <a href="detections.html">🛡️ Detection Rules</a>
-        <a href="malware.html">🦠 Malware Analysis</a>
-        <a href="research.html">🔬 Research</a>
+        <a href="writeups.html"> Technical Writeups</a>
+        <a href="detections.html"> Detection Rules</a>
+        <a href="malware.html"> Malware Analysis</a>
+        <a href="research.html"> Research</a>
     </div>
 
     <!-- SUMMARY SECTION -->
-    <h2>📌 Professional Summary</h2>
-    <div class="card">
-        <p>SOC Analyst with experience in 24×7 monitoring, alert triage, incident investigation, and threat detection using Splunk, Elastic, Sysmon, and network telemetry. Skilled in identifying attacker behaviors including lateral movement, privilege escalation, persistence, DNS tunneling, C2 communication, and brute-force attempts.</p>
-        <p>Improved SOC efficiency by tuning noisy rules, enhancing detection use cases, enriching alerts, and developing Python-based automation scripts. Strong foundation in MITRE ATT&CK, DFIR, malware investigation, and detection engineering.</p>
-    </div>
-
-    <!-- SKILLS -->
-    <h2>🛠️ Core Skills</h2>
+    <h2> Professional Summary</h2>
     <div class="card">
         <p>
-            <span class="badge">Splunk</span><span class="badge">Elastic SIEM</span>
-            <span class="badge">Sysmon</span><span class="badge">Wireshark</span>
-            <span class="badge">Suricata</span><span class="badge">CrowdStrike</span>
-            <span class="badge">MITRE ATT&CK</span><span class="badge">Python</span>
-            <span class="badge">PowerShell</span><span class="badge">Incident Response</span>
-            <span class="badge">Log Analysis</span><span class="badge">DFIR</span>
-            <span class="badge">YARA</span><span class="badge">Detection Engineering</span>
+            SOC Analyst with hands-on experience in alert triage, threat investigation, malware analysis, 
+            and improving detection quality using Splunk & Elastic SIEM.
+            Skilled in correlating Windows Event Logs, Sysmon telemetry, and network traffic 
+            (Wireshark, Zeek) to detect attacker techniques including lateral movement, privilege escalation, persistence,
+            beaconing, DNS tunneling, and data exfiltration.
+        </p>
+        <p>
+            Improved SOC efficiency through rule tuning, noise reduction, and alert enrichment.
+            Strong understanding of MITRE ATT&CK investigations, AD attack patterns, and incident documentation.
+            Certified Defensive Security Analyst (HTB CDSA) with hands-on experience in advanced detection methodologies.
         </p>
     </div>
 
+    <!-- SKILLS -->
+   <h2> Technical Skills</h2>
+<div class="card">
+    <h3>Cybersecurity Tools</h3>
+    <p>
+        Splunk • Elastic (Kibana) • Wireshark • Suricata • Nessus • GoPhish • 
+        EDR Platforms (CrowdStrike, Microsoft Defender for Endpoint)
+    </p>
+
+    <h3>Scripting & Automation</h3>
+    <p>
+        Python (Automation, Log Parsing, Custom Tools, Detection Scripts) • 
+        Bash (Basic Automation)
+    </p>
+
+    <h3>Detection & Analysis</h3>
+    <p>
+        Alert Triage • Incident Handling • Windows Event Logs (4624, 4625, 4672, 4688) • 
+        Sysmon (1, 3, 7, 11) • Linux Logs • IOC-based Threat Investigation • 
+        Basic Detection Engineering • Network Traffic Analysis (PCAP, Wireshark, Zeek) • 
+        Email Header Analysis (SPF/DKIM/DMARC) • Rule Refinement (Threshold Tuning, Noise Reduction) • 
+        Alert Enrichment Techniques
+    </p>
+
+    <h3>Attack Techniques & Defenses</h3>
+    <p>
+        Lateral Movement (WMI, SMB) • Privilege Escalation Basics • Persistence Indicators • 
+        Beaconing Detection • DNS Tunneling Anomalies • 
+        Active Directory Authentication Attack Patterns • 
+        Brute Force & Credential Attack Identification
+    </p>
+
+    <h3>Frameworks & Methodologies</h3>
+    <p>
+        MITRE ATT&CK • Cyber Kill Chain • Diamond Model • OWASP Top 10
+    </p>
+
+    <h3>Other Technical Skills</h3>
+    <p>
+        SIEM Operations • Network Traffic Monitoring • IOC Extraction • 
+        TCP/IP Fundamentals • Playbook Documentation • 
+        Incident Reporting & Evidence Collection
+    </p>
+</div>
+
+
     <!-- EXPERIENCE -->
-    <h2>💼 Work Experience</h2>
+    <h2> Work Experience</h2>
     
     <div class="card">
         <h3>Cybersecurity Analyst – TriArmour AI Pvt Ltd (2024 – Present)</h3>
         <ul>
-            <li>Monitored Splunk & Elastic SIEM across multiple clients; validated 30+ confirmed incidents.</li>
-            <li>Correlated logs (4624/4625/4688, Sysmon, PCAPs) to detect brute-force, phishing, malware activity.</li>
-            <li>Performed rule tuning, suppression, enrichment & playbook updates improving accuracy by 20%.</li>
-            <li>Investigated DNS anomalies, beaconing, and suspicious command execution patterns.</li>
-            <li>Reduced phishing false positives by 30% after enhancing email investigation flow.</li>
+            <li>Monitored 6+ client environments using Splunk and Elastic SIEM, validating authentication anomalies, process execution chains, and endpoint alerts with ~95% accuracy. Identified and documented 30+ confirmed security incidents.</li>
+            <li>Correlated Windows Event Logs (4624/4625/4672/4688), Sysmon (1, 3, 7, 11), and EDR telemetry to detect brute-force attacks, suspicious admin activity, phishing, and unauthorized tools. Mapped findings to MITRE ATT&CK techniques during escalation.</li>
+            <li>Performed rule refinement tasks including threshold adjustments, noisy path suppression, and basic alert enrichment. Contributed to playbook updates by documenting investigation steps and false positive patterns from real incidents.</li>
+            <li>Analyzed authentication alerts across client endpoints and AD environments (where available), including failed logons, privilege escalation attempts, and off-hours access. Investigated suspicious emails using SPF/DKIM/DMARC validation and URL reputation checks reducing repeat false-positive user reports by ~30%.</li>
+            <li>Reviewed Zeek logs and pcaps for selected alerts to verify DNS anomalies, suspicious connections, and beaconing patterns. Tracked client alert trends and provided hardening recommendations that contributed to 15-20% reduction in repetitive alerts for select clients.</li>
+            <li>Maintained vulnerability dashboards (Nessus), supported phishing simulations that saw click rates improve from 22% → 15%, and prepared SOC reports for client leadership. Escalated confirmed threats with clear evidence, enabling 30-45 minute response times.</li>
         </ul>
     </div>
 
     <div class="card">
         <h3>Cybersecurity Intern – GradeSpot IT Solutions (2023 – 2024)</h3>
         <ul>
-            <li>Performed Nessus-based vulnerability assessments on lab infrastructure.</li>
-            <li>Completed hands-on training in ethical hacking and SOC basics.</li>
+            <li>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations and missing patches in lab based infrastructure.</li>
+            <li>Completed hands-on training in ethical hacking, Basic SOC skills. </li>
         </ul>
     </div>
 
     <!-- PROJECTS -->
-    <h2>🚀 Projects</h2>
+    <h2> Projects</h2>
     <div class="grid">
         <div class="card">
-            <h3>📧 Phishing Campaign Analysis</h3>
+            <h3> Phishing Campaign Analysis</h3>
             <p>Performed header analysis, DMARC checks & payload decoding to detect phishing attacks.</p>
         </div>
 
         <div class="card">
-            <h3>🛑 DoS Detection Tool</h3>
+            <h3> DoS Detection Tool</h3>
             <p>Python script to detect high request rates and auto-block IPs via firewall rules.</p>
         </div>
 
         <div class="card">
-            <h3>🤖 CyberPulse Threat Intel Bot</h3>
+            <h3> CyberPulse Threat Intel Bot</h3>
             <p>Telegram bot aggregating real-time CVE, CISA & GitHub security alerts.</p>
         </div>
     </div>
 
     <!-- CONTACT -->
-    <h2>📫 Contact</h2>
+    <h2> Contact</h2>
     <div class="card">
         <p><strong>Email:</strong> swethadevi1125@gmail.com</p>
         <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya">linkedin.com/in/bonu-swetha-devi-sai-priya</a></p>
