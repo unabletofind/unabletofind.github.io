@@ -5,500 +5,865 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Swetha Devi — SOC Analyst & Detection Engineer</title>
 
-  <!-- SEO & OpenGraph -->
-  <meta name="description" content="Swetha Devi — SOC Analyst. Threat detection, incident response, detection engineering, malware analysis. Portfolio of writeups, detection rules, projects." />
-  <meta property="og:title" content="Swetha Devi — SOC Analyst & Detection Engineer" />
-  <meta property="og:description" content="Threat detection, incident response, detection engineering, malware analysis. View writeups, detection rules and projects." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://unabletofind.github.io/" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/unabletofind/unabletofind.github.io/main/assets/images/og-image.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Fonts & icons -->
+  <meta name="description" content="Swetha Devi — SOC Analyst. Threat detection, incident response, detection engineering, malware analysis." />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-  <!-- AOS for animate on scroll -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
-  <!-- Prism for syntax highlighting -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
   <style>
     :root{
-      --bg:#0a0e27; --card:#111427; --muted:#9aa6b2; --accent:#00d9ff; --accent-2:#00a896;
-      --glass: rgba(255,255,255,0.03);
+      --bg:#0a0e27; 
+      --card:#14182e; 
+      --muted:#8b95a5; 
+      --accent:#00d9ff; 
+      --accent-2:#00a896;
+      --text:#e8eef6;
+      --border:rgba(255,255,255,0.06);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    
+    *{box-sizing:border-box; margin:0; padding:0}
+    
+    html{scroll-behavior:smooth}
+    
     body{
-      margin:0;font-family:Inter, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial;
-      background:linear-gradient(180deg,var(--bg),#06102a); color:#e8eef6; line-height:1.6;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* Preloader */
-    #preloader{
-      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-      background:linear-gradient(180deg, rgba(6,16,42,0.9), rgba(6,10,20,0.9)); z-index:9999;
-      transition:opacity .3s ease, visibility .3s ease;
+    /* Container */
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 32px;
     }
-    #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
-    .spinner{width:72px;height:72px;border-radius:50%; background:conic-gradient(var(--accent), transparent 40%); animation:spin 1s linear infinite; box-shadow:0 8px 30px rgba(0,217,255,0.08)}
-    @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* Header / Nav */
-    .topbar{position:sticky;top:0;z-index:999;background:rgba(8,12,24,0.6);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,0.03)}
-    .container{max-width:1100px;margin:0 auto;padding:18px}
-    .nav{display:flex;align-items:center;gap:16px;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:14px}
-    .brand .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#001}
-    .brand h1{font-size:1.05rem;margin:0;color:#e6f9fb}
-    nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;display:inline-block}
-    nav a:hover{color:#fff;background:rgba(255,255,255,0.03)}
-    .cta {background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001;padding:8px 12px;border-radius:8px;font-weight:600;border:none}
-    /* Dropdown */
-    .dropdown{position:relative}
-    .dropdown-btn{display:flex;align-items:center;gap:6px;cursor:pointer}
-    .dropdown-menu{position:absolute;right:0;top:46px;background:var(--card);border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:10px;min-width:200px;box-shadow:0 10px 30px rgba(2,6,23,0.6);display:none}
-    .dropdown-menu a{display:block;padding:8px 10px;color:var(--muted)}
-    .dropdown.open .dropdown-menu{display:block}
+    /* Navigation */
+    nav{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:rgba(10,14,39,0.85);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+    }
+    
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:24px 0;
+      gap:32px;
+    }
+    
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--text);
+    }
+    
+    .logo-icon{
+      width:40px;
+      height:40px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+    }
+    
+    .logo-text h1{
+      font-size:16px;
+      font-weight:600;
+    }
+    
+    .logo-text p{
+      font-size:13px;
+      color:var(--muted);
+    }
+    
+    .nav-links{
+      display:flex;
+      gap:8px;
+      list-style:none;
+    }
+    
+    .nav-links a{
+      color:var(--muted);
+      text-decoration:none;
+      padding:10px 16px;
+      border-radius:8px;
+      font-size:14px;
+      transition:all 0.2s;
+    }
+    
+    .nav-links a:hover{
+      color:var(--text);
+      background:rgba(255,255,255,0.05);
+    }
+    
+    .nav-cta{
+      display:flex;
+      gap:12px;
+    }
+    
+    .btn{
+      padding:10px 20px;
+      border-radius:8px;
+      font-size:14px;
+      font-weight:500;
+      border:none;
+      cursor:pointer;
+      transition:all 0.2s;
+      text-decoration:none;
+      display:inline-block;
+    }
+    
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#001;
+    }
+    
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 8px 20px rgba(0,217,255,0.3);
+    }
 
     /* Hero */
-    header.hero{padding:42px 0 28px}
-    .hero-title{font-size:28px;margin:0 0 6px;letter-spacing:-0.2px}
-    .hero-sub{color:var(--muted);margin-bottom:18px}
-    .tags{display:flex;gap:8px;flex-wrap:wrap}
-    .tag{background:var(--glass);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+    .hero{
+      padding:80px 0 60px;
+    }
+    
+    .hero-content{
+      max-width:800px;
+    }
+    
+    .hero h1{
+      font-size:48px;
+      font-weight:700;
+      margin-bottom:16px;
+      letter-spacing:-0.5px;
+    }
+    
+    .hero-subtitle{
+      font-size:20px;
+      color:var(--muted);
+      margin-bottom:24px;
+    }
+    
+    .tags{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:32px;
+    }
+    
+    .tag{
+      background:rgba(0,217,255,0.1);
+      border:1px solid rgba(0,217,255,0.2);
+      padding:8px 16px;
+      border-radius:20px;
+      font-size:13px;
+      color:var(--accent);
+    }
+    
+    .hero-links{
+      display:flex;
+      gap:24px;
+      align-items:center;
+    }
+    
+    .hero-links a{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:14px;
+      transition:color 0.2s;
+    }
+    
+    .hero-links a:hover{
+      color:var(--accent);
+    }
 
-    /* Layout */
-    .grid{display:grid;grid-template-columns: 1fr 360px;gap:28px;align-items:start}
-    main{padding:12px}
-    aside{position:relative}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); padding:18px;border-radius:12px}
-    h2.section{margin:0 0 12px;color:var(--accent)}
+    /* Sections */
+    section{
+      padding:80px 0;
+    }
+    
+    .section-title{
+      font-size:32px;
+      font-weight:700;
+      margin-bottom:48px;
+      position:relative;
+      display:inline-block;
+    }
+    
+    .section-title:after{
+      content:'';
+      position:absolute;
+      bottom:-8px;
+      left:0;
+      width:60px;
+      height:3px;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      border-radius:2px;
+    }
 
-    /* Skills */
-    .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .skill-pill{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;color:var(--muted);font-size:14px}
+    /* Cards */
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:32px;
+      transition:all 0.3s;
+    }
+    
+    .card:hover{
+      border-color:rgba(0,217,255,0.2);
+      transform:translateY(-4px);
+      box-shadow:0 12px 40px rgba(0,0,0,0.3);
+    }
 
-    /* Experience timeline */
-    .timeline{display:flex;flex-direction:column;gap:12px}
-    .exp-item{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.2), transparent);border:1px solid rgba(255,255,255,0.02)}
-    .exp-item h4{margin:0 0 6px;color:#fff}
-    .exp-item p{margin:0;color:var(--muted);font-size:14px}
+    /* About */
+    .about-content{
+      font-size:18px;
+      line-height:1.8;
+      color:var(--muted);
+      max-width:900px;
+    }
 
-    /* Projects grid */
-    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    .project{padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:transform .18s}
-    .project:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,217,255,0.04)}
+    /* Skills Grid */
+    .skills-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:32px;
+    }
+    
+    .skill-category h3{
+      font-size:18px;
+      margin-bottom:20px;
+      color:var(--accent);
+    }
+    
+    .skill-items{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    
+    .skill-item{
+      background:rgba(255,255,255,0.03);
+      padding:10px 16px;
+      border-radius:8px;
+      font-size:14px;
+      color:var(--text);
+      border:1px solid var(--border);
+    }
 
-    /* Collapsible */
-    .collapsible{cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-    .collapsible + .content{max-height:0;overflow:hidden;transition:max-height .28s ease;opacity:0}
-    .collapsible.open + .content{opacity:1;padding-top:12px}
+    /* Timeline */
+    .timeline{
+      max-width:900px;
+      margin-top:40px;
+    }
+    
+    .timeline-item{
+      padding:32px;
+      margin-bottom:24px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      border-left:4px solid var(--accent);
+    }
+    
+    .timeline-item h3{
+      font-size:20px;
+      margin-bottom:8px;
+    }
+    
+    .timeline-item .period{
+      color:var(--accent);
+      font-size:14px;
+      margin-bottom:16px;
+    }
+    
+    .timeline-item p{
+      color:var(--muted);
+      line-height:1.7;
+    }
 
-    /* Writeups search list */
-    .searchbox{display:flex;gap:8px}
-    .searchbox input{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted)}
-    .writeup-list{margin-top:12px;display:grid;gap:8px}
-    .writeup{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:rgba(255,255,255,0.01)}
-    .writeup h4{margin:0;color:#fff}
-    .writeup p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    /* Projects Grid */
+    .projects-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
+      gap:32px;
+      margin-top:40px;
+    }
+    
+    .project-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:32px;
+      transition:all 0.3s;
+    }
+    
+    .project-card:hover{
+      transform:translateY(-6px);
+      border-color:var(--accent);
+      box-shadow:0 12px 40px rgba(0,217,255,0.15);
+    }
+    
+    .project-card h3{
+      font-size:20px;
+      margin-bottom:12px;
+    }
+    
+    .project-card p{
+      color:var(--muted);
+      margin-bottom:16px;
+      line-height:1.7;
+    }
+    
+    .project-link{
+      color:var(--accent);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:500;
+    }
+    
+    .project-link:hover{
+      text-decoration:underline;
+    }
+
+    /* Search */
+    .search-bar{
+      margin-bottom:32px;
+      position:relative;
+    }
+    
+    .search-bar input{
+      width:100%;
+      padding:16px 48px 16px 20px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:12px;
+      color:var(--text);
+      font-size:15px;
+    }
+    
+    .search-bar input:focus{
+      outline:none;
+      border-color:var(--accent);
+    }
+    
+    .search-icon{
+      position:absolute;
+      right:20px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--muted);
+    }
+
+    /* Writeup List */
+    .writeup-item{
+      padding:24px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:12px;
+      margin-bottom:16px;
+      transition:all 0.2s;
+    }
+    
+    .writeup-item:hover{
+      border-color:rgba(0,217,255,0.3);
+      transform:translateX(8px);
+    }
+    
+    .writeup-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:start;
+      margin-bottom:12px;
+    }
+    
+    .writeup-item h4{
+      font-size:18px;
+      margin-bottom:8px;
+    }
+    
+    .writeup-date{
+      color:var(--muted);
+      font-size:13px;
+      white-space:nowrap;
+    }
+    
+    .writeup-item p{
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    /* Sidebar */
+    .two-col{
+      display:grid;
+      grid-template-columns:1fr 350px;
+      gap:48px;
+      align-items:start;
+    }
+    
+    .sidebar{
+      position:sticky;
+      top:100px;
+    }
+    
+    .sidebar-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:28px;
+      margin-bottom:24px;
+    }
+    
+    .sidebar-card h3{
+      font-size:16px;
+      margin-bottom:20px;
+      color:var(--accent);
+    }
+    
+    .metric{
+      margin-bottom:16px;
+    }
+    
+    .metric-value{
+      font-size:28px;
+      font-weight:700;
+      color:var(--accent);
+      display:block;
+    }
+    
+    .metric-label{
+      color:var(--muted);
+      font-size:14px;
+    }
+    
+    .cert-item, .link-item{
+      padding:12px 0;
+      border-bottom:1px solid var(--border);
+      color:var(--muted);
+      font-size:14px;
+    }
+    
+    .cert-item:last-child, .link-item:last-child{
+      border-bottom:none;
+    }
+    
+    .link-item a{
+      color:var(--muted);
+      text-decoration:none;
+      transition:color 0.2s;
+    }
+    
+    .link-item a:hover{
+      color:var(--accent);
+    }
+
+    /* Contact */
+    .contact-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      gap:32px;
+      margin-top:40px;
+    }
+    
+    .contact-item{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:32px;
+      text-align:center;
+    }
+    
+    .contact-icon{
+      width:64px;
+      height:64px;
+      background:rgba(0,217,255,0.1);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto 20px;
+      font-size:24px;
+      color:var(--accent);
+    }
+    
+    .contact-item h3{
+      margin-bottom:8px;
+    }
+    
+    .contact-item a{
+      color:var(--muted);
+      text-decoration:none;
+      transition:color 0.2s;
+    }
+    
+    .contact-item a:hover{
+      color:var(--accent);
+    }
 
     /* Footer */
-    footer{padding:28px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(255,255,255,0.02);margin-top:30px}
+    footer{
+      padding:48px 0;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      border-top:1px solid var(--border);
+      margin-top:80px;
+    }
+
+    /* Code blocks */
+    .code-block{
+      margin-top:24px;
+      background:rgba(0,0,0,0.3);
+      border-radius:12px;
+      overflow:hidden;
+    }
+    
+    .code-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 20px;
+      background:rgba(0,0,0,0.4);
+      border-bottom:1px solid var(--border);
+    }
+    
+    pre{
+      margin:0;
+      padding:20px;
+      overflow-x:auto;
+    }
 
     /* Responsive */
-    @media (max-width:1000px){ .grid{grid-template-columns:1fr} nav ul{display:none} .mobile-nav-toggle{display:inline-block} }
-    .mobile-nav-toggle{display:none;background:transparent;border:0;color:var(--muted);font-size:18px}
-
-    /* Dark mode helper classes (light theme) */
-    .light body{background:#f7fbff;color:#0a1626}
-    /* small helpers */
-    .muted{color:var(--muted)} .accent{color:var(--accent)} .small{font-size:13px}
+    @media (max-width: 1024px){
+      .two-col{
+        grid-template-columns:1fr;
+      }
+      .sidebar{
+        position:static;
+      }
+    }
+    
+    @media (max-width: 768px){
+      .nav-links{
+        display:none;
+      }
+      .hero h1{
+        font-size:36px;
+      }
+      .hero-subtitle{
+        font-size:18px;
+      }
+      section{
+        padding:60px 0;
+      }
+      .section-title{
+        font-size:28px;
+      }
+      .projects-grid{
+        grid-template-columns:1fr;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Preloader -->
-  <div id="preloader"><div class="spinner" aria-hidden="true"></div></div>
-
-  <!-- Top navigation -->
-  <div class="topbar">
-    <div class="container nav">
-      <div class="brand">
-        <div class="logo"><i class="fas fa-shield-alt" style="color:#001"></i></div>
-        <div>
-          <h1 style="font-size:15px;margin-bottom:2px">Swetha Devi</h1>
-          <div class="small muted">SOC Analyst • Detection Engineer</div>
-        </div>
-      </div>
-
-      <nav>
-        <button class="mobile-nav-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
-        <ul id="navList" aria-label="Main Navigation">
-          <li><a href="#top" data-scroll>Home</a></li>
-          <li><a href="#about" data-scroll>About</a></li>
-          <li><a href="#skills" data-scroll>Skills</a></li>
-          <li><a href="#experience" data-scroll>Experience</a></li>
-
-          <!-- WORK dropdown -->
-          <li class="dropdown" id="workDropdown">
-            <div class="dropdown-btn" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
-              <span class="muted">Work</span> <i class="fas fa-chevron-down small muted" style="margin-left:6px"></i>
-            </div>
-            <div class="dropdown-menu" role="menu" aria-label="Work menu">
-              <a href="#writeups" data-scroll>Writeups</a>
-              <a href="#malware" data-scroll>Malware Research</a>
-              <a href="#rules" data-scroll>Detection Rules</a>
-              <a href="#projects" data-scroll>Projects</a>
-            </div>
-          </li>
-
-          <li><a href="#contact" data-scroll>Contact</a></li>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="logo-text">
+            <h1>Swetha Devi</h1>
+            <p>SOC Analyst & Detection Engineer</p>
+          </div>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
-      </nav>
-
-      <div style="display:flex;gap:10px;align-items:center">
-        <button id="themeToggle" class="cta" title="Toggle dark/light">Dark</button>
-        <a class="cta" href="mailto:swethadevi1125@gmail.com">Contact</a>
+        
+        <div class="nav-cta">
+          <a href="mailto:swethadevi1125@gmail.com" class="btn btn-primary">Get in Touch</a>
+        </div>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <!-- Hero & content -->
-  <div class="container" id="top">
-    <header class="hero" data-aos="fade-up">
-      <div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap">
-        <div style="flex:1;min-width:260px">
-          <div class="hero-title">Swetha Devi Sai Priya Bonu</div>
-          <div class="hero-sub muted">Threat Detection · Incident Response · Digital Forensics · Malware Analysis</div>
-          <div class="tags" aria-hidden="true">
-            <div class="tag">MITRE ATT&CK</div><div class="tag">SOC Ops</div><div class="tag">Detection Engineering</div><div class="tag">YARA / Sigma</div>
-          </div>
-          <div style="margin-top:16px">
-            <a href="#writeups" class="small" data-scroll><i class="fas fa-file-alt"></i> Read my writeups</a> &nbsp;·&nbsp;
-            <a href="https://github.com/unabletofind" target="_blank" rel="noopener" class="small"><i class="fab fa-github"></i> GitHub</a>
-          </div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content" data-aos="fade-up">
+        <h1>Swetha Devi Sai Priya Bonu</h1>
+        <p class="hero-subtitle">Specializing in threat detection, incident response, and detection engineering to strengthen security operations</p>
+        
+        <div class="tags">
+          <span class="tag">MITRE ATT&CK</span>
+          <span class="tag">SOC Operations</span>
+          <span class="tag">Detection Engineering</span>
+          <span class="tag">YARA / Sigma</span>
+          <span class="tag">Malware Analysis</span>
         </div>
-        <div style="width:260px;min-width:220px">
-          <div class="card">
-            <div style="display:flex;gap:10px;align-items:center">
-              <div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#001;font-weight:700">SD</div>
-              <div>
-                <div style="font-weight:700">Swetha Devi</div>
-                <div class="muted small">Hyderabad, India · swethadevi1125@gmail.com</div>
-                <div style="margin-top:8px"><a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="small muted">LinkedIn</a></div>
-              </div>
-            </div>
-            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.02);margin:12px 0">
-            <div><strong class="small">Summary</strong>
-              <p class="muted small" style="margin-top:8px">SOC Analyst with practical experience in Splunk & Elastic SIEM. Skilled at correlating Event Logs, Sysmon and network traffic (Zeek/Wireshark) to detect lateral movement, privilege escalation, persistence, beaconing, DNS tunnelling and data exfiltration. Focused on detection quality and automation.</p>
-            </div>
-          </div>
+        
+        <div class="hero-links">
+          <a href="#work"><i class="fas fa-file-alt"></i> View Writeups</a>
+          <a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         </div>
       </div>
-    </header>
+    </div>
+  </section>
 
-    <div class="grid">
+  <div class="container">
+    <div class="two-col">
       <main>
         <!-- About -->
-        <section id="about" data-aos="fade-right">
-          <h2 class="section">About</h2>
-          <div class="card">
-            <p class="muted">I improve SOC detection by tuning rules, enriching alerts, and building analyst-friendly playbooks. I map incidents to MITRE ATT&CK, investigate samples, and write YARA & Sigma rules. My goal: reduce time-to-detect and enable confident, fast response.</p>
+        <section id="about">
+          <h2 class="section-title">About Me</h2>
+          <div class="about-content" data-aos="fade-up">
+            <p>I'm a SOC Analyst passionate about improving threat detection quality and operational efficiency. I specialize in correlating Event Logs, Sysmon, and network traffic (Zeek/Wireshark) to identify lateral movement, privilege escalation, persistence mechanisms, and data exfiltration attempts.</p>
+            <br>
+            <p>My approach focuses on tuning detection rules, enriching alerts with context, and building analyst-friendly playbooks. I map incidents to the MITRE ATT&CK framework, analyze malware samples, and develop YARA and Sigma rules to strengthen defensive capabilities.</p>
           </div>
         </section>
 
         <!-- Skills -->
-        <section id="skills" data-aos="fade-left">
-          <h2 class="section">Skills</h2>
-          <div class="card">
-            <div style="display:flex;gap:18px;flex-wrap:wrap">
-              <div style="flex:1;min-width:220px">
-                <h4 class="small">Security Tools</h4>
-                <div class="skills-grid">
-                  <div class="skill-pill">Splunk</div><div class="skill-pill">Elastic (Kibana)</div>
-                  <div class="skill-pill">Wireshark</div><div class="skill-pill">Suricata</div>
-                  <div class="skill-pill">Nessus</div><div class="skill-pill">CrowdStrike</div>
-                </div>
+        <section id="skills">
+          <h2 class="section-title">Skills & Expertise</h2>
+          <div class="skills-grid" data-aos="fade-up">
+            <div class="skill-category card">
+              <h3>Security Tools</h3>
+              <div class="skill-items">
+                <span class="skill-item">Splunk</span>
+                <span class="skill-item">Elastic (Kibana)</span>
+                <span class="skill-item">Wireshark</span>
+                <span class="skill-item">Suricata</span>
+                <span class="skill-item">Nessus</span>
+                <span class="skill-item">CrowdStrike</span>
               </div>
-              <div style="flex:1;min-width:220px">
-                <h4 class="small">Scripting & Detection</h4>
-                <div class="skills-grid">
-                  <div class="skill-pill">Python (Automation)</div><div class="skill-pill">Bash</div>
-                  <div class="skill-pill">YARA</div><div class="skill-pill">Sigma</div>
-                  <div class="skill-pill">Prism/Rules</div><div class="skill-pill">Email analysis (SPF/DKIM)</div>
-                </div>
+            </div>
+            
+            <div class="skill-category card">
+              <h3>Detection & Scripting</h3>
+              <div class="skill-items">
+                <span class="skill-item">Python</span>
+                <span class="skill-item">Bash</span>
+                <span class="skill-item">YARA Rules</span>
+                <span class="skill-item">Sigma Rules</span>
+                <span class="skill-item">Email Analysis</span>
+                <span class="skill-item">Threat Hunting</span>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Experience -->
-        <section id="experience" data-aos="fade-up">
-          <h2 class="section">Experience</h2>
-          <div class="timeline">
-            <div class="exp-item card">
-              <h4>Cybersecurity Analyst — TriArmour AI (Nov 2024 – Present)</h4>
-              <p class="muted small">Monitored 6+ client environments using Splunk & Elastic; correlated Sysmon, Event Logs and EDR telemetry; created detection rules and playbooks. Reduced repetitive alerts 15–20% for select clients.</p>
+        <section id="experience">
+          <h2 class="section-title">Experience</h2>
+          <div class="timeline" data-aos="fade-up">
+            <div class="timeline-item">
+              <h3>Cybersecurity Analyst</h3>
+              <div class="period">TriArmour AI • November 2024 – Present</div>
+              <p>Monitoring 6+ client environments using Splunk and Elastic SIEM. Correlating Sysmon, Event Logs, and EDR telemetry to detect threats. Creating detection rules and incident response playbooks. Achieved 15-20% reduction in false positives for select clients through rule tuning and enrichment.</p>
             </div>
-            <div class="exp-item card">
-              <h4>Cybersecurity Intern — GradeSpot IT (Sep 2023 – Mar 2024)</h4>
-              <p class="muted small">Vulnerability assessments and hands-on SOC training.</p>
+            
+            <div class="timeline-item">
+              <h3>Cybersecurity Intern</h3>
+              <div class="period">GradeSpot IT • September 2023 – March 2024</div>
+              <p>Conducted vulnerability assessments and received hands-on SOC training. Developed foundational skills in threat detection, log analysis, and security tooling.</p>
             </div>
           </div>
         </section>
 
-        <!-- Work: Writeups (search + list) -->
-        <section id="writeups" data-aos="fade-up">
-          <h2 class="section">Writeups</h2>
-          <div class="card">
-            <div style="display:flex;gap:10px;align-items:center;justify-content:space-between">
-              <div class="searchbox" style="flex:1">
-                <input id="searchWriteups" placeholder="Search writeups (title, tag, date)..." aria-label="Search writeups">
-                <button id="clearSearch" title="Clear" style="padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03)">✕</button>
-              </div>
-              <div>
-                <button class="cta" onclick="openAllWriteups()">Open all</button>
-              </div>
-            </div>
-
-            <div class="writeup-list" id="writeupList" style="margin-top:12px">
-              <!-- Example writeups; replace/add as markdown -> HTML converted posts or link to /_posts pages -->
-              <div class="writeup" data-tags="phishing powershell 2024-01-15">
-                <div style="display:flex;justify-content:space-between">
+        <!-- Work -->
+        <section id="work">
+          <h2 class="section-title">Writeups & Research</h2>
+          
+          <div class="search-bar" data-aos="fade-up">
+            <input type="text" id="searchInput" placeholder="Search writeups by title, tag, or date...">
+            <i class="fas fa-search search-icon"></i>
+          </div>
+          
+          <div id="writeupsList">
+            <div class="writeup-item" data-tags="phishing powershell 2024-01-15" data-aos="fade-up">
+              <div class="writeup-header">
+                <div>
                   <h4>Phishing Campaign — PowerShell Downloader</h4>
-                  <div class="small muted">2024-01-15</div>
+                  <p>Decoded Base64 PowerShell downloader connecting to C2 infrastructure. Detailed analysis of the attack chain and containment strategy. <a href="#" class="project-link">Read more →</a></p>
                 </div>
-                <p class="muted small">Decoded Base64 PowerShell downloader connecting to C2 — contained and blocked. <a href="writeups/2024-01-15-powershell-phishing-investigation.html">Read →</a></p>
+                <span class="writeup-date">Jan 15, 2024</span>
               </div>
-
-              <div class="writeup" data-tags="lateral wmi 2024-01-16">
-                <div style="display:flex;justify-content:space-between">
+            </div>
+            
+            <div class="writeup-item" data-tags="lateral wmi 2024-01-16" data-aos="fade-up">
+              <div class="writeup-header">
+                <div>
                   <h4>Lateral Movement — WMI Abuse Detection</h4>
-                  <div class="small muted">2024-01-16</div>
+                  <p>Detected anomalous WMI process creation patterns indicating lateral movement attempts. Created Sigma rule to improve detection coverage. <a href="#" class="project-link">Read more →</a></p>
                 </div>
-                <p class="muted small">Detected anomalous WMI process creation, created rule to reduce lateral movement attempts. <a href="writeups/2024-01-16-lateral-movement-detection.html">Read →</a></p>
-              </div>
-
-              <!-- add more writeups in the same format -->
-            </div>
-          </div>
-        </section>
-
-        <!-- Malware Research -->
-        <section id="malware" data-aos="fade-up">
-          <h2 class="section">Malware Research</h2>
-          <div class="card">
-            <div class="projects">
-              <div class="project" role="button" tabindex="0">
-                <strong>Sample: PowerShell downloader</strong>
-                <p class="muted small">Behavior analysis, IOCs, YARA rules — <a href="malware/powershell-downloader.html">Details →</a></p>
-              </div>
-
-              <div class="project">
-                <strong>Ransomware early detection</strong>
-                <p class="muted small">Pre-encryption indicators and detection logic</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Detection rules: Prism highlight + copy -->
-        <section id="rules" data-aos="fade-up">
-          <h2 class="section">Detection Rules</h2>
-          <div class="card">
-            <div class="collapsible" role="button" tabindex="0" id="rule1btn">
-              <div><strong>YARA: suspicious powershell downloader</strong><div class="small muted"> (example)</div></div>
-              <div class="small muted"><i class="fas fa-chevron-down"></i></div>
-            </div>
-            <div class="content">
-              <pre class="language-yara"><code class="language-yara">
-rule suspicious_powershell_downloader {
-  meta:
-    author = "Swetha Devi"
-    date = "2024-01-15"
-  strings:
-    $s1 = /IEX\s*\(New-Object\s+Net.WebClient\)/
-    $s2 = "DownloadString("
-  condition:
-    any of ($s*) and filesize < 1MB
-}
-              </code></pre>
-              <div style="display:flex;gap:8px;margin-top:8px">
-                <button onclick="copyCode(this)" data-code-selector=".language-yara" class="cta">Copy YARA</button>
-                <a href="rules/yara/suspicious_powershell.yar" download class="small muted">Download</a>
+                <span class="writeup-date">Jan 16, 2024</span>
               </div>
             </div>
           </div>
         </section>
 
         <!-- Projects -->
-        <section id="projects" data-aos="fade-up">
-          <h2 class="section">Projects</h2>
-          <div class="card">
-            <div class="projects">
-              <div class="project">
-                <strong>Splunk threat hunting dashboard</strong>
-                <p class="muted small">Dashboards and alerts for persistence & LOLBAS detection. <a href="projects/splunk-dashboard.html">Open →</a></p>
-              </div>
-              <div class="project">
-                <strong>Automated triage scripts</strong>
-                <p class="muted small">Python scripts for IOC enrichment and initial triage. <a href="https://github.com/unabletofind/security-scripts" target="_blank">GitHub →</a></p>
-              </div>
+        <section>
+          <h2 class="section-title">Projects</h2>
+          <div class="projects-grid">
+            <div class="project-card" data-aos="fade-up">
+              <h3>Splunk Threat Hunting Dashboard</h3>
+              <p>Custom dashboards and correlation searches for detecting persistence mechanisms and LOLBAS abuse. Includes automated alerting for suspicious activity patterns.</p>
+              <a href="#" class="project-link">View project →</a>
+            </div>
+            
+            <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+              <h3>Automated Triage Scripts</h3>
+              <p>Python-based automation for IOC enrichment and initial alert triage. Reduces manual investigation time and standardizes analyst workflows.</p>
+              <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+            
+            <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+              <h3>Malware Analysis Collection</h3>
+              <p>Behavioral analysis of various malware families including PowerShell downloaders and ransomware. Complete with IOCs and YARA signatures.</p>
+              <a href="#" class="project-link">View research →</a>
             </div>
           </div>
         </section>
 
         <!-- Contact -->
-        <section id="contact" data-aos="fade-up">
-          <h2 class="section">Contact</h2>
-          <div class="card">
-            <p class="muted">Email: <a href="mailto:swethadevi1125@gmail.com">swethadevi1125@gmail.com</a></p>
-            <p class="muted">LinkedIn: <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank">bonu-swetha-devi-sai-priya</a></p>
-            <p class="muted">GitHub: <a href="https://github.com/unabletofind" target="_blank">unabletofind</a></p>
+        <section id="contact">
+          <h2 class="section-title">Get in Touch</h2>
+          <div class="contact-grid">
+            <div class="contact-item" data-aos="fade-up">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <h3>Email</h3>
+              <a href="mailto:swethadevi1125@gmail.com">swethadevi1125@gmail.com</a>
+            </div>
+            
+            <div class="contact-item" data-aos="fade-up" data-aos-delay="100">
+              <div class="contact-icon">
+                <i class="fab fa-linkedin"></i>
+              </div>
+              <h3>LinkedIn</h3>
+              <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank">Connect with me</a>
+            </div>
+            
+            <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
+              <div class="contact-icon">
+                <i class="fab fa-github"></i>
+              </div>
+              <h3>GitHub</h3>
+              <a href="https://github.com/unabletofind" target="_blank">View my work</a>
+            </div>
           </div>
         </section>
-
       </main>
 
-      <!-- Right column / sidebar -->
-      <aside>
-        <div class="card" data-aos="fade-left">
-          <h3 class="small">Quick Metrics</h3>
-          <div style="display:grid;gap:10px;margin-top:10px">
-            <div><strong>&lt; 20 min</strong> <span class="muted small">Avg triage time</span></div>
-            <div><strong>95%+</strong> <span class="muted small">Detection accuracy</span></div>
-            <div><strong>40%</strong> <span class="muted small">Automated workflows</span></div>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card" data-aos="fade-left">
+          <h3>Quick Metrics</h3>
+          <div class="metric">
+            <span class="metric-value">&lt; 20 min</span>
+            <span class="metric-label">Average triage time</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">95%+</span>
+            <span class="metric-label">Detection accuracy</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">40%</span>
+            <span class="metric-label">Automated workflows</span>
           </div>
         </div>
 
-        <div class="card" style="margin-top:12px" data-aos="fade-left">
-          <h3 class="small">Certifications</h3>
-          <div class="cert-list muted small" style="margin-top:8px">
-            <div>• Certified Defensive Security Analyst (CDSA) — Hack The Box</div>
-            <div>• Certified AppSec Practitioner (CAP) — SeCops</div>
-            <div>• Junior PenTester Path — TryHackMe</div>
-            <div>• Cisco Networking Academy — Cybersecurity</div>
-          </div>
+        <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+          <h3>Certifications</h3>
+          <div class="cert-item">Certified Defensive Security Analyst (CDSA)</div>
+          <div class="cert-item">Certified AppSec Practitioner (CAP)</div>
+          <div class="cert-item">Junior PenTester Path — TryHackMe</div>
+          <div class="cert-item">Cisco Cybersecurity</div>
         </div>
 
-        <div class="card" style="margin-top:12px" data-aos="fade-left">
-          <h3 class="small">Quick Links</h3>
-          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-            <a class="muted small" href="resume.pdf" download><i class="fas fa-download"></i> Download Resume</a>
-            <a class="muted small" href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a class="muted small" href="#writeups" data-scroll>Writeups</a>
-          </div>
+        <div class="sidebar-card" data-aos="fade-left" data-aos-delay="200">
+          <h3>Quick Links</h3>
+          <div class="link-item"><a href="#"><i class="fas fa-download"></i> Download Resume</a></div>
+          <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
+          <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Writeups</a></div>
         </div>
       </aside>
     </div>
-
-    <footer>
-      <div class="small muted">© 2025 Swetha Devi • Built with HTML/CSS/JS • Host: GitHub Pages</div>
-    </footer>
   </div>
 
-  <!-- External libs -->
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Swetha Devi • Built with passion for cybersecurity</p>
+    </div>
+  </footer>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yara.min.js"></script>
-
   <script>
-    // Preloader hide after load
-    window.addEventListener('load', () => {
-      document.getElementById('preloader').classList.add('hidden');
-      AOS.init({duration:700, once:true, easing:'ease-in-out'});
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100
     });
 
-    // Dropdown toggle
-    const workDropdown = document.getElementById('workDropdown');
-    workDropdown.addEventListener('click', e => {
-      workDropdown.classList.toggle('open');
-      const btn = workDropdown.querySelector('.dropdown-btn');
-      btn.setAttribute('aria-expanded', workDropdown.classList.contains('open'));
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    const writeups = document.querySelectorAll('.writeup-item');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      
+      writeups.forEach(writeup => {
+        const tags = writeup.getAttribute('data-tags').toLowerCase();
+        const title = writeup.querySelector('h4').textContent.toLowerCase();
+        const text = writeup.querySelector('p').textContent.toLowerCase();
+        
+        if (tags.includes(query) || title.includes(query) || text.includes(query)) {
+          writeup.style.display = 'block';
+        } else {
+          writeup.style.display = 'none';
+        }
+      });
     });
 
-    // Smooth scroll for anchor links
-    document.querySelectorAll('[data-scroll]').forEach(el=>{
-      el.addEventListener('click', e=>{
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = e.currentTarget.getAttribute('href');
-        if(!target || !target.startsWith('#')) return window.location = e.currentTarget.href;
-        const elTarget = document.querySelector(target);
-        if(!elTarget) return;
-        elTarget.scrollIntoView({behavior:'smooth', block:'start'});
-        // close dropdown after navigation (mobile)
-        workDropdown.classList.remove('open');
-      });
-    });
-
-    // Theme toggle (persist)
-    const themeToggle = document.getElementById('themeToggle');
-    const setTheme = (t) => {
-      if(t === 'light') {
-        document.documentElement.style.setProperty('--bg','#f7fbff');
-        document.body.classList.add('light');
-        themeToggle.textContent = 'Light';
-      } else {
-        document.body.classList.remove('light');
-        themeToggle.textContent = 'Dark';
-      }
-      localStorage.setItem('site-theme', t);
-    };
-    const saved = localStorage.getItem('site-theme') || 'dark';
-    setTheme(saved);
-    themeToggle.addEventListener('click', () => setTheme(localStorage.getItem('site-theme') === 'dark' ? 'light' : 'dark'));
-
-    // Collapsible rule content
-    document.querySelectorAll('.collapsible').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        btn.classList.toggle('open');
-        const content = btn.nextElementSibling;
-        if(btn.classList.contains('open')) {
-          content.style.maxHeight = content.scrollHeight + 'px';
-        } else {
-          content.style.maxHeight = null;
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
         }
       });
-    });
-
-    // Copy-to-clipboard for code block
-    function copyCode(el){
-      const parent = el.closest('.card');
-      const code = parent.querySelector('pre code').innerText;
-      navigator.clipboard.writeText(code).then(()=> {
-        el.textContent = 'Copied ✓';
-        setTimeout(()=> el.textContent = 'Copy YARA', 1400);
-      });
-    }
-
-    // Simple client-side search for writeups
-    const searchInput = document.getElementById('searchWriteups');
-    const writeupList = Array.from(document.querySelectorAll('.writeup'));
-    function filterWriteups(q){
-      const t = q.trim().toLowerCase();
-      writeupList.forEach(node => {
-        const tags = node.getAttribute('data-tags') || '';
-        const title = node.querySelector('h4').innerText || '';
-        if(!t || title.toLowerCase().includes(t) || tags.toLowerCase().includes(t)) {
-          node.style.display = '';
-        } else {
-          node.style.display = 'none';
-        }
-      });
-    }
-    searchInput.addEventListener('input', e => filterWriteups(e.target.value));
-    document.getElementById('clearSearch').addEventListener('click', ()=> { searchInput.value=''; filterWriteups(''); });
-
-    function openAllWriteups(){
-      // open each writeup link in new tab (example behavior)
-      document.querySelectorAll('.writeup a').forEach(a=> window.open(a.href, '_blank'));
-    }
-
-    // Keyboard accessibility: close dropdown on Escape
-    document.addEventListener('keydown', e => {
-      if(e.key === 'Escape') workDropdown.classList.remove('open');
     });
   </script>
 </body>
