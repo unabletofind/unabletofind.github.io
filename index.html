@@ -22,14 +22,14 @@
       --hover-glow: rgba(0, 217, 255, 0.15);
     }
     
-    /* Cursor Glow Effect */
+    /* Cursor Glow Effect - Reduced brightness */
     #cursorGlow {
       position: fixed;
       width: 300px;
       height: 300px;
       pointer-events: none;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,217,255,0.18), transparent 70%);
+      background: radial-gradient(circle, rgba(0,217,255,0.12), transparent 70%);
       transform: translate(-50%, -50%);
       mix-blend-mode: screen;
       z-index: 2;
@@ -56,7 +56,7 @@
       bottom: 0;
       border-radius: inherit;
       background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                rgba(0, 217, 255, 0.15), transparent 70%);
+                rgba(0, 217, 255, 0.10), transparent 70%);
       opacity: 0;
       transition: opacity 0.3s ease;
       z-index: 1;
@@ -68,8 +68,164 @@
     }
     
     .card-hover-glow:hover {
-      border-color: rgba(0, 217, 255, 0.3) !important;
-      box-shadow: 0 8px 32px rgba(0, 217, 255, 0.15) !important;
+      border-color: rgba(0, 217, 255, 0.25) !important;
+      box-shadow: 0 8px 32px rgba(0, 217, 255, 0.12) !important;
+    }
+
+    /* Work Categories Navigation */
+    .work-categories {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .work-category-btn {
+      padding: 12px 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .work-category-btn:hover {
+      color: var(--text);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    
+    .work-category-btn.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #001;
+      border-color: var(--accent);
+    }
+    
+    .work-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .work-content.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Category Search Bars */
+    .category-search {
+      margin-bottom: 32px;
+      position: relative;
+    }
+    
+    .category-search input {
+      width: 100%;
+      padding: 14px 48px 14px 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 15px;
+    }
+    
+    .category-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    .category-search .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+    
+    /* Category Items Grid */
+    .category-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    
+    .category-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+    
+    .category-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+    
+    .category-item h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    
+    .category-item .date {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    
+    .category-item p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .category-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .category-link:hover {
+      text-decoration: underline;
+    }
+    
+    .view-all-link {
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    .view-all-link a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .view-all-link a:hover {
+      background: rgba(0, 217, 255, 0.1);
+      transform: translateY(-2px);
     }
 
     /* Read More Button Styles */
@@ -104,41 +260,6 @@
     /* Ensure all clickable elements have proper cursor */
     .card, .btn, .writeup-item, .project-card, .nav-links a, .hero-links a {
       cursor: pointer;
-    }
-    
-    /* Prism Code Block Styling */
-    .code-block {
-      margin-top: 24px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-    
-    .code-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      background: rgba(0, 0, 0, 0.4);
-      border-bottom: 1px solid var(--border);
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      color: var(--muted);
-    }
-    
-    pre[class*="language-"] {
-      margin: 0;
-      padding: 20px;
-      overflow-x: auto;
-      background: transparent !important;
-      border-radius: 0 !important;
-    }
-    
-    pre[class*="language-"] code {
-      font-family: 'Courier New', monospace !important;
-      font-size: 14px;
-      line-height: 1.5;
     }
     
     *{box-sizing:border-box; margin:0; padding:0}
@@ -451,34 +572,6 @@
       text-decoration:underline;
     }
 
-    .search-bar{
-      margin-bottom:32px;
-      position:relative;
-    }
-    
-    .search-bar input{
-      width:100%;
-      padding:16px 48px 16px 20px;
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:12px;
-      color:var(--text);
-      font-size:15px;
-    }
-    
-    .search-bar input:focus{
-      outline:none;
-      border-color:var(--accent);
-    }
-    
-    .search-icon{
-      position:absolute;
-      right:20px;
-      top:50%;
-      transform:translateY(-50%);
-      color:var(--muted);
-    }
-
     .writeup-item{
       padding:24px;
       background:var(--card);
@@ -658,11 +751,17 @@
       .projects-grid{
         grid-template-columns:1fr;
       }
+      .category-items {
+        grid-template-columns: 1fr;
+      }
       body {
         cursor: auto !important;
       }
       #cursorGlow {
         display: none;
+      }
+      .work-categories {
+        justify-content: center;
       }
     }
   </style>
@@ -717,7 +816,7 @@
         </div>
         
         <div class="hero-links">
-          <a href="#work"><i class="fas fa-file-alt"></i> View Writeups</a>
+          <a href="#work"><i class="fas fa-file-alt"></i> View Work</a>
           <a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub</a>
           <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         </div>
@@ -841,87 +940,151 @@
           </div>
         </section>
 
-        <!-- Work -->
+        <!-- Work Section with Categories -->
         <section id="work">
-          <h2 class="section-title">Writeups & Research</h2>
+          <h2 class="section-title">My Work</h2>
           
-          <div class="search-bar" data-aos="fade-up">
-            <input type="text" id="searchInput" placeholder="Search writeups by title, tag, or date...">
-            <i class="fas fa-search search-icon"></i>
+          <div class="work-categories" data-aos="fade-up">
+            <button class="work-category-btn active" data-category="writeups">
+              <i class="fas fa-file-alt"></i> Writeups
+            </button>
+            <button class="work-category-btn" data-category="detection-rules">
+              <i class="fas fa-shield-alt"></i> Detection Rules
+            </button>
+            <button class="work-category-btn" data-category="malware-research">
+              <i class="fas fa-bug"></i> Malware Research
+            </button>
+            <button class="work-category-btn" data-category="projects">
+              <i class="fas fa-code"></i> Projects
+            </button>
           </div>
           
-          <div id="writeupsList">
-            <div class="writeup-item card-hover-glow" data-tags="phishing powershell 2024-01-15" data-aos="fade-up">
-              <div class="writeup-header">
-                <div>
-                  <h4>Phishing Campaign — PowerShell Downloader</h4>
-                  <p>Decoded Base64 PowerShell downloader connecting to C2 infrastructure. Detailed analysis of the attack chain and containment strategy. <a href="#" class="project-link">Read more →</a></p>
-                </div>
-                <span class="writeup-date">Jan 15, 2024</span>
+          <!-- Writeups Category -->
+          <div class="work-content active" id="writeups-content">
+            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Security Writeups</h3>
+            
+            <div class="category-search">
+              <input type="text" id="writeupsSearch" placeholder="Search writeups by title, tag, or content...">
+              <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="category-items">
+              <div class="category-item card-hover-glow" data-tags="phishing powershell c2 2024-01-15">
+                <h4>Phishing Campaign Analysis: PowerShell Downloader</h4>
+                <div class="date">Jan 15, 2024 • 8 min read</div>
+                <p>Detailed analysis of a phishing campaign using Base64 encoded PowerShell downloaders to establish C2 communication. Includes IOC extraction and containment procedures.</p>
+                <a href="writeups.html#phishing-powershell" class="category-link">Read Full Analysis →</a>
+              </div>
+              
+              <div class="category-item card-hover-glow" data-tags="lateral wmi detection 2024-01-16">
+                <h4>WMI Abuse for Lateral Movement Detection</h4>
+                <div class="date">Jan 16, 2024 • 6 min read</div>
+                <p>Investigating WMI process creation patterns indicating lateral movement attempts. Includes detection logic and investigative steps for SOC analysts.</p>
+                <a href="writeups.html#wmi-lateral" class="category-link">Read Full Analysis →</a>
               </div>
             </div>
             
-            <div class="writeup-item card-hover-glow" data-tags="lateral wmi 2024-01-16" data-aos="fade-up">
-              <div class="writeup-header">
-                <div>
-                  <h4>Lateral Movement — WMI Abuse Detection</h4>
-                  <p>Detected anomalous WMI process creation patterns indicating lateral movement attempts. Created Sigma rule to improve detection coverage. <a href="#" class="project-link">Read more →</a></p>
-                </div>
-                <span class="writeup-date">Jan 16, 2024</span>
-              </div>
+            <div class="view-all-link">
+              <a href="writeups.html">
+                <i class="fas fa-external-link-alt"></i> View All Writeups
+              </a>
             </div>
           </div>
           
-          <!-- Example Code Block with Prism -->
-          <div class="code-block card-hover-glow" data-aos="fade-up" style="margin-top: 40px;">
-            <div class="code-header">
-              <span>Sigma Rule Example — Suspicious WMI Execution</span>
-              <i class="fas fa-copy" style="cursor: pointer;" onclick="copyCode(this)"></i>
+          <!-- Detection Rules Category -->
+          <div class="work-content" id="detection-rules-content">
+            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Detection Rules</h3>
+            
+            <div class="category-search">
+              <input type="text" id="rulesSearch" placeholder="Search detection rules by technique, platform, or tags...">
+              <i class="fas fa-search search-icon"></i>
             </div>
-            <pre><code class="language-yaml">
-title: Suspicious WMI Process Creation
-id: 12345678-1234-1234-1234-123456789012
-status: experimental
-description: Detects suspicious WMI process creation often used for lateral movement
-author: Swetha Devi
-date: 2024/01/16
-logsource:
-    category: process_creation
-    product: windows
-detection:
-    selection:
-        ParentImage|endswith: '\WmiPrvSE.exe'
-        Image|endswith: '\cmd.exe'
-    condition: selection
-falsepositives:
-    - Legitimate administrative scripts
-level: high
-tags:
-    - attack.lateral_movement
-    - attack.t1047</code></pre>
+            
+            <div class="category-items">
+              <div class="category-item card-hover-glow" data-tags="sigma windows privilege-escalation 2024-02-10">
+                <h4>Sigma: Suspicious Service Installation</h4>
+                <div class="date">Feb 10, 2024 • Windows • MITRE T1543.003</div>
+                <p>Detection rule for suspicious service installations often used for persistence and privilege escalation. Compatible with SIEMs supporting Sigma rules.</p>
+                <a href="detection-rules.html#service-installation" class="category-link">View Rule Details →</a>
+              </div>
+              
+              <div class="category-item card-hover-glow" data-tags="yara malware ransomware 2024-02-05">
+                <h4>YARA: Ransomware String Patterns</h4>
+                <div class="date">Feb 5, 2024 • Malware Detection</div>
+                <p>YARA rule set for detecting common ransomware string patterns in binaries and memory. Includes entropy checks and obfuscation detection.</p>
+                <a href="detection-rules.html#ransomware-yara" class="category-link">View Rule Details →</a>
+              </div>
+            </div>
+            
+            <div class="view-all-link">
+              <a href="detection-rules.html">
+                <i class="fas fa-external-link-alt"></i> View All Detection Rules
+              </a>
+            </div>
           </div>
-        </section>
-
-        <!-- Projects -->
-        <section>
-          <h2 class="section-title">Projects</h2>
-          <div class="projects-grid">
-            <div class="project-card card-hover-glow" data-aos="fade-up">
-              <h3>Phishing Campaign Analysis</h3>
-              <p>Simulated phishing attacks using GoPhish to craft and send test emails, then analyzed email headers and content using SpamAssassin scoring to detect and evaluate phishing indicators. Assessed effectiveness of phishing detection and documented patterns for awareness and defense.</p>
-              <a href="#" class="project-link">View project →</a>
+          
+          <!-- Malware Research Category -->
+          <div class="work-content" id="malware-research-content">
+            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Malware Research</h3>
+            
+            <div class="category-search">
+              <input type="text" id="malwareSearch" placeholder="Search malware research by family, technique, or IOC...">
+              <i class="fas fa-search search-icon"></i>
             </div>
             
-            <div class="project-card card-hover-glow" data-aos="fade-up" data-aos-delay="100">
-              <h3>DoS Detection Scripts</h3>
-              <p>Developed a Python-based script to detect and respond to potential DoS attacks by tracking incoming request rates and blocking abusive IPs using Windows Firewall rules. Implemented cooldown logic, request threshold control, and automatic unblocking to prevent false positives and ensure system availability. Blocked repeated connections from 15+ abusive IPs during DoS testing using auto-firewall logic.</p>
-              <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="project-link">View on GitHub →</a>
+            <div class="category-items">
+              <div class="category-item card-hover-glow" data-tags="stealer infostealer discord token 2024-02-12">
+                <h4>Discord Token Stealer Malware Analysis</h4>
+                <div class="date">Feb 12, 2024 • InfoStealer • Python-based</div>
+                <p>In-depth analysis of a Discord token stealing malware. Includes static/dynamic analysis, IOC extraction, and detection recommendations.</p>
+                <a href="malware-research.html#discord-stealer" class="category-link">Read Full Research →</a>
+              </div>
+              
+              <div class="category-item card-hover-glow" data-tags="loader dropper evasion 2024-02-08">
+                <h4>Multi-Stage Loader with Anti-Analysis</h4>
+                <div class="date">Feb 8, 2024 • Loader • Anti-Debug Techniques</div>
+                <p>Analysis of a sophisticated loader using multiple stages and anti-analysis techniques. Includes unpacking methodology and behavioral analysis.</p>
+                <a href="malware-research.html#multi-stage-loader" class="category-link">Read Full Research →</a>
+              </div>
             </div>
             
-            <div class="project-card card-hover-glow" data-aos="fade-up" data-aos-delay="200">
-              <h3>CyberPulse Telegram Bot</h3>
-              <p>Developed a Telegram bot that aggregates real-time threat intel from sources like CVE, CISA, and GitHub. Implemented update scheduling, spam control, and source categorization using Python, RSS parsing, and Telegram Bot API. Supported commands for user interaction and deployed with continuous uptime monitoring.</p>
-              <a href="#" class="project-link">View research →</a>
+            <div class="view-all-link">
+              <a href="malware-research.html">
+                <i class="fas fa-external-link-alt"></i> View All Malware Research
+              </a>
+            </div>
+          </div>
+          
+          <!-- Projects Category -->
+          <div class="work-content" id="projects-content">
+            <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Projects</h3>
+            
+            <div class="category-search">
+              <input type="text" id="projectsSearch" placeholder="Search projects by technology, category, or description...">
+              <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="category-items">
+              <div class="category-item card-hover-glow" data-tags="python dos detection firewall 2024-01-20">
+                <h4>DoS Detection & Response System</h4>
+                <div class="date">Python • Windows Firewall • Real-time Detection</div>
+                <p>Python-based system for detecting and responding to DoS attacks. Features request rate tracking, automatic IP blocking, and cooldown mechanisms.</p>
+                <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="category-link">View on GitHub →</a>
+              </div>
+              
+              <div class="category-item card-hover-glow" data-tags="telegram bot threat-intel python 2024-01-25">
+                <h4>CyberPulse Threat Intelligence Bot</h4>
+                <div class="date">Telegram Bot • Python • Threat Intelligence</div>
+                <p>Real-time threat intelligence aggregation bot for Telegram. Sources include CVE databases, CISA alerts, and security advisories.</p>
+                <a href="#" class="category-link">View Project Details →</a>
+              </div>
+              
+              <div class="category-item card-hover-glow" data-tags="phishing simulation gophish awareness 2024-01-15">
+                <h4>Phishing Simulation & Awareness Platform</h4>
+                <div class="date">GoPhish • Security Awareness • Email Analysis</div>
+                <p>Comprehensive phishing simulation platform for testing and improving organizational security awareness. Includes analytics and reporting.</p>
+                <a href="#" class="category-link">View Project Details →</a>
+              </div>
             </div>
           </div>
         </section>
@@ -987,34 +1150,7 @@ tags:
           <h3>Quick Links</h3>
           <div class="link-item"><a href="#"><i class="fas fa-download"></i> Download Resume</a></div>
           <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
-          <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Writeups</a></div>
-        </div>
-        
-        <!-- Example Code Block in Sidebar -->
-        <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="300">
-          <h3>Sample Detection Query</h3>
-          <div class="code-block" style="margin: 0; border: none; background: transparent;">
-            <pre style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-size: 12px;"><code class="language-sql">
--- Suspicious PowerShell Execution
-SELECT 
-    process_name,
-    command_line,
-    user_name,
-    COUNT(*) as count
-FROM 
-    process_events
-WHERE 
-    process_name LIKE '%powershell%'
-    AND (command_line LIKE '%hidden%' 
-         OR command_line LIKE '%encodedcommand%'
-         OR command_line LIKE '%downloadstring%')
-GROUP BY 
-    process_name, command_line, user_name
-HAVING 
-    COUNT(*) > 3
-ORDER BY 
-    count DESC;</code></pre>
-          </div>
+          <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Work Categories</a></div>
         </div>
       </aside>
     </div>
@@ -1029,9 +1165,6 @@ ORDER BY
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
   <script>
     // Initialize AOS
     AOS.init({
@@ -1040,12 +1173,7 @@ ORDER BY
       offset: 100
     });
 
-    // Initialize Prism
-    if (window.Prism) {
-      Prism.highlightAll();
-    }
-
-    // Cursor Glow Logic
+    // Cursor Glow Logic - Reduced brightness
     const cursorGlow = document.getElementById('cursorGlow');
     const body = document.body;
     let mouseX = 0, mouseY = 0;
@@ -1091,7 +1219,80 @@ ORDER BY
       }
     });
 
-    // Read More functionality
+    // Work Categories Navigation
+    document.querySelectorAll('.work-category-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        document.querySelectorAll('.work-category-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Get category
+        const category = this.getAttribute('data-category');
+        
+        // Hide all content
+        document.querySelectorAll('.work-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Show selected content
+        document.getElementById(`${category}-content`).classList.add('active');
+        
+        // Update URL hash
+        window.location.hash = `work-${category}`;
+      });
+    });
+
+    // Initialize based on URL hash
+    function initializeCategoryFromHash() {
+      const hash = window.location.hash;
+      if (hash.includes('work-')) {
+        const category = hash.replace('#work-', '');
+        const button = document.querySelector(`[data-category="${category}"]`);
+        if (button) {
+          button.click();
+        }
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', initializeCategoryFromHash);
+    window.addEventListener('hashchange', initializeCategoryFromHash);
+
+    // Search functionality for each category
+    function setupSearch(searchInputId, itemsSelector) {
+      const searchInput = document.getElementById(searchInputId);
+      if (!searchInput) return;
+      
+      const items = document.querySelectorAll(itemsSelector);
+      
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        
+        items.forEach(item => {
+          const tags = item.getAttribute('data-tags').toLowerCase();
+          const title = item.querySelector('h4').textContent.toLowerCase();
+          const text = item.textContent.toLowerCase();
+          
+          if (tags.includes(query) || title.includes(query) || text.includes(query)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    // Setup search for each category
+    setupSearch('writeupsSearch', '#writeups-content .category-item');
+    setupSearch('rulesSearch', '#detection-rules-content .category-item');
+    setupSearch('malwareSearch', '#malware-research-content .category-item');
+    setupSearch('projectsSearch', '#projects-content .category-item');
+
+    // Read More functionality for experience
     document.querySelectorAll('.read-more-btn').forEach(button => {
       button.addEventListener('click', function() {
         const content = this.previousElementSibling;
@@ -1105,59 +1306,25 @@ ORDER BY
       });
     });
 
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    const writeups = document.querySelectorAll('.writeup-item');
-
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      
-      writeups.forEach(writeup => {
-        const tags = writeup.getAttribute('data-tags').toLowerCase();
-        const title = writeup.querySelector('h4').textContent.toLowerCase();
-        const text = writeup.querySelector('p').textContent.toLowerCase();
-        
-        if (tags.includes(query) || title.includes(query) || text.includes(query)) {
-          writeup.style.display = 'block';
-        } else {
-          writeup.style.display = 'none';
-        }
-      });
-    });
-
-    // Copy code functionality
-    function copyCode(button) {
-      const codeBlock = button.closest('.code-block').querySelector('code');
-      const text = codeBlock.textContent;
-      
-      navigator.clipboard.writeText(text).then(() => {
-        const originalIcon = button.className;
-        button.className = 'fas fa-check';
-        button.style.color = '#00ff00';
-        
-        setTimeout(() => {
-          button.className = originalIcon;
-          button.style.color = '';
-        }, 2000);
-      });
-    }
-
     // Enhanced smooth scroll with offset for sticky navbar
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
+        if (this.getAttribute('href') === '#') return;
         
-        const target = document.querySelector(targetId);
-        if (target) {
-          const navHeight = document.querySelector('nav').offsetHeight;
-          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+        if (!this.getAttribute('href').startsWith('#work-')) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const target = document.querySelector(targetId);
           
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
+          if (target) {
+            const navHeight = document.querySelector('nav').offsetHeight;
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+            
+            window.scrollTo({
+              top: targetPosition,
+              behavior: 'smooth'
+            });
+          }
         }
       });
     });
