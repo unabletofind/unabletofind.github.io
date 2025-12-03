@@ -157,23 +157,6 @@
       <i class="fas fa-arrow-left"></i> Back to Home
     </a>
     
-    <!-- Project Template -->
-    <article class="project" id="project-template" style="display: none;">
-      <div class="project-header">
-        <h1>Project Title</h1>
-        <div class="project-meta">
-          <span class="date">Date • Technologies</span>
-        </div>
-        <div class="project-tags">
-          <!-- Tags will be added here -->
-        </div>
-      </div>
-      
-      <div class="project-content">
-        <!-- Content will be added here -->
-      </div>
-    </article>
-    
     <!-- Individual Projects will be loaded here -->
     <div id="projects-list"></div>
   </div>
@@ -227,14 +210,6 @@
     log_event(f"Blocked IP: {ip_address}")</code></pre>
           </div>
           
-          <h2>Architecture</h2>
-          <p>The system consists of three main components:</p>
-          <ol>
-            <li>Traffic Monitor: Analyzes incoming request patterns</li>
-            <li>Decision Engine: Determines if an attack is occurring</li>
-            <li>Response Module: Executes blocking and logging actions</li>
-          </ol>
-          
           <h2>Results</h2>
           <p>During testing, the system successfully:</p>
           <ul>
@@ -243,6 +218,10 @@
             <li>Maintained service availability during attacks</li>
             <li>Generated detailed attack reports</li>
           </ul>
+          
+          <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="github-link">
+            <i class="fab fa-github"></i> View on GitHub
+          </a>
         `
       },
       {
@@ -254,9 +233,134 @@
         github: "https://github.com/unabletofind/cyberpulse-bot",
         content: `
           <h2>Project Description</h2>
-          <p>A Telegram bot that aggregates real-time threat intelligence from multiple sources and delivers alerts to security teams.</p>
+          <p>A Telegram bot that aggregates real-time threat intelligence from multiple sources.</p>
           
           <h2>Data Sources</h2>
           <ul>
             <li>CVE databases (NVD, Mitre)</li>
-            <li>CISA alerts and advisories
+            <li>CISA alerts and advisories</li>
+            <li>Security vendor blogs and reports</li>
+            <li>GitHub security advisories</li>
+          </ul>
+          
+          <h2>Features</h2>
+          <ul>
+            <li>Real-time threat alerts</li>
+            <li>Customizable notification filters</li>
+            <li>Search functionality for CVEs</li>
+            <li>Daily threat digest</li>
+            <li>Multi-language support</li>
+          </ul>
+          
+          <h2>Technical Implementation</h2>
+          <div class="code-block">
+            <div class="code-header">python</div>
+            <pre><code class="language-python"># Fetch CVE data from NVD
+def fetch_cve_data(cve_id):
+    url = f"https://services.nvd.nist.gov/rest/json/cves/2.0?cveId={cve_id}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+# Parse and format alert message
+def format_alert(cve_data):
+    severity = cve_data.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseSeverity', 'N/A')
+    description = cve_data.get('cve', {}).get('description', {}).get('description_data', [{}])[0].get('value', 'No description')
+    
+    return f"🚨 New CVE Alert\\nSeverity: {severity}\\nDescription: {description[:200]}..."</code></pre>
+          </div>
+          
+          <a href="https://github.com/unabletofind/cyberpulse-bot" target="_blank" class="github-link">
+            <i class="fab fa-github"></i> View on GitHub
+          </a>
+        `
+      },
+      {
+        id: "phishing-simulation",
+        title: "Phishing Simulation & Awareness Platform",
+        date: "Jan 15, 2024",
+        technologies: "GoPhish • Python • Security Awareness",
+        tags: ["phishing", "gophish", "awareness", "simulation", "security"],
+        github: "https://github.com/unabletofind/phishing-simulator",
+        content: `
+          <h2>Project Overview</h2>
+          <p>A comprehensive phishing simulation platform for testing and improving organizational security awareness.</p>
+          
+          <h2>Components</h2>
+          <ul>
+            <li>Email template library with common phishing patterns</li>
+            <li>Campaign management dashboard</li>
+            <li>User behavior analytics</li>
+            <li>Reporting and metrics system</li>
+            <li>Training module integration</li>
+          </ul>
+          
+          <h2>Features</h2>
+          <ul>
+            <li>Customizable phishing templates</li>
+            <li>Scheduled campaign deployment</li>
+            <li>Click-through rate tracking</li>
+            <li>User risk scoring</li>
+            <li>Automated training assignment</li>
+          </ul>
+          
+          <h2>Results</h2>
+          <p>Implemented across multiple organizations with:</p>
+          <ul>
+            <li>30% reduction in phishing click rates</li>
+            <li>Improved security awareness scores</li>
+            <li>Better incident reporting culture</li>
+            <li>Reduced successful phishing attacks</li>
+          </ul>
+          
+          <a href="https://github.com/unabletofind/phishing-simulator" target="_blank" class="github-link">
+            <i class="fab fa-github"></i> View on GitHub
+          </a>
+        `
+      }
+    ];
+
+    // Function to display all projects
+    function displayAllProjects() {
+      const container = document.getElementById('projects-list');
+      
+      if (!container) return;
+      
+      projectsData.forEach(project => {
+        const projectElement = document.createElement('article');
+        projectElement.className = 'project';
+        projectElement.id = project.id;
+        
+        projectElement.innerHTML = `
+          <div class="project-header">
+            <h1>${project.title}</h1>
+            <div class="project-meta">
+              <span class="date">${project.date} • ${project.technologies}</span>
+            </div>
+            <div class="project-tags">
+              ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+          </div>
+          
+          <div class="project-content">
+            ${project.content}
+          </div>
+        `;
+        
+        container.appendChild(projectElement);
+      });
+      
+      // Apply syntax highlighting
+      if (window.Prism) {
+        Prism.highlightAll();
+      }
+    }
+
+    // Display projects when page loads
+    if (document.getElementById('projects-list')) {
+      displayAllProjects();
+    }
+  </script>
+</body>
+</html>
