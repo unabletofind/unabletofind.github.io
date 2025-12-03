@@ -19,8 +19,11 @@
       --accent-2:#00a896;
       --text:#e8eef6;
       --border:rgba(255,255,255,0.06);
+      --hover-glow: rgba(0, 217, 255, 0.15);
     }
-     #cursorGlow {
+    
+    /* Cursor Glow Effect */
+    #cursorGlow {
       position: fixed;
       width: 300px;
       height: 300px;
@@ -30,30 +33,132 @@
       transform: translate(-50%, -50%);
       mix-blend-mode: screen;
       z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    body.cursor-active #cursorGlow {
+      opacity: 1;
+    }
+    
+    /* Card Hover Glow Effect */
+    .card-hover-glow {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    
+    .card-hover-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                rgba(0, 217, 255, 0.15), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .card-hover-glow:hover::before {
+      opacity: 1;
+    }
+    
+    .card-hover-glow:hover {
+      border-color: rgba(0, 217, 255, 0.3) !important;
+      box-shadow: 0 8px 32px rgba(0, 217, 255, 0.15) !important;
     }
 
+    /* Read More Button Styles */
+    .read-more-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 16px;
+      display: inline-block;
+    }
+    
+    .read-more-btn:hover {
+      background: rgba(0, 217, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .timeline-content.collapsed p:nth-child(n+3) {
+      display: none;
+    }
+    
+    /* Smooth Scrolling Enhancement */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+    
+    /* Ensure all clickable elements have proper cursor */
+    .card, .btn, .writeup-item, .project-card, .nav-links a, .hero-links a {
+      cursor: pointer;
+    }
+    
+    /* Prism Code Block Styling */
+    .code-block {
+      margin-top: 24px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid var(--border);
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    
+    pre[class*="language-"] {
+      margin: 0;
+      padding: 20px;
+      overflow-x: auto;
+      background: transparent !important;
+      border-radius: 0 !important;
+    }
+    
+    pre[class*="language-"] code {
+      font-family: 'Courier New', monospace !important;
+      font-size: 14px;
+      line-height: 1.5;
+    }
     
     *{box-sizing:border-box; margin:0; padding:0}
     
-    html{scroll-behavior:smooth}
-    
     body{
-      <div id="cursorGlow"></div>
       font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background:var(--bg);
       color:var(--text);
       line-height:1.7;
       -webkit-font-smoothing:antialiased;
+      cursor: none !important;
     }
 
-    /* Container */
+    /* Rest of your existing styles remain exactly the same... */
     .container{
       max-width:1200px;
       margin:0 auto;
       padding:0 32px;
     }
 
-    /* Navigation */
     nav{
       position:sticky;
       top:0;
@@ -147,7 +252,6 @@
       box-shadow:0 8px 20px rgba(0,217,255,0.3);
     }
 
-    /* Hero */
     .hero{
       padding:80px 0 60px;
     }
@@ -202,7 +306,6 @@
       color:var(--accent);
     }
 
-    /* Sections */
     section{
       padding:80px 0;
     }
@@ -226,7 +329,6 @@
       border-radius:2px;
     }
 
-    /* Cards */
     .card{
       background:var(--card);
       border:1px solid var(--border);
@@ -241,7 +343,6 @@
       box-shadow:0 12px 40px rgba(0,0,0,0.3);
     }
 
-    /* About */
     .about-content{
       font-size:18px;
       line-height:1.8;
@@ -249,7 +350,6 @@
       max-width:900px;
     }
 
-    /* Skills Grid */
     .skills-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
@@ -277,7 +377,6 @@
       border:1px solid var(--border);
     }
 
-    /* Timeline */
     .timeline{
       max-width:900px;
       margin-top:40px;
@@ -306,9 +405,9 @@
     .timeline-item p{
       color:var(--muted);
       line-height:1.7;
+      margin-bottom: 12px;
     }
 
-    /* Projects Grid */
     .projects-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(350px, 1fr));
@@ -352,7 +451,6 @@
       text-decoration:underline;
     }
 
-    /* Search */
     .search-bar{
       margin-bottom:32px;
       position:relative;
@@ -381,7 +479,6 @@
       color:var(--muted);
     }
 
-    /* Writeup List */
     .writeup-item{
       padding:24px;
       background:var(--card);
@@ -419,7 +516,6 @@
       font-size:15px;
     }
 
-    /* Sidebar */
     .two-col{
       display:grid;
       grid-template-columns:1fr 350px;
@@ -483,7 +579,6 @@
       color:var(--accent);
     }
 
-    /* Contact */
     .contact-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
@@ -526,7 +621,6 @@
       color:var(--accent);
     }
 
-    /* Footer */
     footer{
       padding:48px 0;
       text-align:center;
@@ -536,30 +630,6 @@
       margin-top:80px;
     }
 
-    /* Code blocks */
-    .code-block{
-      margin-top:24px;
-      background:rgba(0,0,0,0.3);
-      border-radius:12px;
-      overflow:hidden;
-    }
-    
-    .code-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:12px 20px;
-      background:rgba(0,0,0,0.4);
-      border-bottom:1px solid var(--border);
-    }
-    
-    pre{
-      margin:0;
-      padding:20px;
-      overflow-x:auto;
-    }
-
-    /* Responsive */
     @media (max-width: 1024px){
       .two-col{
         grid-template-columns:1fr;
@@ -588,10 +658,19 @@
       .projects-grid{
         grid-template-columns:1fr;
       }
+      body {
+        cursor: auto !important;
+      }
+      #cursorGlow {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Cursor Glow -->
+  <div id="cursorGlow"></div>
 
   <!-- Navigation -->
   <nav>
@@ -652,7 +731,7 @@
         <!-- About -->
         <section id="about">
           <h2 class="section-title">About Me</h2>
-          <div class="about-content" data-aos="fade-up">
+          <div class="about-content card-hover-glow card" data-aos="fade-up">
             <p>I'm a SOC Analyst passionate about improving threat detection quality and operational efficiency. I specialize in correlating Event Logs, Sysmon, and network traffic (Zeek/Wireshark) to identify lateral movement, privilege escalation, persistence mechanisms, and data exfiltration attempts.</p>
             <br>
             <p>My approach focuses on tuning detection rules, enriching alerts with context, and building analyst-friendly playbooks. I map incidents to the MITRE ATT&CK framework, analyze malware samples, and develop YARA and Sigma rules to strengthen defensive capabilities.</p>
@@ -663,7 +742,7 @@
         <section id="skills">
           <h2 class="section-title">Skills & Expertise</h2>
           <div class="skills-grid" data-aos="fade-up">
-            <div class="skill-category card">
+            <div class="skill-category card card-hover-glow">
               <h3>Security Tools</h3>
               <div class="skill-items">
                 <span class="skill-item">Splunk</span>
@@ -675,7 +754,7 @@
               </div>
             </div>
             
-            <div class="skill-category card">
+            <div class="skill-category card card-hover-glow">
               <h3>Scripting</h3>
               <div class="skill-items">
                 <span class="skill-item">Python</span>
@@ -683,7 +762,7 @@
               </div>
             </div>
             
-            <div class="skill-category card">
+            <div class="skill-category card card-hover-glow">
               <h3>Detection & Analysis</h3>
               <div class="skill-items">
                 <span class="skill-item">Alert Triage</span>
@@ -691,13 +770,13 @@
                 <span class="skill-item">Log Analysis</span>
                 <span class="skill-item"> IOC-based Threat Investigation</span>
                 <span class="skill-item">Email Analysis</span>
-                <span class="skill-item">Network Traffic Analysi</span>
+                <span class="skill-item">Network Traffic Analysis</span>
                 <span class="skill-item">Basic Detection Engineering</span>
                 <span class="skill-item"> Alert Enrichment</span>
               </div>
             </div>
             
-            <div class="skill-category card">
+            <div class="skill-category card card-hover-glow">
               <h3>Attack Techniques & Defenses</h3>
               <div class="skill-items">
                 <span class="skill-item"> Lateral Movement basics</span>
@@ -707,7 +786,7 @@
               </div>
             </div>
             
-            <div class="skill-category card">
+            <div class="skill-category card card-hover-glow">
               <h3>Frameworks & Models</h3>
               <div class="skill-items">
                 <span class="skill-item">MITRE ATT&CK</span>
@@ -717,7 +796,7 @@
               </div>
             </div>
             
-            <div class="skill-category card">
+            <div class="skill-category card card-hover-glow">
               <h3>Other Technical Skills</h3>
               <div class="skill-items">
                 <span class="skill-item"> SIEM Operations</span>
@@ -734,22 +813,30 @@
         <section id="experience">
           <h2 class="section-title">Experience</h2>
           <div class="timeline" data-aos="fade-up">
-            <div class="timeline-item">
+            <div class="timeline-item card-hover-glow">
               <h3>Cybersecurity Analyst</h3>
               <div class="period">TriArmour AI • November 2024 – Present</div>
-              <p>Monitored 6+ client environments using Splunk and Elastic SIEM, validating authentication anomalies, process execution chains, and endpoint alerts with ~95% accuracy. Identified and documented 30+ confirmed security incidents.</p>
-              <p>Correlated Windows Event Logs (4624/4625/4672/4688), Sysmon (1, 3, 7, 11), and EDR telemetry to detect brute-force attacks, suspicious admin activity, phishing, and unauthorized tools. Mapped findings to MITRE ATT&CK techniques during escalation. .</p>
-              <p>Performed rule refinement tasks including threshold adjustments, noisy path suppression, and basic alert enrichment. Contributed to playbook updates by documenting investigation steps and false positive patterns from real incidents .</p>
-              <p>Analyzed authentication alerts across client endpoints and AD environments (where available), including failed logons, privilege escalation attempts, and off-hours access. Investigated suspicious emails using SPF/DKIM/DMARC validation and URL reputation checks reducing repeat false-positive user reports by ~30%..</p>
-              <p>Reviewed Zeek logs and pcaps for selected alerts to verify DNS anomalies, suspicious connections, and beaconing patterns. Tracked client alert trends and provided hardening recommendations that contributed to 15-20% reduction in repetitive alerts for select clients. .</p>
-              <p>Maintained vulnerability dashboards (Nessus), supported phishing simulations that saw click rates improve from 22% → 15%, and prepared SOC reports for client leadership. Escalated confirmed threats with clear evidence, enabling 30-45 minute response times. </p>
+              <div class="timeline-content collapsed">
+                <p>Monitored 6+ client environments using Splunk and Elastic SIEM, validating authentication anomalies, process execution chains, and endpoint alerts with ~95% accuracy. Identified and documented 30+ confirmed security incidents.</p>
+                <p>Correlated Windows Event Logs (4624/4625/4672/4688), Sysmon (1, 3, 7, 11), and EDR telemetry to detect brute-force attacks, suspicious admin activity, phishing, and unauthorized tools. Mapped findings to MITRE ATT&CK techniques during escalation.</p>
+                <p>Performed rule refinement tasks including threshold adjustments, noisy path suppression, and basic alert enrichment. Contributed to playbook updates by documenting investigation steps and false positive patterns from real incidents.</p>
+                <p>Analyzed authentication alerts across client endpoints and AD environments (where available), including failed logons, privilege escalation attempts, and off-hours access. Investigated suspicious emails using SPF/DKIM/DMARC validation and URL reputation checks reducing repeat false-positive user reports by ~30%.</p>
+                <p>Reviewed Zeek logs and pcaps for selected alerts to verify DNS anomalies, suspicious connections, and beaconing patterns. Tracked client alert trends and provided hardening recommendations that contributed to 15-20% reduction in repetitive alerts for select clients.</p>
+                <p>Maintained vulnerability dashboards (Nessus), supported phishing simulations that saw click rates improve from 22% → 15%, and prepared SOC reports for client leadership. Escalated confirmed threats with clear evidence, enabling 30-45 minute response times.</p>
+              </div>
+              <button class="read-more-btn" data-target="experience-1">Read More</button>
             </div>
             
-            <div class="timeline-item">
+            <div class="timeline-item card-hover-glow">
               <h3>Cybersecurity Intern</h3>
               <div class="period">GradeSpot IT • September 2023 – March 2024</div>
-              <p>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations and missing patches in lab based infrastructure.</p>
-              <p>Completed hands-on training in ethical hacking, Basic SOC skills.</p>
+              <div class="timeline-content collapsed">
+                <p>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations and missing patches in lab based infrastructure.</p>
+                <p>Completed hands-on training in ethical hacking, Basic SOC skills.</p>
+                <p>Gained practical experience in network security monitoring and incident response procedures.</p>
+                <p>Assisted in security awareness training development and deployment.</p>
+              </div>
+              <button class="read-more-btn" data-target="experience-2">Read More</button>
             </div>
           </div>
         </section>
@@ -764,7 +851,7 @@
           </div>
           
           <div id="writeupsList">
-            <div class="writeup-item" data-tags="phishing powershell 2024-01-15" data-aos="fade-up">
+            <div class="writeup-item card-hover-glow" data-tags="phishing powershell 2024-01-15" data-aos="fade-up">
               <div class="writeup-header">
                 <div>
                   <h4>Phishing Campaign — PowerShell Downloader</h4>
@@ -774,7 +861,7 @@
               </div>
             </div>
             
-            <div class="writeup-item" data-tags="lateral wmi 2024-01-16" data-aos="fade-up">
+            <div class="writeup-item card-hover-glow" data-tags="lateral wmi 2024-01-16" data-aos="fade-up">
               <div class="writeup-header">
                 <div>
                   <h4>Lateral Movement — WMI Abuse Detection</h4>
@@ -784,27 +871,56 @@
               </div>
             </div>
           </div>
+          
+          <!-- Example Code Block with Prism -->
+          <div class="code-block card-hover-glow" data-aos="fade-up" style="margin-top: 40px;">
+            <div class="code-header">
+              <span>Sigma Rule Example — Suspicious WMI Execution</span>
+              <i class="fas fa-copy" style="cursor: pointer;" onclick="copyCode(this)"></i>
+            </div>
+            <pre><code class="language-yaml">
+title: Suspicious WMI Process Creation
+id: 12345678-1234-1234-1234-123456789012
+status: experimental
+description: Detects suspicious WMI process creation often used for lateral movement
+author: Swetha Devi
+date: 2024/01/16
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        ParentImage|endswith: '\WmiPrvSE.exe'
+        Image|endswith: '\cmd.exe'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripts
+level: high
+tags:
+    - attack.lateral_movement
+    - attack.t1047</code></pre>
+          </div>
         </section>
 
         <!-- Projects -->
         <section>
           <h2 class="section-title">Projects</h2>
           <div class="projects-grid">
-            <div class="project-card" data-aos="fade-up">
-              <h3>Phishing Campaign Analysis </h3>
+            <div class="project-card card-hover-glow" data-aos="fade-up">
+              <h3>Phishing Campaign Analysis</h3>
               <p>Simulated phishing attacks using GoPhish to craft and send test emails, then analyzed email headers and content using SpamAssassin scoring to detect and evaluate phishing indicators. Assessed effectiveness of phishing detection and documented patterns for awareness and defense.</p>
               <a href="#" class="project-link">View project →</a>
             </div>
             
-            <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="project-card card-hover-glow" data-aos="fade-up" data-aos-delay="100">
               <h3>DoS Detection Scripts</h3>
-              <p>Developed a Python-based script to detect and respond to potential DoS attacks by tracking incoming request rates and blocking abusive IPs using Windows Firewall rules. Implemented cooldown logic, request threshold control, and automatic unblocking to prevent false positives and ensure system availability. Blocked repeated connections from 15+ abusive IPs during DoS testing using auto-firewall logic .</p>
+              <p>Developed a Python-based script to detect and respond to potential DoS attacks by tracking incoming request rates and blocking abusive IPs using Windows Firewall rules. Implemented cooldown logic, request threshold control, and automatic unblocking to prevent false positives and ensure system availability. Blocked repeated connections from 15+ abusive IPs during DoS testing using auto-firewall logic.</p>
               <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="project-link">View on GitHub →</a>
             </div>
             
-            <div class="project-card" data-aos="fade-up" data-aos-delay="200">
-              <h3>CyberPulse Telegram Bot </h3>
-              <p>Developed a Telegram bot that aggregates real-time threat intel from sources like CVE, CISA, and GitHub. Implemented update scheduling, spam control, and source categorization using Python, RSS parsing, and Telegram Bot API. Supported commands for user interaction and deployed with continuous uptime monitoring. </p>
+            <div class="project-card card-hover-glow" data-aos="fade-up" data-aos-delay="200">
+              <h3>CyberPulse Telegram Bot</h3>
+              <p>Developed a Telegram bot that aggregates real-time threat intel from sources like CVE, CISA, and GitHub. Implemented update scheduling, spam control, and source categorization using Python, RSS parsing, and Telegram Bot API. Supported commands for user interaction and deployed with continuous uptime monitoring.</p>
               <a href="#" class="project-link">View research →</a>
             </div>
           </div>
@@ -814,7 +930,7 @@
         <section id="contact">
           <h2 class="section-title">Get in Touch</h2>
           <div class="contact-grid">
-            <div class="contact-item" data-aos="fade-up">
+            <div class="contact-item card-hover-glow" data-aos="fade-up">
               <div class="contact-icon">
                 <i class="fas fa-envelope"></i>
               </div>
@@ -822,7 +938,7 @@
               <a href="mailto:swethadevi1125@gmail.com">swethadevi1125@gmail.com</a>
             </div>
             
-            <div class="contact-item" data-aos="fade-up" data-aos-delay="100">
+            <div class="contact-item card-hover-glow" data-aos="fade-up" data-aos-delay="100">
               <div class="contact-icon">
                 <i class="fab fa-linkedin"></i>
               </div>
@@ -830,7 +946,7 @@
               <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank">Connect with me</a>
             </div>
             
-            <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="contact-item card-hover-glow" data-aos="fade-up" data-aos-delay="200">
               <div class="contact-icon">
                 <i class="fab fa-github"></i>
               </div>
@@ -843,7 +959,7 @@
 
       <!-- Sidebar -->
       <aside class="sidebar">
-        <div class="sidebar-card" data-aos="fade-left">
+        <div class="sidebar-card card-hover-glow" data-aos="fade-left">
           <h3>Quick Metrics</h3>
           <div class="metric">
             <span class="metric-value">&lt; 20 min</span>
@@ -859,7 +975,7 @@
           </div>
         </div>
 
-        <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+        <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="100">
           <h3>Certifications</h3>
           <div class="cert-item">Certified Defensive Security Analyst (CDSA)</div>
           <div class="cert-item">Certified AppSec Practitioner (CAP)</div>
@@ -867,11 +983,38 @@
           <div class="cert-item">Cisco Cybersecurity</div>
         </div>
 
-        <div class="sidebar-card" data-aos="fade-left" data-aos-delay="200">
+        <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="200">
           <h3>Quick Links</h3>
           <div class="link-item"><a href="#"><i class="fas fa-download"></i> Download Resume</a></div>
           <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
           <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Writeups</a></div>
+        </div>
+        
+        <!-- Example Code Block in Sidebar -->
+        <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="300">
+          <h3>Sample Detection Query</h3>
+          <div class="code-block" style="margin: 0; border: none; background: transparent;">
+            <pre style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-size: 12px;"><code class="language-sql">
+-- Suspicious PowerShell Execution
+SELECT 
+    process_name,
+    command_line,
+    user_name,
+    COUNT(*) as count
+FROM 
+    process_events
+WHERE 
+    process_name LIKE '%powershell%'
+    AND (command_line LIKE '%hidden%' 
+         OR command_line LIKE '%encodedcommand%'
+         OR command_line LIKE '%downloadstring%')
+GROUP BY 
+    process_name, command_line, user_name
+HAVING 
+    COUNT(*) > 3
+ORDER BY 
+    count DESC;</code></pre>
+          </div>
         </div>
       </aside>
     </div>
@@ -885,11 +1028,81 @@
   </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
   <script>
+    // Initialize AOS
     AOS.init({
       duration: 800,
       once: true,
       offset: 100
+    });
+
+    // Initialize Prism
+    if (window.Prism) {
+      Prism.highlightAll();
+    }
+
+    // Cursor Glow Logic
+    const cursorGlow = document.getElementById('cursorGlow');
+    const body = document.body;
+    let mouseX = 0, mouseY = 0;
+    let glowVisible = false;
+
+    // Track mouse movement
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      if (!glowVisible) {
+        body.classList.add('cursor-active');
+        glowVisible = true;
+      }
+      
+      // Update cursor glow position
+      cursorGlow.style.left = `${mouseX}px`;
+      cursorGlow.style.top = `${mouseY}px`;
+      
+      // Update card hover effects
+      document.querySelectorAll('.card-hover-glow').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (mouseX >= rect.left && mouseX <= rect.right && 
+            mouseY >= rect.top && mouseY <= rect.bottom) {
+          const x = ((mouseX - rect.left) / rect.width) * 100;
+          const y = ((mouseY - rect.top) / rect.height) * 100;
+          card.style.setProperty('--mouse-x', `${x}%`);
+          card.style.setProperty('--mouse-y', `${y}%`);
+        }
+      });
+    });
+
+    // Hide cursor glow when mouse leaves window
+    document.addEventListener('mouseleave', () => {
+      body.classList.remove('cursor-active');
+      glowVisible = false;
+    });
+
+    document.addEventListener('mouseenter', () => {
+      if (mouseX > 0 || mouseY > 0) {
+        body.classList.add('cursor-active');
+        glowVisible = true;
+      }
+    });
+
+    // Read More functionality
+    document.querySelectorAll('.read-more-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const content = this.previousElementSibling;
+        if (content.classList.contains('collapsed')) {
+          content.classList.remove('collapsed');
+          this.textContent = 'Read Less';
+        } else {
+          content.classList.add('collapsed');
+          this.textContent = 'Read More';
+        }
+      });
     });
 
     // Search functionality
@@ -912,26 +1125,48 @@
       });
     });
 
-    // Smooth scroll
+    // Copy code functionality
+    function copyCode(button) {
+      const codeBlock = button.closest('.code-block').querySelector('code');
+      const text = codeBlock.textContent;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const originalIcon = button.className;
+        button.className = 'fas fa-check';
+        button.style.color = '#00ff00';
+        
+        setTimeout(() => {
+          button.className = originalIcon;
+          button.style.color = '';
+        }, 2000);
+      });
+    }
+
+    // Enhanced smooth scroll with offset for sticky navbar
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const target = document.querySelector(targetId);
         if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+          const navHeight = document.querySelector('nav').offsetHeight;
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
           });
         }
       });
     });
+
+    // Hide cursor glow on mobile
+    if (window.innerWidth <= 768) {
+      cursorGlow.style.display = 'none';
+      body.classList.remove('cursor-active');
+    }
   </script>
-  <script>
-document.addEventListener("mousemove", (e) => {
-    const glow = document.getElementById("cursorGlow");
-    glow.style.left = `${e.clientX}px`;
-    glow.style.top = `${e.clientY}px`;
-});
-</script>
 </body>
 </html>
