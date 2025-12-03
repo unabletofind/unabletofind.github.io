@@ -12,7 +12,7 @@
 
   <style>
     :root{
-      --bg:#0a0e27; 
+      --bg:#0a0e27 url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300d9ff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); 
       --card:#14182e; 
       --muted:#8b95a5; 
       --accent:#00d9ff; 
@@ -264,18 +264,20 @@
     
     *{box-sizing:border-box; margin:0; padding:0}
     
-    body{
-      font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background-color: #0a0e27;
+    body::before {
+      <canvas id="bgAnimation"></canvas>
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       background-image: 
-        linear-gradient(to right, rgba(0, 217, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 217, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(135deg, #0a0e27 0%, #0d1334 100%);
-      background-size: 50px 50px, 50px 50px, 100% 100%;
-      color:var(--text);
-      line-height:1.7;
-      -webkit-font-smoothing:antialiased;
-      cursor: none !important;;
+        linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      pointer-events: none;
     }
 
     /* Rest of your existing styles remain exactly the same... */
@@ -768,6 +770,15 @@
       .work-categories {
         justify-content: center;
       }
+      #bgAnimation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -10;
+        background: black;
+     }
     }
   </style>
 </head>
@@ -1104,7 +1115,7 @@
 
         <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="200">
           <h3>Quick Links</h3>
-          <div class="link-item"><a href="https://drive.google.com/file/d/1_CACExqdeBgy5v3BwWCtyyq4MPfuf0Hl/view?usp=sharing"><i class="fas fa-download"></i> Download Resume</a></div>
+          <div class="link-item"><a href="#"><i class="fas fa-download"></i> Download Resume</a></div>
           <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
           <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Work Categories</a></div>
         </div>
@@ -1449,5 +1460,69 @@
       });
     });
   </script>
+  <script>
+const canvas = document.getElementById("bgAnimation");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let particles = [];
+let count = 120;
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.size = 1.2;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+    draw() {
+        ctx.fillStyle = "rgba(0,200,255,0.9)";
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    }
+}
+
+for (let i = 0; i < count; i++) particles.push(new Particle());
+
+function connect() {
+    for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+            let dist = Math.hypot(particles[a].x - particles[b].x, particles[a].y - particles[b].y);
+            if (dist < 130) {
+                ctx.strokeStyle = "rgba(0,180,255," + (1 - dist / 130) + ")";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    connect();
+    requestAnimationFrame(animate);
+}
+animate();
+</script>
 </body>
 </html>
