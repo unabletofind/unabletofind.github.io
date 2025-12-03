@@ -5,24 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #0a0e17; color: #e0e0e0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); padding: 40px 20px; border-bottom: 3px solid #00d4aa; }
-        .hero { text-align: center; padding: 40px 20px; }
-        h1 { color: #00d4aa; font-size: 2.5em; margin-bottom: 10px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); padding: 45px 20px; border-bottom: 3px solid #00d4aa; }
+        .hero { text-align: center; padding: 30px 20px; }
+        h1 { color: #00d4aa; font-size: 2.8em; margin-bottom: 10px; }
         h2 { color: #00d4aa; margin-top: 40px; }
-        .tagline { font-size: 1.2em; color: #8b949e; margin-bottom: 20px; }
+        h3 { color: #58a6ff; }
+        .tagline { font-size: 1.2em; color: #8b949e; margin-bottom: 10px; }
+
+        /* NAVBAR */
+        .navbar { text-align: center; margin-top: 15px; }
+        .navbar a {
+            color: #58a6ff;
+            margin: 0 15px;
+            font-size: 1em;
+            text-decoration: none;
+        }
+        .navbar a:hover { text-decoration: underline; color: #00d4aa; }
+
         .section-card { background: #161b22; padding: 25px; border-radius: 8px; border: 1px solid #30363d; margin-top: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 25px; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: #00d4aa; }
-        .card h3 { color: #58a6ff; margin-top: 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-top: 25px; }
+        .card { background: #161b22; padding: 25px; border-radius: 8px; border: 1px solid #30363d; transition: 0.3s; }
+        .card:hover { transform: translateY(-6px); border-color: #00d4aa; }
         .metrics { background: #0d1117; padding: 30px; border-radius: 8px; margin: 30px 0; }
         .metric { text-align: center; }
         .metric-value { font-size: 2em; color: #00d4aa; font-weight: bold; }
         .metric-label { color: #8b949e; }
-        .badge { display: inline-block; background: #238636; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin: 4px; }
-        a { color: #58a6ff; }
+
         footer { text-align: center; padding: 30px; border-top: 1px solid #30363d; margin-top: 50px; color: #8b949e; }
+
+        .badge {
+            display: inline-block;
+            background: #238636;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.78em;
+            margin: 4px;
+        }
     </style>
 </head>
 
@@ -31,9 +51,17 @@
 <header>
     <div class="container">
         <div class="hero">
-            <h1> Swetha Devi Sai Priya Bonu </h1>
-            <p class="tagline">Threat Detection • Incident Response • Digital Forensics • Malware Analysis</p>
-            <p>Improving detection quality | MITRE ATT&CK | SOC Operations | Log Analysis | Automation</p>
+            <h1>Swetha Devi Sai Priya Bonu</h1>
+            <p class="tagline">Threat Detection • Malware Analysis • Incident Response • SIEM Engineering</p>
+            <p>Improving detection quality | Log Analysis | MITRE ATT&CK | SOC Operations | Automation</p>
+        </div>
+
+        <div class="navbar">
+            <a href="index.html">Home</a>
+            <a href="writeups.html">Technical Writeups</a>
+            <a href="malware.html">Malware Analysis</a>
+            <a href="detection.html">Detection Rules</a>
+            <a href="projects.html">Projects</a>
         </div>
     </div>
 </header>
@@ -41,118 +69,130 @@
 <div class="container">
 
     <!-- SUMMARY -->
-    <h2> Professional Summary</h2>
+    <h2>Professional Summary</h2>
     <div class="section-card">
         <p>
-            SOC Analyst with hands-on experience in alert triage, threat investigation, malware analysis, 
+            SOC Analyst with hands-on experience in alert triage, threat investigation, malware analysis,
             and improving detection quality using Splunk & Elastic SIEM.
-            Skilled in correlating Windows Event Logs, Sysmon telemetry, and network traffic 
-            (Wireshark, Zeek) to detect attacker techniques including lateral movement, privilege escalation, persistence,
-            beaconing, DNS tunneling, and data exfiltration.
+            Skilled in correlating Windows Event Logs, Sysmon telemetry, and network traffic (Wireshark, Zeek) to detect attacker
+            behaviors including lateral movement, privilege escalation, persistence, beaconing, DNS tunneling, and data exfiltration.
         </p>
         <p>
             Improved SOC efficiency through rule tuning, noise reduction, and alert enrichment.
-            Strong understanding of MITRE ATT&CK investigations, AD attack patterns, and incident documentation.
-            Certified Defensive Security Analyst (HTB CDSA) with hands-on experience in advanced detection methodologies.
+            Experienced in MITRE ATT&CK investigations, AD attack patterns, and incident documentation.
+            Certified Defensive Security Analyst (HTB CDSA) with strong hands-on detection and IR skills.
         </p>
     </div>
 
     <!-- METRICS -->
     <div class="metrics">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div class="grid">
             <div class="metric">
                 <div class="metric-value">&lt; 20 min</div>
                 <div class="metric-label">Alert Triage Time</div>
             </div>
             <div class="metric">
+                <div class="metric-value">95%+</div>
+                <div class="metric-label">Accuracy</div>
+            </div>
+            <div class="metric">
                 <div class="metric-value">100%</div>
-                <div class="metric-label">MITRE Coverage</div>
+                <div class="metric-label">MITRE Mapping</div>
             </div>
             <div class="metric">
                 <div class="metric-value">20%</div>
-                <div class="metric-label">Tasks Automated</div>
+                <div class="metric-label">Automation</div>
             </div>
         </div>
     </div>
 
     <!-- SKILLS -->
-    <h2> Technical Skills</h2>
+    <h2>Technical Skills</h2>
     <div class="section-card">
+
         <h3>Cybersecurity Tools</h3>
-        <p>Splunk, Elastic (Kibana), Wireshark, Suricata, Nessus, GoPhish, CrowdStrike, Microsoft Defender</p>
+        <p>
+            Splunk, Elastic SIEM, Wireshark, Suricata, Nessus, Zeek, GoPhish, CrowdStrike, Microsoft Defender for Endpoint
+        </p>
 
         <h3>Scripting & Automation</h3>
-        <p>Python (Automation, Log Parsing, Detection Scripts), Bash</p>
+        <p>Python (automation, log parsing, detection scripts), Bash</p>
 
         <h3>Detection & Analysis</h3>
         <p>
             Alert Triage, Incident Handling, Sysmon, Windows Event Logs, IOC Investigation,  
-            Network Traffic Analysis, Email Header Analysis (SPF/DKIM/DMARC), Rule Refinement, Alert Enrichment
+            Network Traffic Analysis, Email Header Analysis (SPF/DKIM/DMARC),
+            Rule Refinement, Noise Reduction, Alert Enrichment
         </p>
 
         <h3>Attack Techniques</h3>
-        <p>Lateral Movement, Privilege Escalation, Persistence, Beaconing, DNS Anomalies, AD Attacks</p>
+        <p>
+            Lateral Movement, Privilege Escalation, Persistence, Beaconing, DNS Anomalies,
+            AD Authentication Attacks, Brute Force, Credential Attacks
+        </p>
 
         <h3>Frameworks</h3>
         <p>MITRE ATT&CK, Cyber Kill Chain, Diamond Model, OWASP Top 10</p>
     </div>
 
-    <!-- EXPERIENCE SHORT -->
-    <h2> Experience</h2>
+    <!-- EXPERIENCE -->
+    <h2>Experience</h2>
     <div class="section-card">
+
         <h3>Cybersecurity Analyst – TriArmour AI (2024 – Present)</h3>
         <ul>
-            <li>Monitored 6+ client environments using Splunk and Elastic SIEM, validating authentication anomalies, process execution chains, and endpoint alerts with ~95% accuracy. Identified and documented 30+ confirmed security incidents.</li>
-            <li>Correlated Windows Event Logs (4624/4625/4672/4688), Sysmon (1, 3, 7, 11), and EDR telemetry to detect brute-force attacks, suspicious admin activity, phishing, and unauthorized tools. Mapped findings to MITRE ATT&CK techniques during escalation.</li>
-            <li>Performed rule refinement tasks including threshold adjustments, noisy path suppression, and basic alert enrichment. Contributed to playbook updates by documenting investigation steps and false positive patterns from real incidents.</li>
-            <li>Analyzed authentication alerts across client endpoints and AD environments (where available), including failed logons, privilege escalation attempts, and off-hours access. Investigated suspicious emails using SPF/DKIM/DMARC validation and URL reputation checks reducing repeat false-positive user reports by ~30%.</li>
-            <li>Reviewed Zeek logs and pcaps for selected alerts to verify DNS anomalies, suspicious connections, and beaconing patterns. Tracked client alert trends and provided hardening recommendations that contributed to 15-20% reduction in repetitive alerts for select clients.</li>
-            <li>Maintained vulnerability dashboards (Nessus), supported phishing simulations that saw click rates improve from 22% → 15%, and prepared SOC reports for client leadership. Escalated confirmed threats with clear evidence, enabling 30-45 minute response times.</li>
+            <li>Monitored 6+ enterprise client environments using Splunk & Elastic with ~95% triage accuracy.</li>
+            <li>Investigated 30+ confirmed security incidents mapped to MITRE ATT&CK.</li>
+            <li>Performed rule tuning, threshold refinement, noisy path suppression, and alert enrichment.</li>
+            <li>Analyzed AD authentication patterns, Sysmon events, DNS anomalies, phishing emails.</li>
+            <li>Improved alert quality and reduced repetitive false positives by ~20–30%.</li>
+            <li>Managed Nessus dashboards, phishing simulations, and SOC reporting.</li>
         </ul>
 
-        <h3>Cybersecurity Intern – Gradespot IT (2023–2024)</h3>
+        <h3>Cybersecurity Intern – GradeSpot IT (2023–2024)</h3>
         <ul>
-            <li>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations and missing patches in lab based infrastructure.</li>
-            <li>Completed hands-on training in ethical hacking, Basic SOC skills. </li>
+            <li>Performed vulnerability assessments using Nessus.</li>
+            <li>Completed hands-on SOC & ethical hacking training.</li>
         </ul>
     </div>
 
-    <h2> Certifications</h2>
-        <div class="section-box">
-            <ul>
-                <li>Certified Defensive Security Analyst (CDSA) – Hack The Box</li>
-                <li>Certified AppSec Practitioner (CAP) – SeCops Group</li>
-                <li>Junior PenTester Path – TryHackMe</li>
-                <li>Cisco Networking Academy Cybersecurity Training</li>
-                <li>ICT Academy (Honeywell) – Cybersecurity Training</li>
-            </ul>
-        </div>
-    
-    <!-- NAVIGATION TO OTHER PAGES -->
+    <!-- CERTIFICATIONS -->
+    <h2>Certifications</h2>
+    <div class="section-card">
+        <ul>
+            <li>Certified Defensive Security Analyst (CDSA) – Hack The Box</li>
+            <li>Certified AppSec Practitioner (CAP) – SeCops Group</li>
+            <li>Junior PenTester Path – TryHackMe</li>
+            <li>Cisco Networking Academy Cybersecurity Essentials</li>
+            <li>ICT Academy (Honeywell) – Cybersecurity Training</li>
+        </ul>
+    </div>
+
+    <!-- OTHER PAGES -->
     <h2>Explore My Work</h2>
     <div class="grid">
         <div class="card">
-            <h3> Technical Writeups</h3>
-            <p>Detailed investigations, SOC cases, threat analysis.</p>
+            <h3>Technical Writeups</h3>
+            <p>Investigations, case studies & SOC analysis.</p>
             <a href="writeups.html">View Writeups →</a>
         </div>
 
         <div class="card">
-            <h3> Malware Research</h3>
-            <p>Samples analyzed, behaviors, indicators, YARA.</p>
+            <h3>Malware Research</h3>
+            <p>Malware samples, behavior notes, static/dynamic analysis.</p>
             <a href="malware.html">View Malware Work →</a>
         </div>
 
         <div class="card">
-            <h3>⚙️ Detection Rules</h3>
-            <p>Suricata, Sigma, YARA & custom detection logic.</p>
-            <a href="Detection.html">View Rules →</a>
+            <h3>Detection Rules</h3>
+            <p>Suricata, Sigma & YARA rules I developed.</p>
+            <a href="detection.html">View Rules →</a>
         </div>
 
         <div class="card">
-            <h3> Projects</h3>
-            <p>Dashboards, automation tools, phishing labs.</p>
-            <a href="Projects.html">View Projects →</a>
+            <h3>Projects</h3>
+            <p>Dashboards, automation, tools & experiments.</p>
+            <a href="projects.html">View Projects →</a>
         </div>
     </div>
 
@@ -160,9 +200,9 @@
 
 <footer>
     <div class="container">
-        <p><strong> Email:</strong> swethadevi1125@gmail.com</p>
-        <p><strong> LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya">Profile Link</a></p>
-        <p><strong> GitHub:</strong> <a href="https://github.com/unabletofind">github.com/unabletofind</a></p>
+        <p><strong>Email:</strong> swethadevi1125@gmail.com</p>
+        <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya">Profile</a></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/unabletofind">github.com/unabletofind</a></p>
         <p style="margin-top: 20px; color: #6e7681;">© 2025 Swetha Devi • Security Analyst</p>
     </div>
 </footer>
