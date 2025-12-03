@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Analyst Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #0a0e17; color: #e0e0e0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%); padding: 40px 20px; border-bottom: 3px solid #00d4aa; }
+        .hero { text-align: center; padding: 40px 20px; }
+        h1 { color: #00d4aa; font-size: 2.5em; margin-bottom: 10px; }
+        .tagline { font-size: 1.2em; color: #8b949e; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin: 40px 0; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 25px; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: #00d4aa; }
+        .card h3 { color: #58a6ff; margin-top: 0; }
+        .card a { color: #00d4aa; text-decoration: none; }
+        .card a:hover { text-decoration: underline; }
+        .badge { display: inline-block; background: #238636; color: white; padding: 3px 10px; border-radius: 12px; font-size: 0.8em; margin-right: 8px; margin-bottom: 8px; }
+        footer { text-align: center; padding: 30px; border-top: 1px solid #30363d; margin-top: 50px; color: #8b949e; }
+        .metrics { background: #0d1117; padding: 30px; border-radius: 8px; margin: 30px 0; }
+        .metric { text-align: center; }
+        .metric-value { font-size: 2em; color: #00d4aa; font-weight: bold; }
+        .metric-label { color: #8b949e; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="hero">
+                <h1>🔒 Security Analyst Portfolio</h1>
+                <p class="tagline">Threat Detection • Incident Response • Digital Forensics</p>
+                <p>Methodical investigation | MITRE ATT&CK Framework | SOC Automation</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="metrics">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div class="metric">
+                    <div class="metric-value">< 20 min</div>
+                    <div class="metric-label">Alert Triage Time</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">95%+</div>
+                    <div class="metric-label">Detection Accuracy</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">MITRE ATT&CK Coverage</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">40%</div>
+                    <div class="metric-label">Tasks Automated</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>🚨 Recent Investigations</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>🔍 Phishing Campaign Analysis</h3>
+                <p><strong>Date:</strong> 2024-01-15 | <strong>Time:</strong> 18 min</p>
+                <p>Identified encoded PowerShell command leading to C2 communication. Mapped to MITRE T1059.001, T1105.</p>
+                <span class="badge">True Positive</span>
+                <span class="badge">High Severity</span>
+                <span class="badge">Contained</span>
+                <p><a href="#">View Full Investigation →</a></p>
+            </div>
+            
+            <div class="card">
+                <h3>🔄 Lateral Movement Detection</h3>
+                <p><strong>Date:</strong> 2024-01-16 | <strong>Tools:</strong> Sysmon, Elastic</p>
+                <p>Detected anomalous WMI process creation from admin workstations. Implemented new detection rule.</p>
+                <span class="badge">True Positive</span>
+                <span class="badge">Medium Severity</span>
+                <span class="badge">Rule Created</span>
+                <p><a href="#">View Full Investigation →</a></p>
+            </div>
+            
+            <div class="card">
+                <h3>💀 Ransomware Prevention</h3>
+                <p><strong>Date:</strong> 2024-01-17 | <strong>Impact:</strong> Critical</p>
+                <p>Early stage detection of ransomware encryption patterns. Prevented deployment to finance department.</p>
+                <span class="badge">True Positive</span>
+                <span class="badge">Critical Severity</span>
+                <span class="badge">Prevented</span>
+                <p><a href="#">View Full Investigation →</a></p>
+            </div>
+        </div>
+
+        <h2>🛠️ Technical Projects</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>📊 Splunk Threat Hunting Dashboard</h3>
+                <p>Real-time monitoring dashboard for common persistence mechanisms and LOLBAS detection.</p>
+                <span class="badge">Splunk</span>
+                <span class="badge">Python</span>
+                <p><a href="#">View Project →</a></p>
+            </div>
+            
+            <div class="card">
+                <h3>⚡ Automated Triage Scripts</h3>
+                <p>Python utilities for automating IOC enrichment, log parsing, and initial alert assessment.</p>
+                <span class="badge">Python</span>
+                <span class="badge">API Integration</span>
+                <p><a href="https://github.com/unabletofind/security-scripts">GitHub Repository →</a></p>
+            </div>
+            
+            <div class="card">
+                <h3>🔎 YARA Rule Repository</h3>
+                <p>Collection of custom YARA rules for detecting malware families and suspicious script behaviors.</p>
+                <span class="badge">YARA</span>
+                <span class="badge">Malware Analysis</span>
+                <p><a href="#">View Rules →</a></p>
+            </div>
+        </div>
+
+        <h2>📚 Core Competencies</h2>
+        <div style="background: #0d1117; padding: 25px; border-radius: 8px; margin: 20px 0;">
+            <span class="badge" style="background: #1f6feb;">Splunk</span>
+            <span class="badge" style="background: #1f6feb;">Elastic SIEM</span>
+            <span class="badge" style="background: #1f6feb;">CrowdStrike</span>
+            <span class="badge" style="background: #1f6feb;">MITRE ATT&CK</span>
+            <span class="badge" style="background: #1f6feb;">Python</span>
+            <span class="badge" style="background: #1f6feb;">PowerShell</span>
+            <span class="badge" style="background: #1f6feb;">Wireshark</span>
+            <span class="badge" style="background: #1f6feb;">VirusTotal API</span>
+            <span class="badge" style="background: #1f6feb;">YARA</span>
+            <span class="badge" style="background: #1f6feb;">Suricata</span>
+            <span class="badge" style="background: #1f6feb;">Digital Forensics</span>
+            <span class="badge" style="background: #1f6feb;">Incident Response</span>
+        </div>
+
+        <h2>📖 Investigation Methodology</h2>
+        <div class="card">
+            <h3>PICERL Framework Implementation</h3>
+            <ol>
+                <li><strong>Preparation:</strong> Alert parsing & hypothesis formation</li>
+                <li><strong>Identification:</strong> Evidence collection & IOC extraction</li>
+                <li><strong>Containment:</strong> Immediate isolation & mitigation</li>
+                <li><strong>Eradication:</strong> Root cause removal & system cleanup</li>
+                <li><strong>Recovery:</strong> System restoration & validation</li>
+                <li><strong>Lessons:</strong> Documentation & process improvement</li>
+            </ol>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>🔗 <strong>GitHub:</strong> <a href="https://github.com/unabletofind" style="color: #58a6ff;">github.com/unabletofind</a></p>
+            <p>📧 <strong>Contact:</strong> your.email@example.com</p>
+            <p>© 2024 Security Analyst Portfolio | Updated daily with new investigations</p>
+            <p style="font-size: 0.9em; margin-top: 20px; color: #6e7681;">"In security, what matters isn't just finding the threat—it's understanding it, containing it, and learning from it."</p>
+        </div>
+    </footer>
+</body>
+</html>
