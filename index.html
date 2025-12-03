@@ -267,26 +267,21 @@
     
     body{
       font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background:var(--bg);
+      background: linear-gradient(115deg, #061428 0%, #0a1f3c 30%, #02101d 60%, #072030 100%);
+      background-size: 200% 200%;
+      animation: neonShift 12s ease infinite;
       background-attachment: fixed;
-      background-size: cover;
       color:var(--text);
       line-height:1.7;
       -webkit-font-smoothing:antialiased;
       cursor: none !important;
-    }
+     }
 
-    body{
-      background: linear-gradient(-45deg, #050d22, #001a33, #00334d, #002233);
-      background-size: 400% 400%;
-      animation: cyberGradient 12s ease infinite;
-   }
-
-   @keyframes cyberGradient {
-   0% { background-position: 0% 50%; }
-   50% { background-position: 100% 50%; }
-   100% { background-position: 0% 50%; }
-  }
+     @keyframes neonShift {
+     0%   { background-position: 0% 50%; }
+     50%  { background-position: 100% 50%; }
+     100% { background-position: 0% 50%; }
+     }
 
     /* Rest of your existing styles remain exactly the same... */
     .container{
