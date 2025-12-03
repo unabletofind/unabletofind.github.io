@@ -265,26 +265,42 @@
     
     *{box-sizing:border-box; margin:0; padding:0}
     
-    body{
-      font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-weight: 450;
-      letter-spacing: -0.01em;
-      background: linear-gradient(115deg, #061428 0%, #0a1f3c 30%, #02101d 60%, #072030 100%);
-      background-size: 200% 200%;
-      animation: neonShift 12s ease infinite;
-      background-attachment: fixed;
-      color:var(--text);
-      line-height:1.7;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      cursor: none !important;
-     }
+    body:root{
+  --font-sans: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --font-head: 'Rajdhani', var(--font-sans);
+}
 
-     @keyframes neonShift {
-     0%   { background-position: 0% 50%; }
-     50%  { background-position: 100% 50%; }
-     100% { background-position: 0% 50%; }
-     }
+body{
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hero / big headings */
+.hero h1 {
+  font-size: clamp(30px, 4.2vw, 48px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 14px;
+}
+
+/* Subtle uppercase for tags/navigation */
+.nav-links a, .tag {
+  text-transform: uppercase;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
 
     /* Rest of your existing styles remain exactly the same... */
     .container{
@@ -416,7 +432,7 @@
     }
 
 /* Import better Inter font weights */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700;750;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap');
     
     .hero-subtitle{
       font-size:20px;
