@@ -271,10 +271,30 @@
 }
 
 body{
-  font-family: var(--font-sans);
+ font-family: var(--font-sans);
   font-weight: 400;
   letter-spacing: 0.01em;
   color: var(--text);
+
+  /* 🔥 Cyber Animated Gradient Background */
+  background: radial-gradient(circle at 20% 20%, rgba(0,255,255,0.08), transparent 60%),
+              radial-gradient(circle at 80% 80%, rgba(0,180,255,0.06), transparent 70%),
+              linear-gradient(120deg, #020617, #041e30, #020c1b);
+  background-size: 180% 180%;
+  animation: neonShift 12s ease infinite;
+
+  background-attachment: fixed;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  cursor: none !important;
+}
+
+@keyframes neonShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Headings */
