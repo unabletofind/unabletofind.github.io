@@ -1,0 +1,12 @@
+{
+  "detectionRules": [
+    {
+      "id": "service-installation",
+      "title": "Sigma: Suspicious Service Installation",
+      "date": "Feb 10, 2024",
+      "platform": "Windows",
+      "tags": ["sigma", "windows", "privilege-escalation", "T1543.003"],
+      "summary": "Detects suspicious service installations for persistence and privilege escalation"
+    }
+  ]
+}
