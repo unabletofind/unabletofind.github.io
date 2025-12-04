@@ -1,0 +1,12 @@
+{
+  "projects": [
+    {
+      "id": "dos-detection",
+      "title": "DoS Detection & Response System",
+      "date": "Jan 20, 2024",
+      "technologies": "Python • Windows Firewall • Real-time Detection",
+      "tags": ["python", "dos", "detection", "firewall", "security"],
+      "summary": "A Python-based system for detecting and automatically responding to DoS attacks"
+    }
+  ]
+}
