@@ -4,11 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Security Writeups - Swetha Devi</title>
+  
+  <!-- Keep all your CSS - visual styling stays -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
   
   <style>
+    /* KEEP ALL YOUR BEAUTIFUL CSS */
     :root{
       --bg:#0a0e27; 
       --card:#14182e; 
@@ -60,35 +63,41 @@
       border-bottom:1px solid var(--border);
       padding-bottom:10px;
     }
-    .investigation-step{
-      background:rgba(0,217,255,0.05);
-      border-left:3px solid var(--accent);
-      padding:15px 20px;margin:20px 0;
+    
+    /* KEEP image styling for when you add images in markdown */
+    .writeup-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
     }
-    .ioc-box{
-      background:rgba(255,0,0,0.05);
-      border:1px solid rgba(255,0,0,0.2);
-      padding:20px;margin:20px 0;
+    
+    /* Keep other styles for formatted content */
+    .writeup-content h3 {
+      color: var(--text);
+      margin: 20px 0 10px;
+      font-size: 20px;
     }
-    .timeline-visual{display:flex;flex-direction:column;gap:10px;margin:25px 0;}
-    .timeline-item{
-      display:flex;gap:15px;padding:10px 15px;
-      background:rgba(0,0,0,0.2);
-      border-left:3px solid var(--accent);
+    
+    .writeup-content code {
+      background: rgba(0, 217, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
     }
-    .process-tree{
-      text-align:center;
-      padding:20px;margin:25px 0;
-      background:rgba(0,0,0,0.2);
-      border-radius:8px;
+    
+    .writeup-content pre {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border: 1px solid var(--border);
     }
-    .process-node{
-      display:inline-block;padding:12px 20px;margin:5px;
-      background:rgba(255,0,0,0.1);
-      border:1px solid rgba(255,0,0,0.3);
-      border-radius:6px;
-    }
-    .arrow{color:#ff6b6b;font-size:20px;}
+    
+    /* REMOVE specific visual components styles (no longer needed in HTML) */
+    /* .investigation-step, .ioc-box, .timeline-visual, etc. */
+    /* These will be created with markdown instead */
   </style>
 </head>
 <body>
@@ -97,110 +106,128 @@
       <i class="fas fa-arrow-left"></i> Back to Home
     </a>
 
+    <!-- COMPLETELY EMPTY TEMPLATE - everything loaded dynamically -->
     <article>
-      <!-- Header -->
       <div class="writeup-header">
-        <h1>Alert: CVE-2025-53770 SharePoint ToolPane Auth Bypass & RCE</h1>
-        <div class="writeup-meta">
-          <span><i class="far fa-calendar"></i> Jul 22, 2025</span>
-          <span><i class="far fa-clock"></i> 15 min read</span>
-          <span><i class="fas fa-server"></i> Proxy + EDR + SIEM</span>
-          <span><i class="fas fa-bell"></i> Alert: SOC342</span>
-          <span><i class="fas fa-search"></i> 2025-07-22 13:07</span>
-        </div>
-        <div class="writeup-tags">
-          <span class="tag">rce</span><span class="tag">webshell</span>
-          <span class="tag">sharepoint</span><span class="tag">zero-day</span>
-          <span class="tag">incident-response</span>
-        </div>
+        <h1 id="writeup-title"></h1>
+        <div class="writeup-meta" id="writeup-meta"></div>
+        <div class="writeup-tags" id="writeup-tags"></div>
       </div>
 
-      <div class="writeup-content">
-        
-        <!-- Executive Summary -->
-        <h2>Executive Summary</h2>
-        <div class="ioc-box">
-          <strong>Impact: Critical – Full Server Compromise</strong>
-        </div>
-
-        <p><strong>TL;DR:</strong> SharePoint server compromised via authentication bypass in ToolPane.aspx. Attacker executed encoded PowerShell via w3wp.exe, dropped ASPX webshell, extracted MachineKey for long-term access. Attack lasted under 5 minutes.</p>
-
-
-        <!-- Visual Evidence -->
-        <h2>🔍 Visual Evidence</h2>
-        <img src="assets/alert-dashboard.png" alt="SIEM alert dashboard screenshot">
-        <img src="assets/network-flow.png" alt="Attack path visualization">
-
-
-        <!-- Process Tree -->
-        <h2>Process Tree</h2>
-        <div class="process-tree">
-          Attacker IP → w3wp.exe → powershell.exe → csc.exe → Webshell → MachineKey extraction
-        </div>
-
-
-        <!-- Step-by-step Investigation -->
-        <h2>Investigation Process</h2>
-
-        <div class="investigation-step">
-          <strong>Step 1:</strong> SIEM alert triggered due to suspicious POST request >7KB to ToolPane.aspx.
-        </div>
-
-        <div class="investigation-step">
-          <strong>Step 2:</strong> Proxy logs revealed encoded PowerShell payload inside the HTTP request.
-        </div>
-
-        <div class="investigation-step">
-          <strong>Step 3:</strong> EDR showed w3wp.exe spawning powershell.exe → suspicious behavior.
-        </div>
-
-        <div class="investigation-step">
-          <strong>Step 4:</strong> Webshell found in SharePoint LAYOUTS folder → persistence confirmed.
-        </div>
-
-
-        <!-- MITRE -->
-        <h2>MITRE ATT&CK Mapping</h2>
-        <div class="ioc-box">
-          <ul>
-            <li><strong>T1190 – Exploit Public-Facing Application</strong></li>
-            <li><strong>T1059.001 – PowerShell Execution</strong></li>
-            <li><strong>T1505 – Web Shell Persistence</strong></li>
-            <li><strong>T1552 – Credential Access (MachineKey)</strong></li>
-          </ul>
-        </div>
-
-
-        <!-- Timeline -->
-        <h2>Timeline</h2>
-        <div class="timeline-visual">
-          <div class="timeline-item"><span>13:07</span> Exploit request received</div>
-          <div class="timeline-item"><span>13:08</span> PowerShell launched</div>
-          <div class="timeline-item"><span>13:09</span> Webshell deployed</div>
-          <div class="timeline-item"><span>13:10</span> Attacker extracts MachineKey</div>
-        </div>
-
-
-        <!-- Blue Team Learnings -->
-        <h2>🛡️ Lessons Learned</h2>
-        <ul>
-          <li>Monitor w3wp.exe child processes</li>
-          <li>File Integrity Monitoring required on SharePoint LAYOUTS path</li>
-          <li>Restrict outbound traffic from critical servers</li>
-          <li>MachineKey must not remain in plain config files</li>
-        </ul>
-
-
-        <!-- Final -->
-        <h2>Conclusion</h2>
-        <p>
-          High-severity incident. Full compromise possible but contained quickly.
-          Zero-day exploited. Improvements deployed to prevent recurrence.
-        </p>
-
+      <div class="writeup-content" id="writeup-content">
+        <!-- Content loads here from markdown files -->
       </div>
     </article>
-
   </div>
+
+  <!-- Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script>
+    // Simple markdown configuration
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    });
+
+    // Load writeup based on URL ID
+    async function loadWriteup() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const writeupId = urlParams.get('id');
+      
+      if (!writeupId) {
+        // Show all writeups if no ID
+        showAllWriteups();
+        return;
+      }
+      
+      try {
+        // 1. Load writeups list
+        const listRes = await fetch('data/writeups.json');
+        const { writeups } = await listRes.json();
+        
+        // 2. Find the writeup
+        const writeup = writeups.find(w => w.id === writeupId);
+        if (!writeup) throw new Error('Writeup not found');
+        
+        // 3. Load markdown content
+        const contentRes = await fetch(`data/writeups/${writeup.file}`);
+        const markdown = await contentRes.text();
+        
+        // 4. Update page
+        document.title = `${writeup.title} - Swetha Devi`;
+        document.getElementById('writeup-title').textContent = writeup.title;
+        
+        // Metadata
+        document.getElementById('writeup-meta').innerHTML = `
+          <span><i class="far fa-calendar"></i> ${writeup.date}</span>
+          <span><i class="far fa-clock"></i> ${writeup.readTime}</span>
+          ${writeup.tools ? `<span><i class="fas fa-server"></i> ${writeup.tools}</span>` : ''}
+        `;
+        
+        // Tags
+        document.getElementById('writeup-tags').innerHTML = 
+          writeup.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+        
+        // Content (convert markdown to HTML)
+        document.getElementById('writeup-content').innerHTML = marked.parse(markdown);
+        
+        // Apply syntax highlighting
+        if (window.Prism) Prism.highlightAll();
+        
+      } catch (error) {
+        document.getElementById('writeup-title').textContent = 'Error';
+        document.getElementById('writeup-content').innerHTML = `
+          <div style="text-align:center; padding:40px; color:var(--muted);">
+            <p>Error loading writeup. <a href="writeups.html">View all writeups</a></p>
+          </div>
+        `;
+      }
+    }
+
+    // Show all writeups (grid view)
+    async function showAllWriteups() {
+      try {
+        const res = await fetch('data/writeups.json');
+        const { writeups } = await res.json();
+        
+        document.title = 'Security Writeups - Swetha Devi';
+        document.getElementById('writeup-title').textContent = 'Security Writeups';
+        document.getElementById('writeup-meta').innerHTML = `
+          <span><i class="fas fa-file-alt"></i> ${writeups.length} writeups</span>
+        `;
+        
+        const gridHTML = writeups.map(w => `
+          <div style="margin-bottom:30px; padding:25px; border:1px solid var(--border); border-radius:12px;">
+            <h3 style="margin-bottom:10px;">${w.title}</h3>
+            <div style="color:var(--muted); margin-bottom:15px; font-size:14px;">
+              ${w.date} • ${w.readTime}
+            </div>
+            <div style="margin-bottom:15px;">
+              ${w.tags.map(t => `<span class="tag">${t}</span>`).join(' ')}
+            </div>
+            <p style="color:var(--muted); margin-bottom:20px;">
+              ${w.summary}
+            </p>
+            <a href="writeups.html?id=${w.id}" style="color:var(--accent); text-decoration:none;">
+              Read Full Analysis →
+            </a>
+          </div>
+        `).join('');
+        
+        document.getElementById('writeup-content').innerHTML = gridHTML;
+        
+      } catch (error) {
+        document.getElementById('writeup-content').innerHTML = `
+          <div style="text-align:center; padding:40px; color:var(--muted);">
+            <p>No writeups found.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Load when page is ready
+    document.addEventListener('DOMContentLoaded', loadWriteup);
+  </script>
 </body>
 </html>
