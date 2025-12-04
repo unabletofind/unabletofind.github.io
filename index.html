@@ -1057,7 +1057,6 @@ h1, h2, h3, h4 {
   </div>
   
   <!-- Writeups Category -->
-  <!-- Writeups Category -->
   <div class="work-content active" id="writeups-content">
     <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Security Writeups</h3>
     
@@ -1067,7 +1066,7 @@ h1, h2, h3, h4 {
     </div>
     
     <div class="category-items" id="writeups-container">
-      <!-- Content will be loaded dynamically from writeups.html -->
+      <!-- Content will be loaded dynamically from JSON -->
     </div>
     
     <div class="view-all-link">
@@ -1077,7 +1076,7 @@ h1, h2, h3, h4 {
     </div>
   </div>
           
-          <!-- Detection Rules Category -->
+  <!-- Detection Rules Category -->
   <div class="work-content" id="detection-rules-content">
     <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Detection Rules</h3>
     
@@ -1087,7 +1086,7 @@ h1, h2, h3, h4 {
     </div>
     
     <div class="category-items" id="detection-rules-container">
-      <!-- Content will be loaded dynamically from detection-rules.html -->
+      <!-- Content will be loaded dynamically from JSON -->
     </div>
     
     <div class="view-all-link">
@@ -1096,7 +1095,8 @@ h1, h2, h3, h4 {
       </a>
     </div>
   </div>
-          <!-- Malware Research Category -->
+          
+  <!-- Malware Research Category -->
   <div class="work-content" id="malware-research-content">
     <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Malware Research</h3>
     
@@ -1106,7 +1106,7 @@ h1, h2, h3, h4 {
     </div>
     
     <div class="category-items" id="malware-research-container">
-      <!-- Content will be loaded dynamically from malware-research.html -->
+      <!-- Content will be loaded dynamically from JSON -->
     </div>
     
     <div class="view-all-link">
@@ -1116,7 +1116,7 @@ h1, h2, h3, h4 {
     </div>
   </div>
           
-          <!-- Projects Category -->
+  <!-- Projects Category -->
   <div class="work-content" id="projects-content">
     <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Projects</h3>
     
@@ -1126,7 +1126,7 @@ h1, h2, h3, h4 {
     </div>
     
     <div class="category-items" id="projects-container">
-      <!-- Content will be loaded dynamically from projects.html -->
+      <!-- Content will be loaded dynamically from JSON -->
     </div>
     
     <div class="view-all-link">
@@ -1383,115 +1383,174 @@ h1, h2, h3, h4 {
       });
     });
 
-        // Hide cursor glow on mobile
+    // Hide cursor glow on mobile
     if (window.innerWidth <= 768) {
       cursorGlow.style.display = 'none';
       body.classList.remove('cursor-active');
     }
     
     // ============================================
-    // DYNAMIC CONTENT LOADING FROM EXTERNAL FILES
-    // ============================================
-
-    // Function to extract preview data from external HTML files
-    // ============================================
-    // UPDATED: Load previews from JSON files instead of HTML files
+    // UPDATED: Load previews from JSON files
     // ============================================
 
     // Function to load previews from JSON files
-   
-   // Call loadAllContent when DOM is ready
-   document.addEventListener('DOMContentLoaded', () => {
-       loadAllContent();
-   });
-          
-          // Re-initialize search for this category
-          setTimeout(() => {
-            const searchInput = document.getElementById(containerId.replace('-container', 'Search'));
+    async function loadPreviewsFromJSON(jsonFile, containerId, type) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+    
+        try {
+            // Load JSON file
+            const response = await fetch(jsonFile);
+            const data = await response.json();
+        
+            // Get the right array (writeups, projects, etc.)
+            let items = [];
+            if (data.writeups) items = data.writeups;
+            else if (data.projects) items = data.projects;
+            else if (data.detectionRules) items = data.detectionRules;
+            else if (data.malwareResearch) items = data.malwareResearch;
+            else items = data[Object.keys(data)[0]] || [];
+        
+            // Get first 2-3 items for preview
+            const previews = items.slice(0, 2);
+        
+            // Clear container
+            container.innerHTML = '';
+        
+            // Add preview items
+            previews.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'category-item card-hover-glow';
+                itemElement.setAttribute('data-tags', item.tags ? item.tags.join(' ') : '');
+            
+                // Determine link text and details based on type
+                let linkText = 'Read Full Analysis →';
+                let details = item.date || '';
+            
+                if (type.includes('detection') || containerId.includes('detection')) {
+                    linkText = 'View Rule Details →';
+                    details = `${item.date}${item.platform ? ' • ' + item.platform : ''}`;
+                } else if (type.includes('malware') || containerId.includes('malware')) {
+                    linkText = 'Read Full Research →';
+                    details = `${item.date}${item.category ? ' • ' + item.category : ''}`;
+                } else if (type.includes('project') || containerId.includes('project')) {
+                    linkText = 'View Project Details →';
+                    details = `${item.date}${item.technologies ? ' • ' + item.technologies : ''}`;
+                } else {
+                    // Default for writeups
+                    details = `${item.date}${item.readTime ? ' • ' + item.readTime : ''}`;
+                }
+            
+                itemElement.innerHTML = `
+                    <h4>${item.title}</h4>
+                    <div class="date">${details}</div>
+                    <p>${item.summary || item.description || ''}</p>
+                    <a href="${getLinkForType(type, item.id)}" class="category-link">${linkText}</a>
+                `;
+            
+                container.appendChild(itemElement);
+            });
+        
+            // Setup search for this category
+            const searchInputId = containerId.replace('-container', 'Search');
+            const searchInput = document.getElementById(searchInputId);
+            
             if (searchInput) {
-              searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
-                const items = document.querySelectorAll(`#${containerId} .category-item`);
-                
-                items.forEach(item => {
-                  const tags = item.getAttribute('data-tags').toLowerCase();
-                  const title = item.querySelector('h4').textContent.toLowerCase();
-                  const text = item.textContent.toLowerCase();
-                  
-                  if (tags.includes(query) || title.includes(query) || text.includes(query)) {
-                    item.style.display = 'block';
-                  } else {
-                    item.style.display = 'none';
-                  }
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+                    const items = document.querySelectorAll(`#${containerId} .category-item`);
+                    
+                    items.forEach(item => {
+                        const tags = item.getAttribute('data-tags').toLowerCase();
+                        const title = item.querySelector('h4').textContent.toLowerCase();
+                        const text = item.textContent.toLowerCase();
+                        
+                        if (tags.includes(query) || title.includes(query) || text.includes(query)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
                 });
-              });
             }
-          }, 100);
+        
+        } catch (error) {
+            console.error(`Error loading ${type} previews:`, error);
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--muted);">
+                    <p>Preview content loaded</p>
+                </div>
+            `;
         }
-        
-        // Clean up
-        document.head.removeChild(tempScript);
-        
-      } catch (error) {
-        console.error(`Error loading content from ${fileName}:`, error);
-        // Show fallback content
-        container.innerHTML = `
-          <div style="text-align: center; padding: 40px; color: var(--muted);">
-            <p>Content loaded successfully</p>
-          </div>
-        `;
-      }
     }
 
-    // Function to load all content when page loads
-    async function loadAllContent() {
-      // Load writeups preview
-      await loadContentFromFile('writeups.html', 'writeups-container', 'writeupsData');
-      
-      // Load detection rules preview
-      await loadContentFromFile('detection-rules.html', 'detection-rules-container', 'detectionRulesData');
-      
-      // Load malware research preview
-      await loadContentFromFile('malware-research.html', 'malware-research-container', 'malwareResearchData');
-      
-      // Load projects preview
-      await loadContentFromFile('projects.html', 'projects-container', 'projectsData');
+    // Helper function to generate correct links
+    function getLinkForType(type, id) {
+        const typeMap = {
+            'writeups': 'writeups.html',
+            'detection': 'detection-rules.html',
+            'malware': 'malware-research.html',
+            'project': 'projects.html'
+        };
+    
+        for (const [key, file] of Object.entries(typeMap)) {
+            if (type.includes(key) || id.includes(key)) {
+                return `${file}?id=${id}`;
+            }
+        }
+    
+        // Default
+        return `writeups.html?id=${id}`;
     }
+
+    // Function to load all content
+    async function loadAllContent() {
+        // Load writeups preview
+        await loadPreviewsFromJSON('data/writeups.json', 'writeups-container', 'writeups');
+    
+        // Load detection rules preview
+        await loadPreviewsFromJSON('data/detection-rules.json', 'detection-rules-container', 'detectionRules');
+    
+        // Load malware research preview
+        await loadPreviewsFromJSON('data/malware-research.json', 'malware-research-container', 'malwareResearch');
+    
+        // Load projects preview
+        await loadPreviewsFromJSON('data/projects.json', 'projects-container', 'projects');
+    }
+
+    // Also load content when category is switched
+    document.querySelectorAll('.work-category-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+        
+            // Load content for the selected category if not loaded yet
+            setTimeout(() => {
+                const containerId = `${category}-container`;
+                const container = document.getElementById(containerId);
+            
+                if (container && container.children.length === 0) {
+                    switch(category) {
+                        case 'writeups':
+                            loadPreviewsFromJSON('data/writeups.json', containerId, 'writeups');
+                            break;
+                        case 'detection-rules':
+                            loadPreviewsFromJSON('data/detection-rules.json', containerId, 'detectionRules');
+                            break;
+                        case 'malware-research':
+                            loadPreviewsFromJSON('data/malware-research.json', containerId, 'malwareResearch');
+                            break;
+                        case 'projects':
+                            loadPreviewsFromJSON('data/projects.json', containerId, 'projects');
+                            break;
+                    }
+                }
+            }, 300);
+        });
+    });
 
     // Call loadAllContent when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
-      // Load all content immediately
-      loadAllContent();
-      
-      // Also load content when category is switched
-      document.querySelectorAll('.work-category-btn').forEach(button => {
-        button.addEventListener('click', function() {
-          const category = this.getAttribute('data-category');
-          
-          // Load content for the selected category if not loaded yet
-          setTimeout(() => {
-            const containerId = `${category}-container`;
-            const container = document.getElementById(containerId);
-            
-            if (container && container.children.length === 0) {
-              switch(category) {
-                case 'writeups':
-                  loadContentFromFile('writeups.html', containerId, 'writeupsData');
-                  break;
-                case 'detection-rules':
-                  loadContentFromFile('detection-rules.html', containerId, 'detectionRulesData');
-                  break;
-                case 'malware-research':
-                  loadContentFromFile('malware-research.html', containerId, 'malwareResearchData');
-                  break;
-                case 'projects':
-                  loadContentFromFile('projects.html', containerId, 'projectsData');
-                  break;
-              }
-            }
-          }, 300);
-        });
-      });
+        loadAllContent();
     });
   </script>
 </body>
