@@ -1394,69 +1394,174 @@ h1, h2, h3, h4 {
     // ============================================
 
     // Function to extract preview data from external HTML files
-    async function loadContentFromFile(fileName, containerId, dataVarName) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-      
-      try {
-        // Fetch the HTML file
-        const response = await fetch(fileName);
-        const html = await response.text();
+    // ============================================
+// UPDATED: Load previews from JSON files instead of HTML files
+// ============================================
+
+// Function to load previews from JSON files
+async function loadPreviewsFromJSON(jsonFile, containerId, type) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    try {
+        // Load JSON file
+        const response = await fetch(jsonFile);
+        const data = await response.json();
         
-        // Parse the HTML
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+        // Get the right array (writeups, projects, etc.)
+        let items = [];
+        if (data.writeups) items = data.writeups;
+        else if (data.projects) items = data.projects;
+        else if (data.detectionRules) items = data.detectionRules;
+        else if (data.malwareResearch) items = data.malwareResearch;
+        else items = data[Object.keys(data)[0]] || [];
         
-        // Extract the script content
-        const script = doc.querySelector('script');
-        if (!script) return;
+        // Get first 2-3 items for preview
+        const previews = items.slice(0, 2);
         
-        // Create a temporary script to extract the data
-        const tempScript = document.createElement('script');
-        tempScript.textContent = script.textContent;
-        document.head.appendChild(tempScript);
+        // Clear container
+        container.innerHTML = '';
         
-        // Check if the data variable exists
-        if (window[dataVarName]) {
-          const data = window[dataVarName];
-          const previews = data.slice(0, 2); // Get first 2 items
-          
-          // Clear container
-          container.innerHTML = '';
-          
-          // Add preview items
-          previews.forEach(item => {
+        // Add preview items
+        previews.forEach(item => {
             const itemElement = document.createElement('div');
             itemElement.className = 'category-item card-hover-glow';
-            itemElement.setAttribute('data-tags', item.tags.join(' '));
+            itemElement.setAttribute('data-tags', item.tags ? item.tags.join(' ') : '');
             
-            // Create preview text (strip HTML tags and get first 150 chars)
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = item.content;
-            const previewText = tempDiv.textContent.substring(0, 150) + '...';
-            
-            // Determine link text based on category
+            // Determine link text and details based on type
             let linkText = 'Read Full Analysis →';
-            if (dataVarName.includes('Detection')) linkText = 'View Rule Details →';
-            if (dataVarName.includes('Malware')) linkText = 'Read Full Research →';
-            if (dataVarName.includes('Project')) linkText = 'View Project Details →';
+            let details = item.date || '';
             
-            // Determine date field
-            let dateField = item.date;
-            if (item.readTime) dateField += ` • ${item.readTime}`;
-            if (item.platform) dateField += ` • ${item.platform}`;
-            if (item.category) dateField += ` • ${item.category}`;
-            if (item.technologies) dateField += ` • ${item.technologies}`;
+            if (type.includes('detection') || containerId.includes('detection')) {
+                linkText = 'View Rule Details →';
+                details = `${item.date}${item.platform ? ' • ' + item.platform : ''}`;
+            } else if (type.includes('malware') || containerId.includes('malware')) {
+                linkText = 'Read Full Research →';
+                details = `${item.date}${item.category ? ' • ' + item.category : ''}`;
+            } else if (type.includes('project') || containerId.includes('project')) {
+                linkText = 'View Project Details →';
+                details = `${item.date}${item.technologies ? ' • ' + item.technologies : ''}`;
+            } else {
+                // Default for writeups
+                details = `${item.date}${item.readTime ? ' • ' + item.readTime : ''}`;
+            }
             
             itemElement.innerHTML = `
-              <h4>${item.title}</h4>
-              <div class="date">${dateField}</div>
-              <p>${previewText}</p>
-              <a href="${fileName}#${item.id}" class="category-link">${linkText}</a>
+                <h4>${item.title}</h4>
+                <div class="date">${details}</div>
+                <p>${item.summary || item.description || ''}</p>
+                <a href="${getLinkForType(type, item.id)}" class="category-link">${linkText}</a>
             `;
             
             container.appendChild(itemElement);
-          });
+        });
+        
+        // Setup search for this category
+        setupSearchForContainer(containerId);
+        
+    } catch (error) {
+        console.error(`Error loading ${type} previews:`, error);
+        container.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--muted);">
+                <p>Preview content loaded</p>
+            </div>
+        `;
+    }
+}
+
+// Helper function to generate correct links
+function getLinkForType(type, id) {
+    const typeMap = {
+        'writeups': 'writeups.html',
+        'detection': 'detection-rules.html',
+        'malware': 'malware-research.html',
+        'project': 'projects.html'
+    };
+    
+    for (const [key, file] of Object.entries(typeMap)) {
+        if (type.includes(key) || id.includes(key)) {
+            return `${file}?id=${id}`;
+        }
+    }
+    
+    // Default
+    return `writeups.html?id=${id}`;
+}
+
+// Helper function to setup search
+function setupSearchForContainer(containerId) {
+    const searchInputId = containerId.replace('-container', 'Search');
+    const searchInput = document.getElementById(searchInputId);
+    
+    if (!searchInput) return;
+    
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const items = document.querySelectorAll(`#${containerId} .category-item`);
+        
+        items.forEach(item => {
+            const tags = item.getAttribute('data-tags').toLowerCase();
+            const title = item.querySelector('h4').textContent.toLowerCase();
+            const text = item.textContent.toLowerCase();
+            
+            if (tags.includes(query) || title.includes(query) || text.includes(query)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+}
+
+// Function to load all content
+async function loadAllContent() {
+    // Load writeups preview
+    await loadPreviewsFromJSON('data/writeups.json', 'writeups-container', 'writeups');
+    
+    // Load detection rules preview
+    await loadPreviewsFromJSON('data/detection-rules.json', 'detection-rules-container', 'detectionRules');
+    
+    // Load malware research preview
+    await loadPreviewsFromJSON('data/malware-research.json', 'malware-research-container', 'malwareResearch');
+    
+    // Load projects preview
+    await loadPreviewsFromJSON('data/projects.json', 'projects-container', 'projects');
+}
+
+// Also update the category switching code
+document.querySelectorAll('.work-category-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        
+        // Load content for the selected category if not loaded yet
+        setTimeout(() => {
+            const containerId = `${category}-container`;
+            const container = document.getElementById(containerId);
+            
+            if (container && container.children.length === 0) {
+                switch(category) {
+                    case 'writeups':
+                        loadPreviewsFromJSON('data/writeups.json', containerId, 'writeups');
+                        break;
+                    case 'detection-rules':
+                        loadPreviewsFromJSON('data/detection-rules.json', containerId, 'detectionRules');
+                        break;
+                    case 'malware-research':
+                        loadPreviewsFromJSON('data/malware-research.json', containerId, 'malwareResearch');
+                        break;
+                    case 'projects':
+                        loadPreviewsFromJSON('data/projects.json', containerId, 'projects');
+                        break;
+                }
+            }
+        }, 300);
+    });
+});
+
+// Call loadAllContent when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    loadAllContent();
+});
           
           // Re-initialize search for this category
           setTimeout(() => {
