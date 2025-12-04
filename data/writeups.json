@@ -1,1 +1,22 @@
-
+{
+  "writeups": [
+    {
+      "id": "sharepoint-rce",
+      "title": "Alert: CVE-2025-53770 SharePoint ToolPane Auth Bypass & RCE",
+      "date": "Jul 22, 2025",
+      "readTime": "15 min read",
+      "tags": ["rce", "webshell", "sharepoint", "zero-day", "incident-response"],
+      "file": "sharepoint-rce.md",
+      "summary": "SharePoint server compromised via authentication bypass..."
+    },
+    {
+      "id": "phishing-analysis-2025",
+      "title": "Sophisticated Phishing Campaign Analysis",
+      "date": "Mar 15, 2025",
+      "readTime": "10 min read",
+      "tags": ["phishing", "email", "social-engineering"],
+      "file": "phishing-analysis-2025.md",
+      "summary": "Analysis of targeted phishing campaign..."
+    }
+  ]
+}
