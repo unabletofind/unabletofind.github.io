@@ -4,10 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Detection Rules - Swetha Devi</title>
+  
+  <!-- Same CSS as writeups.html -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
   
   <style>
+    /* COPY ALL CSS FROM writeups.html */
     :root{
       --bg:#0a0e27; 
       --card:#14182e; 
@@ -17,119 +21,72 @@
       --text:#e8eef6;
       --border:rgba(255,255,255,0.06);
     }
-    
-    *{box-sizing:border-box; margin:0; padding:0}
-    
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family:'Inter',sans-serif;
       background:var(--bg);
       color:var(--text);
-      line-height:1.7;
-      -webkit-font-smoothing:antialiased;
-      padding: 20px;
+      padding:20px;
+      min-height:100vh;
     }
-    
-    .container{
-      max-width:1000px;
-      margin:0 auto;
-    }
-    
+    .container{max-width:1100px;margin:0 auto;}
     .back-link{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      color:var(--accent);
-      text-decoration:none;
-      margin-bottom:40px;
-      padding:10px 0;
+      display:inline-flex;align-items:center;gap:8px;
+      color:var(--accent);text-decoration:none;
+      margin-bottom:40px;padding:10px 0;
     }
-    
-    .detection-header{
-      margin-bottom:40px;
-    }
-    
-    .detection-header h1{
-      font-size:36px;
-      margin-bottom:16px;
-    }
-    
-    .detection-meta{
+    .writeup-header{margin-bottom:40px;}
+    .writeup-header h1{font-size:36px;margin-bottom:16px;}
+    .writeup-meta{
       color:var(--muted);
       font-size:15px;
-      display:flex;
-      gap:20px;
-      margin-bottom:20px;
+      display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap;
     }
-    
-    .detection-tags{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    
+    .writeup-meta i{color:var(--accent);}
+    .writeup-tags{display:flex;gap:10px;flex-wrap:wrap;}
     .tag{
       background:rgba(0,217,255,0.1);
       border:1px solid rgba(0,217,255,0.2);
-      padding:6px 12px;
-      border-radius:20px;
-      font-size:13px;
-      color:var(--accent);
+      padding:6px 12px;border-radius:20px;font-size:13px;color:var(--accent);
     }
-    
-    .detection-content{
+    .writeup-content{
       background:var(--card);
       border:1px solid var(--border);
       border-radius:16px;
       padding:40px;
       margin-bottom:60px;
     }
-    
-    .detection-content h2{
+    .writeup-content h2{
       color:var(--accent);
       margin:30px 0 15px;
       font-size:24px;
-    }
-    
-    .detection-content h3{
-      color:var(--text);
-      margin:25px 0 12px;
-      font-size:20px;
-    }
-    
-    .detection-content p{
-      margin-bottom:16px;
-      color:var(--muted);
-    }
-    
-    .code-block{
-      margin:20px 0;
-      background:rgba(0,0,0,0.3);
-      border-radius:12px;
-      overflow:hidden;
-      border:1px solid var(--border);
-    }
-    
-    .code-header{
-      padding:12px 20px;
-      background:rgba(0,0,0,0.4);
       border-bottom:1px solid var(--border);
-      font-size:14px;
-      color:var(--muted);
+      padding-bottom:10px;
     }
-    
-    pre{
-      margin:0;
-      padding:20px;
-      overflow-x:auto;
+    .writeup-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
     }
-    
-    @media (max-width: 768px){
-      .detection-header h1{
-        font-size:28px;
-      }
-      .detection-content{
-        padding:24px;
-      }
+    .writeup-content h3 {
+      color: var(--text);
+      margin: 20px 0 10px;
+      font-size: 20px;
+    }
+    .writeup-content code {
+      background: rgba(0, 217, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .writeup-content pre {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+      border: 1px solid var(--border);
     }
   </style>
 </head>
@@ -138,215 +95,132 @@
     <a href="index.html" class="back-link">
       <i class="fas fa-arrow-left"></i> Back to Home
     </a>
-    
-    <!-- Individual Detection Rules will be loaded here -->
-    <div id="detection-rules-list"></div>
+
+    <article>
+      <div class="writeup-header">
+        <h1 id="writeup-title"></h1>
+        <div class="writeup-meta" id="writeup-meta"></div>
+        <div class="writeup-tags" id="writeup-tags"></div>
+      </div>
+
+      <div class="writeup-content" id="writeup-content">
+        <!-- Content loads here -->
+      </div>
+    </article>
   </div>
 
+  <!-- Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
   <script>
-    // Detection Rules Data
-    const detectionRulesData = [
-      {
-        id: "service-installation",
-        title: "Sigma: Suspicious Service Installation",
-        date: "Feb 10, 2024",
-        platform: "Windows",
-        tags: ["sigma", "windows", "privilege-escalation", "T1543.003"],
-        content: `
-          <h2>Rule Description</h2>
-          <p>This rule detects suspicious service installations that are often used for persistence and privilege escalation.</p>
-          
-          <h2>Sigma Rule</h2>
-          <div class="code-block">
-            <div class="code-header">yaml</div>
-            <pre><code class="language-yaml">title: Suspicious Service Installation
-id: a1b2c3d4-e5f6-7890-1234-567890abcdef
-status: production
-description: Detects suspicious service installations
-author: Swetha Devi
-date: 2024/02/10
-logsource:
-    category: process_creation
-    product: windows
-detection:
-    selection:
-        Image|endswith:
-            - '\\sc.exe'
-            - '\\powershell.exe'
-            - '\\cmd.exe'
-        CommandLine|contains:
-            - 'create'
-            - 'config'
-            - 'start'
-    filter:
-        CommandLine|contains:
-            - 'wuauserv'
-            - 'bits'
-            - 'wscsvc'
-    condition: selection and not filter
-falsepositives:
-    - Legitimate administrative activity
-level: high
-tags:
-    - attack.persistence
-    - attack.t1543.003</code></pre>
-          </div>
-          
-          <h2>MITRE ATT&CK Mapping</h2>
-          <p><strong>Tactic:</strong> Persistence, Privilege Escalation</p>
-          <p><strong>Technique:</strong> T1543.003 - Create or Modify System Process: Windows Service</p>
-          
-          <h2>Detection Logic</h2>
-          <p>This rule looks for:</p>
-          <ul>
-            <li>Service creation commands (sc.exe create)</li>
-            <li>Service configuration changes</li>
-            <li>Service start commands from non-standard locations</li>
-          </ul>
-        `
-      },
-      {
-        id: "ransomware-yara",
-        title: "YARA: Ransomware String Patterns",
-        date: "Feb 5, 2024",
-        platform: "Malware Detection",
-        tags: ["yara", "malware", "ransomware", "detection"],
-        content: `
-          <h2>Rule Description</h2>
-          <p>YARA rule set for detecting common ransomware string patterns in binaries and memory.</p>
-          
-          <h2>YARA Rule</h2>
-          <div class="code-block">
-            <div class="code-header">yaml</div>
-            <pre><code class="language-yaml">rule Ransomware_Common_Patterns {
-    meta:
-        author = "Swetha Devi"
-        date = "2024-02-05"
-        description = "Detects common ransomware patterns"
-    
-    strings:
-        $encrypt1 = "AES" wide
-        $encrypt2 = "RSA" wide
-        $ransom_note = "Your files have been encrypted" wide
-        $payment1 = "bitcoin" nocase
-        $payment2 = "monero" nocase
-        $tor1 = ".onion" wide
-        $tor2 = "TOR" wide
-        $extension1 = ".locked"
-        $extension2 = ".encrypted"
-        $extension3 = ".crypted"
-    
-    condition:
-        5 of ($encrypt*) or 
-        3 of ($payment*) or 
-        2 of ($tor*) or 
-        3 of ($extension*) or 
-        (filesize < 5MB and 4 of them)
-}</code></pre>
-          </div>
-          
-          <h2>Detection Features</h2>
-          <ul>
-            <li>Encryption algorithm references</li>
-            <li>Ransom note patterns</li>
-            <li>Cryptocurrency payment instructions</li>
-            <li>Tor network references</li>
-            <li>Common ransomware file extensions</li>
-          </ul>
-        `
-      },
-      {
-        id: "suspicious-powershell",
-        title: "Suspicious PowerShell Execution Patterns",
-        date: "Mar 1, 2024",
-        platform: "Windows",
-        tags: ["powershell", "sigma", "obfuscation", "T1059.001"],
-        content: `
-          <h2>Rule Description</h2>
-          <p>Detects suspicious PowerShell execution patterns commonly used in attacks.</p>
-          
-          <h2>Sigma Rule</h2>
-          <div class="code-block">
-            <div class="code-header">yaml</div>
-            <pre><code class="language-yaml">title: Suspicious PowerShell Execution
-id: 56789012-3456-7890-abcd-ef1234567890
-status: production
-description: Detects suspicious PowerShell execution patterns
-author: Swetha Devi
-date: 2024/03/01
-logsource:
-    category: process_creation
-    product: windows
-detection:
-    selection:
-        Image|endswith: '\\powershell.exe'
-        CommandLine|contains|all:
-            - 'Hidden'
-            - 'WindowStyle'
-            - 'Hidden'
-    condition: selection
-falsepositives:
-    - Legitimate administrative scripts
-level: medium
-tags:
-    - attack.execution
-    - attack.t1059.001</code></pre>
-          </div>
-          
-          <h2>Detection Patterns</h2>
-          <ul>
-            <li>Hidden window execution</li>
-            <li>Encoded command parameters</li>
-            <li>Download string operations</li>
-            <li>Bypass execution policy flags</li>
-          </ul>
-        `
+    // Configuration for marked
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+      highlight: function(code, lang) {
+        if (Prism.languages[lang]) {
+          return Prism.highlight(code, Prism.languages[lang], lang);
+        }
+        return code;
       }
-    ];
+    });
 
-    // Function to display all detection rules
-    function displayAllDetectionRules() {
-      const container = document.getElementById('detection-rules-list');
+    // Load detection rule
+    async function loadDetectionRule() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ruleId = urlParams.get('id');
       
-      if (!container) return;
+      if (!ruleId) {
+        showAllDetectionRules();
+        return;
+      }
       
-      detectionRulesData.forEach(rule => {
-        const ruleElement = document.createElement('article');
-        ruleElement.className = 'detection-rule';
-        ruleElement.id = rule.id;
+      try {
+        // Load from detection-rules.json
+        const listRes = await fetch('data/detection-rules.json');
+        const { detectionRules } = await listRes.json();
         
-        ruleElement.innerHTML = `
-          <div class="detection-header">
-            <h1>${rule.title}</h1>
-            <div class="detection-meta">
-              <span class="date">${rule.date} • ${rule.platform}</span>
-            </div>
-            <div class="detection-tags">
-              ${rule.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-            </div>
-          </div>
-          
-          <div class="detection-content">
-            ${rule.content}
-          </div>
+        const rule = detectionRules.find(r => r.id === ruleId);
+        if (!rule) throw new Error('Rule not found');
+        
+        // Load markdown content
+        const contentRes = await fetch(`data/detection-rules/${rule.file}`);
+        const markdown = await contentRes.text();
+        
+        // Update page
+        document.title = `${rule.title} - Swetha Devi`;
+        document.getElementById('writeup-title').textContent = rule.title;
+        
+        // Metadata
+        document.getElementById('writeup-meta').innerHTML = `
+          <span><i class="far fa-calendar"></i> ${rule.date}</span>
+          ${rule.platform ? `<span><i class="fas fa-desktop"></i> ${rule.platform}</span>` : ''}
         `;
         
-        container.appendChild(ruleElement);
-      });
-      
-      // Apply syntax highlighting
-      if (window.Prism) {
-        Prism.highlightAll();
+        // Tags
+        document.getElementById('writeup-tags').innerHTML = 
+          rule.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+        
+        // Content
+        document.getElementById('writeup-content').innerHTML = marked.parse(markdown);
+        
+        // Highlight code
+        if (window.Prism) Prism.highlightAll();
+        
+      } catch (error) {
+        document.getElementById('writeup-title').textContent = 'Error';
+        document.getElementById('writeup-content').innerHTML = `
+          <div style="text-align:center; padding:40px; color:var(--muted);">
+            <p>Error loading detection rule. <a href="detection-rules.html">View all rules</a></p>
+          </div>
+        `;
       }
     }
 
-    // Display detection rules when page loads
-    if (document.getElementById('detection-rules-list')) {
-      displayAllDetectionRules();
+    // Show all detection rules
+    async function showAllDetectionRules() {
+      try {
+        const res = await fetch('data/detection-rules.json');
+        const { detectionRules } = await res.json();
+        
+        document.title = 'Detection Rules - Swetha Devi';
+        document.getElementById('writeup-title').textContent = 'Detection Rules';
+        document.getElementById('writeup-meta').innerHTML = `
+          <span><i class="fas fa-shield-alt"></i> ${detectionRules.length} rules</span>
+        `;
+        
+        const gridHTML = detectionRules.map(r => `
+          <div style="margin-bottom:30px; padding:25px; border:1px solid var(--border); border-radius:12px;">
+            <h3 style="margin-bottom:10px;">${r.title}</h3>
+            <div style="color:var(--muted); margin-bottom:15px; font-size:14px;">
+              ${r.date}${r.platform ? ' • ' + r.platform : ''}
+            </div>
+            <div style="margin-bottom:15px;">
+              ${r.tags.map(t => `<span class="tag">${t}</span>`).join(' ')}
+            </div>
+            <p style="color:var(--muted); margin-bottom:20px;">
+              ${r.summary}
+            </p>
+            <a href="detection-rules.html?id=${r.id}" style="color:var(--accent); text-decoration:none;">
+              View Rule Details →
+            </a>
+          </div>
+        `).join('');
+        
+        document.getElementById('writeup-content').innerHTML = gridHTML;
+        
+      } catch (error) {
+        document.getElementById('writeup-content').innerHTML = `
+          <div style="text-align:center; padding:40px; color:var(--muted);">
+            <p>No detection rules found.</p>
+          </div>
+        `;
+      }
     }
+
+    // Load when page is ready
+    document.addEventListener('DOMContentLoaded', loadDetectionRule);
   </script>
 </body>
 </html>
