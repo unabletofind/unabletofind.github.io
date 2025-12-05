@@ -7,10 +7,10 @@ Every alert tells a story. My job is to read between the lines, connect the dots
 
 | Attribute | Value |
 | :--- | :--- |
-| Alert ID | `SOC-2025-342` |
-| Investigation Date | `2025-07-22 13:07:00 UTC` |
-| Time Investment | 45 minutes` (estimated for analysis)|
-| Platform | `LetsDefend` |
+| Alert ID  | `SOC-2025-342` |
+| Investigation Date  | `2025-07-22 13:07:00 UTC` |
+| Time Investment  | `45 minutes` (estimated for analysis)|
+| Platform  | `LetsDefend` |
 | Difficulty | `Medium` |
 | Initial Severity | `Critical` |
 | Final Severity | `CRITICAL` |
@@ -27,9 +27,12 @@ On July 22, 2025, an attacker exploited a critical zero-day vulnerability (CVE-2
 ### The Good News
 **Detection Worked:** The SIEM rule SOC342 correctly identified the exploit pattern unauthorized POST request with a spoofed Referer and large payload triggering an immediate critical alert.
 
+
 **Logging Was Comprehensive:** Endpoint and proxy logs captured the entire attack chain, from initial exploit to subsequent process creation and file writes, enabling clear forensic reconstruction.
 
+
 **Threat Contained to Initial Vector:** The attack appears limited to the SharePoint application pool identity (IIS APPPOOL\SharePoint - 80), though privilege escalation was later achieved.
+
 
 ### The Bad News
 **Exploit Succeeded:** The vulnerability was fully exploited; authentication was bypassed, arbitrary code executed, and a persistent web shell was deployed.
