@@ -1,3 +1,18 @@
+# Alert Summary Card
+
+| Attribute | Value |
+| :--- | :--- |
+| 🎫 Alert ID | `SOC-YYYY-###` |
+| 📅 Investigation Date | `YYYY-MM-DD HH:MM:SS UTC` |
+| ⏱️ Time Investment | `XX minutes` |
+| 🎯 Platform | `[LetsDefend/CyberDefenders/Production]` |
+| 📈 Difficulty | `[Easy/Medium/Hard]` |
+| ⚖️ Initial Severity | `[Low/Medium/High/Critical]` |
+| ⚖️ Final Severity | `[LOW/MEDIUM/HIGH/CRITICAL]` |
+| ✅ Final Verdict | `[TRUE POSITIVE/FALSE POSITIVE/BENIGN POSITIVE]` |
+| 🚀 Confidence Level | `XX%` |
+| 📋 Status | `[In Progress/Escalated/Closed]` |
+
 # Executive Summary
 
 **Impact:** Critical – Full Server Compromise
