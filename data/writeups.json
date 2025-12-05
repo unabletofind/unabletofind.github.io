@@ -2,10 +2,10 @@
   "writeups": [
     {
       "id": "sharepoint-rce",
-      "title": "Alert: CVE-2025-53770 SharePoint ToolPane Auth Bypass & RCE",
+      "title": "SOC342 - CVE‑2025‑53770 SharePoint ToolShell Auth Bypass and RCE",
       "date": "Jul 22, 2025",
       "readTime": "15 min read",
-      "tags": ["rce", "webshell", "sharepoint", "zero-day", "incident-response"],
+      "tags": ["rce", "webshell", "sharepoint", "zero-day", "incident-response" , "web-exploit"],
       "file": "sharepoint-rce.md",
       "summary": "SharePoint server compromised via authentication bypass..."
     },
