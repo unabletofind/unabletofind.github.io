@@ -8,7 +8,7 @@ Every alert tells a story. My job is to read between the lines, connect the dots
 | Attribute | Value |
 | :--- | :--- |
 | Alert ID  | `SOC-2025-342` |
-| Investigation Date  | `2025-07-22 13:07:00 UTC` |
+| Investigation Date    | `2025-07-22 13:07:00 UTC` |
 | Time Investment  | `45 minutes` (estimated for analysis)|
 | Platform  | `LetsDefend` |
 | Difficulty | `Medium` |
@@ -28,18 +28,25 @@ On July 22, 2025, an attacker exploited a critical zero-day vulnerability (CVE-2
 **Detection Worked:** The SIEM rule SOC342 correctly identified the exploit pattern unauthorized POST request with a spoofed Referer and large payload triggering an immediate critical alert.
 
 
+
 **Logging Was Comprehensive:** Endpoint and proxy logs captured the entire attack chain, from initial exploit to subsequent process creation and file writes, enabling clear forensic reconstruction.
+
 
 
 **Threat Contained to Initial Vector:** The attack appears limited to the SharePoint application pool identity (IIS APPPOOL\SharePoint - 80), though privilege escalation was later achieved.
 
 
+
 ### The Bad News
+
 **Exploit Succeeded:** The vulnerability was fully exploited; authentication was bypassed, arbitrary code executed, and a persistent web shell was deployed.
+
 
 **Defenses Were Reactive:** While detected, the attack was not blocked the request was "Allowed" by security controls, and post - exploitation activities proceeded uninterrupted.
 
+
 **Critical Data Exfiltrated:** Machine keys (validation/decryption keys) were dumped, potentially allowing the attacker to forge authentication tokens and decrypt sensitive SharePoint data. The system is now persistently compromised.
+
 
 ### Bottom Line
 This is a confirmed, critical TRUE POSITIVE the SharePoint server is actively compromised. Immediate isolation, forensic investigation, and eradication are required, followed by patching all SharePoint systems and rotating all machine keys and credentials.
@@ -67,26 +74,42 @@ Following initial compromise, activity was observed under the SHAREPOINT01\Admin
 
 
 ### Alert Details (What I Was Given)
+
 Alert_Source: SIEM/Network Sensor
+
 Alert_Type: Web Attack / Exploit Attempt
+
 Detection_Rule: "SOC342 - CVE‑2025‑53770 SharePoint ToolShell Auth Bypass and RCE"
+
 Severity: CRITICAL
+
 Timestamp: 2025-07-22T13:07:00Z
 
 ### Affected_Asset
+
 Hostname: SharePoint01
+
 IP_Address: 172.16.20.17
+
 OS: Windows Server (SharePoint On-Premises)
+
 User: IIS APPPOOL\SharePoint - 80
 Department: IT / Infrastructure
 
 ### Alert-Specific Details
+
 Source IP Address: 107.191.58.76
+
 Destination IP Address: 172.16.20.17
+
 HTTP Request Method: POST
+
 Requested URL: /_layouts/15/ToolPane.aspx?DisplayMode=Edit&a=/ToolPane.aspx
+
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0
+
 Referer: /_layouts/SignOut.aspx
+
 Content-Length: 7699
 Alert Trigger Reason:
 
@@ -99,11 +122,17 @@ Device Action: Allowed
 
 I follow the 5W+H Method for alert triage:
 
+
 WHAT happened? (Decode the behavior)\
+
 WHO was involved? (User, asset, attacker)\
+
 WHEN did it occur? (Timeline reconstruction)\
+
 WHERE is the evidence? (Log sources, artifacts)\
+
 WHY is this suspicious? (Baseline deviation, known TTPs)\
+
 HOW did it happen? (Attack chain reconstruction)
 
 Let's apply this systematically...
