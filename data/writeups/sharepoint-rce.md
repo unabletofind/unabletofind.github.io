@@ -9,7 +9,7 @@ Every alert tells a story. My job is to read between the lines, connect the dots
 | :--- | :--- |
 | Alert ID  | `SOC-2025-342` |
 | Investigation Date    | `2025-07-22 13:07:00 UTC` |
-| Time Investment  | `45 minutes` (estimated for analysis)|
+| Time Investment  | 45 minutes` (estimated for analysis)|
 | Platform  | `LetsDefend` |
 | Difficulty | `Medium` |
 | Initial Severity | `Critical` |
