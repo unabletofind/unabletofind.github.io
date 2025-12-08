@@ -425,56 +425,30 @@ h1, h2, h3, h4 {
       opacity: 1;
     }
 
-    /* Certifications like Skills Section */
-    .certifications-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 32px;
-      margin-top: 40px;
-    }
-    
-    .cert-category {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      transition: all 0.3s ease;
-    }
-    
-    .cert-category:hover {
-      border-color: rgba(0,217,255,0.2);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-    }
-    
-    .cert-category h3 {
-      font-size: 18px;
-      margin-bottom: 20px;
-      color: var(--accent);
-    }
-    
+    /* Certifications in Sidebar like Skills */
     .cert-items {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
     
     .cert-item {
       background: rgba(255,255,255,0.03);
-      padding: 10px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text);
       border: 1px solid var(--border);
       transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
+      display: inline-block;
     }
     
     .cert-item:hover {
       border-color: var(--accent);
       box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
     
     .cert-item:hover::after {
@@ -738,9 +712,6 @@ h1, h2, h3, h4 {
       .projects-grid{
         grid-template-columns:1fr;
       }
-      .certifications-grid {
-        grid-template-columns: 1fr;
-      }
       .contact-grid {
         grid-template-columns: 1fr;
       }
@@ -908,40 +879,6 @@ h1, h2, h3, h4 {
           </div>
         </section>
 
-        <!-- Certifications -->
-        <section id="certifications">
-          <h2 class="section-title">Certifications</h2>
-          <div class="certifications-grid" data-aos="fade-up">
-            <div class="cert-category card-hover-glow">
-              <h3>Security Certifications</h3>
-              <div class="cert-items">
-                <span class="cert-item">Certified Defensive Security Analyst (CDSA)</span>
-                <span class="cert-item">Certified AppSec Practitioner (CAP)</span>
-                <span class="cert-item">Cisco Cybersecurity</span>
-              </div>
-            </div>
-            
-            <div class="cert-category card-hover-glow">
-              <h3>Training & Specializations</h3>
-              <div class="cert-items">
-                <span class="cert-item">Junior PenTester Path — TryHackMe</span>
-                <span class="cert-item">SOC Analyst Training</span>
-                <span class="cert-item">Incident Response Training</span>
-              </div>
-            </div>
-            
-            <div class="cert-category card-hover-glow">
-              <h3>Technical Skills Validation</h3>
-              <div class="cert-items">
-                <span class="cert-item">Network Security</span>
-                <span class="cert-item">Threat Detection</span>
-                <span class="cert-item">Security Operations</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-
         <!-- Experience -->
         <section id="experience">
           <h2 class="section-title">Experience</h2>
@@ -1056,6 +993,16 @@ h1, h2, h3, h4 {
         </div>
 
         <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="100">
+          <h3>Certifications</h3>
+          <div class="cert-items">
+            <span class="cert-item">Certified Defensive Security Analyst (CDSA)</span>
+            <span class="cert-item">Certified AppSec Practitioner (CAP)</span>
+            <span class="cert-item">Junior PenTester Path — TryHackMe</span>
+            <span class="cert-item">Cisco Cybersecurity</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="200">
           <h3>Quick Links</h3>
           <div class="link-item"><a href="https://drive.google.com/file/d/1_CACExqdeBgy5v3BwWCtyyq4MPfuf0Hl/view?usp=sharing"><i class="fas fa-download"></i> Download Resume</a></div>
           <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
