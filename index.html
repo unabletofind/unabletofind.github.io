@@ -73,162 +73,6 @@
       box-shadow: 0 8px 32px rgba(0, 217, 255, 0.12) !important;
     }
 
-    /* Work Categories Navigation */
-    .work-categories {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-    
-    .work-category-btn {
-      padding: 12px 24px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--muted);
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .work-category-btn:hover {
-      color: var(--text);
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-    
-    .work-category-btn.active {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #001;
-      border-color: var(--accent);
-    }
-    
-    .work-content {
-      display: none;
-      animation: fadeIn 0.5s ease;
-    }
-    
-    .work-content.active {
-      display: block;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Category Search Bars */
-    .category-search {
-      margin-bottom: 32px;
-      position: relative;
-    }
-    
-    .category-search input {
-      width: 100%;
-      padding: 14px 48px 14px 20px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-size: 15px;
-    }
-    
-    .category-search input:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-    
-    .category-search .search-icon {
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-    
-    /* Category Items Grid */
-    .category-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 24px;
-      margin-top: 32px;
-    }
-    
-    .category-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      transition: all 0.3s ease;
-    }
-    
-    .category-item:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent);
-    }
-    
-    .category-item h4 {
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-    
-    .category-item .date {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-    
-    .category-item p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-    
-    .category-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    
-    .category-link:hover {
-      text-decoration: underline;
-    }
-    
-    .view-all-link {
-      text-align: center;
-      margin-top: 40px;
-    }
-    
-    .view-all-link a {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 20px;
-      border: 1px solid var(--accent);
-      border-radius: 8px;
-      transition: all 0.3s ease;
-    }
-    
-    .view-all-link a:hover {
-      background: rgba(0, 217, 255, 0.1);
-      transform: translateY(-2px);
-    }
-
     /* Read More Button Styles */
     .read-more-btn {
       background: transparent;
@@ -562,26 +406,84 @@ h1, h2, h3, h4 {
       font-size:14px;
       color:var(--text);
       border:1px solid var(--border);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .skill-item {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.25s ease;
-}
+    
+    .skill-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
+      transform: translateY(-3px);
+    }
+    
+    .skill-item:hover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(0,217,255,0.15), transparent 60%);
+      opacity: 1;
+    }
 
-.skill-item:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
-  transform: translateY(-3px);
-}
-
-.skill-item:hover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(0,217,255,0.15), transparent 60%);
-  opacity: 1;
-}
+    /* Certifications like Skills Section */
+    .certifications-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 40px;
+    }
+    
+    .cert-category {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+    
+    .cert-category:hover {
+      border-color: rgba(0,217,255,0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    
+    .cert-category h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+    
+    .cert-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    
+    .cert-item {
+      background: rgba(255,255,255,0.03);
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--text);
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cert-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
+      transform: translateY(-3px);
+    }
+    
+    .cert-item:hover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(0,217,255,0.15), transparent 60%);
+      opacity: 1;
+    }
 
     .timeline{
       max-width:900px;
@@ -736,14 +638,14 @@ h1, h2, h3, h4 {
       font-size:14px;
     }
     
-    .cert-item, .link-item{
+    .link-item{
       padding:12px 0;
       border-bottom:1px solid var(--border);
       color:var(--muted);
       font-size:14px;
     }
     
-    .cert-item:last-child, .link-item:last-child{
+    .link-item:last-child{
       border-bottom:none;
     }
     
@@ -759,7 +661,7 @@ h1, h2, h3, h4 {
 
     .contact-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
       gap:32px;
       margin-top:40px;
     }
@@ -836,7 +738,10 @@ h1, h2, h3, h4 {
       .projects-grid{
         grid-template-columns:1fr;
       }
-      .category-items {
+      .certifications-grid {
+        grid-template-columns: 1fr;
+      }
+      .contact-grid {
         grid-template-columns: 1fr;
       }
       body {
@@ -855,9 +760,6 @@ h1, h2, h3, h4 {
         z-index: 9999;
         transform: translate(-50%, -50%);
         transition: transform 0.05s linear;
-      }
-      .work-categories {
-        justify-content: center;
       }
     }
   </style>
@@ -887,7 +789,8 @@ h1, h2, h3, h4 {
           <li><a href="#about">About</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#experience">Experience</a></li>
-          <li><a href="#work">Work</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
         
         <div class="nav-cta">
@@ -913,8 +816,9 @@ h1, h2, h3, h4 {
         </div>
         
         <div class="hero-links">
-          <a href="#work"><i class="fas fa-file-alt"></i> View Work</a>
+          <a href="#projects"><i class="fas fa-code"></i> View Projects</a>
           <a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          <a href="https://medium.com/@yourusername" target="_blank"><i class="fab fa-medium"></i> Medium</a>
           <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
         </div>
       </div>
@@ -1004,6 +908,39 @@ h1, h2, h3, h4 {
           </div>
         </section>
 
+        <!-- Certifications -->
+        <section id="certifications">
+          <h2 class="section-title">Certifications</h2>
+          <div class="certifications-grid" data-aos="fade-up">
+            <div class="cert-category card-hover-glow">
+              <h3>Security Certifications</h3>
+              <div class="cert-items">
+                <span class="cert-item">Certified Defensive Security Analyst (CDSA)</span>
+                <span class="cert-item">Certified AppSec Practitioner (CAP)</span>
+                <span class="cert-item">Cisco Cybersecurity</span>
+              </div>
+            </div>
+            
+            <div class="cert-category card-hover-glow">
+              <h3>Training & Specializations</h3>
+              <div class="cert-items">
+                <span class="cert-item">Junior PenTester Path — TryHackMe</span>
+                <span class="cert-item">SOC Analyst Training</span>
+                <span class="cert-item">Incident Response Training</span>
+              </div>
+            </div>
+            
+            <div class="cert-category card-hover-glow">
+              <h3>Technical Skills Validation</h3>
+              <div class="cert-items">
+                <span class="cert-item">Network Security</span>
+                <span class="cert-item">Threat Detection</span>
+                <span class="cert-item">Security Operations</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
 
         <!-- Experience -->
         <section id="experience">
@@ -1037,109 +974,33 @@ h1, h2, h3, h4 {
           </div>
         </section>
 
-        <!-- Work Section with Categories -->
-      <section id="work">
-  <h2 class="section-title">My Work</h2>
-  
-  <div class="work-categories" data-aos="fade-up">
-    <button class="work-category-btn active" data-category="writeups">
-      <i class="fas fa-file-alt"></i> Writeups
-    </button>
-    <button class="work-category-btn" data-category="detection-rules">
-      <i class="fas fa-shield-alt"></i> Detection Rules
-    </button>
-    <button class="work-category-btn" data-category="malware-research">
-      <i class="fas fa-bug"></i> Malware Research
-    </button>
-    <button class="work-category-btn" data-category="projects">
-      <i class="fas fa-code"></i> Projects
-    </button>
-  </div>
-  
-  <!-- Writeups Category -->
-  <div class="work-content active" id="writeups-content">
-    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Security Writeups</h3>
-    
-    <div class="category-search">
-      <input type="text" id="writeupsSearch" placeholder="Search writeups by title, tag, or content...">
-      <i class="fas fa-search search-icon"></i>
-    </div>
-    
-    <div class="category-items" id="writeups-container">
-      <!-- Content will be loaded dynamically from JSON -->
-    </div>
-    
-    <div class="view-all-link">
-      <a href="writeups.html">
-        <i class="fas fa-external-link-alt"></i> View All Writeups
-      </a>
-    </div>
-  </div>
-          
-  <!-- Detection Rules Category -->
-  <div class="work-content" id="detection-rules-content">
-    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Detection Rules</h3>
-    
-    <div class="category-search">
-      <input type="text" id="rulesSearch" placeholder="Search detection rules by technique, platform, or tags...">
-      <i class="fas fa-search search-icon"></i>
-    </div>
-    
-    <div class="category-items" id="detection-rules-container">
-      <!-- Content will be loaded dynamically from JSON -->
-    </div>
-    
-    <div class="view-all-link">
-      <a href="detection-rules.html">
-        <i class="fas fa-external-link-alt"></i> View All Detection Rules
-      </a>
-    </div>
-  </div>
-          
-  <!-- Malware Research Category -->
-  <div class="work-content" id="malware-research-content">
-    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Malware Research</h3>
-    
-    <div class="category-search">
-      <input type="text" id="malwareSearch" placeholder="Search malware research by family, technique, or IOC...">
-      <i class="fas fa-search search-icon"></i>
-    </div>
-    
-    <div class="category-items" id="malware-research-container">
-      <!-- Content will be loaded dynamically from JSON -->
-    </div>
-    
-    <div class="view-all-link">
-      <a href="malware-research.html">
-        <i class="fas fa-external-link-alt"></i> View All Malware Research
-      </a>
-    </div>
-  </div>
-          
-  <!-- Projects Category -->
-  <div class="work-content" id="projects-content">
-    <h3 style="margin-bottom: 24px; font-size: 24px; color: var(--accent);">Projects</h3>
-    
-    <div class="category-search">
-      <input type="text" id="projectsSearch" placeholder="Search projects by technology, category, or description...">
-      <i class="fas fa-search search-icon"></i>
-    </div>
-    
-    <div class="category-items" id="projects-container">
-      <!-- Content will be loaded dynamically from JSON -->
-    </div>
-    
-    <div class="view-all-link">
-      <a href="projects.html">
-        <i class="fas fa-external-link-alt"></i> View All Projects
-      </a>
-    </div>
-  </div>
-</section>
+        <!-- Projects Section -->
+        <section id="projects">
+          <h2 class="section-title">Projects</h2>
+          <div class="projects-grid" data-aos="fade-up">
+            <div class="project-card card-hover-glow">
+              <h3>Detection Rule Repository</h3>
+              <p>A collection of custom Sigma and YARA rules for detecting various attack techniques, mapped to MITRE ATT&CK framework. Includes rules for lateral movement, persistence, and privilege escalation.</p>
+              <a href="https://github.com/unabletofind/detection-rules" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+            
+            <div class="project-card card-hover-glow">
+              <h3>Security Automation Scripts</h3>
+              <p>Python scripts for automating SOC workflows including log analysis, IOC extraction, and alert enrichment. Helps reduce manual investigation time by 40%.</p>
+              <a href="https://github.com/unabletofind/security-scripts" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+            
+            <div class="project-card card-hover-glow">
+              <h3>Incident Response Playbooks</h3>
+              <p>Comprehensive incident response playbooks covering various attack scenarios with step-by-step investigation procedures, evidence collection, and mitigation steps.</p>
+              <a href="https://github.com/unabletofind/ir-playbooks" target="_blank" class="project-link">View on GitHub →</a>
+            </div>
+          </div>
+        </section>
 
         <!-- Contact -->
         <section id="contact">
-          <h2 class="section-title">Get in Touch</h2>
+          <h2 class="section-title">Connect With Me</h2>
           <div class="contact-grid">
             <div class="contact-item card-hover-glow" data-aos="fade-up">
               <div class="contact-icon">
@@ -1162,7 +1023,15 @@ h1, h2, h3, h4 {
                 <i class="fab fa-github"></i>
               </div>
               <h3>GitHub</h3>
-              <a href="https://github.com/unabletofind" target="_blank">View my work</a>
+              <a href="https://github.com/unabletofind" target="_blank">View my projects</a>
+            </div>
+            
+            <div class="contact-item card-hover-glow" data-aos="fade-up" data-aos-delay="300">
+              <div class="contact-icon">
+                <i class="fab fa-medium"></i>
+              </div>
+              <h3>Medium</h3>
+              <a href="https://medium.com/@yourusername" target="_blank">Read my articles</a>
             </div>
           </div>
         </section>
@@ -1187,18 +1056,11 @@ h1, h2, h3, h4 {
         </div>
 
         <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="100">
-          <h3>Certifications</h3>
-          <div class="cert-item">Certified Defensive Security Analyst (CDSA)</div>
-          <div class="cert-item">Certified AppSec Practitioner (CAP)</div>
-          <div class="cert-item">Junior PenTester Path — TryHackMe</div>
-          <div class="cert-item">Cisco Cybersecurity</div>
-        </div>
-
-        <div class="sidebar-card card-hover-glow" data-aos="fade-left" data-aos-delay="200">
           <h3>Quick Links</h3>
           <div class="link-item"><a href="https://drive.google.com/file/d/1_CACExqdeBgy5v3BwWCtyyq4MPfuf0Hl/view?usp=sharing"><i class="fas fa-download"></i> Download Resume</a></div>
           <div class="link-item"><a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub Profile</a></div>
-          <div class="link-item"><a href="#work"><i class="fas fa-file-alt"></i> All Work Categories</a></div>
+          <div class="link-item"><a href="#projects"><i class="fas fa-code"></i> View Projects</a></div>
+          <div class="link-item"><a href="https://medium.com/@yourusername" target="_blank"><i class="fab fa-medium"></i> Medium Articles</a></div>
         </div>
       </aside>
     </div>
@@ -1273,79 +1135,6 @@ h1, h2, h3, h4 {
       }
     });
 
-    // Work Categories Navigation
-    document.querySelectorAll('.work-category-btn').forEach(button => {
-      button.addEventListener('click', function() {
-        // Remove active class from all buttons
-        document.querySelectorAll('.work-category-btn').forEach(btn => {
-          btn.classList.remove('active');
-        });
-        
-        // Add active class to clicked button
-        this.classList.add('active');
-        
-        // Get category
-        const category = this.getAttribute('data-category');
-        
-        // Hide all content
-        document.querySelectorAll('.work-content').forEach(content => {
-          content.classList.remove('active');
-        });
-        
-        // Show selected content
-        document.getElementById(`${category}-content`).classList.add('active');
-        
-        // Update URL hash
-        window.location.hash = `work-${category}`;
-      });
-    });
-
-    // Initialize based on URL hash
-    function initializeCategoryFromHash() {
-      const hash = window.location.hash;
-      if (hash.includes('work-')) {
-        const category = hash.replace('#work-', '');
-        const button = document.querySelector(`[data-category="${category}"]`);
-        if (button) {
-          button.click();
-        }
-      }
-    }
-
-    // Initialize on page load
-    window.addEventListener('load', initializeCategoryFromHash);
-    window.addEventListener('hashchange', initializeCategoryFromHash);
-
-    // Search functionality for each category
-    function setupSearch(searchInputId, itemsSelector) {
-      const searchInput = document.getElementById(searchInputId);
-      if (!searchInput) return;
-      
-      const items = document.querySelectorAll(itemsSelector);
-      
-      searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase();
-        
-        items.forEach(item => {
-          const tags = item.getAttribute('data-tags').toLowerCase();
-          const title = item.querySelector('h4').textContent.toLowerCase();
-          const text = item.textContent.toLowerCase();
-          
-          if (tags.includes(query) || title.includes(query) || text.includes(query)) {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    }
-
-    // Setup search for each category
-    setupSearch('writeupsSearch', '#writeups-content .category-item');
-    setupSearch('rulesSearch', '#detection-rules-content .category-item');
-    setupSearch('malwareSearch', '#malware-research-content .category-item');
-    setupSearch('projectsSearch', '#projects-content .category-item');
-
     // Read More functionality for experience
     document.querySelectorAll('.read-more-btn').forEach(button => {
       button.addEventListener('click', function() {
@@ -1365,20 +1154,18 @@ h1, h2, h3, h4 {
       anchor.addEventListener('click', function (e) {
         if (this.getAttribute('href') === '#') return;
         
-        if (!this.getAttribute('href').startsWith('#work-')) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          const target = document.querySelector(targetId);
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
+        
+        if (target) {
+          const navHeight = document.querySelector('nav').offsetHeight;
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
           
-          if (target) {
-            const navHeight = document.querySelector('nav').offsetHeight;
-            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-            
-            window.scrollTo({
-              top: targetPosition,
-              behavior: 'smooth'
-            });
-          }
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
         }
       });
     });
@@ -1388,169 +1175,10 @@ h1, h2, h3, h4 {
       cursorGlow.style.display = 'none';
       body.classList.remove('cursor-active');
     }
-    
-    // ============================================
-    // UPDATED: Load previews from JSON files
-    // ============================================
-
-    // Function to load previews from JSON files
-    async function loadPreviewsFromJSON(jsonFile, containerId, type) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-    
-        try {
-            // Load JSON file
-            const response = await fetch(jsonFile);
-            const data = await response.json();
-        
-            // Get the right array (writeups, projects, etc.)
-            let items = [];
-            if (data.writeups) items = data.writeups;
-            else if (data.projects) items = data.projects;
-            else if (data.detectionRules) items = data.detectionRules;
-            else if (data.malwareResearch) items = data.malwareResearch;
-            else items = data[Object.keys(data)[0]] || [];
-        
-            // Get first 2-3 items for preview
-            const previews = items.slice(0, 2);
-        
-            // Clear container
-            container.innerHTML = '';
-        
-            // Add preview items
-            previews.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'category-item card-hover-glow';
-                itemElement.setAttribute('data-tags', item.tags ? item.tags.join(' ') : '');
-            
-                // Determine link text and details based on type
-                let linkText = 'Read Full Analysis →';
-                let details = item.date || '';
-            
-                if (type.includes('detection') || containerId.includes('detection')) {
-                    linkText = 'View Rule Details →';
-                    details = `${item.date}${item.platform ? ' • ' + item.platform : ''}`;
-                } else if (type.includes('malware') || containerId.includes('malware')) {
-                    linkText = 'Read Full Research →';
-                    details = `${item.date}${item.category ? ' • ' + item.category : ''}`;
-                } else if (type.includes('project') || containerId.includes('project')) {
-                    linkText = 'View Project Details →';
-                    details = `${item.date}${item.technologies ? ' • ' + item.technologies : ''}`;
-                } else {
-                    // Default for writeups
-                    details = `${item.date}${item.readTime ? ' • ' + item.readTime : ''}`;
-                }
-            
-                itemElement.innerHTML = `
-                    <h4>${item.title}</h4>
-                    <div class="date">${details}</div>
-                    <p>${item.summary || item.description || ''}</p>
-                    <a href="${getLinkForType(type, item.id)}" class="category-link">${linkText}</a>
-                `;
-            
-                container.appendChild(itemElement);
-            });
-        
-            // Setup search for this category
-            const searchInputId = containerId.replace('-container', 'Search');
-            const searchInput = document.getElementById(searchInputId);
-            
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    const query = e.target.value.toLowerCase();
-                    const items = document.querySelectorAll(`#${containerId} .category-item`);
-                    
-                    items.forEach(item => {
-                        const tags = item.getAttribute('data-tags').toLowerCase();
-                        const title = item.querySelector('h4').textContent.toLowerCase();
-                        const text = item.textContent.toLowerCase();
-                        
-                        if (tags.includes(query) || title.includes(query) || text.includes(query)) {
-                            item.style.display = 'block';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-                });
-            }
-        
-        } catch (error) {
-            console.error(`Error loading ${type} previews:`, error);
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px; color: var(--muted);">
-                    <p>Preview content loaded</p>
-                </div>
-            `;
-        }
-    }
-
-    // Helper function to generate correct links
-    function getLinkForType(type, id) {
-        const typeMap = {
-            'writeups': 'writeups.html',
-            'detection': 'detection-rules.html',
-            'malware': 'malware-research.html',
-            'project': 'projects.html'
-        };
-    
-        for (const [key, file] of Object.entries(typeMap)) {
-            if (type.includes(key) || id.includes(key)) {
-                return `${file}?id=${id}`;
-            }
-        }
-    
-        // Default
-        return `writeups.html?id=${id}`;
-    }
-
-    // Function to load all content
-    async function loadAllContent() {
-        // Load writeups preview
-        await loadPreviewsFromJSON('data/writeups.json', 'writeups-container', 'writeups');
-    
-        // Load detection rules preview
-        await loadPreviewsFromJSON('data/detection-rules.json', 'detection-rules-container', 'detectionRules');
-    
-        // Load malware research preview
-        await loadPreviewsFromJSON('data/malware-research.json', 'malware-research-container', 'malwareResearch');
-    
-        // Load projects preview
-        await loadPreviewsFromJSON('data/projects.json', 'projects-container', 'projects');
-    }
-
-    // Also load content when category is switched
-    document.querySelectorAll('.work-category-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const category = this.getAttribute('data-category');
-        
-            // Load content for the selected category if not loaded yet
-            setTimeout(() => {
-                const containerId = `${category}-container`;
-                const container = document.getElementById(containerId);
-            
-                if (container && container.children.length === 0) {
-                    switch(category) {
-                        case 'writeups':
-                            loadPreviewsFromJSON('data/writeups.json', containerId, 'writeups');
-                            break;
-                        case 'detection-rules':
-                            loadPreviewsFromJSON('data/detection-rules.json', containerId, 'detectionRules');
-                            break;
-                        case 'malware-research':
-                            loadPreviewsFromJSON('data/malware-research.json', containerId, 'malwareResearch');
-                            break;
-                        case 'projects':
-                            loadPreviewsFromJSON('data/projects.json', containerId, 'projects');
-                            break;
-                    }
-                }
-            }, 300);
-        });
-    });
 
     // Call loadAllContent when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
-        loadAllContent();
+      // No JSON loading needed for simple projects
     });
   </script>
 </body>
