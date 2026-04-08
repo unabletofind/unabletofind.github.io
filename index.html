@@ -495,7 +495,7 @@ function buildBlogCards(data, limit) {
         <span class="blog-read">Read Analysis <i class="fas fa-arrow-right"></i></span>
         <div class="blog-tags">${b.mitre.map(m=>`<span class="blog-tag">${m}</span>`).join('')}</div>
       </div>`;
-    card.addEventListener('click', () => openModal(b));
+    card.addEventListener('click', () => window.location.href = b.url);
     grid.appendChild(card);
   });
   const countEl = document.getElementById('researchCount');
