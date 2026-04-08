@@ -106,7 +106,6 @@ nav {
   display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
   padding: 5px 14px; border-radius: 3px; margin-bottom: 24px;
-  /* CHANGE COLOR PER CATEGORY — see comments at bottom */
   background: rgba(244,63,94,0.08);
   border: 1px solid rgba(244,63,94,0.25);
   color: var(--red);
@@ -114,13 +113,13 @@ nav {
 .threat-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: pulse-dot 1.6s infinite; }
 @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
-/* TITLE */
+/* ── TITLE — UPDATED: Literata body font, smaller, lighter ── */
 .hero-title {
-  font-family: var(--display);
-  font-size: clamp(2.4rem, 5.5vw, 4.4rem);
-  font-weight: 800;
-  letter-spacing: -.04em;
-  line-height: 1.02;
+  font-family: var(--body);
+  font-size: clamp(1.8rem, 3.8vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -.02em;
+  line-height: 1.15;
   margin-bottom: 20px;
 }
 .hero-title .hl {
@@ -334,12 +333,12 @@ pre {
   font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
   text-transform: uppercase; color: var(--dim);
 }
-.kql-k  { color: #569cd6; } /* keywords */
-.kql-f  { color: #dcdcaa; } /* functions */
-.kql-s  { color: #ce9178; } /* strings */
-.kql-c  { color: #4a6f4a; font-style: italic; } /* comments */
-.kql-op { color: var(--accent); } /* operators */
-.kql-t  { color: #4ec9b0; } /* table names */
+.kql-k  { color: #569cd6; }
+.kql-f  { color: #dcdcaa; }
+.kql-s  { color: #ce9178; }
+.kql-c  { color: #4a6f4a; font-style: italic; }
+.kql-op { color: var(--accent); }
+.kql-t  { color: #4ec9b0; }
 
 /* IOC TABLE */
 .ioc-table {
@@ -420,14 +419,17 @@ pre {
 .takeaway-title { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
 .takeaway-body { font-size: .8rem; color: var(--muted); line-height: 1.6; font-family: var(--body); }
 
-/* VERDICT / SEVERITY METER */
+/* ── VERDICT / SEVERITY METER — UPDATED: mono font for score ── */
 .verdict-wrap {
   background: linear-gradient(135deg, rgba(244,63,94,0.05), rgba(124,58,237,0.05));
   border: 1px solid rgba(244,63,94,0.2); border-radius: 14px;
   padding: 28px; margin: 32px 0; display: flex; gap: 28px; flex-wrap: wrap;
 }
 .verdict-score {
-  font-family: var(--display); font-size: 4rem; font-weight: 800;
+  font-family: var(--mono);
+  font-size: 3.2rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
   -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text;
   background-image: linear-gradient(135deg, var(--red), var(--purple));
   line-height: 1; flex-shrink: 0;
@@ -573,20 +575,19 @@ pre {
     <div class="tldr">
       <div class="tldr-label"><i class="fas fa-bolt"></i> &nbsp;TL;DR</div>
       <p>
-        <!-- CHANGE: 2–3 sentence summary. Answer: Who did what, how, targeting whom, and what's the risk. -->
+        <!-- CHANGE: 2–3 sentence summary -->
         [Threat actor] used [technique] to [impact] affecting [targets]. The attack chain begins with [initial access] and culminates in [final impact]. This post walks through the full chain, detection logic, and IR steps.
       </p>
     </div>
 
-    <!-- MITRE STRIP — quick glance at techniques used -->
+    <!-- MITRE STRIP -->
     <div class="mitre-strip">
-      <!-- CHANGE: Add/remove cells. Copy from MITRE ATT&CK website -->
+      <!-- CHANGE: Add/remove cells -->
       <div class="mt-cell"><span class="mt-id">T1566.001</span><span class="mt-name">Spearphishing Attachment</span></div>
       <div class="mt-cell"><span class="mt-id">T1055</span><span class="mt-name">Process Injection</span></div>
       <div class="mt-cell"><span class="mt-id">T1078</span><span class="mt-name">Valid Accounts</span></div>
       <div class="mt-cell"><span class="mt-id">T1110</span><span class="mt-name">Brute Force</span></div>
       <div class="mt-cell"><span class="mt-id">T1041</span><span class="mt-name">Exfil Over C2</span></div>
-      <!-- Add more as needed -->
     </div>
 
   </div>
@@ -607,7 +608,7 @@ pre {
       <div class="toc-title"><i class="fas fa-list"></i> &nbsp;Contents</div>
       <ul class="toc-list">
         <li><a href="#s1"><span class="toc-num">01</span> Background</a></li>
-        <li><a href="#s2"><span class="toc-num">02</span> What to Look For</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span> Analyst's First Look</a></li>
         <li><a href="#s3"><span class="toc-num">03</span> Attack Chain</a></li>
         <li><a href="#s4"><span class="toc-num">04</span> MITRE Mapping</a></li>
         <li><a href="#s5"><span class="toc-num">05</span> IOCs</a></li>
@@ -624,10 +625,6 @@ pre {
 
     <!-- ─────────────────────────────────────────────────
          SECTION 01 — BACKGROUND
-         PURPOSE: Set context. Who is the actor? What is the
-         malware? Why does this matter RIGHT NOW?
-         RESEARCH: Wikipedia, MITRE Groups, vendor reports.
-         WRITE: 2–3 paragraphs. No technical jargon yet.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s1"></span>
     <div class="section-head reveal">
@@ -639,18 +636,11 @@ pre {
     <div class="reveal">
       <div class="sub-head">Who is behind this?</div>
       <p>
-        <!-- CHANGE: Who is the threat actor / malware author?
-             Nation-state? Financially motivated? Known group?
-             Where do they operate from? What's their history?
-             SOURCE: MITRE ATT&CK Groups page, Mandiant/CrowdStrike naming -->
         [Threat actor name], also tracked as <strong>[aliases e.g. Forest Blizzard, APT28, Fancy Bear]</strong>, is a [nation-state / financially motivated / hacktivist] threat actor attributed to [country/organization]. First observed in [year], the group is known for targeting [industry/sector] with a focus on [espionage / financial gain / disruption].
       </p>
 
       <div class="sub-head">Why is this relevant now?</div>
       <p>
-        <!-- CHANGE: What triggered this campaign? CVE just dropped?
-             Geo-political event? New malware variant discovered?
-             SOURCE: The news article / vendor advisory that started your research -->
         On [date], [source e.g. The Hacker News / Cisco Talos] reported a new campaign leveraging [technique/CVE]. The campaign has been active since [timeframe] and has impacted [number/type] of organizations across [regions/sectors]. This analysis breaks down the full attack chain so SOC teams know exactly what signals to hunt for.
       </p>
 
@@ -658,7 +648,6 @@ pre {
         <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
         <div class="callout-body">
           <strong>Why SOC Analysts Should Care</strong>
-          <!-- CHANGE: 1–2 sentences on immediate operational relevance -->
           [Specific reason this matters for your SOC — e.g. "This TTP bypasses standard EDR behavioral rules because it executes entirely in memory via LOLBins, making log-based detection the primary visibility layer."]
         </div>
       </div>
@@ -666,19 +655,12 @@ pre {
 
 
     <!-- ─────────────────────────────────────────────────
-         SECTION 02 — WHAT TO LOOK FOR (FIRST SIGNALS)
-         PURPOSE: The most important section for a SOC analyst.
-         Before diving into the full chain — what are the FIRST
-         signs in your environment that something is wrong?
-         RESEARCH: Vendor reports, MITRE detection notes,
-         hunting queries in Sentinel/MDE community.
-         WRITE: Think like a Tier 1 analyst. What alert fires?
-         What log stands out? What user behavior is anomalous?
+         SECTION 02 — ANALYST'S FIRST LOOK  ← RENAMED
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s2"></span>
     <div class="section-head reveal">
       <div class="section-num">02</div>
-      <h2 class="section-title">What to Look For First</h2>
+      <h2 class="section-title">Analyst's First Look</h2>
       <div class="section-line"></div>
     </div>
 
@@ -690,7 +672,6 @@ pre {
         <div class="callout-icon"><i class="fas fa-bell"></i></div>
         <div class="callout-body">
           <strong>Alert Triggers to Watch</strong>
-          <!-- CHANGE: List 3–5 specific alert names or rule names that fire -->
           • <em>[Alert name 1]</em> — fires when [specific condition, e.g. "powershell spawned from winword.exe"]<br>
           • <em>[Alert name 2]</em> — fires when [condition, e.g. "anomalous sign-in from Tor exit node"]<br>
           • <em>[Alert name 3]</em> — fires when [condition]<br>
@@ -700,7 +681,6 @@ pre {
 
       <div class="sub-head">In Raw Logs (Before Alerts Fire)</div>
       <p>If no alerts fire, a proactive hunt would look for these patterns in raw log data:</p>
-      <!-- CHANGE: What does the anomaly look like in logs before correlation fires? -->
       <ul style="margin: 12px 0 18px 20px; color: #8fb8d8; font-size: .9rem; line-height: 2;">
         <li><strong>[Log source e.g. SigninLogs]:</strong> [What field / value is abnormal]</li>
         <li><strong>[Log source e.g. DeviceProcessEvents]:</strong> [What process / command looks suspicious]</li>
@@ -712,8 +692,6 @@ pre {
         <div class="callout-icon"><i class="fas fa-lightbulb"></i></div>
         <div class="callout-body">
           <strong>Analyst Tip — Where to Start Your Triage</strong>
-          <!-- CHANGE: If you were the L1 analyst who got this alert, what's your first pivot?
-               Think: what entity (user / device / IP) do you look up first and why? -->
           Start by pivoting on [entity type — e.g. the source IP / the user UPN / the process hash]. In [tool — e.g. MDE], run [specific lookup — e.g. "device timeline for the last 48h"]. The key question to answer first is: <em>[framed as a yes/no question, e.g. "Has this device had any lateral movement indicators in the same window?"]</em>
         </div>
       </div>
@@ -722,11 +700,6 @@ pre {
 
     <!-- ─────────────────────────────────────────────────
          SECTION 03 — ATTACK CHAIN
-         PURPOSE: Full step-by-step breakdown of how the attack
-         progresses from initial access to final impact.
-         RESEARCH: Primary vendor report (Mandiant, Talos, etc.)
-         WRITE: Each phase = 1 paragraph minimum.
-         Map each phase to a MITRE tactic header.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s3"></span>
     <div class="section-head reveal">
@@ -736,7 +709,6 @@ pre {
     </div>
 
     <div class="reveal">
-      <!-- ATTACK CHAIN VISUAL — edit phase names and TIDs -->
       <div class="attack-chain">
         <div class="chain-phase">
           <div class="chain-phase-label">Phase 1 · Initial Access</div>
@@ -765,22 +737,15 @@ pre {
         </div>
       </div>
 
-      <!-- PHASE DEEP DIVES -->
       <div class="sub-head">Phase 1 — Initial Access</div>
       <p>
-        <!-- CHANGE: How did they get in? Email? Exploit? Supply chain?
-             What does the lure look like? What was the entry point?
-             SOURCE: Vendor report Section 1 / IOC report / email header samples -->
         The attack begins with [describe the initial access mechanism in detail]. [Actor] sent [type of lure — e.g. "a weaponized Excel attachment disguised as an invoice"] to [target profile]. The [file/URL/exploit] exploits [CVE or technique], allowing [what happens — e.g. "arbitrary code execution without user macros enabled"].
       </p>
-      <p>[Second paragraph: what does this look like from the victim's perspective? What did the user do / not do?]</p>
+      <p>[Second paragraph: what does this look like from the victim's perspective?]</p>
 
       <div class="sub-head">Phase 2 — Execution</div>
       <p>
-        <!-- CHANGE: What runs after initial access? What process is spawned?
-             What scripts/binaries are dropped or run in memory?
-             SOURCE: Vendor report, sandbox analysis (any.run, hybrid analysis) -->
-        Upon opening the [file/clicking the link], [describe what executes]. A notable characteristic is [something technically interesting, e.g. "the dropper uses process hollowing to inject into a legitimate Windows process, evading signature-based detection"]. The command line observed in telemetry is:
+        Upon opening the [file/clicking the link], [describe what executes]. A notable characteristic is [something technically interesting]. The command line observed in telemetry is:
       </p>
       <pre><span class="code-label">Observed Command</span>
 [paste the actual command / process tree here]
@@ -790,33 +755,23 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
       <div class="sub-head">Phase 3 — Persistence</div>
       <p>
-        <!-- CHANGE: How do they survive a reboot? Registry? Scheduled task?
-             WMI subscription? Where exactly is the artifact stored?
-             SOURCE: Malware analysis report -->
-        To maintain access, the malware [describe persistence mechanism]. [Specific registry key / scheduled task path / service name]. This is particularly stealthy because [reason — e.g. "it mimics a legitimate Microsoft service name"].
+        To maintain access, the malware [describe persistence mechanism]. [Specific registry key / scheduled task path / service name]. This is particularly stealthy because [reason].
       </p>
 
       <div class="sub-head">Phase 4 — Command & Control</div>
       <p>
-        <!-- CHANGE: How does malware phone home? What protocol? What domain?
-             How is C2 traffic disguised? Beacon interval?
-             SOURCE: Network IOCs, threat intel reports, DNS/PCAP analysis -->
-        C2 communication uses [protocol — e.g. HTTPS / DNS / WebSocket] with beaconing every [interval]. Traffic is [how it's disguised — e.g. "disguised as legitimate cloud storage API calls to OneDrive"]. The C2 infrastructure uses [infrastructure detail — e.g. "compromised home routers acting as relay nodes"].
+        C2 communication uses [protocol] with beaconing every [interval]. Traffic is [how it's disguised]. The C2 infrastructure uses [infrastructure detail].
       </p>
 
       <div class="sub-head">Phase 5 — Final Impact</div>
       <p>
-        <!-- CHANGE: What's the end goal? Exfil? Ransomware? Lateral movement?
-             How much data? What systems reached? -->
-        The campaign's objective is [goal]. [Describe final impact in detail]. In observed incidents, [specific outcome — number of systems, type of data stolen, ransom amount, etc.].
+        The campaign's objective is [goal]. [Describe final impact in detail]. In observed incidents, [specific outcome].
       </p>
 
       <div class="callout callout-red">
         <div class="callout-icon"><i class="fas fa-radiation"></i></div>
         <div class="callout-body">
           <strong>Critical Observation</strong>
-          <!-- CHANGE: What is the single most dangerous/clever aspect of this attack?
-               What makes this different from a commodity threat? -->
           [Your key analytical observation — e.g. "The most dangerous aspect of this campaign is the use of legitimate cloud services for C2, which means network-level blocking without policy tuning will also block legitimate business traffic."]
         </div>
       </div>
@@ -827,9 +782,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <!-- ─────────────────────────────────────────────────
          SECTION 04 — MITRE ATT&CK MAPPING
-         PURPOSE: Full technique table for quick reference.
-         RESEARCH: MITRE ATT&CK website — search each technique.
-         Copy TID, tactic, and read the detection guidance.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s4"></span>
     <div class="section-head reveal">
@@ -893,11 +845,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <!-- ─────────────────────────────────────────────────
          SECTION 05 — IOCs
-         PURPOSE: Concrete indicators analysts can hunt for
-         or add to watchlists / blocklists.
-         RESEARCH: Vendor report IOC section, VirusTotal,
-         AbuseIPDB, OTX AlienVault, Mandiant IOC reports.
-         NOTE: Only include public IOCs — never internal org data.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s5"></span>
     <div class="section-head reveal">
@@ -911,7 +858,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
         <div class="callout-icon"><i class="fas fa-info-circle"></i></div>
         <div class="callout-body">
           <strong>Source & Validation</strong>
-          <!-- CHANGE: Where did these IOCs come from? When were they last validated? -->
           IOCs sourced from [vendor report name, date]. Validated against VirusTotal and AbuseIPDB on [date]. Hash IOCs confirmed malicious with [X]+ AV detections.
         </div>
       </div>
@@ -974,11 +920,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <!-- ─────────────────────────────────────────────────
          SECTION 06 — DETECTION RULES
-         PURPOSE: Actionable KQL / Sigma rules analysts can
-         deploy directly in Sentinel or MDE.
-         RESEARCH: MITRE detection guidance, Sigma rules GitHub,
-         Microsoft Sentinel community rules, your own logic.
-         WRITE: At least 2 rules — one broad hunt, one precise alert.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s6"></span>
     <div class="section-head reveal">
@@ -1042,7 +983,7 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
         </pre>
       </div>
 
-      <!-- RULE 3 — IOC Hunt -->
+      <!-- RULE 3 -->
       <div class="detection-card">
         <div class="detection-card-head">
           <div class="detection-card-title"><i class="fas fa-search" style="color:var(--amber);margin-right:8px;font-size:11px"></i>Rule 3 — IOC Hash Hunt</div>
@@ -1069,7 +1010,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
         <div class="callout-icon"><i class="fas fa-wrench"></i></div>
         <div class="callout-body">
           <strong>Tuning Notes</strong>
-          <!-- CHANGE: Add tuning advice specific to this threat -->
           Before deploying Rule 1 as an alert: baseline your environment for legitimate [process spawning patterns]. Exclude [specific legitimate processes / accounts / paths] to reduce false positives. Start with Rule 3 (IOC hunt) as it has zero false positive risk.
         </div>
       </div>
@@ -1078,11 +1018,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <!-- ─────────────────────────────────────────────────
          SECTION 07 — IR PLAYBOOK
-         PURPOSE: Step-by-step response guide for when
-         an alert fires. Written as an actionable checklist.
-         RESEARCH: Your org's playbooks, Microsoft IR guidance,
-         NIST IR framework (Contain → Eradicate → Recover).
-         WRITE: Think about what YOU would do in your SOC.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s7"></span>
     <div class="section-head reveal">
@@ -1102,7 +1037,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
             <span class="ir-phase-tag phase-contain">Contain</span>
             <div class="ir-step-title">[Action — e.g. Isolate the Affected Device]</div>
             <div class="ir-step-detail">
-              <!-- CHANGE: Specific steps in your tooling (MDE, Sentinel, Entra) -->
               In MDE → Device page → Isolate device. This cuts all network connectivity except MDE management plane. Confirm isolation status shows "Isolated" in device timeline. Document isolation time in ticket.
             </div>
           </div>
@@ -1180,10 +1114,7 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
 
     <!-- ─────────────────────────────────────────────────
-         SECTION 08 — VERDICT / SEVERITY ASSESSMENT
-         PURPOSE: Your analyst judgment. How dangerous is this?
-         What's the actual risk to an org like yours?
-         WRITE: This is your original voice — own it.
+         SECTION 08 — VERDICT
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s8"></span>
     <div class="section-head reveal">
@@ -1194,14 +1125,12 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <div class="reveal">
       <div class="verdict-wrap">
-        <div class="verdict-score">
-          <!-- CHANGE: Severity score / 10 -->
-          8.5
-        </div>
+        <!-- CHANGE: Severity score / 10 -->
+        <div class="verdict-score">8.5</div>
         <div class="verdict-detail">
           <div class="verdict-label">Threat Severity Score</div>
           <div class="verdict-title">
-            <!-- CHANGE: One-line verdict, e.g. "Critical — Evades Standard EDR Without Tuning" -->
+            <!-- CHANGE: One-line verdict -->
             [Your verdict title]
           </div>
           <div class="verdict-bars">
@@ -1231,10 +1160,7 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
       </div>
 
       <p>
-        <!-- CHANGE: 2–3 paragraphs of your own analytical opinion.
-             Is this actually novel or recycled TTPs?
-             What makes it dangerous for orgs like yours specifically?
-             What's the defender's biggest challenge here? -->
+        <!-- CHANGE: Your analytical verdict -->
         [Your analytical verdict — e.g. "This campaign's strength isn't technical novelty — it's operational patience. APT28 is using known techniques but stringing them together in a way that exploits detection gaps between identity telemetry and endpoint telemetry..."]
       </p>
       <p>[Second paragraph: What's the defender's practical challenge? Where does the average SOC struggle with this?]</p>
@@ -1243,8 +1169,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <!-- ─────────────────────────────────────────────────
          SECTION 09 — KEY TAKEAWAYS
-         PURPOSE: Scannable summary for someone who just
-         wants the "so what." 4–5 cards.
     ───────────────────────────────────────────────── -->
     <span class="section-anchor" id="s9"></span>
     <div class="section-head reveal">
@@ -1290,7 +1214,6 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
       <span class="tag">#IncidentResponse</span>
     </div>
 
-
     <div class="divider"></div>
 
     <!-- ─────────────────────────────────────────────────
@@ -1305,7 +1228,7 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 
     <div class="reveal">
       <ul class="source-list">
-        <!-- CHANGE: Add all sources you used. Be specific — link to exact report, not homepage. -->
+        <!-- CHANGE: Add all sources you used -->
         <li><span class="source-num">[1]</span><a href="#" target="_blank">[Vendor] — [Report Title] ([Date])</a></li>
         <li><span class="source-num">[2]</span><a href="https://attack.mitre.org/techniques/T1XXX" target="_blank">MITRE ATT&CK — [Technique Name] (TXXXX)</a></li>
         <li><span class="source-num">[3]</span><a href="#" target="_blank">[Source] — [Title]</a></li>
