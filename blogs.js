@@ -18,6 +18,7 @@ const blogs = [
   // ── POST 1 (FEATURED) ──────────────────────────────────────
   {
     id: 'lockbit',
+    url: 'lockbit.html',
     cat: 'ransomware',
     catLabel: 'Ransomware',
     catColor: 'rgba(244,63,94,0.12)',
