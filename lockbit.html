@@ -30,7 +30,6 @@
   --body:      'Literata', serif;
 }
 
-/* ── RESET ──────────────────────────────────────────── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -40,8 +39,6 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
 }
-
-/* ── SCAN-LINE OVERLAY ──────────────────────────────── */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -59,7 +56,7 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 .nav-inner {
-  max-width: 1100px; margin: 0 auto; padding: 0 28px;
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
   display: flex; align-items: center; justify-content: space-between; height: 58px;
 }
 .nav-back {
@@ -68,8 +65,15 @@ nav {
   font-family: var(--mono); font-size: 11px; transition: color .2s;
 }
 .nav-back:hover { color: var(--accent); }
-.nav-brand { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -.01em; }
+.nav-brand { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); }
 .nav-series { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+/* ── READING PROGRESS ───────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 58px; left: 0; height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  z-index: 900; transition: width .1s linear;
+}
 
 /* ── HERO ───────────────────────────────────────────── */
 .hero {
@@ -98,10 +102,70 @@ nav {
   background: radial-gradient(ellipse, rgba(124,58,237,0.05) 0%, transparent 70%);
   pointer-events: none;
 }
-.container { max-width: 1100px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 2; }
-.container-narrow { max-width: 780px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 2; }
 
-/* THREAT CATEGORY BADGE */
+/* ── CONTAINERS ─────────────────────────────────────── */
+.container {
+  max-width: 1200px; margin: 0 auto; padding: 0 32px;
+  position: relative; z-index: 2;
+}
+
+/* ── ARTICLE LAYOUT — CSS GRID (key fix) ────────────── */
+.article-wrap { padding: 72px 0 100px; }
+
+.article-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  /* Main content takes most space, TOC is fixed width on right */
+  grid-template-columns: 1fr 240px;
+  gap: 48px;
+  align-items: start;
+  position: relative;
+  z-index: 2;
+}
+
+.article-body {
+  /* Main content column — full width of its grid cell */
+  min-width: 0; /* prevent overflow in grid */
+  font-size: .975rem;
+  line-height: 1.85;
+}
+.article-body p { color: #8fb8d8; margin-bottom: 18px; }
+.article-body strong { color: var(--text); font-weight: 600; }
+.article-body em { color: var(--accent); font-style: italic; }
+
+/* ── TABLE OF CONTENTS — RIGHT COLUMN ──────────────── */
+.toc-wrapper {
+  position: sticky;
+  top: 80px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  /* No float, no margin tricks — grid handles placement */
+}
+.toc-title {
+  color: var(--accent); font-size: 9px; letter-spacing: .14em;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 6px; }
+.toc-list a {
+  color: var(--muted); text-decoration: none;
+  display: flex; align-items: center; gap: 7px;
+  transition: color .2s; line-height: 1.4;
+}
+.toc-list a:hover, .toc-list a.active { color: var(--accent); }
+.toc-list a::before {
+  content: ''; width: 4px; height: 4px; border-radius: 50%;
+  background: currentColor; flex-shrink: 0;
+}
+.toc-num { color: var(--dim); font-size: 9px; }
+
+/* ── HERO ELEMENTS ──────────────────────────────────── */
 .threat-badge {
   display: inline-flex; align-items: center; gap: 7px;
   font-family: var(--mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
@@ -110,10 +174,12 @@ nav {
   border: 1px solid rgba(244,63,94,0.25);
   color: var(--red);
 }
-.threat-badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; animation: pulse-dot 1.6s infinite; }
+.threat-badge .dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; animation: pulse-dot 1.6s infinite;
+}
 @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
 
-/* ── TITLE — UPDATED: Literata body font, smaller, lighter ── */
 .hero-title {
   font-family: var(--body);
   font-size: clamp(1.8rem, 3.8vw, 3rem);
@@ -128,7 +194,6 @@ nav {
   background-image: linear-gradient(100deg, var(--accent) 0%, #4f9eff 50%, var(--purple) 100%);
 }
 
-/* META ROW */
 .meta-row {
   display: flex; flex-wrap: wrap; align-items: center; gap: 20px;
   font-family: var(--mono); font-size: 11px; color: var(--muted);
@@ -142,14 +207,12 @@ nav {
   color: var(--accent); font-size: 10px;
 }
 
-/* TLDR BOX */
 .tldr {
   background: linear-gradient(135deg, rgba(0,200,255,0.04), rgba(124,58,237,0.04));
   border: 1px solid var(--border2);
   border-left: 3px solid var(--accent);
   border-radius: 0 12px 12px 0;
-  padding: 22px 26px;
-  margin-bottom: 36px;
+  padding: 22px 26px; margin-bottom: 36px;
 }
 .tldr-label {
   font-family: var(--mono); font-size: 9px; letter-spacing: .16em;
@@ -157,10 +220,7 @@ nav {
 }
 .tldr p { font-size: .9rem; color: #8fb8d8; line-height: 1.65; }
 
-/* MITRE TABLE (hero bottom) */
-.mitre-strip {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 0;
-}
+.mitre-strip { display: flex; flex-wrap: wrap; gap: 8px; }
 .mt-cell {
   background: rgba(244,63,94,0.06);
   border: 1px solid rgba(244,63,94,0.15);
@@ -171,7 +231,6 @@ nav {
 .mt-id { color: var(--red); font-weight: 600; }
 .mt-name { color: var(--muted); font-size: 9px; }
 
-/* SCROLL INDICATOR */
 .scroll-hint {
   position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -179,42 +238,8 @@ nav {
   animation: float 2.5s ease-in-out infinite;
 }
 @keyframes float { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-6px)} }
-.scroll-hint i { font-size: 11px; }
 
-/* ── READING PROGRESS BAR ───────────────────────────── */
-#progress-bar {
-  position: fixed; top: 58px; left: 0; height: 2px; width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--purple));
-  z-index: 900; transition: width .1s linear;
-}
-
-/* ── TABLE OF CONTENTS ──────────────────────────────── */
-.toc-wrapper {
-  position: sticky; top: 80px; float: right;
-  width: 220px; margin: 0 0 40px 40px;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px 20px;
-  font-family: var(--mono); font-size: 11px;
-}
-.toc-title { color: var(--accent); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; }
-.toc-list { list-style: none; }
-.toc-list li { margin-bottom: 6px; }
-.toc-list a {
-  color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 7px;
-  transition: color .2s; line-height: 1.4;
-}
-.toc-list a:hover, .toc-list a.active { color: var(--accent); }
-.toc-list a::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-.toc-num { color: var(--dim); font-size: 9px; }
-
-/* ── ARTICLE BODY ───────────────────────────────────── */
-.article-wrap { padding: 72px 0 100px; }
-.article-body { font-size: .975rem; line-height: 1.85; }
-.article-body p { color: #8fb8d8; margin-bottom: 18px; }
-.article-body strong { color: var(--text); font-weight: 600; font-style: normal; }
-.article-body em { color: var(--accent); font-style: italic; }
-
-/* SECTION HEADERS */
+/* ── SECTION HEADERS ────────────────────────────────── */
 .section-anchor { display: block; position: relative; top: -90px; visibility: hidden; }
 .section-head {
   display: flex; align-items: center; gap: 14px;
@@ -231,7 +256,6 @@ nav {
 }
 .section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
 
-/* SUB-HEADERS */
 .sub-head {
   font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
   text-transform: uppercase; color: var(--accent); margin: 32px 0 12px;
@@ -239,46 +263,43 @@ nav {
 }
 .sub-head::before { content: '//'; color: var(--dim); }
 
-/* CALLOUT BOXES */
+/* ── CALLOUT BOXES ──────────────────────────────────── */
 .callout {
   border-radius: 10px; padding: 18px 22px; margin: 24px 0;
   display: flex; gap: 14px; align-items: flex-start;
 }
 .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
 .callout-body { font-size: .875rem; line-height: 1.7; }
-.callout-body strong { display: block; margin-bottom: 4px; font-size: .8rem; font-family: var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+.callout-body strong {
+  display: block; margin-bottom: 4px; font-size: .8rem;
+  font-family: var(--mono); letter-spacing: .05em; text-transform: uppercase;
+}
+.callout-red   { background: rgba(244,63,94,0.06);  border: 1px solid rgba(244,63,94,0.18); }
+.callout-red   .callout-icon, .callout-red strong { color: var(--red); }
+.callout-red   .callout-body { color: #c4899a; }
+.callout-amber { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.18); }
+.callout-amber .callout-icon, .callout-amber strong { color: var(--amber); }
+.callout-amber .callout-body { color: #b89060; }
+.callout-blue  { background: rgba(0,200,255,0.05);  border: 1px solid rgba(0,200,255,0.15); }
+.callout-blue  .callout-icon, .callout-blue strong { color: var(--accent); }
+.callout-blue  .callout-body { color: #6090aa; }
+.callout-green { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.18); }
+.callout-green .callout-icon, .callout-green strong { color: var(--green); }
+.callout-green .callout-body { color: #5a9a80; }
 
-.callout-red    { background: rgba(244,63,94,0.06);  border: 1px solid rgba(244,63,94,0.18); }
-.callout-red    .callout-icon, .callout-red strong { color: var(--red); }
-.callout-red    .callout-body { color: #c4899a; }
-
-.callout-amber  { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.18); }
-.callout-amber  .callout-icon, .callout-amber strong { color: var(--amber); }
-.callout-amber  .callout-body { color: #b89060; }
-
-.callout-blue   { background: rgba(0,200,255,0.05);  border: 1px solid rgba(0,200,255,0.15); }
-.callout-blue   .callout-icon, .callout-blue strong { color: var(--accent); }
-.callout-blue   .callout-body { color: #6090aa; }
-
-.callout-green  { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.18); }
-.callout-green  .callout-icon, .callout-green strong { color: var(--green); }
-.callout-green  .callout-body { color: #5a9a80; }
-
-/* ATTACK CHAIN DIAGRAM */
+/* ── ATTACK CHAIN ───────────────────────────────────── */
 .attack-chain {
-  display: flex; flex-wrap: wrap; gap: 0;
-  margin: 28px 0; background: var(--bg2);
-  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  display: flex; flex-wrap: wrap; gap: 0; margin: 28px 0;
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
 }
 .chain-phase {
-  flex: 1; min-width: 130px; padding: 16px 14px;
+  flex: 1; min-width: 120px; padding: 16px 14px;
   border-right: 1px solid var(--border); position: relative;
 }
 .chain-phase:last-child { border-right: none; }
 .chain-phase::after {
-  content: '›';
-  position: absolute; right: -8px; top: 50%; transform: translateY(-50%);
-  color: var(--accent); font-size: 16px; z-index: 1;
+  content: '›'; position: absolute; right: -9px; top: 50%;
+  transform: translateY(-50%); color: var(--accent); font-size: 18px; z-index: 1;
 }
 .chain-phase:last-child::after { display: none; }
 .chain-phase-label {
@@ -295,7 +316,7 @@ nav {
   padding: 2px 7px; border-radius: 3px; display: inline-block; margin-top: 4px;
 }
 
-/* MITRE FULL TABLE */
+/* ── MITRE TABLE ────────────────────────────────────── */
 .mitre-table {
   width: 100%; border-collapse: collapse; margin: 20px 0;
   font-family: var(--mono); font-size: 11px;
@@ -315,18 +336,15 @@ nav {
 .mt-technique { color: var(--text); }
 .mt-desc { color: var(--muted); font-size: 10px; }
 
-/* CODE BLOCKS */
+/* ── CODE BLOCKS ────────────────────────────────────── */
 pre {
   background: #020a14;
   border: 1px solid var(--border2);
   border-left: 3px solid var(--accent);
   border-radius: 0 10px 10px 0;
-  padding: 22px 24px;
-  overflow-x: auto;
+  padding: 22px 24px; overflow-x: auto;
   font-family: var(--mono); font-size: 12px;
-  line-height: 1.75; color: #6ec6e8;
-  margin: 20px 0;
-  position: relative;
+  line-height: 1.75; color: #6ec6e8; margin: 20px 0; position: relative;
 }
 .code-label {
   position: absolute; top: 10px; right: 14px;
@@ -340,7 +358,7 @@ pre {
 .kql-op { color: var(--accent); }
 .kql-t  { color: #4ec9b0; }
 
-/* IOC TABLE */
+/* ── IOC TABLE ──────────────────────────────────────── */
 .ioc-table {
   width: 100%; border-collapse: collapse; margin: 20px 0;
   font-family: var(--mono); font-size: 11px;
@@ -359,7 +377,7 @@ pre {
 .ioc-sev-med  { color: var(--amber); }
 .ioc-sev-low  { color: var(--green); }
 
-/* IR PLAYBOOK STEPS */
+/* ── IR STEPS ───────────────────────────────────────── */
 .ir-steps { list-style: none; margin: 20px 0; counter-reset: ir; }
 .ir-step {
   counter-increment: ir;
@@ -388,7 +406,7 @@ pre {
 .phase-invest  { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); color: var(--amber); }
 .phase-recover { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--green); }
 
-/* DETECTION RULE CARD */
+/* ── DETECTION CARDS ────────────────────────────────── */
 .detection-card {
   background: var(--bg2); border: 1px solid var(--border2);
   border-radius: 12px; overflow: hidden; margin: 24px 0;
@@ -396,40 +414,26 @@ pre {
 .detection-card-head {
   background: var(--surface); padding: 12px 18px;
   display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px;
 }
 .detection-card-title { font-family: var(--mono); font-size: 11px; color: var(--text); }
 .detection-card-tag {
   font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
-  text-transform: uppercase; padding: 3px 9px; border-radius: 3px;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 3px; white-space: nowrap;
 }
 .dtag-sentinel { background: rgba(0,200,255,0.08); color: var(--accent); border: 1px solid rgba(0,200,255,0.2); }
 .dtag-mde      { background: rgba(124,58,237,0.08); color: var(--purple); border: 1px solid rgba(124,58,237,0.2); }
 .dtag-sigma    { background: rgba(245,158,11,0.08); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
 .detection-card pre { border-radius: 0; border: none; border-left: none; margin: 0; }
 
-/* KEY TAKEAWAYS */
-.takeaway-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 20px 0; }
-.takeaway-card {
-  background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
-  padding: 18px; transition: .25s;
-}
-.takeaway-card:hover { border-color: var(--border2); transform: translateY(-2px); }
-.takeaway-icon { font-size: 20px; margin-bottom: 10px; }
-.takeaway-title { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-.takeaway-body { font-size: .8rem; color: var(--muted); line-height: 1.6; font-family: var(--body); }
-
-/* ── VERDICT / SEVERITY METER — UPDATED: mono font for score ── */
+/* ── VERDICT ────────────────────────────────────────── */
 .verdict-wrap {
   background: linear-gradient(135deg, rgba(244,63,94,0.05), rgba(124,58,237,0.05));
   border: 1px solid rgba(244,63,94,0.2); border-radius: 14px;
   padding: 28px; margin: 32px 0; display: flex; gap: 28px; flex-wrap: wrap;
 }
 .verdict-score {
-  font-family: var(--mono);
-  font-size: 3.2rem;
-  font-weight: 600;
-  letter-spacing: -.02em;
+  font-family: var(--mono); font-size: 3.2rem; font-weight: 600;
   -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text;
   background-image: linear-gradient(135deg, var(--red), var(--purple));
   line-height: 1; flex-shrink: 0;
@@ -439,12 +443,23 @@ pre {
 .verdict-title { font-family: var(--display); font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
 .verdict-bars { display: flex; flex-direction: column; gap: 8px; }
 .v-bar-row { display: flex; align-items: center; gap: 10px; }
-.v-bar-name { font-family: var(--mono); font-size: 9px; color: var(--muted); width: 90px; flex-shrink: 0; }
+.v-bar-name { font-family: var(--mono); font-size: 9px; color: var(--muted); width: 130px; flex-shrink: 0; }
 .v-bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; }
 .v-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--red), var(--purple)); }
 .v-bar-val { font-family: var(--mono); font-size: 9px; color: var(--text); width: 30px; text-align: right; }
 
-/* SOURCES */
+/* ── TAKEAWAYS ──────────────────────────────────────── */
+.takeaway-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 20px 0; }
+.takeaway-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px; transition: .25s;
+}
+.takeaway-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.takeaway-icon { font-size: 20px; margin-bottom: 10px; }
+.takeaway-title { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.takeaway-body { font-size: .8rem; color: var(--muted); line-height: 1.6; font-family: var(--body); }
+
+/* ── SOURCES ────────────────────────────────────────── */
 .source-list { list-style: none; margin: 16px 0; }
 .source-list li {
   display: flex; align-items: flex-start; gap: 10px;
@@ -456,7 +471,7 @@ pre {
 .source-list a { color: var(--accent); text-decoration: none; }
 .source-list a:hover { text-decoration: underline; }
 
-/* AUTHOR FOOTER */
+/* ── AUTHOR ─────────────────────────────────────────── */
 .author-card {
   display: flex; align-items: center; gap: 20px;
   background: var(--surface); border: 1px solid var(--border2);
@@ -471,7 +486,7 @@ pre {
 }
 .author-name { font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
 .author-role { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 10px; }
-.author-links { display: flex; gap: 8px; }
+.author-links { display: flex; gap: 8px; flex-wrap: wrap; }
 .author-link {
   font-family: var(--mono); font-size: 10px; color: var(--muted);
   border: 1px solid var(--border); padding: 3px 10px; border-radius: 4px;
@@ -479,10 +494,8 @@ pre {
 }
 .author-link:hover { color: var(--accent); border-color: var(--border2); }
 
-/* NEXT/PREV NAV */
-.post-nav {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px;
-}
+/* ── POST NAV ───────────────────────────────────────── */
+.post-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 40px; }
 .post-nav-card {
   background: var(--bg2); border: 1px solid var(--border);
   border-radius: 10px; padding: 16px 18px; text-decoration: none; transition: .25s;
@@ -491,7 +504,7 @@ pre {
 .post-nav-dir { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 5px; }
 .post-nav-title { font-family: var(--display); font-size: 13px; font-weight: 600; color: var(--text); }
 
-/* UTILITIES */
+/* ── UTILITIES ──────────────────────────────────────── */
 .tag-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0; }
 .tag {
   font-family: var(--mono); font-size: 9px; letter-spacing: .08em;
@@ -499,15 +512,22 @@ pre {
   background: rgba(0,200,255,0.05); border: 1px solid rgba(0,200,255,0.12); color: var(--accent);
 }
 .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 48px 0; }
-.highlight { background: rgba(0,200,255,0.07); border-radius: 3px; padding: 1px 5px; color: var(--accent); font-family: var(--mono); font-size: .88em; }
-
-/* REVEAL */
+.highlight {
+  background: rgba(0,200,255,0.07); border-radius: 3px;
+  padding: 1px 5px; color: var(--accent); font-family: var(--mono); font-size: .88em;
+}
 .reveal { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
 .reveal.visible { opacity: 1; transform: none; }
 
-/* RESPONSIVE */
-@media (max-width: 860px) {
-  .toc-wrapper { display: none; }
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  /* On mobile: stack TOC above content, hide it, or move below */
+  .article-layout {
+    grid-template-columns: 1fr;
+  }
+  .toc-wrapper {
+    display: none; /* hide TOC on mobile — or move it above article-body */
+  }
   .attack-chain { flex-direction: column; }
   .chain-phase::after { display: none; }
   .verdict-wrap { flex-direction: column; }
@@ -517,10 +537,8 @@ pre {
 </head>
 <body>
 
-<!-- PROGRESS BAR -->
 <div id="progress-bar"></div>
 
-<!-- NAV -->
 <nav>
   <div class="nav-inner">
     <a href="research.html" class="nav-back"><i class="fas fa-arrow-left"></i> All Research</a>
@@ -531,35 +549,24 @@ pre {
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════════════════════
-     HERO — Fill in your threat details here
-══════════════════════════════════════════════════════ -->
+<!-- ══════════════════════ HERO ══════════════════════ -->
 <section class="hero">
   <div class="hero-grid-bg"></div>
   <div class="hero-glow"></div>
   <div class="hero-glow-2"></div>
   <div class="container">
 
-    <!-- BADGE: Change color class for category:
-         APT/Nation-State → keep red (default)
-         Ransomware       → amber: rgba(245,158,11,...)
-         Phishing/BEC     → purple: rgba(168,85,247,...)
-         Vulnerability    → blue: rgba(0,200,255,...)
-         Malware          → green: rgba(16,185,129,...)   -->
     <div class="threat-badge">
       <span class="dot"></span>
       <i class="fas fa-skull-crossbones" style="font-size:8px"></i>
-      <!-- CHANGE: e.g. APT · Nation-State / Ransomware / Phishing / Malware -->
       [THREAT CATEGORY]
     </div>
 
     <h1 class="hero-title">
-      <!-- CHANGE: Main title, put the most impactful part in .hl span -->
       [Threat Actor / Malware Name]<br>
       <span class="hl">[What They Did — Short & Punchy]</span>
     </h1>
 
-    <!-- META -->
     <div class="meta-row">
       <span><i class="far fa-calendar-alt"></i> &nbsp;[Month DD, YYYY]</span>
       <span class="sep">·</span>
@@ -571,18 +578,12 @@ pre {
       <div class="meta-chip"><i class="fas fa-network-wired" style="font-size:9px"></i> [X] TTPs</div>
     </div>
 
-    <!-- TLDR -->
     <div class="tldr">
       <div class="tldr-label"><i class="fas fa-bolt"></i> &nbsp;TL;DR</div>
-      <p>
-        <!-- CHANGE: 2–3 sentence summary -->
-        [Threat actor] used [technique] to [impact] affecting [targets]. The attack chain begins with [initial access] and culminates in [final impact]. This post walks through the full chain, detection logic, and IR steps.
-      </p>
+      <p>[Threat actor] used [technique] to [impact] affecting [targets]. The attack chain begins with [initial access] and culminates in [final impact]. This post walks through the full chain, detection logic, and IR steps.</p>
     </div>
 
-    <!-- MITRE STRIP -->
     <div class="mitre-strip">
-      <!-- CHANGE: Add/remove cells -->
       <div class="mt-cell"><span class="mt-id">T1566.001</span><span class="mt-name">Spearphishing Attachment</span></div>
       <div class="mt-cell"><span class="mt-id">T1055</span><span class="mt-name">Process Injection</span></div>
       <div class="mt-cell"><span class="mt-id">T1078</span><span class="mt-name">Valid Accounts</span></div>
@@ -591,355 +592,286 @@ pre {
     </div>
 
   </div>
-  <div class="scroll-hint">
-    <i class="fas fa-chevron-down"></i> SCROLL TO READ
-  </div>
+  <div class="scroll-hint"><i class="fas fa-chevron-down"></i> SCROLL TO READ</div>
 </section>
 
 
-<!-- ══════════════════════════════════════════════════════
-     ARTICLE BODY
-══════════════════════════════════════════════════════ -->
+<!-- ══════════════════ ARTICLE BODY ══════════════════ -->
 <div class="article-wrap">
-  <div class="container">
 
-    <!-- FLOATING TOC (desktop) -->
-    <div class="toc-wrapper">
-      <div class="toc-title"><i class="fas fa-list"></i> &nbsp;Contents</div>
-      <ul class="toc-list">
-        <li><a href="#s1"><span class="toc-num">01</span> Background</a></li>
-        <li><a href="#s2"><span class="toc-num">02</span> Analyst's First Look</a></li>
-        <li><a href="#s3"><span class="toc-num">03</span> Attack Chain</a></li>
-        <li><a href="#s4"><span class="toc-num">04</span> MITRE Mapping</a></li>
-        <li><a href="#s5"><span class="toc-num">05</span> IOCs</a></li>
-        <li><a href="#s6"><span class="toc-num">06</span> Detection Rules</a></li>
-        <li><a href="#s7"><span class="toc-num">07</span> IR Playbook</a></li>
-        <li><a href="#s8"><span class="toc-num">08</span> Verdict</a></li>
-        <li><a href="#s9"><span class="toc-num">09</span> Key Takeaways</a></li>
-        <li><a href="#s10"><span class="toc-num">10</span> Sources</a></li>
-      </ul>
-    </div>
+  <!--
+    KEY FIX: article-layout is a CSS Grid with two columns:
+      Column 1 (1fr)  = article-body  → main reading content
+      Column 2 (240px) = toc-wrapper  → sticky TOC on the right
+    No floats, no margin tricks.
+  -->
+  <div class="article-layout">
 
-    <div class="container-narrow">
+    <!-- ── MAIN CONTENT COLUMN ── -->
     <div class="article-body">
 
-    <!-- ─────────────────────────────────────────────────
-         SECTION 01 — BACKGROUND
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s1"></span>
-    <div class="section-head reveal">
-      <div class="section-num">01</div>
-      <h2 class="section-title">Background & Context</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <div class="sub-head">Who is behind this?</div>
-      <p>
-        [Threat actor name], also tracked as <strong>[aliases e.g. Forest Blizzard, APT28, Fancy Bear]</strong>, is a [nation-state / financially motivated / hacktivist] threat actor attributed to [country/organization]. First observed in [year], the group is known for targeting [industry/sector] with a focus on [espionage / financial gain / disruption].
-      </p>
-
-      <div class="sub-head">Why is this relevant now?</div>
-      <p>
-        On [date], [source e.g. The Hacker News / Cisco Talos] reported a new campaign leveraging [technique/CVE]. The campaign has been active since [timeframe] and has impacted [number/type] of organizations across [regions/sectors]. This analysis breaks down the full attack chain so SOC teams know exactly what signals to hunt for.
-      </p>
-
-      <div class="callout callout-amber">
-        <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
-        <div class="callout-body">
-          <strong>Why SOC Analysts Should Care</strong>
-          [Specific reason this matters for your SOC — e.g. "This TTP bypasses standard EDR behavioral rules because it executes entirely in memory via LOLBins, making log-based detection the primary visibility layer."]
-        </div>
+      <!-- ─────── S01 BACKGROUND ─────── -->
+      <span class="section-anchor" id="s1"></span>
+      <div class="section-head reveal">
+        <div class="section-num">01</div>
+        <h2 class="section-title">Background & Context</h2>
+        <div class="section-line"></div>
       </div>
-    </div>
+      <div class="reveal">
+        <div class="sub-head">Who is behind this?</div>
+        <p>[Threat actor name], also tracked as <strong>[aliases e.g. Forest Blizzard, APT28, Fancy Bear]</strong>, is a [nation-state / financially motivated / hacktivist] threat actor attributed to [country/organization]. First observed in [year], the group is known for targeting [industry/sector] with a focus on [espionage / financial gain / disruption].</p>
 
+        <div class="sub-head">Why is this relevant now?</div>
+        <p>On [date], [source e.g. The Hacker News / Cisco Talos] reported a new campaign leveraging [technique/CVE]. The campaign has been active since [timeframe] and has impacted [number/type] of organizations across [regions/sectors]. This analysis breaks down the full attack chain so SOC teams know exactly what signals to hunt for.</p>
 
-    <!-- ─────────────────────────────────────────────────
-         SECTION 02 — ANALYST'S FIRST LOOK  ← RENAMED
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s2"></span>
-    <div class="section-head reveal">
-      <div class="section-num">02</div>
-      <h2 class="section-title">Analyst's First Look</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <p>Before walking through the full attack chain, here are the <strong>early warning signals</strong> that surface in your SIEM and EDR — these are what an analyst would see in a real triage scenario before attribution is known.</p>
-
-      <div class="sub-head">In Microsoft Sentinel / MDE Alerts</div>
-      <div class="callout callout-red">
-        <div class="callout-icon"><i class="fas fa-bell"></i></div>
-        <div class="callout-body">
-          <strong>Alert Triggers to Watch</strong>
-          • <em>[Alert name 1]</em> — fires when [specific condition, e.g. "powershell spawned from winword.exe"]<br>
-          • <em>[Alert name 2]</em> — fires when [condition, e.g. "anomalous sign-in from Tor exit node"]<br>
-          • <em>[Alert name 3]</em> — fires when [condition]<br>
-          • <em>[Alert name 4]</em> — fires when [condition]
+        <div class="callout callout-amber">
+          <div class="callout-icon"><i class="fas fa-triangle-exclamation"></i></div>
+          <div class="callout-body">
+            <strong>Why SOC Analysts Should Care</strong>
+            [Specific reason this matters for your SOC — e.g. "This TTP bypasses standard EDR behavioral rules because it executes entirely in memory via LOLBins, making log-based detection the primary visibility layer."]
+          </div>
         </div>
       </div>
 
-      <div class="sub-head">In Raw Logs (Before Alerts Fire)</div>
-      <p>If no alerts fire, a proactive hunt would look for these patterns in raw log data:</p>
-      <ul style="margin: 12px 0 18px 20px; color: #8fb8d8; font-size: .9rem; line-height: 2;">
-        <li><strong>[Log source e.g. SigninLogs]:</strong> [What field / value is abnormal]</li>
-        <li><strong>[Log source e.g. DeviceProcessEvents]:</strong> [What process / command looks suspicious]</li>
-        <li><strong>[Log source e.g. EmailEvents]:</strong> [What sender pattern / attachment type flags it]</li>
-        <li><strong>[Log source e.g. NetworkEvents]:</strong> [What IP/domain/port pattern is anomalous]</li>
-      </ul>
-
-      <div class="callout callout-blue">
-        <div class="callout-icon"><i class="fas fa-lightbulb"></i></div>
-        <div class="callout-body">
-          <strong>Analyst Tip — Where to Start Your Triage</strong>
-          Start by pivoting on [entity type — e.g. the source IP / the user UPN / the process hash]. In [tool — e.g. MDE], run [specific lookup — e.g. "device timeline for the last 48h"]. The key question to answer first is: <em>[framed as a yes/no question, e.g. "Has this device had any lateral movement indicators in the same window?"]</em>
-        </div>
+      <!-- ─────── S02 ANALYST'S FIRST LOOK ─────── -->
+      <span class="section-anchor" id="s2"></span>
+      <div class="section-head reveal">
+        <div class="section-num">02</div>
+        <h2 class="section-title">Analyst's First Look</h2>
+        <div class="section-line"></div>
       </div>
-    </div>
+      <div class="reveal">
+        <p>Before walking through the full attack chain, here are the <strong>early warning signals</strong> that surface in your SIEM and EDR — these are what an analyst would see in a real triage scenario before attribution is known.</p>
 
+        <div class="sub-head">In Microsoft Sentinel / MDE Alerts</div>
+        <div class="callout callout-red">
+          <div class="callout-icon"><i class="fas fa-bell"></i></div>
+          <div class="callout-body">
+            <strong>Alert Triggers to Watch</strong>
+            • <em>[Alert name 1]</em> — fires when [specific condition, e.g. "powershell spawned from winword.exe"]<br>
+            • <em>[Alert name 2]</em> — fires when [condition]<br>
+            • <em>[Alert name 3]</em> — fires when [condition]<br>
+            • <em>[Alert name 4]</em> — fires when [condition]
+          </div>
+        </div>
 
-    <!-- ─────────────────────────────────────────────────
-         SECTION 03 — ATTACK CHAIN
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s3"></span>
-    <div class="section-head reveal">
-      <div class="section-num">03</div>
-      <h2 class="section-title">Attack Chain Breakdown</h2>
-      <div class="section-line"></div>
-    </div>
+        <div class="sub-head">In Raw Logs (Before Alerts Fire)</div>
+        <p>If no alerts fire, a proactive hunt would look for these patterns in raw log data:</p>
+        <ul style="margin: 12px 0 18px 20px; color: #8fb8d8; font-size: .9rem; line-height: 2;">
+          <li><strong>[Log source e.g. SigninLogs]:</strong> [What field / value is abnormal]</li>
+          <li><strong>[Log source e.g. DeviceProcessEvents]:</strong> [What process / command looks suspicious]</li>
+          <li><strong>[Log source e.g. EmailEvents]:</strong> [What sender pattern / attachment type flags it]</li>
+          <li><strong>[Log source e.g. NetworkEvents]:</strong> [What IP/domain/port pattern is anomalous]</li>
+        </ul>
 
-    <div class="reveal">
-      <div class="attack-chain">
-        <div class="chain-phase">
-          <div class="chain-phase-label">Phase 1 · Initial Access</div>
-          <div class="chain-phase-name">[e.g. Spearphishing]</div>
-          <span class="chain-phase-tech">T1566.001</span>
-        </div>
-        <div class="chain-phase">
-          <div class="chain-phase-label">Phase 2 · Execution</div>
-          <div class="chain-phase-name">[e.g. Macro / Script]</div>
-          <span class="chain-phase-tech">T1059.001</span>
-        </div>
-        <div class="chain-phase">
-          <div class="chain-phase-label">Phase 3 · Persistence</div>
-          <div class="chain-phase-name">[e.g. Registry Run Key]</div>
-          <span class="chain-phase-tech">T1547.001</span>
-        </div>
-        <div class="chain-phase">
-          <div class="chain-phase-label">Phase 4 · C2</div>
-          <div class="chain-phase-name">[e.g. DNS Tunneling]</div>
-          <span class="chain-phase-tech">T1071.004</span>
-        </div>
-        <div class="chain-phase">
-          <div class="chain-phase-label">Phase 5 · Impact</div>
-          <div class="chain-phase-name">[e.g. Data Exfil]</div>
-          <span class="chain-phase-tech">T1041</span>
+        <div class="callout callout-blue">
+          <div class="callout-icon"><i class="fas fa-lightbulb"></i></div>
+          <div class="callout-body">
+            <strong>Analyst Tip — Where to Start Your Triage</strong>
+            Start by pivoting on [entity type]. In [tool], run [specific lookup]. The key question to answer first is: <em>[framed as a yes/no question]</em>
+          </div>
         </div>
       </div>
 
-      <div class="sub-head">Phase 1 — Initial Access</div>
-      <p>
-        The attack begins with [describe the initial access mechanism in detail]. [Actor] sent [type of lure — e.g. "a weaponized Excel attachment disguised as an invoice"] to [target profile]. The [file/URL/exploit] exploits [CVE or technique], allowing [what happens — e.g. "arbitrary code execution without user macros enabled"].
-      </p>
-      <p>[Second paragraph: what does this look like from the victim's perspective?]</p>
+      <!-- ─────── S03 ATTACK CHAIN ─────── -->
+      <span class="section-anchor" id="s3"></span>
+      <div class="section-head reveal">
+        <div class="section-num">03</div>
+        <h2 class="section-title">Attack Chain Breakdown</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="reveal">
+        <div class="attack-chain">
+          <div class="chain-phase">
+            <div class="chain-phase-label">Phase 1 · Initial Access</div>
+            <div class="chain-phase-name">[e.g. Spearphishing]</div>
+            <span class="chain-phase-tech">T1566.001</span>
+          </div>
+          <div class="chain-phase">
+            <div class="chain-phase-label">Phase 2 · Execution</div>
+            <div class="chain-phase-name">[e.g. Macro / Script]</div>
+            <span class="chain-phase-tech">T1059.001</span>
+          </div>
+          <div class="chain-phase">
+            <div class="chain-phase-label">Phase 3 · Persistence</div>
+            <div class="chain-phase-name">[e.g. Registry Run Key]</div>
+            <span class="chain-phase-tech">T1547.001</span>
+          </div>
+          <div class="chain-phase">
+            <div class="chain-phase-label">Phase 4 · C2</div>
+            <div class="chain-phase-name">[e.g. DNS Tunneling]</div>
+            <span class="chain-phase-tech">T1071.004</span>
+          </div>
+          <div class="chain-phase">
+            <div class="chain-phase-label">Phase 5 · Impact</div>
+            <div class="chain-phase-name">[e.g. Data Exfil]</div>
+            <span class="chain-phase-tech">T1041</span>
+          </div>
+        </div>
 
-      <div class="sub-head">Phase 2 — Execution</div>
-      <p>
-        Upon opening the [file/clicking the link], [describe what executes]. A notable characteristic is [something technically interesting]. The command line observed in telemetry is:
-      </p>
-      <pre><span class="code-label">Observed Command</span>
-[paste the actual command / process tree here]
+        <div class="sub-head">Phase 1 — Initial Access</div>
+        <p>The attack begins with [describe the initial access mechanism in detail]. [Actor] sent [type of lure] to [target profile]. The [file/URL/exploit] exploits [CVE or technique], allowing [what happens].</p>
+        <p>[Second paragraph: victim perspective — what did the user do?]</p>
+
+        <div class="sub-head">Phase 2 — Execution</div>
+        <p>Upon opening the [file/link], [describe what executes]. A notable characteristic is [something technically interesting]. The command line observed in telemetry:</p>
+        <pre><span class="code-label">Observed Command</span>
+[paste actual command / process tree here]
 e.g.
 cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
   └─ powershell.exe → injects into svchost.exe</pre>
 
-      <div class="sub-head">Phase 3 — Persistence</div>
-      <p>
-        To maintain access, the malware [describe persistence mechanism]. [Specific registry key / scheduled task path / service name]. This is particularly stealthy because [reason].
-      </p>
+        <div class="sub-head">Phase 3 — Persistence</div>
+        <p>To maintain access, the malware [describe persistence mechanism]. [Specific registry key / task path / service name]. This is stealthy because [reason].</p>
 
-      <div class="sub-head">Phase 4 — Command & Control</div>
-      <p>
-        C2 communication uses [protocol] with beaconing every [interval]. Traffic is [how it's disguised]. The C2 infrastructure uses [infrastructure detail].
-      </p>
+        <div class="sub-head">Phase 4 — Command & Control</div>
+        <p>C2 communication uses [protocol] with beaconing every [interval]. Traffic is [how disguised]. Infrastructure uses [detail].</p>
 
-      <div class="sub-head">Phase 5 — Final Impact</div>
-      <p>
-        The campaign's objective is [goal]. [Describe final impact in detail]. In observed incidents, [specific outcome].
-      </p>
+        <div class="sub-head">Phase 5 — Final Impact</div>
+        <p>The campaign's objective is [goal]. [Describe final impact]. In observed incidents, [specific outcome].</p>
 
-      <div class="callout callout-red">
-        <div class="callout-icon"><i class="fas fa-radiation"></i></div>
-        <div class="callout-body">
-          <strong>Critical Observation</strong>
-          [Your key analytical observation — e.g. "The most dangerous aspect of this campaign is the use of legitimate cloud services for C2, which means network-level blocking without policy tuning will also block legitimate business traffic."]
-        </div>
-      </div>
-    </div>
-
-
-    <div class="divider"></div>
-
-    <!-- ─────────────────────────────────────────────────
-         SECTION 04 — MITRE ATT&CK MAPPING
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s4"></span>
-    <div class="section-head reveal">
-      <div class="section-num">04</div>
-      <h2 class="section-title">MITRE ATT&CK Mapping</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <table class="mitre-table">
-        <thead>
-          <tr>
-            <th>TID</th>
-            <th>Tactic</th>
-            <th>Technique</th>
-            <th>Observed Behavior</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- CHANGE: Fill from your attack chain research. One row per technique. -->
-          <tr>
-            <td><span class="mt-tid">T1566.001</span></td>
-            <td><span class="mt-tactic">Initial Access</span></td>
-            <td class="mt-technique">Phishing: Spearphishing Attachment</td>
-            <td class="mt-desc">[Specific behavior observed in this campaign]</td>
-          </tr>
-          <tr>
-            <td><span class="mt-tid">T1059.001</span></td>
-            <td><span class="mt-tactic">Execution</span></td>
-            <td class="mt-technique">PowerShell</td>
-            <td class="mt-desc">[Specific behavior]</td>
-          </tr>
-          <tr>
-            <td><span class="mt-tid">T1547.001</span></td>
-            <td><span class="mt-tactic">Persistence</span></td>
-            <td class="mt-technique">Registry Run Keys</td>
-            <td class="mt-desc">[Specific behavior]</td>
-          </tr>
-          <tr>
-            <td><span class="mt-tid">T1055</span></td>
-            <td><span class="mt-tactic">Defense Evasion</span></td>
-            <td class="mt-technique">Process Injection</td>
-            <td class="mt-desc">[Specific behavior]</td>
-          </tr>
-          <tr>
-            <td><span class="mt-tid">T1071.004</span></td>
-            <td><span class="mt-tactic">C2</span></td>
-            <td class="mt-technique">DNS Application Layer Protocol</td>
-            <td class="mt-desc">[Specific behavior]</td>
-          </tr>
-          <tr>
-            <td><span class="mt-tid">T1041</span></td>
-            <td><span class="mt-tactic">Exfiltration</span></td>
-            <td class="mt-technique">Exfil Over C2 Channel</td>
-            <td class="mt-desc">[Specific behavior]</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-
-    <!-- ─────────────────────────────────────────────────
-         SECTION 05 — IOCs
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s5"></span>
-    <div class="section-head reveal">
-      <div class="section-num">05</div>
-      <h2 class="section-title">Indicators of Compromise</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <div class="callout callout-blue">
-        <div class="callout-icon"><i class="fas fa-info-circle"></i></div>
-        <div class="callout-body">
-          <strong>Source & Validation</strong>
-          IOCs sourced from [vendor report name, date]. Validated against VirusTotal and AbuseIPDB on [date]. Hash IOCs confirmed malicious with [X]+ AV detections.
+        <div class="callout callout-red">
+          <div class="callout-icon"><i class="fas fa-radiation"></i></div>
+          <div class="callout-body">
+            <strong>Critical Observation</strong>
+            [Your key analytical observation — what makes this attack particularly dangerous or clever?]
+          </div>
         </div>
       </div>
 
-      <table class="ioc-table">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Indicator</th>
-            <th>Confidence</th>
-            <th>Context</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- CHANGE: Add real IOCs from vendor report / threat intel platforms -->
-          <tr>
-            <td><span class="ioc-type">IPv4</span></td>
-            <td><span class="highlight">[X.X.X.X]</span></td>
-            <td><span class="ioc-sev-high">High</span></td>
-            <td style="color:var(--muted);font-size:10px">C2 server — [ISP, country, AS number]</td>
-          </tr>
-          <tr>
-            <td><span class="ioc-type">Domain</span></td>
-            <td><span class="highlight">[malicious.domain.com]</span></td>
-            <td><span class="ioc-sev-high">High</span></td>
-            <td style="color:var(--muted);font-size:10px">DNS C2 resolver / typosquatted [legit domain]</td>
-          </tr>
-          <tr>
-            <td><span class="ioc-type">SHA-256</span></td>
-            <td><span class="highlight">[hash...]</span></td>
-            <td><span class="ioc-sev-high">High</span></td>
-            <td style="color:var(--muted);font-size:10px">Dropper — [filename], [X]/72 VT detections</td>
-          </tr>
-          <tr>
-            <td><span class="ioc-type">SHA-256</span></td>
-            <td><span class="highlight">[hash...]</span></td>
-            <td><span class="ioc-sev-med">Medium</span></td>
-            <td style="color:var(--muted);font-size:10px">Payload DLL — [filename]</td>
-          </tr>
-          <tr>
-            <td><span class="ioc-type">URL</span></td>
-            <td><span class="highlight">[hxxps://defanged-url[.]com/path]</span></td>
-            <td><span class="ioc-sev-high">High</span></td>
-            <td style="color:var(--muted);font-size:10px">Phishing page / payload delivery URL</td>
-          </tr>
-          <tr>
-            <td><span class="ioc-type">Registry</span></td>
-            <td><span class="highlight">HKCU\Software\[key]\[value]</span></td>
-            <td><span class="ioc-sev-med">Medium</span></td>
-            <td style="color:var(--muted);font-size:10px">Persistence mechanism</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="divider"></div>
 
-      <p style="font-size:.8rem;color:var(--dim);font-family:var(--mono);">
-        ⚠ Defang URLs/IPs before sharing in reports. Use [.] notation for domains and hxxps:// for URLs.
-      </p>
-    </div>
+      <!-- ─────── S04 MITRE MAPPING ─────── -->
+      <span class="section-anchor" id="s4"></span>
+      <div class="section-head reveal">
+        <div class="section-num">04</div>
+        <h2 class="section-title">MITRE ATT&CK Mapping</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="reveal">
+        <table class="mitre-table">
+          <thead>
+            <tr><th>TID</th><th>Tactic</th><th>Technique</th><th>Observed Behavior</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="mt-tid">T1566.001</span></td>
+              <td><span class="mt-tactic">Initial Access</span></td>
+              <td class="mt-technique">Phishing: Spearphishing Attachment</td>
+              <td class="mt-desc">[Specific behavior observed in this campaign]</td>
+            </tr>
+            <tr>
+              <td><span class="mt-tid">T1059.001</span></td>
+              <td><span class="mt-tactic">Execution</span></td>
+              <td class="mt-technique">PowerShell</td>
+              <td class="mt-desc">[Specific behavior]</td>
+            </tr>
+            <tr>
+              <td><span class="mt-tid">T1547.001</span></td>
+              <td><span class="mt-tactic">Persistence</span></td>
+              <td class="mt-technique">Registry Run Keys</td>
+              <td class="mt-desc">[Specific behavior]</td>
+            </tr>
+            <tr>
+              <td><span class="mt-tid">T1055</span></td>
+              <td><span class="mt-tactic">Defense Evasion</span></td>
+              <td class="mt-technique">Process Injection</td>
+              <td class="mt-desc">[Specific behavior]</td>
+            </tr>
+            <tr>
+              <td><span class="mt-tid">T1071.004</span></td>
+              <td><span class="mt-tactic">C2</span></td>
+              <td class="mt-technique">DNS Application Layer Protocol</td>
+              <td class="mt-desc">[Specific behavior]</td>
+            </tr>
+            <tr>
+              <td><span class="mt-tid">T1041</span></td>
+              <td><span class="mt-tactic">Exfiltration</span></td>
+              <td class="mt-technique">Exfil Over C2 Channel</td>
+              <td class="mt-desc">[Specific behavior]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-
-    <!-- ─────────────────────────────────────────────────
-         SECTION 06 — DETECTION RULES
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s6"></span>
-    <div class="section-head reveal">
-      <div class="section-num">06</div>
-      <h2 class="section-title">Detection Rules</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <p>The following rules are written for <strong>Microsoft Sentinel (KQL)</strong> and <strong>MDE Advanced Hunting</strong>. Tune thresholds to your environment's baseline before deploying as alerts.</p>
-
-      <!-- RULE 1 -->
-      <div class="detection-card">
-        <div class="detection-card-head">
-          <div class="detection-card-title"><i class="fas fa-search" style="color:var(--accent);margin-right:8px;font-size:11px"></i>Rule 1 — [Detection Name e.g. Suspicious PowerShell Spawned from Office Process]</div>
-          <span class="detection-card-tag dtag-sentinel">Sentinel · Analytics Rule</span>
+      <!-- ─────── S05 IOCs ─────── -->
+      <span class="section-anchor" id="s5"></span>
+      <div class="section-head reveal">
+        <div class="section-num">05</div>
+        <h2 class="section-title">Indicators of Compromise</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="reveal">
+        <div class="callout callout-blue">
+          <div class="callout-icon"><i class="fas fa-info-circle"></i></div>
+          <div class="callout-body">
+            <strong>Source & Validation</strong>
+            IOCs sourced from [vendor report name, date]. Validated against VirusTotal and AbuseIPDB on [date]. Hash IOCs confirmed malicious with [X]+ AV detections.
+          </div>
         </div>
-        <pre>
-<span class="code-label">KQL</span>
-<span class="kql-c">// Detects [what this rule catches — be specific]</span>
+        <table class="ioc-table">
+          <thead>
+            <tr><th>Type</th><th>Indicator</th><th>Confidence</th><th>Context</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="ioc-type">IPv4</span></td>
+              <td><span class="highlight">[X.X.X.X]</span></td>
+              <td><span class="ioc-sev-high">High</span></td>
+              <td style="color:var(--muted);font-size:10px">C2 server — [ISP, country, AS number]</td>
+            </tr>
+            <tr>
+              <td><span class="ioc-type">Domain</span></td>
+              <td><span class="highlight">[malicious.domain.com]</span></td>
+              <td><span class="ioc-sev-high">High</span></td>
+              <td style="color:var(--muted);font-size:10px">DNS C2 resolver / typosquatted [legit domain]</td>
+            </tr>
+            <tr>
+              <td><span class="ioc-type">SHA-256</span></td>
+              <td><span class="highlight">[hash...]</span></td>
+              <td><span class="ioc-sev-high">High</span></td>
+              <td style="color:var(--muted);font-size:10px">Dropper — [filename], [X]/72 VT detections</td>
+            </tr>
+            <tr>
+              <td><span class="ioc-type">SHA-256</span></td>
+              <td><span class="highlight">[hash...]</span></td>
+              <td><span class="ioc-sev-med">Medium</span></td>
+              <td style="color:var(--muted);font-size:10px">Payload DLL — [filename]</td>
+            </tr>
+            <tr>
+              <td><span class="ioc-type">URL</span></td>
+              <td><span class="highlight">[hxxps://defanged-url[.]com/path]</span></td>
+              <td><span class="ioc-sev-high">High</span></td>
+              <td style="color:var(--muted);font-size:10px">Phishing page / payload delivery URL</td>
+            </tr>
+            <tr>
+              <td><span class="ioc-type">Registry</span></td>
+              <td><span class="highlight">HKCU\Software\[key]\[value]</span></td>
+              <td><span class="ioc-sev-med">Medium</span></td>
+              <td style="color:var(--muted);font-size:10px">Persistence mechanism</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:.8rem;color:var(--dim);font-family:var(--mono);">⚠ Defang URLs/IPs. Use [.] for domains and hxxps:// for URLs before sharing.</p>
+      </div>
+
+      <!-- ─────── S06 DETECTION RULES ─────── -->
+      <span class="section-anchor" id="s6"></span>
+      <div class="section-head reveal">
+        <div class="section-num">06</div>
+        <h2 class="section-title">Detection Rules</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="reveal">
+        <p>The following rules are written for <strong>Microsoft Sentinel (KQL)</strong> and <strong>MDE Advanced Hunting</strong>. Tune thresholds to your environment's baseline before deploying as alerts.</p>
+
+        <div class="detection-card">
+          <div class="detection-card-head">
+            <div class="detection-card-title"><i class="fas fa-search" style="color:var(--accent);margin-right:8px;font-size:11px"></i>Rule 1 — [e.g. Suspicious PowerShell Spawned from Office Process]</div>
+            <span class="detection-card-tag dtag-sentinel">Sentinel · Analytics Rule</span>
+          </div>
+          <pre><span class="code-label">KQL</span>
+<span class="kql-c">// Detects [what this rule catches]</span>
 <span class="kql-c">// Severity: High | Tactic: Execution | TID: T1059.001</span>
 
 <span class="kql-t">DeviceProcessEvents</span>
@@ -948,20 +880,16 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 <span class="kql-op">|</span> <span class="kql-k">where</span> FileName <span class="kql-op">==</span> <span class="kql-s">"powershell.exe"</span>
 <span class="kql-op">|</span> <span class="kql-k">where</span> ProcessCommandLine <span class="kql-op">has_any</span> (<span class="kql-s">"-enc"</span>, <span class="kql-s">"-nop"</span>, <span class="kql-s">"-w hidden"</span>, <span class="kql-s">"iex"</span>, <span class="kql-s">"DownloadString"</span>)
 <span class="kql-op">|</span> <span class="kql-k">project</span> Timestamp, DeviceName, AccountName,
-         InitiatingProcessFileName, ProcessCommandLine,
-         SHA256
-<span class="kql-op">|</span> <span class="kql-f">order by</span> Timestamp <span class="kql-k">desc</span>
-        </pre>
-      </div>
-
-      <!-- RULE 2 -->
-      <div class="detection-card">
-        <div class="detection-card-head">
-          <div class="detection-card-title"><i class="fas fa-search" style="color:var(--purple);margin-right:8px;font-size:11px"></i>Rule 2 — [Detection Name e.g. Anomalous DNS Beaconing to Known C2 Domains]</div>
-          <span class="detection-card-tag dtag-mde">MDE · Advanced Hunting</span>
+         InitiatingProcessFileName, ProcessCommandLine, SHA256
+<span class="kql-op">|</span> <span class="kql-f">order by</span> Timestamp <span class="kql-k">desc</span></pre>
         </div>
-        <pre>
-<span class="code-label">KQL</span>
+
+        <div class="detection-card">
+          <div class="detection-card-head">
+            <div class="detection-card-title"><i class="fas fa-search" style="color:var(--purple);margin-right:8px;font-size:11px"></i>Rule 2 — [e.g. Anomalous DNS Beaconing to Known C2 Domains]</div>
+            <span class="detection-card-tag dtag-mde">MDE · Advanced Hunting</span>
+          </div>
+          <pre><span class="code-label">KQL</span>
 <span class="kql-c">// Detects DNS queries matching known C2 patterns</span>
 <span class="kql-c">// Severity: High | Tactic: C2 | TID: T1071.004</span>
 
@@ -979,18 +907,15 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
     LastSeen  = <span class="kql-f">max</span>(Timestamp)
   <span class="kql-k">by</span> DeviceName, RemoteUrl, RemoteIP
 <span class="kql-op">|</span> <span class="kql-k">where</span> ConnectionCount <span class="kql-op">></span> 3
-<span class="kql-op">|</span> <span class="kql-f">order by</span> ConnectionCount <span class="kql-k">desc</span>
-        </pre>
-      </div>
-
-      <!-- RULE 3 -->
-      <div class="detection-card">
-        <div class="detection-card-head">
-          <div class="detection-card-title"><i class="fas fa-search" style="color:var(--amber);margin-right:8px;font-size:11px"></i>Rule 3 — IOC Hash Hunt</div>
-          <span class="detection-card-tag dtag-sentinel">Sentinel · Hunting Query</span>
+<span class="kql-op">|</span> <span class="kql-f">order by</span> ConnectionCount <span class="kql-k">desc</span></pre>
         </div>
-        <pre>
-<span class="code-label">KQL</span>
+
+        <div class="detection-card">
+          <div class="detection-card-head">
+            <div class="detection-card-title"><i class="fas fa-search" style="color:var(--amber);margin-right:8px;font-size:11px"></i>Rule 3 — IOC Hash Hunt</div>
+            <span class="detection-card-tag dtag-sentinel">Sentinel · Hunting Query</span>
+          </div>
+          <pre><span class="code-label">KQL</span>
 <span class="kql-c">// Hunt for known-malicious file hashes across device telemetry</span>
 
 <span class="kql-k">let</span> malicious_hashes = <span class="kql-f">dynamic</span>([
@@ -1002,294 +927,266 @@ cmd.exe /c powershell.exe -nop -w hidden -enc [base64]
 <span class="kql-op">|</span> <span class="kql-k">where</span> SHA256 <span class="kql-op">in</span> (malicious_hashes)
 <span class="kql-op">|</span> <span class="kql-k">project</span> Timestamp, DeviceName, AccountName,
          FileName, FolderPath, SHA256, InitiatingProcessFileName
-<span class="kql-op">|</span> <span class="kql-f">order by</span> Timestamp <span class="kql-k">desc</span>
-        </pre>
-      </div>
-
-      <div class="callout callout-amber">
-        <div class="callout-icon"><i class="fas fa-wrench"></i></div>
-        <div class="callout-body">
-          <strong>Tuning Notes</strong>
-          Before deploying Rule 1 as an alert: baseline your environment for legitimate [process spawning patterns]. Exclude [specific legitimate processes / accounts / paths] to reduce false positives. Start with Rule 3 (IOC hunt) as it has zero false positive risk.
+<span class="kql-op">|</span> <span class="kql-f">order by</span> Timestamp <span class="kql-k">desc</span></pre>
         </div>
-      </div>
-    </div>
 
-
-    <!-- ─────────────────────────────────────────────────
-         SECTION 07 — IR PLAYBOOK
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s7"></span>
-    <div class="section-head reveal">
-      <div class="section-num">07</div>
-      <h2 class="section-title">IR Playbook</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <p>This playbook covers the response steps if you receive an alert matching this attack pattern. Steps are sequenced by priority — <strong>contain first, investigate in parallel, recover last.</strong></p>
-
-      <div class="sub-head">Containment</div>
-      <ol class="ir-steps">
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-contain">Contain</span>
-            <div class="ir-step-title">[Action — e.g. Isolate the Affected Device]</div>
-            <div class="ir-step-detail">
-              In MDE → Device page → Isolate device. This cuts all network connectivity except MDE management plane. Confirm isolation status shows "Isolated" in device timeline. Document isolation time in ticket.
-            </div>
-          </div>
-        </li>
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-contain">Contain</span>
-            <div class="ir-step-title">[Action — e.g. Disable Compromised Account / Revoke Sessions]</div>
-            <div class="ir-step-detail">
-              In Entra ID → User → Disable account + Revoke all sessions. If MFA was bypassed (AiTM indicator), also rotate [relevant credential type]. Block sign-in via Conditional Access if identity is confirmed compromised.
-            </div>
-          </div>
-        </li>
-      </ol>
-
-      <div class="sub-head">Investigation</div>
-      <ol class="ir-steps">
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-invest">Investigate</span>
-            <div class="ir-step-title">[Action — e.g. Pull Device Timeline — T-48h Window]</div>
-            <div class="ir-step-detail">
-              In MDE device timeline, filter to [48h before first alert]. Look for: parent process anomalies, unusual child processes, file drops in [TEMP / AppData / ProgramData], registry modifications, and outbound connections to new IPs/domains. Export timeline for evidence.
-            </div>
-          </div>
-        </li>
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-invest">Investigate</span>
-            <div class="ir-step-title">[Action — e.g. Scope Lateral Movement]</div>
-            <div class="ir-step-detail">
-              Run KQL Rule 2 above across all devices. Check for any authentication events from the compromised account to other systems in the [same 48h window]. Flag any devices that had contact with identified C2 IPs/domains.
-            </div>
-          </div>
-        </li>
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-invest">Investigate</span>
-            <div class="ir-step-title">[Action — e.g. Validate IOCs Against Org Environment]</div>
-            <div class="ir-step-detail">
-              Run the IOC hash hunt (Rule 3) with a 30-day lookback. Pull all unique devices that touched flagged IOCs. This defines your incident scope for the report.
-            </div>
-          </div>
-        </li>
-      </ol>
-
-      <div class="sub-head">Eradication & Recovery</div>
-      <ol class="ir-steps">
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-recover">Recover</span>
-            <div class="ir-step-title">[Action — e.g. Wipe & Reimage or Live Response Remediation]</div>
-            <div class="ir-step-detail">
-              If persistence confirmed: wipe and reimage. If no persistence found and malware didn't execute: use MDE Live Response to delete [specific files/registry keys], then run a full AV scan. Confirm clean before removing isolation.
-            </div>
-          </div>
-        </li>
-        <li class="ir-step">
-          <div class="ir-step-num"></div>
-          <div class="ir-step-body">
-            <span class="ir-phase-tag phase-recover">Recover</span>
-            <div class="ir-step-title">[Action — e.g. Block IOCs Organisation-Wide]</div>
-            <div class="ir-step-detail">
-              Add confirmed C2 IPs/domains to [Sentinel watchlist / MDE indicators / Forcepoint DLP block list]. Set expiry to 90 days, schedule review. Document all blocks added in ticket with justification.
-            </div>
-          </div>
-        </li>
-      </ol>
-    </div>
-
-
-    <!-- ─────────────────────────────────────────────────
-         SECTION 08 — VERDICT
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s8"></span>
-    <div class="section-head reveal">
-      <div class="section-num">08</div>
-      <h2 class="section-title">Analyst Verdict</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="reveal">
-      <div class="verdict-wrap">
-        <!-- CHANGE: Severity score / 10 -->
-        <div class="verdict-score">8.5</div>
-        <div class="verdict-detail">
-          <div class="verdict-label">Threat Severity Score</div>
-          <div class="verdict-title">
-            <!-- CHANGE: One-line verdict -->
-            [Your verdict title]
-          </div>
-          <div class="verdict-bars">
-            <!-- CHANGE: Score each dimension 0–100 -->
-            <div class="v-bar-row">
-              <div class="v-bar-name">Sophistication</div>
-              <div class="v-bar-track"><div class="v-bar-fill" style="width:85%"></div></div>
-              <div class="v-bar-val">8.5</div>
-            </div>
-            <div class="v-bar-row">
-              <div class="v-bar-name">Detection Difficulty</div>
-              <div class="v-bar-track"><div class="v-bar-fill" style="width:70%"></div></div>
-              <div class="v-bar-val">7.0</div>
-            </div>
-            <div class="v-bar-row">
-              <div class="v-bar-name">Impact Potential</div>
-              <div class="v-bar-track"><div class="v-bar-fill" style="width:90%"></div></div>
-              <div class="v-bar-val">9.0</div>
-            </div>
-            <div class="v-bar-row">
-              <div class="v-bar-name">Prevalence</div>
-              <div class="v-bar-track"><div class="v-bar-fill" style="width:60%"></div></div>
-              <div class="v-bar-val">6.0</div>
-            </div>
+        <div class="callout callout-amber">
+          <div class="callout-icon"><i class="fas fa-wrench"></i></div>
+          <div class="callout-body">
+            <strong>Tuning Notes</strong>
+            Before deploying Rule 1 as an alert: baseline your environment for legitimate [process spawning patterns]. Exclude [specific processes / accounts / paths]. Start with Rule 3 (IOC hunt) — zero false positive risk.
           </div>
         </div>
       </div>
 
-      <p>
-        <!-- CHANGE: Your analytical verdict -->
-        [Your analytical verdict — e.g. "This campaign's strength isn't technical novelty — it's operational patience. APT28 is using known techniques but stringing them together in a way that exploits detection gaps between identity telemetry and endpoint telemetry..."]
-      </p>
-      <p>[Second paragraph: What's the defender's practical challenge? Where does the average SOC struggle with this?]</p>
-    </div>
-
-
-    <!-- ─────────────────────────────────────────────────
-         SECTION 09 — KEY TAKEAWAYS
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s9"></span>
-    <div class="section-head reveal">
-      <div class="section-num">09</div>
-      <h2 class="section-title">Key Takeaways</h2>
-      <div class="section-line"></div>
-    </div>
-
-    <div class="takeaway-grid reveal">
-      <!-- CHANGE: Write 4–5 takeaways specific to your analysis -->
-      <div class="takeaway-card">
-        <div class="takeaway-icon">🎯</div>
-        <div class="takeaway-title">[Takeaway 1 Title]</div>
-        <div class="takeaway-body">[e.g. "Standard perimeter controls won't stop this — the initial access is user-driven via phishing, requiring email security + security awareness as the primary control layer."]</div>
+      <!-- ─────── S07 IR PLAYBOOK ─────── -->
+      <span class="section-anchor" id="s7"></span>
+      <div class="section-head reveal">
+        <div class="section-num">07</div>
+        <h2 class="section-title">IR Playbook</h2>
+        <div class="section-line"></div>
       </div>
-      <div class="takeaway-card">
-        <div class="takeaway-icon">🔍</div>
-        <div class="takeaway-title">[Takeaway 2 Title]</div>
-        <div class="takeaway-body">[e.g. "KQL Rule 1 will catch this in most environments with default MDE logging enabled. No additional data connectors required."]</div>
+      <div class="reveal">
+        <p>Steps are sequenced by priority — <strong>contain first, investigate in parallel, recover last.</strong></p>
+
+        <div class="sub-head">Containment</div>
+        <ol class="ir-steps">
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-contain">Contain</span>
+              <div class="ir-step-title">[Action — e.g. Isolate the Affected Device]</div>
+              <div class="ir-step-detail">In MDE → Device page → Isolate device. Cuts all network connectivity except MDE management plane. Confirm "Isolated" status in device timeline. Document isolation time in ticket.</div>
+            </div>
+          </li>
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-contain">Contain</span>
+              <div class="ir-step-title">[Action — e.g. Disable Compromised Account / Revoke Sessions]</div>
+              <div class="ir-step-detail">In Entra ID → User → Disable account + Revoke all sessions. If MFA bypassed (AiTM indicator), rotate [credential type]. Block sign-in via Conditional Access if identity is confirmed compromised.</div>
+            </div>
+          </li>
+        </ol>
+
+        <div class="sub-head">Investigation</div>
+        <ol class="ir-steps">
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-invest">Investigate</span>
+              <div class="ir-step-title">[Action — e.g. Pull Device Timeline — T-48h Window]</div>
+              <div class="ir-step-detail">In MDE device timeline, filter to [48h before first alert]. Look for: parent process anomalies, unusual child processes, file drops in TEMP/AppData/ProgramData, registry modifications, and outbound connections to new IPs/domains.</div>
+            </div>
+          </li>
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-invest">Investigate</span>
+              <div class="ir-step-title">[Action — e.g. Scope Lateral Movement]</div>
+              <div class="ir-step-detail">Run KQL Rule 2 across all devices. Check authentication events from compromised account to other systems in the same 48h window. Flag any devices that contacted identified C2 IPs/domains.</div>
+            </div>
+          </li>
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-invest">Investigate</span>
+              <div class="ir-step-title">[Action — e.g. Validate IOCs Against Org Environment]</div>
+              <div class="ir-step-detail">Run IOC hash hunt (Rule 3) with 30-day lookback. Pull all unique devices that touched flagged IOCs. This defines your incident scope for the report.</div>
+            </div>
+          </li>
+        </ol>
+
+        <div class="sub-head">Eradication & Recovery</div>
+        <ol class="ir-steps">
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-recover">Recover</span>
+              <div class="ir-step-title">[Action — e.g. Wipe & Reimage or Live Response Remediation]</div>
+              <div class="ir-step-detail">If persistence confirmed: wipe and reimage. If no persistence: use MDE Live Response to delete [specific files/registry keys], run full AV scan, confirm clean before removing isolation.</div>
+            </div>
+          </li>
+          <li class="ir-step">
+            <div class="ir-step-num"></div>
+            <div class="ir-step-body">
+              <span class="ir-phase-tag phase-recover">Recover</span>
+              <div class="ir-step-title">[Action — e.g. Block IOCs Organisation-Wide]</div>
+              <div class="ir-step-detail">Add confirmed C2 IPs/domains to Sentinel watchlist / MDE indicators / Forcepoint DLP block list. Set 90-day expiry, schedule review. Document all blocks in ticket with justification.</div>
+            </div>
+          </li>
+        </ol>
       </div>
-      <div class="takeaway-card">
-        <div class="takeaway-icon">⚡</div>
-        <div class="takeaway-title">[Takeaway 3 Title]</div>
-        <div class="takeaway-body">[Specific actionable takeaway for SOC teams]</div>
+
+      <!-- ─────── S08 VERDICT ─────── -->
+      <span class="section-anchor" id="s8"></span>
+      <div class="section-head reveal">
+        <div class="section-num">08</div>
+        <h2 class="section-title">Analyst Verdict</h2>
+        <div class="section-line"></div>
       </div>
-      <div class="takeaway-card">
-        <div class="takeaway-icon">🛡️</div>
-        <div class="takeaway-title">[Takeaway 4 Title]</div>
-        <div class="takeaway-body">[Defensive recommendation derived from your analysis]</div>
+      <div class="reveal">
+        <div class="verdict-wrap">
+          <div class="verdict-score">8.5</div>
+          <div class="verdict-detail">
+            <div class="verdict-label">Threat Severity Score</div>
+            <div class="verdict-title">[Your one-line verdict]</div>
+            <div class="verdict-bars">
+              <div class="v-bar-row">
+                <div class="v-bar-name">Sophistication</div>
+                <div class="v-bar-track"><div class="v-bar-fill" style="width:85%"></div></div>
+                <div class="v-bar-val">8.5</div>
+              </div>
+              <div class="v-bar-row">
+                <div class="v-bar-name">Detection Difficulty</div>
+                <div class="v-bar-track"><div class="v-bar-fill" style="width:70%"></div></div>
+                <div class="v-bar-val">7.0</div>
+              </div>
+              <div class="v-bar-row">
+                <div class="v-bar-name">Impact Potential</div>
+                <div class="v-bar-track"><div class="v-bar-fill" style="width:90%"></div></div>
+                <div class="v-bar-val">9.0</div>
+              </div>
+              <div class="v-bar-row">
+                <div class="v-bar-name">Prevalence</div>
+                <div class="v-bar-track"><div class="v-bar-fill" style="width:60%"></div></div>
+                <div class="v-bar-val">6.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>[Your analytical verdict — original voice, 2–3 paragraphs.]</p>
+        <p>[What's the defender's practical challenge? Where does the average SOC struggle with this?]</p>
       </div>
-    </div>
 
-    <!-- TAGS -->
-    <div class="tag-row reveal">
-      <!-- CHANGE: Add relevant tags -->
-      <span class="tag">#[ThreatActor]</span>
-      <span class="tag">#[Technique]</span>
-      <span class="tag">#MicrosoftSentinel</span>
-      <span class="tag">#MDE</span>
-      <span class="tag">#KQL</span>
-      <span class="tag">#MITRE</span>
-      <span class="tag">#[CVE]</span>
-      <span class="tag">#IncidentResponse</span>
-    </div>
+      <!-- ─────── S09 KEY TAKEAWAYS ─────── -->
+      <span class="section-anchor" id="s9"></span>
+      <div class="section-head reveal">
+        <div class="section-num">09</div>
+        <h2 class="section-title">Key Takeaways</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="takeaway-grid reveal">
+        <div class="takeaway-card">
+          <div class="takeaway-icon">🎯</div>
+          <div class="takeaway-title">[Takeaway 1 Title]</div>
+          <div class="takeaway-body">[Specific, actionable insight for SOC teams]</div>
+        </div>
+        <div class="takeaway-card">
+          <div class="takeaway-icon">🔍</div>
+          <div class="takeaway-title">[Takeaway 2 Title]</div>
+          <div class="takeaway-body">[e.g. "KQL Rule 1 catches this with default MDE logging — no extra connectors needed."]</div>
+        </div>
+        <div class="takeaway-card">
+          <div class="takeaway-icon">⚡</div>
+          <div class="takeaway-title">[Takeaway 3 Title]</div>
+          <div class="takeaway-body">[Specific actionable takeaway]</div>
+        </div>
+        <div class="takeaway-card">
+          <div class="takeaway-icon">🛡️</div>
+          <div class="takeaway-title">[Takeaway 4 Title]</div>
+          <div class="takeaway-body">[Defensive recommendation from your analysis]</div>
+        </div>
+      </div>
 
-    <div class="divider"></div>
+      <div class="tag-row reveal">
+        <span class="tag">#[ThreatActor]</span>
+        <span class="tag">#[Technique]</span>
+        <span class="tag">#MicrosoftSentinel</span>
+        <span class="tag">#MDE</span>
+        <span class="tag">#KQL</span>
+        <span class="tag">#MITRE</span>
+        <span class="tag">#[CVE]</span>
+        <span class="tag">#IncidentResponse</span>
+      </div>
 
-    <!-- ─────────────────────────────────────────────────
-         SECTION 10 — SOURCES
-    ───────────────────────────────────────────────── -->
-    <span class="section-anchor" id="s10"></span>
-    <div class="section-head reveal">
-      <div class="section-num">10</div>
-      <h2 class="section-title">Sources & References</h2>
-      <div class="section-line"></div>
-    </div>
+      <div class="divider"></div>
 
-    <div class="reveal">
-      <ul class="source-list">
-        <!-- CHANGE: Add all sources you used -->
-        <li><span class="source-num">[1]</span><a href="#" target="_blank">[Vendor] — [Report Title] ([Date])</a></li>
-        <li><span class="source-num">[2]</span><a href="https://attack.mitre.org/techniques/T1XXX" target="_blank">MITRE ATT&CK — [Technique Name] (TXXXX)</a></li>
-        <li><span class="source-num">[3]</span><a href="#" target="_blank">[Source] — [Title]</a></li>
-        <li><span class="source-num">[4]</span><a href="https://nvd.nist.gov/vuln/detail/CVE-XXXX-XXXX" target="_blank">NVD — [CVE-XXXX-XXXXX]</a></li>
-        <li><span class="source-num">[5]</span><a href="#" target="_blank">VirusTotal / AbuseIPDB — IOC analysis ([Date])</a></li>
+      <!-- ─────── S10 SOURCES ─────── -->
+      <span class="section-anchor" id="s10"></span>
+      <div class="section-head reveal">
+        <div class="section-num">10</div>
+        <h2 class="section-title">Sources & References</h2>
+        <div class="section-line"></div>
+      </div>
+      <div class="reveal">
+        <ul class="source-list">
+          <li><span class="source-num">[1]</span><a href="#" target="_blank">[Vendor] — [Report Title] ([Date])</a></li>
+          <li><span class="source-num">[2]</span><a href="https://attack.mitre.org/techniques/T1XXX" target="_blank">MITRE ATT&CK — [Technique Name] (TXXXX)</a></li>
+          <li><span class="source-num">[3]</span><a href="#" target="_blank">[Source] — [Title]</a></li>
+          <li><span class="source-num">[4]</span><a href="https://nvd.nist.gov/vuln/detail/CVE-XXXX-XXXX" target="_blank">NVD — [CVE-XXXX-XXXXX]</a></li>
+          <li><span class="source-num">[5]</span><a href="#" target="_blank">VirusTotal / AbuseIPDB — IOC analysis ([Date])</a></li>
+        </ul>
+      </div>
+
+      <!-- AUTHOR -->
+      <div class="author-card reveal">
+        <div class="author-avatar">SD</div>
+        <div>
+          <div class="author-name">Swetha Devi Sai Priya Bonu</div>
+          <div class="author-role">SOC Analyst · Detection Engineer · HTB CDSA</div>
+          <div class="author-links">
+            <a href="https://linkedin.com/in/bonu--devi-sai-priya" target="_blank" class="author-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://medium.com/@devi1125" target="_blank" class="author-link"><i class="fab fa-medium"></i> Medium</a>
+            <a href="https://github.com/unabletofind" target="_blank" class="author-link"><i class="fab fa-github"></i> GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- POST NAV -->
+      <div class="post-nav reveal">
+        <a href="research.html" class="post-nav-card">
+          <div class="post-nav-dir"><i class="fas fa-arrow-left"></i> &nbsp;Previous</div>
+          <div class="post-nav-title">Back to all research</div>
+        </a>
+        <a href="research.html" class="post-nav-card" style="text-align:right">
+          <div class="post-nav-dir">Next &nbsp;<i class="fas fa-arrow-right"></i></div>
+          <div class="post-nav-title">View all research →</div>
+        </a>
+      </div>
+
+    </div><!-- /article-body (left column) -->
+
+    <!-- ── TOC RIGHT COLUMN ── -->
+    <div class="toc-wrapper">
+      <div class="toc-title"><i class="fas fa-list"></i> &nbsp;Contents</div>
+      <ul class="toc-list">
+        <li><a href="#s1"><span class="toc-num">01</span> Background</a></li>
+        <li><a href="#s2"><span class="toc-num">02</span> Analyst's First Look</a></li>
+        <li><a href="#s3"><span class="toc-num">03</span> Attack Chain</a></li>
+        <li><a href="#s4"><span class="toc-num">04</span> MITRE Mapping</a></li>
+        <li><a href="#s5"><span class="toc-num">05</span> IOCs</a></li>
+        <li><a href="#s6"><span class="toc-num">06</span> Detection Rules</a></li>
+        <li><a href="#s7"><span class="toc-num">07</span> IR Playbook</a></li>
+        <li><a href="#s8"><span class="toc-num">08</span> Verdict</a></li>
+        <li><a href="#s9"><span class="toc-num">09</span> Key Takeaways</a></li>
+        <li><a href="#s10"><span class="toc-num">10</span> Sources</a></li>
       </ul>
     </div>
 
-    <!-- AUTHOR -->
-    <div class="author-card reveal">
-      <div class="author-avatar">SD</div>
-      <div>
-        <div class="author-name">Swetha Devi Sai Priya Bonu</div>
-        <div class="author-role">SOC Analyst · Detection Engineer · HTB CDSA</div>
-        <div class="author-links">
-          <a href="https://linkedin.com/in/bonu--devi-sai-priya" target="_blank" class="author-link"><i class="fab fa-linkedin"></i> LinkedIn</a>
-          <a href="https://medium.com/@devi1125" target="_blank" class="author-link"><i class="fab fa-medium"></i> Medium</a>
-          <a href="https://github.com/unabletofind" target="_blank" class="author-link"><i class="fab fa-github"></i> GitHub</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- PREV / NEXT NAV -->
-    <div class="post-nav reveal">
-      <a href="research.html" class="post-nav-card">
-        <div class="post-nav-dir"><i class="fas fa-arrow-left"></i> &nbsp;Previous</div>
-        <div class="post-nav-title">[Previous post title or "Back to all research"]</div>
-      </a>
-      <a href="research.html" class="post-nav-card" style="text-align:right">
-        <div class="post-nav-dir">Next &nbsp;<i class="fas fa-arrow-right"></i></div>
-        <div class="post-nav-title">[Next post title or "View all research →"]</div>
-      </a>
-    </div>
-
-    </div><!-- /article-body -->
-    </div><!-- /container-narrow -->
-  </div><!-- /container -->
+  </div><!-- /article-layout grid -->
 </div><!-- /article-wrap -->
 
 <script>
 /* PROGRESS BAR */
 window.addEventListener('scroll', () => {
   const doc = document.documentElement;
-  const scrolled = doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100;
-  document.getElementById('progress-bar').style.width = scrolled + '%';
+  const pct = doc.scrollTop / (doc.scrollHeight - doc.clientHeight) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
 });
 
 /* REVEAL ON SCROLL */
 const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-/* ACTIVE TOC */
+/* ACTIVE TOC HIGHLIGHT */
 const tocLinks = document.querySelectorAll('.toc-list a');
 const anchors  = document.querySelectorAll('.section-anchor');
 window.addEventListener('scroll', () => {
   let current = '';
-  anchors.forEach(a => {
-    if (window.scrollY >= a.offsetTop - 120) current = a.id;
-  });
+  anchors.forEach(a => { if (window.scrollY >= a.offsetTop - 120) current = a.id; });
   tocLinks.forEach(a => {
     a.classList.toggle('active', a.getAttribute('href') === '#' + current);
   });
