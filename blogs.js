@@ -30,7 +30,7 @@ const blogs = [
     date: 'March 2025',
     featured: true,
     excerpt: 'Double extortion tactics, defense evasion via Terminator driver (BYOVD), lateral movement via PsExec/WMI, and detection rules to catch LockBit affiliates in enterprise environments.',
-    mitre: ['T1562.001', 'T1021.002', 'T1486', 'T1070'],
+    mitre: ['T1562.001', 'T1021.002', 'T1486', 'T1071'],
         `
   },
 
