@@ -13,7 +13,7 @@ const blogs = [
     title: 'CPUID Breach: STX RAT Delivered via Trojanized CPU-Z & HWMonitor Downloads',
     date: 'April 2026',
     featured: true,
-    excerpt: 'A threat actor compromised CPUID's secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT',
+    excerpt: 'A threat actor compromised CPUID\'s secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT',
     mitre: ['T1195.002', 'T1204.002', 'T1027.002', 'T1571'],
   },
 
