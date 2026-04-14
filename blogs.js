@@ -104,56 +104,6 @@ index=wineventlog EventCode=7045
     featured: false,
     excerpt: 'Abusing OAuth apps for token theft, MFA bypass via device code flow, detection queries against Sentinel, and incident response steps to contain the breach.',
     mitre: ['T1550.001', 'T1111', 'T1114'],
-    content: `
-      <h2>OAuth Consent Phishing — APT29 Technique</h2>
-      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;February 2025</p>
-      <hr>
-      <h3>Overview</h3>
-      <p>APT29 (Cozy Bear, Midnight Blizzard) pioneered OAuth consent phishing as a way to gain persistent cloud access without ever touching the victim's password. By abusing legitimate Microsoft OAuth flows, attackers bypass MFA entirely and establish long-lived access to mailboxes, SharePoint, and OneDrive — all without triggering traditional login alerts.</p>
-      <h3>Attack Chain</h3>
-      <p>Spear-phishing link → rogue OAuth app consent granted by victim → access token + refresh token theft → persistent mailbox access → forwarding rules created → data exfiltrated from SharePoint/OneDrive.</p>
-      <h3>MITRE ATT&CK Coverage</h3>
-      <div class="mitre-grid">
-        <span class="mitre-tag">T1550.001 — Application Access Token</span>
-        <span class="mitre-tag">T1111 — MFA Interception</span>
-        <span class="mitre-tag">T1114.002 — Remote Email Collection</span>
-        <span class="mitre-tag">T1098.003 — Additional Cloud Credentials</span>
-      </div>
-      <h3>Vulnerability / Weakness Exploited</h3>
-      <p>Microsoft's OAuth 2.0 device authorization flow is designed for devices without browsers (smart TVs, CLI tools). Attackers abuse this legitimate flow to generate a user code and poll for tokens once the victim authenticates. MFA is bypassed because the authentication already happened on the victim's own device — the attacker just receives the resulting token.</p>
-      <h3>Methodology (How It Happened)</h3>
-      <p>Threat actor registers a rogue application in Azure AD — often named something convincing like "Microsoft Teams Update" or "Secure Document Viewer." Sends phishing email with a consent URL. When victim clicks and consents, the attacker's app receives OAuth tokens scoped to mail.read, files.readwrite, and contacts.read. Registers persistent application in victim's Azure AD tenant. Creates inbox forwarding rules to external address for ongoing collection.</p>
-      <h3>Impact</h3>
-      <p>Full cloud mailbox compromise, stealthy persistence without password reset, data exfiltration from SharePoint and OneDrive without triggering DLP policies. Access persists even after password changes since the OAuth grant remains valid.</p>
-      <h3>Mitigation & Hardening</h3>
-      <p>Disable user consent for third-party apps (require admin approval). Enforce Conditional Access policies requiring compliant devices. Block legacy authentication protocols. Implement FIDO2 hardware security keys. Conduct quarterly audit of enterprise application permissions in Entra ID. Use Defender for Cloud Apps to detect anomalous OAuth grants.</p>
-      <h3>Incident Response Actions</h3>
-      <p>Revoke all malicious OAuth grants via Entra portal → Enterprise Applications → review and remove suspicious entries. Revoke all active refresh tokens for affected accounts. Remove suspicious inbox forwarding rules via Exchange Online PowerShell. Audit SharePoint and OneDrive access logs for exfiltration indicators. Review audit logs in Purview for the 30 days prior to discovery.</p>
-      <h3>Detection Rules</h3>
-      <pre>// KQL — Unusual OAuth Consent Grant (Sentinel)
-AADSignInEventsBeta
-| where ConsentProvidedForApp == true
-| where AppDisplayName !in (known_apps_allowlist)
-| where IPAddress !in (corporate_ips)
-| project Timestamp, UserPrincipalName, AppDisplayName, IPAddress, Location
-| order by Timestamp desc
-
-// KQL — Inbox Rule Created by Non-Owner
-OfficeActivity
-| where Operation == "New-InboxRule"
-| where UserId != MailboxOwnerUPN
-| project TimeGenerated, UserId, Parameters
-
-// KQL — Device Code Flow Sign-In Detection
-AADSignInEventsBeta
-| where AuthenticationProtocol == "deviceCode"
-| where IPAddress !in (known_corporate_ips)
-| project Timestamp, UserPrincipalName, IPAddress, Location, AppDisplayName
-
-// SPL — Device Code Phishing
-index=o365 Operation=UserLoggedIn AuthenticationMethod="DeviceCode"
-| stats count by src_user, src_ip, app</pre>
-    `
   },
 
   // ── POST 3 ─────────────────────────────────────────────────
