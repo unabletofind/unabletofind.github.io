@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attack Deep Dive: CPUID Supply Chain Breach — STX RAT via Trojanized CPU-Z & HWMonitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=Literata:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Serif:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #0f1117;
+    --surface2: #0b1320;
+    --border: #1e2533;
+    --border-bright: #2a3347;
+    --border-accent: rgba(0,200,255,0.12);
+    --text: #dbeafe;
+    --text-dim: #4a6fa5;
+    --text-faint: #2a3f5f;
+    --accent: #00c8ff;
+    --accent2: #7c3aed;
+    --accent-green: #10b981;
+    --accent-cyan: #00c8ff;
+    --accent-orange: #f59e0b;
+    --accent-red: #f43f5e;
+    --accent-purple: #a855f7;
+    --accent-yellow: #f59e0b;
+    --font-display: 'Syne', sans-serif;
+    --font-body:    'Literata', serif;
+    --font-mono:    'IBM Plex Mono', 'JetBrains Mono', monospace;
+    /* NEW: Heading font variable */
+    --font-heading: 'IBM Plex Serif', 'Georgia', 'Times New Roman', serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* Scanline texture */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,200,255,0.010) 2px, rgba(0,200,255,0.010) 3px
+    );
+  }
+
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+    z-index: 1000; transition: width 0.1s;
+  }
+
+  /* ── NAV ─────────────────────────────────────────────── */
+  .sticky-nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(10,12,16,0.90);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,200,255,0.07);
+    padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 58px;
+    z-index: 800;
+  }
+
+  .nav-brand {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+  }
+
+  .nav-back {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); text-decoration: none;
+    display: flex; align-items: center; gap: 7px;
+    transition: color .2s;
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 20px; list-style: none; }
+  .nav-links a {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--text-dim); text-decoration: none;
+    letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── LAYOUT ────────────────────────────────────────────── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 96px 32px 100px;
+    align-items: start;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar { position: sticky; top: 76px; }
+
+  /* ── SIDEBAR BOXES ─────────────────────────────────────── */
+  .toc-box, .meta-box, .sources-box {
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+  .toc-list a {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-dim); text-decoration: none; transition: color 0.2s;
+    display: flex; align-items: center; gap: 7px;
+    padding: 3px 0;
+    border-left: 2px solid transparent;
+    padding-left: 8px;
+  }
+
+  .toc-list a::before {
+    content: ''; width: 3px; height: 3px;
+    border-radius: 50%; background: currentColor; flex-shrink: 0;
+  }
+
+  .toc-list a:hover, .toc-list a.active { color: var(--accent); border-left-color: var(--accent); }
+
+  .meta-box {
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+
+  .meta-row {
+    display: flex; flex-direction: column; gap: 2px;
+    margin-bottom: 11px; padding-bottom: 11px;
+    border-bottom: 1px solid rgba(0,200,255,0.06);
+  }
+  .meta-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .meta-key { color: var(--text-faint); letter-spacing: 0.1em; text-transform: uppercase; font-size: 8px; }
+  .meta-val { color: var(--text); line-height: 1.5; font-size: 10px; }
+
+  .sources-box .src-title {
+    font-family: var(--font-mono);
+    color: var(--accent); letter-spacing: 0.15em;
+    text-transform: uppercase; font-size: 9px;
+    margin-bottom: 12px; display: block;
+  }
+
+  .src-item {
+    display: flex; gap: 7px; margin-bottom: 7px; align-items: flex-start;
+  }
+
+  .src-badge {
+    font-family: var(--font-mono);
+    font-size: 8px; padding: 2px 6px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    flex-shrink: 0; margin-top: 1px; border: 1px solid;
+  }
+
+  .src-kaspersky { background: rgba(244,63,94,0.07); border-color: rgba(244,63,94,0.25); color: var(--accent-red); }
+  .src-breakglass { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); color: var(--accent-orange); }
+  .src-esentire { background: rgba(0,200,255,0.06); border-color: rgba(0,200,255,0.20); color: var(--accent); }
+  .src-cyderes { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.22); color: var(--accent-green); }
+  .src-vxug { background: rgba(168,85,247,0.06); border-color: rgba(168,85,247,0.22); color: var(--accent-purple); }
+  .src-media { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.22); color: var(--accent-yellow); }
+
+  .src-name { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); line-height: 1.5; }
+
+  /* ── ARTICLE ──────────────────────────────────────────── */
+  article { min-width: 0; }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  .hero { margin-bottom: 60px; padding-bottom: 40px; border-bottom: 1px solid rgba(0,200,255,0.07); }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent-orange); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .hero-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 24px; height: 1px; background: var(--accent-orange);
+  }
+
+  h1.post-title {
+    font-family: var(--font-heading);  /* CHANGED: Heading font applied */
+    font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+    font-weight: 800; line-height: 1.12;
+    color: #fff; margin-bottom: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  h1.post-title .hl {
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    background-image: linear-gradient(100deg, var(--accent) 0%, #4f9eff 50%, var(--accent-purple) 100%);
+  }
+
+  .hero-summary {
+    font-family: var(--font-body);
+    font-size: 0.97rem; color: var(--text-dim);
+    font-style: italic;
+    line-height: 1.85;
+    border-left: 2px solid var(--accent);
+    padding-left: 20px; margin-bottom: 22px;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  .tag {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.08em; padding: 3px 10px;
+    border-radius: 3px; border: 1px solid;
+  }
+
+  .tag-orange { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.25); color: var(--accent-orange); }
+  .tag-red    { background: rgba(244,63,94,0.06);  border-color: rgba(244,63,94,0.25);  color: var(--accent-red); }
+  .tag-cyan   { background: rgba(0,200,255,0.05);  border-color: rgba(0,200,255,0.20);  color: var(--accent); }
+  .tag-green  { background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.22); color: var(--accent-green); }
+  .tag-purple { background: rgba(168,85,247,0.05); border-color: rgba(168,85,247,0.22); color: var(--accent-purple); }
+  .tag-yellow { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.22); color: var(--accent-yellow); }
+
+  /* ── SECTIONS ─────────────────────────────────────────── */
+  .section { margin-bottom: 60px; scroll-margin-top: 80px; }
+
+  .section-anchor { display: block; position: relative; top: -90px; visibility: hidden; }
+
+  /* Section heading row */
+  .section-head {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-num {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; color: var(--accent);
+    background: rgba(0,200,255,0.07);
+    border: 1px solid rgba(0,200,255,0.15);
+    padding: 3px 9px; border-radius: 4px; flex-shrink: 0;
+  }
+
+  h2.section-title {
+    font-family: var(--font-heading);  /* CHANGED: Heading font applied */
+    font-size: 1.5rem; font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.025em;
+    flex: 1;
+  }
+
+  .section-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(0,200,255,0.14), transparent);
+    min-width: 20px;
+  }
+
+  h3.subsection {
+    font-family: var(--font-heading);  /* CHANGED: Heading font applied */
+    font-size: 1.1rem;  /* Adjusted slightly for serif readability */
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: none;  /* Removed uppercase for better serif readability */
+    color: var(--accent); margin-bottom: 14px;
+    margin-top: 30px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  h3.subsection::before { content: '//'; color: var(--text-faint); font-family: var(--font-mono); font-size: 10px; }
+
+  /* ── BODY TEXT ──────────────────────────────────────────── */
+  .body-text { font-size: 0.965rem; line-height: 1.85; }
+  .body-text p { color: #8fb8d8; margin-bottom: 16px; font-family: var(--font-body); }
+  .body-text strong { color: var(--text); font-weight: 600; }
+
+  /* ── CALLOUT ─────────────────────────────────────────────── */
+  .callout {
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.08);
+    border-left: 3px solid;
+    border-radius: 0 10px 10px 0;
+    padding: 18px 22px;
+    margin: 22px 0;
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+
+  .callout-orange { border-left-color: var(--accent-orange); }
+  .callout-red    { border-left-color: var(--accent-red); }
+  .callout-cyan   { border-left-color: var(--accent); }
+  .callout-green  { border-left-color: var(--accent-green); }
+  .callout-purple { border-left-color: var(--accent-purple); }
+  .callout-yellow { border-left-color: var(--accent-yellow); }
+
+  .callout-label {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 8px; display: block;
+  }
+
+  /* ── ATTACK CHAIN ────────────────────────────────────────── */
+  .chain-label {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 10px;
+  }
+
+  .attack-chain {
+    display: flex; flex-wrap: wrap;
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 10px; overflow: hidden; margin-bottom: 28px;
+  }
+
+  .chain-step {
+    flex: 1; min-width: 80px;
+    padding: 12px 10px;
+    font-family: var(--font-mono); font-size: 9px;
+    text-align: center; text-transform: uppercase;
+    letter-spacing: 0.05em; line-height: 1.55;
+    border-right: 1px solid rgba(0,200,255,0.06);
+    position: relative;
+  }
+
+  .chain-step:last-child { border-right: none; }
+  .chain-step::after {
+    content: '›'; position: absolute; right: -8px; top: 50%;
+    transform: translateY(-50%); color: var(--accent); font-size: 16px; z-index: 1;
+  }
+  .chain-step:last-child::after { display: none; }
+
+  .chain-step.recon    { background: rgba(168,85,247,0.06);  color: var(--accent-purple); }
+  .chain-step.delivery { background: rgba(245,158,11,0.06);  color: var(--accent-orange); }
+  .chain-step.exec     { background: rgba(244,63,94,0.06);   color: var(--accent-red); }
+  .chain-step.persist  { background: rgba(245,158,11,0.05);  color: var(--accent-yellow); }
+  .chain-step.exfil    { background: rgba(0,200,255,0.05);   color: var(--accent); }
+  .chain-step.c2       { background: rgba(16,185,129,0.05);  color: var(--accent-green); }
+
+  /* ── CODE ────────────────────────────────────────────────── */
+  .code-block {
+    background: #020a14;
+    border: 1px solid rgba(0,200,255,0.12);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 22px;
+    font-family: var(--font-mono); font-size: 11.5px;
+    line-height: 1.75; overflow-x: auto; margin: 20px 0;
+    position: relative; white-space: pre; color: #6ec6e8;
+  }
+
+  .code-label {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-faint);
+    position: absolute; top: 10px; right: 14px;
+  }
+
+  .kql-kw      { color: #569cd6; }
+  .kql-fn      { color: #dcdcaa; }
+  .kql-str     { color: #ce9178; }
+  .kql-op      { color: var(--accent); }
+  .kql-comment { color: #4a6f4a; font-style: italic; }
+  .kql-hash    { color: var(--accent-green); word-break: break-all; }
+
+  /* ── TIMELINE ─────────────────────────────────────────────── */
+  .timeline { margin: 28px 0; position: relative; }
+
+  /* Vertical spine */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 82px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg,
+      rgba(0,200,255,0.30) 0%,
+      rgba(0,200,255,0.10) 80%,
+      transparent 100%);
+  }
+
+  .tl-item {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    position: relative;
+    align-items: flex-start;
+  }
+
+  .tl-date {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    min-width: 76px;
+    padding-top: 5px;
+    text-align: right;
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
+  .tl-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin: 6px 16px 0;
+    box-shadow: 0 0 10px rgba(0,200,255,0.55);
+    position: relative; z-index: 2;
+    border: 2px solid #0a0c10;
+    outline: 1px solid rgba(0,200,255,0.35);
+  }
+
+  .tl-content {
+    flex: 1;
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 8px;
+    padding: 14px 18px;
+    transition: border-color .2s;
+  }
+
+  .tl-content:hover { border-color: rgba(0,200,255,0.18); }
+
+  .tl-content strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 13px; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 5px;
+    letter-spacing: -0.01em;
+  }
+
+  .tl-content p {
+    font-family: var(--font-body);
+    font-size: 12.5px; color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .source-attr {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--text-faint); margin-top: 8px;
+    letter-spacing: 0.05em; display: flex; flex-wrap: wrap; gap: 4px;
+  }
+
+  .source-attr span {
+    padding: 1px 6px; border-radius: 3px; border: 1px solid;
+  }
+
+  /* ── TABLES ──────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+
+  table.data-table {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 10px; overflow: hidden;
+  }
+
+  table.data-table th {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--text-dim); padding: 10px 14px;
+    text-align: left; border-bottom: 1px solid rgba(0,200,255,0.10);
+    background: #0e1c2e;
+  }
+
+  table.data-table td {
+    padding: 9px 14px; border-bottom: 1px solid rgba(0,200,255,0.05);
+    font-family: var(--font-mono); color: var(--text);
+    vertical-align: top; line-height: 1.6; font-size: 11px;
+  }
+
+  table.data-table tr:last-child td { border-bottom: none; }
+  table.data-table tr:hover td { background: rgba(0,200,255,0.02); }
+
+  .sev { padding: 2px 7px; border-radius: 3px; font-size: 9px; font-weight: 600; font-family: var(--font-mono); }
+  .sev-crit { background: rgba(244,63,94,0.10);  color: var(--accent-red); }
+  .sev-high { background: rgba(245,158,11,0.10); color: var(--accent-orange); }
+  .sev-med  { background: rgba(245,158,11,0.08); color: var(--accent-yellow); }
+
+  .conf-badge {
+    font-family: var(--font-mono);
+    padding: 2px 7px; border-radius: 3px; font-size: 9px; font-weight: 600; border: 1px solid;
+  }
+  .conf-high { background: rgba(16,185,129,0.07); border-color: rgba(16,185,129,0.25); color: var(--accent-green); }
+  .conf-mod  { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.25); color: var(--accent-yellow); }
+
+  .hash-table td:first-child {
+    font-size: 9.5px; word-break: break-all;
+    color: var(--accent-green); max-width: 280px;
+  }
+
+  /* ── STAGE CHAIN ─────────────────────────────────────────── */
+  .stage-chain { display: flex; flex-direction: column; gap: 8px; margin: 18px 0; }
+
+  .stage-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 8px; padding: 13px 16px;
+    transition: border-color .2s;
+  }
+
+  .stage-item:hover { border-color: rgba(0,200,255,0.16); }
+
+  .stage-num {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--accent); font-weight: 600;
+    min-width: 28px; padding-top: 2px;
+  }
+
+  .stage-content strong {
+    display: block; font-family: var(--font-display); font-size: 12px;
+    color: var(--text); margin-bottom: 5px; font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .stage-content p { font-family: var(--font-body); font-size: 12px; color: var(--text-dim); line-height: 1.65; }
+
+  /* ── MITRE GRID ──────────────────────────────────────────── */
+  .mitre-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 8px; margin: 18px 0;
+  }
+
+  .mitre-card {
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 6px; padding: 11px 14px;
+    transition: border-color .2s;
+  }
+
+  .mitre-card:hover { border-color: rgba(0,200,255,0.18); }
+
+  .mitre-id { font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 3px; }
+  .mitre-tactic { font-family: var(--font-mono); font-size: 8px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 4px; }
+  .mitre-name { font-family: var(--font-body); font-size: 11.5px; color: var(--text-dim); line-height: 1.45; }
+
+  /* ── DETECTION BOX ───────────────────────────────────────── */
+  .detection-box {
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.09);
+    border-radius: 10px; padding: 20px 24px; margin: 22px 0;
+  }
+
+  .detection-box h4 {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+
+  .det-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .det-list li {
+    font-family: var(--font-body); font-size: 13px; color: var(--text-dim);
+    display: flex; align-items: flex-start; gap: 10px; line-height: 1.65;
+  }
+
+  .det-list li::before {
+    content: '→'; color: var(--accent);
+    font-family: var(--font-mono); font-size: 10px;
+    flex-shrink: 0; margin-top: 3px;
+  }
+
+  /* ── TWO-COL ────────────────────────────────────────────── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin: 18px 0;
+  }
+
+  .info-card {
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.07);
+    border-radius: 8px; padding: 15px 17px;
+  }
+
+  .info-card-title {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.13em; text-transform: uppercase;
+    color: var(--accent-orange); margin-bottom: 10px;
+  }
+
+  .info-card p { font-family: var(--font-body); font-size: 12.5px; color: var(--text-dim); line-height: 1.65; }
+
+  /* ── IOC URL rows ───────────────────────────────────────── */
+  .url-row {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--accent-red); word-break: break-all;
+    background: rgba(244,63,94,0.04);
+    padding: 5px 10px; border-radius: 4px;
+    border-left: 2px solid var(--accent-red);
+    margin-bottom: 6px; display: block;
+  }
+
+  /* ── INDICATOR PILLS ────────────────────────────────────── */
+  .indicator-pill {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 2px 9px; border-radius: 3px;
+    background: rgba(0,200,255,0.06);
+    border: 1px solid rgba(0,200,255,0.18);
+    color: var(--accent); margin: 2px;
+  }
+
+  /* ── VERDICT ────────────────────────────────────────────── */
+  .verdict-section { margin: 28px 0; }
+
+  .verdict-row {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .verdict-label {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--text-dim); text-transform: uppercase;
+    letter-spacing: 0.10em; min-width: 185px;
+  }
+
+  .verdict-track {
+    flex: 1; height: 4px;
+    background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden;
+  }
+
+  .verdict-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 1.2s cubic-bezier(0.2,0.8,0.3,1);
+  }
+
+  .fill-crit { background: linear-gradient(90deg, var(--accent-red), #ff7b72); }
+  .fill-high { background: linear-gradient(90deg, var(--accent-orange), #ffa657); }
+  .fill-med  { background: linear-gradient(90deg, var(--accent-yellow), #f0b429); }
+
+  .verdict-pct {
+    font-family: var(--font-mono); font-size: 9px;
+    color: var(--text-dim); min-width: 32px; text-align: right;
+  }
+
+  /* ── ANALYST BOX ────────────────────────────────────────── */
+  .analyst-box {
+    background: #070e1a;
+    border: 1px solid rgba(0,200,255,0.09);
+    border-top: 2px solid var(--accent);
+    border-radius: 0 0 12px 12px;
+    padding: 24px 28px;
+    margin-top: 36px;
+  }
+
+  .analyst-box h3 {
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+
+  .analyst-box p {
+    font-family: var(--font-body); font-size: 0.9rem;
+    color: var(--text-dim); line-height: 1.85;
+    margin-bottom: 14px;
+  }
+
+  .analyst-box p:last-child { margin-bottom: 0; }
+
+  /* ── DIVIDER ────────────────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,200,255,0.14), transparent);
+    margin: 48px 0;
+  }
+
+  /* ── POST FOOTER ────────────────────────────────────────── */
+  .post-footer {
+    margin-top: 64px; padding-top: 28px;
+    border-top: 1px solid rgba(0,200,255,0.07);
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--text-faint); line-height: 2.2;
+  }
+
+  .post-footer strong { color: var(--text); }
+  .post-footer a { color: var(--accent-green); text-decoration: none; }
+  .post-footer a:hover { text-decoration: underline; }
+
+  /* Author card */
+  .author-card {
+    display: flex; align-items: center; gap: 20px;
+    background: #0e1c2e;
+    border: 1px solid rgba(0,200,255,0.12);
+    border-radius: 14px; padding: 22px; margin-top: 48px;
+  }
+
+  .author-avatar {
+    width: 54px; height: 54px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(0,200,255,0.12), rgba(124,58,237,0.12));
+    border: 1px solid rgba(0,200,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--accent);
+  }
+
+  .author-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .author-role { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); margin-bottom: 10px; letter-spacing: 0.06em; }
+
+  .author-links { display: flex; gap: 7px; flex-wrap: wrap; }
+  .author-link {
+    font-family: var(--font-mono); font-size: 9px; color: var(--text-dim);
+    border: 1px solid rgba(0,200,255,0.10); padding: 3px 10px; border-radius: 4px;
+    text-decoration: none; transition: .2s;
+  }
+  .author-link:hover { color: var(--accent); border-color: rgba(0,200,255,0.25); }
+
+  /* ── RESPONSIVE ─────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+    .two-col { grid-template-columns: 1fr; }
+    .attack-chain { flex-direction: column; }
+    .chain-step::after { display: none; }
+    .timeline::before { left: 68px; }
+  }
+
+  @media (max-width: 600px) {
+    .sticky-nav { padding: 0 16px; }
+    .nav-links { display: none; }
+    .main-grid { padding: 80px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<nav class="sticky-nav">
+  <a href="research.html" class="nav-back">← All Research</a>
+  <div class="nav-brand">&gt; attack_deep_dive</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#technical">Technical</a></li>
+    <li><a href="#stxrat">STX RAT</a></li>
+    <li><a href="#iocs">IOCs</a></li>
+    <li><a href="#detection">Detection</a></li>
+    <li><a href="#mitre">MITRE</a></li>
+    <li><a href="#actor">Actor</a></li>
+    <li><a href="#verdict">Verdict</a></li>
+  </ul>
+</nav>
+
+<div class="main-grid">
+
+  <article>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-eyebrow">Attack Deep Dive · Supply Chain · Multi-Vendor Confirmed</div>
+      <h1 class="post-title">CPUID Breach: <span class="hl">STX RAT Delivered</span> via Trojanized CPU-Z &amp; HWMonitor Downloads</h1>
+      <p class="hero-summary">A threat actor compromised CPUID's secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT — a previously undocumented multi-stage in-memory remote access trojan with credential theft and browser harvesting capabilities — delivered via DLL sideloading of a malicious cryptbase.dll. The same C2 infrastructure was reused from a March 2026 fake FileZilla campaign, linking this to a 10-month, financially-motivated operation. Confirmed by Kaspersky, Breakglass Intelligence, CYDERES Howler Cell, eSentire TRU, vx-underground, and Symantec.</p>
+      <div class="tag-row">
+        <span class="tag tag-orange">Supply Chain Attack</span>
+        <span class="tag tag-red">STX RAT</span>
+        <span class="tag tag-cyan">DLL Sideloading</span>
+        <span class="tag tag-green">Watering Hole</span>
+        <span class="tag tag-purple">CPUID · CPU-Z · HWMonitor</span>
+        <span class="tag tag-red">Russian-Speaking TA</span>
+        <span class="tag tag-yellow">FileZilla Campaign Link</span>
+        <span class="tag tag-cyan">CRYPTBASE.dll</span>
+      </div>
+    </header>
+
+    <!-- S1 OVERVIEW -->
+    <span class="section-anchor" id="overview"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">01</div>
+        <h2 class="section-title">What Happened — The Incident</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="chain-label">// Full Attack Chain (Confirmed)</div>
+      <div class="attack-chain">
+        <div class="chain-step recon">Apache CVE<br>Initial Access<br>(Probable)</div>
+        <div class="chain-step delivery">CPUID API<br>Compromise<br>~6 hrs</div>
+        <div class="chain-step delivery">Download Page<br>Redirected to<br>R2 Bucket</div>
+        <div class="chain-step exec">CRYPTBASE.dll<br>Sideloaded via<br>DLL Search Order</div>
+        <div class="chain-step exec">5-Stage<br>In-Memory<br>Unpack Chain</div>
+        <div class="chain-step exfil">STX RAT<br>Deployed +<br>Credentials Stolen</div>
+        <div class="chain-step c2">welcome[.]supp0v3<br>[.]com C2<br>Beacon</div>
+      </div>
+
+      <div class="body-text">
+        <p>CPUID is the developer behind <strong>CPU-Z</strong> and <strong>HWMonitor</strong> — free diagnostic utilities used by tens of millions of PC enthusiasts, IT professionals, system administrators, and OEM hardware vendors globally. Between <strong>April 9, 2026 at approximately 15:00 UTC and April 10, 2026 at approximately 10:00 UTC</strong> — a window of roughly 19 hours — the official CPUID download page was compromised.</p>
+
+        <p>According to CPUID contributor <strong>Samuel Demeulemeester (Doc TB)</strong>, who acknowledged the breach publicly on X: <em>"A secondary feature (basically a side API) was compromised for approximately six hours between April 9 and April 10, causing the main website to randomly display malicious links (our signed original files were not compromised). The breach was found and has since been fixed."</em></p>
+
+        <div class="callout callout-orange">
+          <span class="callout-label" style="color: var(--accent-orange);">⚠ Scope of Impact</span>
+          All of the following CPUID products were affected during the breach window: <strong>CPU-Z v2.19</strong>, <strong>HWMonitor v1.63</strong>, <strong>HWMonitor Pro v1.57</strong>, and <strong>PerfMonitor 2 v2.04</strong>. Malware researcher Giuseppe Massaro additionally identified <strong>PowerMAX</strong> as affected. Kaspersky identified 150+ confirmed victims across individuals and organizations in retail, manufacturing, consulting, telecommunications, and agriculture. Primary infection geography: Brazil, Russia, China.
+        </div>
+
+        <p>The download links were poisoned via the compromised API to redirect to attacker-controlled infrastructure — specifically Cloudflare R2 storage buckets and several other attacker-controlled domains. The original CPUID signed binaries were never modified; the attack lived entirely in the redirect chain and the malicious packages served from external infrastructure.</p>
+
+        <p>Community detection began when Reddit user <strong>DMkiIIer</strong> posted to r/pcmasterrace after downloading what appeared to be HWMonitor 1.63 and receiving a VirusTotal-flagged file named "HWiNFO_Monitor_Setup.exe" with a Russian-language installer. The post quickly gained traction, and tech creator <strong>Chris Titus Tech (@christitustech)</strong> amplified it with the warning "Millions about to be PWNED!" — triggering rapid community and vendor response. The timing of the attack was notable: CPUID founder Franck Delattre was on leave, and Demeulemeester had been working on Memtest86+ through the night when the breach was discovered.</p>
+      </div>
+    </section>
+
+    <!-- S2 TIMELINE -->
+    <span class="section-anchor" id="timeline"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">02</div>
+        <h2 class="section-title">Campaign Timeline — 10-Month Operation</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="callout callout-cyan">
+        <span class="callout-label" style="color: var(--accent);">📊 Breakglass Intelligence Attribution</span>
+        Breakglass Intelligence traces the operation back to July 2025 — a 10-month arc from first known sample to the CPUID compromise. The actor progressively targeted higher-value software distribution points with the same infrastructure and technique chain.
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">Jul 2025</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Campaign Begins — superbad.exe</strong>
+            <p>Earliest known sample communicating with C2 address 95[.]216[.]51[.]236:31415. Breakglass Intelligence assesses this as the operational start of a 10-month campaign.</p>
+            <div class="source-attr"><span class="src-breakglass src-badge">Breakglass</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Oct 29, 2025</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>supp0v3[.]com Registered</strong>
+            <p>Staging domain welcome[.]supp0v3[.]com registered via CNOBIN, a Chinese domain registrar operating out of Hong Kong, known for minimal verification requirements.</p>
+            <div class="source-attr"><span class="src-breakglass src-badge">Breakglass</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Feb–Mar 2026</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Fake FileZilla Campaign</strong>
+            <p>Same threat actor distributes STX RAT via fraudulent FileZilla FTP installer hosted on filezilla-project[.]live (a typosquat of the legitimate filezilla-project.org). The version.dll sideloading payload called the identical C2: 95[.]216[.]51[.]236:31415. Documented by Malwarebytes and eSentire TRU.</p>
+            <div class="source-attr"><span class="src-esentire src-badge">eSentire</span> <span class="src-media src-badge">Malwarebytes</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 3, 2026</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Earliest Trojanized File Seen (per VirusTotal)</strong>
+            <p>A Reddit user noted VirusTotal showed the compromised HWiNFO_Monitor_Setup.exe was first seen on 2026-02-11 on VT; however Breakglass dates the CPUID-specific download link compromise to April 3, 2026 based on infrastructure staging activity.</p>
+            <div class="source-attr"><span class="src-media src-badge">Reddit</span> <span class="src-breakglass src-badge">Breakglass</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 9, ~15:00 UTC</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Breach Window Opens — Reddit First Report (~21:00 UTC)</strong>
+            <p>Kaspersky confirms download URLs poisoned starting 15:00 UTC. First community report surfaces approximately 9 PM UTC from Reddit user DMkiIIer describing a Russian-language installer and Defender alert. Chris Titus Tech amplifies to 1.6M+ X impressions.</p>
+            <div class="source-attr"><span class="src-kaspersky src-badge">Kaspersky</span> <span class="src-vxug src-badge">vx-underground</span> <span class="src-media src-badge">Reddit</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 9–10, 2026</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Active Breach Window — Malicious Downloads Served</strong>
+            <p>CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor download links redirect to attacker R2 buckets and other malicious domains. Community members report Cloudflare R2 buckets to abuse@cloudflare.com — CF adds restrictions to flagged URLs.</p>
+            <div class="source-attr"><span class="src-kaspersky src-badge">Kaspersky</span> <span class="src-cyderes src-badge">CYDERES</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 10, ~10:00 UTC</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>CPUID Detects &amp; Remediates — Doc TB Statement</strong>
+            <p>Samuel Demeulemeester detects the breach, restores download links, puts everything read-only pending investigation. Publicly acknowledges on X. Confirms breach limited to approximately 6 hours. Downloads verified clean by Kaspersky by ~10:00 UTC.</p>
+            <div class="source-attr"><span class="src-media src-badge">CPUID / X</span> <span class="src-kaspersky src-badge">Kaspersky</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 10–12, 2026</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Multi-Vendor Analysis Published</strong>
+            <p>Kaspersky, CYDERES Howler Cell, eSentire TRU (STX RAT original documentation), and vx-underground publish technical analyses. 150+ victims identified. Breakglass Intelligence maps the full 10-month campaign arc.</p>
+            <div class="source-attr"><span class="src-kaspersky src-badge">Kaspersky</span> <span class="src-cyderes src-badge">CYDERES</span> <span class="src-esentire src-badge">eSentire</span> <span class="src-breakglass src-badge">Breakglass</span></div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">Apr 13, 2026</div>
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <strong>Symantec &amp; Broadcom Protection Bulletin Published</strong>
+            <p>Symantec publishes protection bulletin confirming detection coverage (Trojan Horse, Trojan.Gen.MBT, WS.Malware.1, SONAR.TCP!gen1, Heur.AdvML variants). THN and Help Net Security publish consolidated coverage.</p>
+            <div class="source-attr"><span class="src-media src-badge">Symantec</span> <span class="src-media src-badge">THN</span> <span class="src-media src-badge">HNS</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S3 TECHNICAL -->
+    <span class="section-anchor" id="technical"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">03</div>
+        <h2 class="section-title">Technical Deep Dive — Infection Chain</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <h3 class="subsection">Probable Initial Access — Apache CVE-2024-38475</h3>
+
+      <div class="body-text">
+        <p>Breakglass Intelligence noted that cpuid.com runs <strong>Apache 2.4.59/2.4.66</strong>, versions affected by 34 known CVEs. The most probable candidate for initial access is <strong>CVE-2024-38475</strong> — an Apache HTTP Server mod_rewrite path traversal vulnerability that allows an attacker to map URLs to filesystem locations not intended to be served, potentially exposing server-side scripts or CMS backend configuration. With write access to the CMS backend, the attacker could modify download links to point to the Cloudflare R2 staging bucket.</p>
+      </div>
+
+      <div class="callout callout-yellow">
+        <span class="callout-label" style="color: var(--accent-yellow);">⚠ Confidence: Moderate</span>
+        This is assessed as the most likely initial access vector based on the server's Apache version fingerprint and the alignment between the vulnerability's attack surface (URL-to-filesystem remapping) and the observed compromise (download link redirection rather than full server takeover). Not directly confirmed. No other entry point was identified.
+      </div>
+
+      <h3 class="subsection">Malicious Delivery Infrastructure</h3>
+
+      <div class="body-text">
+        <p>The compromised CPUID download page redirected users to the following attacker-controlled domains. All were confirmed by Kaspersky's analysis:</p>
+      </div>
+
+      <span class="url-row">hxxps://cahayailmukreatif.web[.]id/sw-content/template/hwmonitor/hwinfo_monitor_setup.exe</span>
+      <span class="url-row">hxxps://pub-45c2577dbd174292a02137c18e7b1b5a.r2[.]dev/ [multiple paths — CPU-Z, HWMonitor, HWMonitor Pro, PerfMonitor]</span>
+      <span class="url-row">hxxps://transitopalermo[.]com/config/hwmonitor/ [multiple files]</span>
+      <span class="url-row">hxxps://vatrobran[.]hr/en-GB/info/ [multiple files]</span>
+      <span class="url-row">hxxp://pub-fd67c956bf8548b7b2cc23bb3774ff0c[.]r2[.]dev/hwmonitor_1[.]63[.]zip [CYDERES-identified]</span>
+
+      <h3 class="subsection">Stage 1 — Trojanized Inno Setup Installer</h3>
+
+      <div class="body-text">
+        <p>The malicious package, distributed as both a ZIP archive and a standalone installer (e.g., HWiNFO_Monitor_Setup.exe), contained two components: a <strong>legitimate signed CPUID executable</strong> for the corresponding product and a malicious DLL named <strong>CRYPTBASE.dll</strong>. An immediate red flag noted by community researchers: the Inno Setup installer presented <strong>Russian-language dialogs</strong> — CPUID is a French company.</p>
+        <p>CYDERES confirmed the malicious CRYPTBASE.dll carries a <strong>timestomped compilation timestamp set to 2077-08-31 05:16:43</strong> — a deliberate artifact to hinder timeline analysis and forensic correlation.</p>
+      </div>
+
+      <h3 class="subsection">Stage 2 — DLL Sideloading via CRYPTBASE.dll</h3>
+
+      <div class="body-text">
+        <p>Windows DLL search order means that when HWMonitor_x64.exe (or any CPUID executable) launches, Windows searches the application's own directory before system directories. Since the malicious CRYPTBASE.dll is placed in the same directory as the legitimate executable, it is loaded first — sideloading the attacker's DLL without any explicit exploit. CRYPTBASE.dll is also the name of a legitimate Windows system library, making this a living-off-the-land technique that bypasses application whitelisting trusting the signed parent.</p>
+      </div>
+
+      <div class="callout callout-red">
+        <span class="callout-label" style="color: var(--accent-red);">⚡ Important: Only 64-bit Affected</span>
+        CYDERES Howler Cell confirmed that only the <strong>64-bit version (HWMonitor_x64.exe)</strong> is affected in this attack due to the DLL search order behavior. The 32-bit variant does not sideload CRYPTBASE.dll from the application directory in the same way.
+      </div>
+
+      <div class="body-text">
+        <p>Upon execution within DllMain, the malware spawns a separate thread which initiates an additional thread responsible for executing the primary malicious payload — this multi-threaded approach is used to release the loader lock. Concurrently, it loads the <em>legitimate</em> cryptbase.dll from System32 and returns TRUE to prevent a deadlock condition, ensuring the target application appears to function normally.</p>
+      </div>
+
+      <h3 class="subsection">C2 Pre-Check &amp; Campaign Registration</h3>
+
+      <div class="body-text">
+        <p>Before initiating the unpacking chain, the malware sends JSON-formatted victim metadata to the hardcoded C2 domain <strong>welcome[.]supp0v3[.]com</strong> for victim tracking. The configuration embedded in the DLL includes campaign tags. CYDERES identified four active campaign tags and two referrer values:</p>
+      </div>
+
+      <div class="code-block" style="white-space: pre-wrap; font-size: 11px;">
+<span class="code-label">C2 Callback JSON — Campaign Metadata</span><span class="kql-comment">// CPU-Z victim:</span>
+{
+  <span class="kql-str">"hello"</span>: {
+    <span class="kql-str">"tag"</span>: <span class="kql-str">"tbs"</span>,         <span class="kql-comment">// Active tags: tbs | tbs2 | tbs3 | snip</span>
+    <span class="kql-str">"referrer"</span>: <span class="kql-str">"cpz"</span>,   <span class="kql-comment">// CPU-Z victims = "cpz"</span>
+    <span class="kql-str">"callback"</span>: <span class="kql-str">"hxxps://welcome.supp0v3[.]com/d/callback"</span>
+  }
+}
+
+<span class="kql-comment">// HWMonitor victim:</span>
+{
+  <span class="kql-str">"hello"</span>: {
+    <span class="kql-str">"tag"</span>: <span class="kql-str">"tbs"</span>,
+    <span class="kql-str">"referrer"</span>: <span class="kql-str">"monitor3"</span>,  <span class="kql-comment">// HWMonitor victims = "monitor3"</span>
+    <span class="kql-str">"callback"</span>: <span class="kql-str">"hxxps://welcome.supp0v3[.]com/d/callback"</span>
+  }
+}</div>
+
+      <h3 class="subsection">Five-Stage In-Memory Unpacking Chain</h3>
+
+      <div class="body-text">
+        <p>After the malicious DLL is sideloaded, it initiates a five-stage unpacking chain. Each stage decrypts and reflectively loads the next — entirely in memory. This produces zero on-disk artifacts after Stage 1, making forensic recovery and static detection extremely difficult. CYDERES Howler Cell documented the complete chain:</p>
+      </div>
+
+      <div class="stage-chain">
+        <div class="stage-item">
+          <div class="stage-num">S1</div>
+          <div class="stage-content">
+            <strong>CRYPTBASE.dll — Inno Setup Installer (on-disk)</strong>
+            <p>Timestomped to 2077. Spawns thread to release loader lock, loads legitimate cryptbase.dll from System32, initiates payload thread. Sends initial C2 beacon with campaign metadata.</p>
+          </div>
+        </div>
+        <div class="stage-item">
+          <div class="stage-num">S2</div>
+          <div class="stage-content">
+            <strong>In-Memory Shellcode Stub — Reflective PE Loader</strong>
+            <p>Compact shellcode that locates the entry point of the reflective PE loader. Entirely in memory. SHA-256: <span style="color: var(--accent-green); font-family: var(--font-mono); font-size: 10px;">1331f19c6732fca81f32c4cec9f89abf26371ed9d3665954f491c89e2c55e5bb</span></p>
+          </div>
+        </div>
+        <div class="stage-item">
+          <div class="stage-num">S3</div>
+          <div class="stage-content">
+            <strong>Reflective PE — Resource Section Decryption</strong>
+            <p>After the PE is mapped into memory, it unpacks Stage 4 by XOR-decrypting data embedded in the resource section. XOR key: <span style="color: var(--accent); font-family: var(--font-mono); font-size: 10px;">53 F4 49 91 8C E5 D9 9B 3A CE 62 5F 80 40 7B 30</span>. SHA-256: <span style="color: var(--accent-green); font-family: var(--font-mono); font-size: 10px;">116d806a5ca6f34fdd04061499daca9a352feb2e3f291c7ef3e5d470fe875f7f</span></p>
+          </div>
+        </div>
+        <div class="stage-item">
+          <div class="stage-num">S4</div>
+          <div class="stage-content">
+            <strong>Reflective DLL — Same XOR + Bitwise Manipulation</strong>
+            <p>Functions as a reflectively loaded DLL. Once mapped, unpacks Stage 5 using the same XOR decryption and bitwise manipulation routine. SHA-256: <span style="color: var(--accent-green); font-family: var(--font-mono); font-size: 10px;">a70645f46eee6d765c54ba4a5c48166bd83bcfbc7771a82be9ed48ab4871ebfa</span></p>
+          </div>
+        </div>
+        <div class="stage-item">
+          <div class="stage-num">S5</div>
+          <div class="stage-content">
+            <strong>STX RAT — Final Payload</strong>
+            <p>Core malware binary with full RAT + infostealer capabilities. Contacts welcome[.]supp0v3[.]com C2. SHA-256: <span style="color: var(--accent-red); font-family: var(--font-mono); font-size: 10px;">52862b538459c8faaf89cf2b5d79c2f0030f79f80a68f93d65ec91f046f05be6</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-purple">
+        <span class="callout-label" style="color: var(--accent-purple);">🔬 vx-underground Assessment</span>
+        "This malware is deeply trojanized, distributes from a compromised domain, performs file masquerading, is multi-staged, operates (almost) entirely in-memory, and uses interesting methods to evade EDRs and/or AVs such as proxying NTDLL functionality from a .NET assembly. Whoever developed this malware actually cares about evasion and made some intelligent decisions when developing this malware payload. The ultimate goal of this malware is data theft, specifically browser credentials. Overall I give this malware a B-."
+      </div>
+    </section>
+
+    <!-- S4 STX RAT -->
+    <span class="section-anchor" id="stxrat"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">04</div>
+        <h2 class="section-title">STX RAT — Payload Analysis (eSentire TRU)</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="body-text">
+        <p>STX RAT was first documented by <strong>eSentire's Threat Response Unit (TRU)</strong> on April 8, 2026, after observing an attempted delivery in a customer environment in the Finance industry in late February 2026. The name derives from its use of the <strong>Start of Text (STX) magic byte "\x02"</strong> prefixed to all C2 messages. The malware's FileZilla campaign vector was separately documented by Malwarebytes in early March 2026.</p>
+      </div>
+
+      <h3 class="subsection">Packing &amp; String Obfuscation</h3>
+
+      <div class="body-text">
+        <p>The packer is characterized by two exports named <strong>"init"</strong> and <strong>"run"</strong>, with XXTEA decryption / Zlib decompression on a byte array in the .DATA section. Following tail jumps is effective for unpacking the core payload.</p>
+        <p>Strings are obfuscated via two mechanisms: (1) <strong>rolling XOR-encoding</strong> where the key index advances per byte and wraps at a predefined modulus — for example, key starting at 0x39, incrementing, wrapping at 0x6C — and (2) <strong>AES-128-CTR encryption</strong> via CryptDecrypt API, stored in a table with the structure: AES key (16 bytes) + nonce (5 bytes) + ciphertext length (DWORD) + ciphertext. Strings are decrypted on demand and deleted from memory immediately after use.</p>
+      </div>
+
+      <h3 class="subsection">Anti-VM / Anti-Analysis</h3>
+
+      <div class="body-text">
+        <p>STX RAT performs extensive pre-execution checks. On detection of any virtualization artifact, the malware jitter-exits (sleeps with a randomized delay and exits). Hypervisors checked include:</p>
+      </div>
+
+      <div class="tag-row" style="margin-bottom: 16px;">
+        <span class="indicator-pill">VirtualBox (HKLM keys, files)</span>
+        <span class="indicator-pill">VMware (registry + drivers)</span>
+        <span class="indicator-pill">QEMU (VirtIO drivers)</span>
+        <span class="indicator-pill">Parallels</span>
+        <span class="indicator-pill">BIOS date: 06/23/99 check</span>
+        <span class="indicator-pill">Process name must contain "powershell" or "msbuild"</span>
+        <span class="indicator-pill">PEB BeingDebugged flag</span>
+      </div>
+
+      <h3 class="subsection">AMSI Ghosting</h3>
+
+      <div class="body-text">
+        <p>The malware implements <strong>AMSI Ghosting</strong> — patching the Windows API <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">rpcrt4!NdrClientCall3</code> to disable a core RPC layer that AMSI depends on, preventing security solutions from acting on AMSI telemetry. The window is also hidden from Alt+Tab and the Taskbar by targeting the "CASCADIA_HOSTING_WINDOW_CLASS" (Windows Terminal class name) and adding WS_EX_TOOLWINDOW.</p>
+      </div>
+
+      <h3 class="subsection">C2 Protocol — Cryptographic Design</h3>
+
+      <div class="body-text">
+        <p>STX RAT's C2 protocol is sophisticated. Communication occurs over TCP (C2: 95[.]216[.]51[.]236:31415 — a non-standard port) with the following cryptographic stack:</p>
+      </div>
+
+      <div class="two-col">
+        <div class="info-card">
+          <div class="info-card-title">Key Exchange</div>
+          <p><strong>X25519 ECDH</strong> derives a per-session shared secret. C2 sends its X25519 public key + Ed25519 signature. Client verifies using hard-coded Ed25519 public key: <code style="font-family: var(--font-mono); font-size: 10px; color: var(--accent);">4DwvIfxy4thDpGXKYjew8MTI1jYwFEIs2oHuW35BtVM=</code> (rolling XOR encoded). Prevents C2 spoofing.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title">Session Encryption</div>
+          <p>Shared secret → HKDF-SHA256 → 32-byte ChaCha20 key (no salt, empty info). All traffic encrypted with <strong>ChaCha20-Poly1305</strong>. Message format: <code style="font-family: var(--font-mono); font-size: 10px; color: var(--accent);">[nonce₁₂ | ciphertext | poly1305_tag₁₆]</code>. Framing: DWORD length + payload.</p>
+        </div>
+      </div>
+
+      <div class="body-text">
+        <p>The introduction message sent to C2 includes: user_id, machine_id, hostname, username, OS, malware build version, architecture, admin status, PID, process path, server address, UTM campaign tracking (utm_group, utm_source from clipboard regex), RAM, and AV list. The C2 responds with either a <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">get_creds</code> command (triggers credential theft immediately) or an <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">update</code> command if the malware version is considered outdated. The C2 also supports: <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">die</code>, <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">run</code>, <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">start_hvnc</code>, <code style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">start_tunnel</code>, and full HVNC keyboard/mouse injection commands.</p>
+        <p>The malware also supports <strong>Tor as a fallback C2</strong> via a custom Tor client implementation. Onion address: <code style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-purple);">yu7sbzk2tgm4vv56qgvsq44wnwgct6sven4akbb2n3onp46f42fcstid.onion</code></p>
+      </div>
+
+      <h3 class="subsection">Credential Theft Capabilities</h3>
+
+      <div class="callout callout-red">
+        <span class="callout-label" style="color: var(--accent-red);">🔑 Credential Theft is C2-Gated</span>
+        A critical evasion design: STX RAT's credential stealing functionality only activates after successfully connecting to its C2 server and receiving an explicit <code style="font-family: var(--font-mono); font-size: 11px;">get_creds</code> command. This means offline sandboxes or post-infrastructure-takedown analysis will observe no credential access behavior — a deliberate design to defeat automated behavioral analysis.
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Target</th><th>Method / Detail</th><th>Impact</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chrome/Chromium browsers (Chrome, Edge, Brave, Vivaldi, Epic)</td><td>Cookie + password extraction; Chrome IElevation COM interface (CLSID-based) for DPAPI-protected vault; potential ABE bypass (not confirmed functional)</td><td>Full account takeover, MFA bypass via cookies</td></tr>
+            <tr><td>Firefox / SeaMonkey</td><td>Cookies and password store</td><td>Full credential dump</td></tr>
+            <tr><td>Windows Vault</td><td>VaultEnumerateVaults, VaultOpenVault, VaultEnumerateItems, VaultGetItem APIs</td><td>Windows credential store access</td></tr>
+            <tr><td>FileZilla</td><td>Regex match on *.xml: (&lt;Server&gt;.*?&lt;/Server&gt;|&lt;LastServer&gt;.*?&lt;/LastServer&gt;)</td><td>FTP server credentials</td></tr>
+            <tr><td>WinSCP</td><td>Registry: Software\Martin Prikryl\WinSCP 2\Sessions</td><td>SFTP/SCP credentials</td></tr>
+            <tr><td>Cyberduck / iterate_GmbH</td><td>File regex: &lt;setting&gt; patterns</td><td>Cloud storage / FTP credentials</td></tr>
+            <tr><td>Desktop crypto wallets</td><td>Litecoin-Qt, Zcash, Electrum, Bitcoin-Qt, bytecoin</td><td>Direct financial loss</td></tr>
+            <tr><td>Desktop screenshot</td><td>BitBlt/GDI → base64 JPG → C2 (sent before credential exfil)</td><td>Victim desktop visibility for TA</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="subsection">Persistence Mechanisms</h3>
+
+      <div class="detection-box">
+        <h4>// Persistence Mechanisms (eSentire TRU)</h4>
+        <ul class="det-list">
+          <li><strong>HKCU Run → autorun.ps1:</strong> PowerShell script that decrypts payload from %LOCALAPPDATA%\Microsoft\Windows\Caches\cversions.2.db, allocates RWE memory, executes in-memory. Fileless PowerShell execution via <code style="font-family: var(--font-mono); font-size: 11px;">powershell.exe -Command "[Console]::In.ReadToEnd() | Invoke-Expression"</code></li>
+          <li><strong>HKCU Run → MSBuild.exe:</strong> Launches MSBuild with a C# project file at C:\Users\User\AppData\Local\Microsoft\MSBuild\c_3791.proj containing C# code that allocates RWE memory, decrypts and executes STX RAT in-memory.</li>
+          <li><strong>COM Object Hijacking via Scriptlet:</strong> Registry key (Default) set to <code style="font-family: var(--font-mono); font-size: 11px;">script:C:\path\to\ActiveX.sct</code>. When the COM object is instantiated, the Scriptlet engine loads ActiveX.sct with embedded JScript that launches autorun.ps1. Registry: HKCU\Software\Classes\TypeLib\{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}\2\1.1\0\win64</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- S5 IOCs -->
+    <span class="section-anchor" id="iocs"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">05</div>
+        <h2 class="section-title">Indicators of Compromise</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <h3 class="subsection">Network IOCs</h3>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Indicator</th><th>Type</th><th>Context</th><th>Sev</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>95[.]216[.]51[.]236</td><td>C2 IP</td><td>Hetzner-allocated, Mynymbox Hosting LLC (Nevis, Caribbean). rDNS: 236.51.216.95.hosted-by.mynymbox.io. C2 since July 2025.</td><td><span class="sev sev-crit">CRIT</span></td></tr>
+            <tr><td>95[.]216[.]51[.]236:31415</td><td>C2 IP:Port</td><td>Non-standard port. Full C2 endpoint. Same port reused across all campaigns.</td><td><span class="sev sev-crit">CRIT</span></td></tr>
+            <tr><td>welcome[.]supp0v3[.]com</td><td>C2 / Staging Domain</td><td>Primary STX RAT C2. Registered Oct 29, 2025 via CNOBIN (HK). Used in FileZilla and CPUID campaigns.</td><td><span class="sev sev-crit">CRIT</span></td></tr>
+            <tr><td>supp0v3[.]com</td><td>Parent Domain</td><td>Backend exposed on ai.supp0v3.com — uses stolen/self-signed VK.com wildcard cert with Russian locality (Saint Petersburg).</td><td><span class="sev sev-crit">CRIT</span></td></tr>
+            <tr><td>filezilla-project[.]live</td><td>Campaign Domain</td><td>Typosquat of filezilla-project.org. Used in March 2026 FileZilla campaign by same actor.</td><td><span class="sev sev-crit">CRIT</span></td></tr>
+            <tr><td>yu7sbzk2tgm4vv56qgvsq44wnwgct6sven4akbb2n3onp46f42fcstid.onion</td><td>Tor C2</td><td>STX RAT fallback C2 over Tor.</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>rnetopera[.]org</td><td>Related Infra</td><td>Registration overlap with campaign domains (Breakglass).</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>mymvm[.]ru</td><td>Actor Infra</td><td>Russian TLD. Confirms Russian-speaking operator. (Breakglass)</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>justinstalledpanel[.]com</td><td>C2 Panel</td><td>Name suggests post-installation check-in panel. (Breakglass)</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>147.45.178.61</td><td>IP</td><td>Download IP seen in initial stage. Also linked to .url shortcut exploits (CVE-2023-36025 SmartScreen bypass) targeting LibreOffice/Google Drive downloads. (eSentire / Massaro)</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>cahayailmukreatif.web[.]id</td><td>Delivery Domain</td><td>Served HWiNFO_Monitor_Setup.exe (Kaspersky confirmed).</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>transitopalermo[.]com</td><td>Delivery Domain</td><td>Multiple trojanized CPUID downloads. (Kaspersky confirmed)</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>vatrobran[.]hr</td><td>Delivery Domain</td><td>Multiple trojanized CPUID downloads. (Kaspersky confirmed)</td><td><span class="sev sev-high">HIGH</span></td></tr>
+            <tr><td>pub-45c2577dbd174292a02137c18e7b1b5a.r2[.]dev</td><td>Cloudflare R2 Bucket</td><td>Primary staging bucket. CPU-Z, HWMonitor, HWMonitor Pro, PerfMonitor all hosted here.</td><td><span class="sev sev-high">HIGH</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="subsection">File IOCs — Malicious DLLs (CRYPTBASE.dll)</h3>
+
+      <div class="table-wrap">
+        <table class="data-table hash-table">
+          <thead>
+            <tr><th>SHA-256 / SHA-1</th><th>File</th><th>Source</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>9cdabd70f50dc8c03f0dfb31894d9d5265134a2cf07656ce8ad540c1790fc984</td><td>CRYPTBASE.dll (40/75 VT)</td><td>Breakglass</td></tr>
+            <tr><td>a27df06c7167eced1ddaeb8adccaa5f60500f52bc7030389eed2a0903cdf8286</td><td>CRYPTBASE.dll (on-disk)</td><td>CYDERES</td></tr>
+            <tr><td>24bbfcfea0c79f640a4eec99ffdae3ccd315786 (SHA-1)</td><td>CRYPTBASE.dll</td><td>Kaspersky</td></tr>
+            <tr><td>c65e515b9c9655c651c939b94574cf39b40a8be2 (SHA-1)</td><td>CRYPTBASE.dll</td><td>Kaspersky</td></tr>
+            <tr><td>3041a4e2bc5ccefbfd2222a9e23614fb79d6db63 (SHA-1)</td><td>CRYPTBASE.dll</td><td>Kaspersky</td></tr>
+            <tr><td>4e3195399a9135247e55781ad13226c6b0e86c0d (SHA-1)</td><td>CRYPTBASE.dll</td><td>Kaspersky</td></tr>
+            <tr><td>ba19e03ca03785e89010672d7e273ac343e4699a (SHA-1)</td><td>CRYPTBASE.dll</td><td>Kaspersky</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="subsection">File IOCs — Trojanized Installers (SHA-1)</h3>
+
+      <div class="table-wrap">
+        <table class="data-table hash-table">
+          <thead>
+            <tr><th>SHA-1</th><th>Filename</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>d0568eaa55f495fd756fa205997ae8d93588d2a2</td><td>cpu-z_2.19-en.zip</td></tr>
+            <tr><td>02a53d660332c25af623bbb7df57c2aad1b0b91b</td><td>hwinfo_monitor_setup.exe</td></tr>
+            <tr><td>9253111b359c610b5f95ef33c2d1c06795ab01e9</td><td>HWMonitorPro_1.57_Setup.exe</td></tr>
+            <tr><td>2f717a77780b8f6b2d853dc4df5ed2b90a3a349a</td><td>hwmonitor-pro_1.57.zip</td></tr>
+            <tr><td>7c615ce495ac5be1b64604a7c145347adbcd900c</td><td>hwmonitor_1.63.zip</td></tr>
+            <tr><td>c417c3a4b094646d06a06103639a5c9faabc9ba4</td><td>hwmonitor_1.63.zip (alt)</td></tr>
+            <tr><td>8351a43a0c0455e4b0793d841fe12625f072f9b4</td><td>PerfMonitor2_Setup.exe</td></tr>
+            <tr><td>6a71656c289201f742787f48398056fcd2aa7274</td><td>perfmonitor-2_2.04.zip</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="subsection">File IOCs — STX RAT Stages (SHA-256, CYDERES)</h3>
+
+      <div class="table-wrap">
+        <table class="data-table hash-table">
+          <thead>
+            <tr><th>SHA-256</th><th>Component</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>02db6764d1f13b837b0a525e5931bdbc67e7a2a4d071e849c7e087255d4a2d5b</td><td>HWMonitor_x64.exe (Legitimate — abused for DLL sideloading)</td></tr>
+            <tr><td>1331f19c6732fca81f32c4cec9f89abf26371ed9d3665954f491c89e2c55e5bb</td><td>Stage 2 (In-memory PE)</td></tr>
+            <tr><td>116d806a5ca6f34fdd04061499daca9a352feb2e3f291c7ef3e5d470fe875f7f</td><td>Stage 3 (In-memory PE)</td></tr>
+            <tr><td>a70645f46eee6d765c54ba4a5c48166bd83bcfbc7771a82be9ed48ab4871ebfa</td><td>Stage 4 (In-memory PE)</td></tr>
+            <tr><td>52862b538459c8faaf89cf2b5d79c2f0030f79f80a68f93d65ec91f046f05be6</td><td>Stage 5 — STX RAT (final payload)</td></tr>
+            <tr><td>799b29f409578c79639c37ea4c676475fd88f55251af28eb49f8199b904a51f3</td><td>VBScript initial access (FileZilla campaign)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="subsection">Detection Signatures</h3>
+
+      <div class="code-block" style="white-space: pre-wrap; font-size: 10.5px;">
+<span class="code-label">Snort / Suricata</span>alert tcp $HOME_NET any -> 95.216.51.236 31415 (msg:"GHOST - CPUID/FileZilla Campaign C2 Callback"; flow:established,to_server; sid:2026040901; rev:1;)</div>
+
+      <div class="code-block" style="white-space: pre-wrap; font-size: 10.5px;">
+<span class="code-label">YARA — CRYPTBASE.dll Sideloader (Breakglass)</span>rule GHOST_CRYPTBASE_Sideloader {
+    meta:
+        description = "CRYPTBASE.dll sideloading payload from CPUID supply chain compromise"
+        author = "Breakglass Intelligence"
+        date = "2026-04-09"
+        hash = "9cdabd70f50dc8c03f0dfb31894d9d5265134a2cf07656ce8ad540c1790fc984"
+    strings:
+        $inno = "Inno Setup" ascii
+        $cryptbase = "CRYPTBASE" ascii wide
+        $ntdll_proxy = "ntdll.dll" ascii wide
+        $dotnet = "_CorExeMain" ascii
+        $c2_port = { 31 34 31 35 } // "1415" ascii (part of port 31415)
+    condition:
+        uint16(0) == 0x5A4D and 3 of them
+}</div>
+
+      <div class="code-block" style="white-space: pre-wrap; font-size: 10.5px;">
+<span class="code-label">YARA — STX RAT Unpacked (eSentire TRU)</span>rule STXRat {
+    meta:
+        author = "YungBinary"
+        description = "Detection for unpacked STX RAT in memory"
+    strings:
+        $s2 = {  // AMSI ghosting
+            48 8D 05 ?? ?? ?? ??
+            66 C7 45 ?? 48 B8 [0-6]
+            48 89 45 ?? 48 8D 55 ??
+            66 C7 45 ?? FF E0
+        }
+        $s3 = {  // Debugger check
+            65 48 8B 04 25 60 00 00 00
+            80 78 02 01
+        }
+        $s8 = {  // X25519 clamping
+            80 61 1F 3F 80 49 1F 40 80 21 F8
+        }
+        $s4 = "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)" ascii
+    condition:
+        uint16(0) == 0x5a4d and (4 of ($s*))
+}</div>
+    </section>
+
+    <!-- S6 DETECTION -->
+    <span class="section-anchor" id="detection"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">06</div>
+        <h2 class="section-title">Detection &amp; Response — Defender Perspective</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="detection-box">
+        <h4>// Endpoint Detection — Priority Hunts (MDE / EDR)</h4>
+        <ul class="det-list">
+          <li><strong>Primary pivot:</strong> Alert on CRYPTBASE.dll loaded from any non-System32/SysWOW64 directory. This is the single most reliable detection point — it fires before any C2 connection or credential access and is not present in legitimate software.</li>
+          <li>Hunt for HWMonitor_x64.exe, CPU-Z.exe, or any CPUID executable spawning unexpected child processes — PowerShell, cmd.exe, wscript.exe, msbuild.exe, or .NET CLR host processes.</li>
+          <li>Detect reflective PE loading patterns: memory allocation with PAGE_EXECUTE_READWRITE (VirtualAlloc + WriteProcessMemory) not corresponding to a legitimate loaded module.</li>
+          <li>Alert on any process accessing Chrome's IElevation COM interface outside legitimate browser processes — this is STX RAT's Chrome credential vault attack path.</li>
+          <li>Flag NTDLL proxying via .NET assemblies loading fresh NTDLL copies from disk (EDR hook bypass technique).</li>
+          <li>Detect AMSI bypass activity: patching of rpcrt4!NdrClientCall3 — monitor for unusual write operations to this function's memory region.</li>
+          <li>Hunt for HKCU Run entries pointing to autorun.ps1, cversions.2.db, or MSBuild project files in %LOCALAPPDATA%\Microsoft\MSBuild\ — these are STX RAT persistence artifacts.</li>
+          <li>Hunt for COM object hijacking at HKCU\Software\Classes\TypeLib\{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}\2\1.1\0\win64 with a scriptlet (SCT) value.</li>
+        </ul>
+      </div>
+
+      <div class="code-block">
+        <span class="code-label">KQL · MDE · Sentinel — CRYPTBASE Sideloading</span>
+<span class="kql-comment">// Hunt for CRYPTBASE.dll loaded from non-system directories</span>
+<span class="kql-kw">DeviceImageLoadEvents</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> FileName <span class="kql-op">=~</span> <span class="kql-str">"cryptbase.dll"</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> FolderPath <span class="kql-op">!startswith</span> <span class="kql-str">@"C:\Windows\System32"</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> FolderPath <span class="kql-op">!startswith</span> <span class="kql-str">@"C:\Windows\SysWOW64"</span>
+<span class="kql-op">|</span> <span class="kql-fn">project</span> Timestamp, DeviceName, InitiatingProcessFileName,
+         InitiatingProcessFolderPath, FolderPath, SHA256
+<span class="kql-op">|</span> <span class="kql-fn">order by</span> Timestamp <span class="kql-kw">desc</span>
+      </div>
+
+      <div class="code-block">
+        <span class="code-label">KQL · MDE · Sentinel — C2 Network Detection</span>
+<span class="kql-comment">// Detect known STX RAT C2 infrastructure</span>
+<span class="kql-kw">DeviceNetworkEvents</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> RemoteUrl <span class="kql-op">has_any</span> (
+    <span class="kql-str">"supp0v3.com"</span>, <span class="kql-str">"95.216.51.236"</span>,
+    <span class="kql-str">"filezilla-project.live"</span>, <span class="kql-str">"mymvm.ru"</span>,
+    <span class="kql-str">"justinstalledpanel.com"</span>, <span class="kql-str">"rnetopera.org"</span>
+  )
+  <span class="kql-op">or</span> RemoteIP <span class="kql-op">==</span> <span class="kql-str">"95.216.51.236"</span>
+  <span class="kql-op">or</span> (RemoteIP <span class="kql-op">==</span> <span class="kql-str">"147.45.178.61"</span>)
+<span class="kql-op">|</span> <span class="kql-fn">project</span> Timestamp, DeviceName, InitiatingProcessFileName,
+         RemoteUrl, RemoteIP, RemotePort
+<span class="kql-op">|</span> <span class="kql-fn">order by</span> Timestamp <span class="kql-kw">desc</span>
+      </div>
+
+      <div class="code-block">
+        <span class="code-label">KQL · MDE — Trojanized CPUID Installer Hunt</span>
+<span class="kql-comment">// Hunt for trojanized CPUID download artifacts — April 9-10 2026 window</span>
+<span class="kql-kw">DeviceFileEvents</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> Timestamp <span class="kql-op">between</span> (<span class="kql-str">datetime(2026-04-03)</span> .. <span class="kql-str">datetime(2026-04-11)</span>)
+<span class="kql-op">|</span> <span class="kql-fn">where</span> FileName <span class="kql-op">in~</span> (
+    <span class="kql-str">"HWiNFO_Monitor_Setup.exe"</span>, <span class="kql-str">"hwinfo_monitor_setup.exe"</span>,
+    <span class="kql-str">"cpu-z_2.19-en.zip"</span>, <span class="kql-str">"hwmonitor_1.63.zip"</span>
+  )
+  <span class="kql-op">or</span> (FileName <span class="kql-op">startswith</span> <span class="kql-str">"hwmonitor"</span> <span class="kql-op">and</span> FolderPath <span class="kql-op">has</span> <span class="kql-str">"Downloads"</span>)
+<span class="kql-op">|</span> <span class="kql-fn">project</span> Timestamp, DeviceName, FileName, FolderPath, SHA256, InitiatingProcessFileName
+<span class="kql-op">|</span> <span class="kql-fn">order by</span> Timestamp <span class="kql-kw">desc</span>
+      </div>
+
+      <div class="code-block">
+        <span class="code-label">KQL · MDE — STX RAT Persistence Detection</span>
+<span class="kql-comment">// Hunt for STX RAT persistence mechanisms</span>
+<span class="kql-kw">DeviceRegistryEvents</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> RegistryKey <span class="kql-op">has</span> <span class="kql-str">@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"</span>
+<span class="kql-op">|</span> <span class="kql-fn">where</span> RegistryValueData <span class="kql-op">has_any</span> (
+    <span class="kql-str">"autorun.ps1"</span>, <span class="kql-str">"cversions.2.db"</span>, <span class="kql-str">"MSBuild"</span>, <span class="kql-str">".proj"</span>
+  )
+<span class="kql-op">|</span> <span class="kql-fn">project</span> Timestamp, DeviceName, RegistryKey, RegistryValueName, RegistryValueData
+<span class="kql-op">|</span> <span class="kql-fn">union</span> (
+  <span class="kql-kw">DeviceRegistryEvents</span>
+  <span class="kql-op">|</span> <span class="kql-fn">where</span> RegistryKey <span class="kql-op">has</span> <span class="kql-str">"EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B"</span>
+  <span class="kql-op">|</span> <span class="kql-fn">project</span> Timestamp, DeviceName, RegistryKey, RegistryValueName, RegistryValueData
+)
+<span class="kql-op">|</span> <span class="kql-fn">order by</span> Timestamp <span class="kql-kw">desc</span>
+      </div>
+
+      <h3 class="subsection">Symantec / Broadcom Detection Coverage</h3>
+
+      <div class="callout callout-green">
+        <span class="callout-label" style="color: var(--accent-green);">✅ Symantec Protection Confirmed (Apr 13, 2026)</span>
+        Adaptive: ACM.Ps-Rd32!g1 &nbsp;|&nbsp; Behavior: SONAR.TCP!gen1 &nbsp;|&nbsp; File: Trojan Horse, Trojan.Gen.MBT, Trojan.Gen.NPE, PUA.Gen.2, WS.Malware.1, WS.SecurityRisk.3 &nbsp;|&nbsp; ML: Heur.AdvML.A!300/400/500, Heur.AdvML.B!100/200 &nbsp;|&nbsp; Carbon Black: block all malware types (Known, Suspect, PUP) + delay execution for cloud scan.
+      </div>
+
+      <div class="detection-box">
+        <h4>// IR Actions If Compromise Confirmed</h4>
+        <ul class="det-list">
+          <li>Isolate the endpoint immediately — STX RAT establishes persistent access via three separate persistence mechanisms and may have already exfiltrated browser credentials and screenshots.</li>
+          <li>Revoke and rotate ALL saved browser passwords — Chrome, Edge, Firefox, and Brave credential stores should be treated as fully compromised. Enable/force re-authentication on all saved accounts.</li>
+          <li>Invalidate active session cookies — STX RAT explicitly steals session cookies to bypass MFA. Force session invalidation on critical accounts (email, banking, cloud services).</li>
+          <li>Check for crypto wallet files at %APPDATA%, %USERPROFILE%\Documents — Litecoin-Qt, Zcash, Electrum, Bitcoin-Qt, bytecoin are all targeted. Notify the user immediately.</li>
+          <li>Check FileZilla, WinSCP, and Cyberduck credential stores — if the affected user has FTP/SFTP access to production infrastructure, treat those credentials as compromised.</li>
+          <li>Review DNS and proxy logs for connections to: supp0v3[.]com, 95.216.51.236, 147.45.178.61, mymvm.ru, justinstalledpanel.com, rnetopera.org.</li>
+          <li>Confirm breach window: Ask specifically whether the user downloaded any CPUID software (HWMonitor, CPU-Z, HWMonitor Pro, PerfMonitor) between April 3 and April 10, 2026.</li>
+          <li>Check for STX RAT persistence artifacts: autorun.ps1 in Run keys, cversions.2.db in AppData, MSBuild project files in %LOCALAPPDATA%\Microsoft\MSBuild\, COM hijack at the TypeLib registry path.</li>
+          <li>For reinstallation: verify file hash against Kaspersky's confirmed clean list before executing any CPUID software. Direct users to direct file URLs with hash verification rather than the main download page.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- S7 MITRE -->
+    <span class="section-anchor" id="mitre"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">07</div>
+        <h2 class="section-title">MITRE ATT&amp;CK Mapping</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="mitre-grid">
+        <div class="mitre-card"><div class="mitre-tactic">Initial Access</div><div class="mitre-id">T1195.002</div><div class="mitre-name">Supply Chain Compromise — Software Distribution Utilities (cpuid.com download links)</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Initial Access</div><div class="mitre-id">T1190</div><div class="mitre-name">Exploit Public-Facing Application — Probable Apache CVE-2024-38475 mod_rewrite path traversal</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Execution</div><div class="mitre-id">T1204.002</div><div class="mitre-name">User Execution: Malicious File — Trojanized installer run by user</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Execution</div><div class="mitre-id">T1106</div><div class="mitre-name">Native API — VirtualAlloc, CreateThread, WriteProcessMemory for in-memory execution</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Persistence</div><div class="mitre-id">T1574.002</div><div class="mitre-name">DLL Side-Loading — CRYPTBASE.dll / version.dll sideloading via Windows DLL search order</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Persistence</div><div class="mitre-id">T1546.015</div><div class="mitre-name">Event Triggered Execution: COM Hijacking — TypeLib COM object hijacked via scriptlet (ActiveX.sct)</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Defense Evasion</div><div class="mitre-id">T1055</div><div class="mitre-name">Process Injection — Reflective PE loading across 5 in-memory stages</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Defense Evasion</div><div class="mitre-id">T1620</div><div class="mitre-name">Reflective Code Loading — In-memory execution with no intermediate disk writes</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Defense Evasion</div><div class="mitre-id">T1027.002</div><div class="mitre-name">Software Packing — XXTEA + Zlib multi-stage in-memory unpacking; AES-128-CTR string encryption</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Defense Evasion</div><div class="mitre-id">T1070.006</div><div class="mitre-name">Indicator Removal: Timestomp — CRYPTBASE.dll compilation timestamp set to 2077</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Defense Evasion</div><div class="mitre-id">T1497</div><div class="mitre-name">Virtualization/Sandbox Evasion — Anti-VM checks (VirtualBox, VMware, QEMU), anti-debug PEB flag</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Defense Evasion</div><div class="mitre-id">T1562.001</div><div class="mitre-name">Impair Defenses: Disable or Modify Tools — AMSI Ghosting via rpcrt4!NdrClientCall3 patch</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Credential Access</div><div class="mitre-id">T1555.003</div><div class="mitre-name">Credentials from Web Browsers — Chrome IElevation COM, Firefox credential stores, Windows Vault</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Credential Access</div><div class="mitre-id">T1539</div><div class="mitre-name">Steal Web Session Cookie — Browser session cookie theft enabling MFA bypass</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Command &amp; Control</div><div class="mitre-id">T1571</div><div class="mitre-name">Non-Standard Port — C2 on TCP 31415</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Command &amp; Control</div><div class="mitre-id">T1090.003</div><div class="mitre-name">Proxy: Multi-hop Proxy — Tor C2 fallback via custom onion client implementation</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Exfiltration</div><div class="mitre-id">T1041</div><div class="mitre-name">Exfiltration Over C2 Channel — Credentials, screenshots, host metadata all exfil via C2 JSON</div></div>
+        <div class="mitre-card"><div class="mitre-tactic">Resource Development</div><div class="mitre-id">T1608.001</div><div class="mitre-name">Stage Capabilities: Upload Malware — Cloudflare R2 bucket as malware staging infrastructure</div></div>
+      </div>
+    </section>
+
+    <!-- S8 ACTOR -->
+    <span class="section-anchor" id="actor"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">08</div>
+        <h2 class="section-title">Actor Profile — Breakglass Intelligence</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Attribute</th><th>Assessment</th><th>Confidence</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Language</td><td>Russian-speaking (Inno Setup installer dialogs, mymvm[.]ru domain, Russian locality in VK.com certificate on backend)</td><td><span class="conf-badge conf-high">HIGH</span></td></tr>
+            <tr><td>Registrar</td><td>CNOBIN (Chinese registrar, Hong Kong) for supp0v3[.]com — minimal verification requirements, common among threat actors</td><td><span class="conf-badge conf-high">HIGH</span></td></tr>
+            <tr><td>Hosting</td><td>Mynymbox Hosting LLC (Nevis, Caribbean) for C2 server — bulletproof offshore jurisdiction, limited LEA cooperation. rDNS: 236.51.216.95.hosted-by.mynymbox[.]io</td><td><span class="conf-badge conf-high">HIGH</span></td></tr>
+            <tr><td>Operational Pattern</td><td>Supply chain compromise of trusted software distributors (FileZilla, CPUID). Prior activity: CVE-2023-36025 SmartScreen bypass campaigns targeting LibreOffice/Google Drive.</td><td><span class="conf-badge conf-high">HIGH</span></td></tr>
+            <tr><td>Technical Capability</td><td>DLL sideloading, NTDLL unhooking, reflective PE loading, XXTEA/Zlib packing, X25519/Ed25519/ChaCha20-Poly1305 C2 crypto, HVNC, AMSI Ghosting — above average for financially motivated actors</td><td><span class="conf-badge conf-high">HIGH</span></td></tr>
+            <tr><td>OPSEC Capability</td><td>LOW — reused identical C2 IP:port and domain from March 2026 FileZilla campaign. This single OPSEC failure enabled rapid cross-campaign attribution and detection. Kaspersky explicitly called this "the gravest mistake."</td><td><span class="conf-badge conf-high">HIGH</span></td></tr>
+            <tr><td>Motivation</td><td>Likely financially motivated — broad targeting of popular utility software used by IT professionals with high-value credentials. Consistent with credential broker or IAB operations.</td><td><span class="conf-badge conf-mod">MOD</span></td></tr>
+            <tr><td>State Affiliation</td><td>No evidence of state sponsorship. Infrastructure pattern (Russian-speaking operator, Chinese registrar, Caribbean hosting) is consistent with deliberate jurisdictional fragmentation by a private financially-motivated actor.</td><td><span class="conf-badge conf-mod">MOD</span></td></tr>
+            <tr><td>Campaign Duration</td><td>At least 10 months (July 2025 – April 2026, based on earliest known sample superbad.exe). Earlier activity may exist.</td><td><span class="conf-badge conf-mod">MOD</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-cyan">
+        <span class="callout-label" style="color: var(--accent);">🌐 Trilateral Infrastructure Pattern</span>
+        Breakglass Intelligence documents what it calls a "trilateral infrastructure pattern" used by this actor: Russian language/cultural artifacts → Chinese domain registrar → Caribbean offshore hosting. This deliberate fragmentation across three jurisdictions with limited mutual legal assistance makes coordinated law enforcement action significantly more complex. The actor maintains a consistent playbook but has poor OPSEC at the C2/infrastructure reuse level.
+      </div>
+    </section>
+
+    <!-- S9 VERDICT -->
+    <span class="section-anchor" id="verdict"></span>
+    <section class="section">
+      <div class="section-head">
+        <div class="section-num">09</div>
+        <h2 class="section-title">Analyst Verdict</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="verdict-section">
+        <div class="verdict-row">
+          <div class="verdict-label">Threat Severity</div>
+          <div class="verdict-track"><div class="verdict-fill fill-crit" style="width: 88%"></div></div>
+          <div class="verdict-pct">88%</div>
+        </div>
+        <div class="verdict-row">
+          <div class="verdict-label">Malware Sophistication</div>
+          <div class="verdict-track"><div class="verdict-fill fill-crit" style="width: 85%"></div></div>
+          <div class="verdict-pct">85%</div>
+        </div>
+        <div class="verdict-row">
+          <div class="verdict-label">Detection Difficulty</div>
+          <div class="verdict-track"><div class="verdict-fill fill-high" style="width: 80%"></div></div>
+          <div class="verdict-pct">80%</div>
+        </div>
+        <div class="verdict-row">
+          <div class="verdict-label">Actor OPSEC Quality</div>
+          <div class="verdict-track"><div class="verdict-fill fill-med" style="width: 28%"></div></div>
+          <div class="verdict-pct">28%</div>
+        </div>
+        <div class="verdict-row">
+          <div class="verdict-label">Scope / Impact Potential</div>
+          <div class="verdict-track"><div class="verdict-fill fill-high" style="width: 78%"></div></div>
+          <div class="verdict-pct">78%</div>
+        </div>
+        <div class="verdict-row">
+          <div class="verdict-label">Target Value (IT/SysAdmin)</div>
+          <div class="verdict-track"><div class="verdict-fill fill-crit" style="width: 93%"></div></div>
+          <div class="verdict-pct">93%</div>
+        </div>
+      </div>
+
+      <div class="analyst-box">
+        <h3>// Analyst Commentary</h3>
+        <p>This attack is textbook supply chain — and the most instructive part isn't the malware sophistication, it's the targeting logic. CPUID's tools aren't consumer entertainment software. The people downloading HWMonitor and CPU-Z are IT administrators diagnosing production servers, security engineers running forensic workstations, and OEM vendors qualifying hardware. These are exactly the people with the highest-value credentials, the most privileged system access, and the broadest network footprint. A successful STX RAT infection on a sysadmin laptop is not a single endpoint compromise — it's a potential pivot into every system that sysadmin can reach.</p>
+
+        <p>The malware itself is genuinely sophisticated in its cryptographic design: X25519 ECDH key exchange, Ed25519 server authentication, ChaCha20-Poly1305 session encryption, Tor fallback, AMSI Ghosting, reflective loading, timestomped DLLs, and credential theft gated by C2 command to defeat offline sandboxing. For a financially-motivated actor, this level of care in the payload is notable. The actor earned a "B-" from vx-underground, which is a fair assessment — strong on evasion, weak on OPSEC.</p>
+
+        <p>The OPSEC failure that ended the campaign was elementary: reusing the identical C2 IP address and port (95.216.51.236:31415) from the March 2026 FileZilla campaign. This single mistake enabled Kaspersky, Breakglass, and CYDERES to rapidly attribute the CPUID compromise to the same actor, cross-correlate a 10-month campaign, identify the staging domain, and achieve detection within hours of the breach window. Kaspersky's observation is worth noting: this failure "made it possible to detect the watering hole compromise as soon as it started."</p>
+
+        <p><strong>For defenders:</strong> The primary KQL hunt is the CRYPTBASE.dll sideloading query from Section 6. Run it today if your environment has any CPUID software. The DLL sideload is the only moment in the chain with a reliable on-disk indicator — once that fires, everything else is in memory. Your window to catch it cleanly is narrow. Beyond that, prioritize STX RAT persistence artifact hunts (autorun.ps1, cversions.2.db, MSBuild .proj files, COM hijack registry key) and check DNS logs for any of the infrastructure domains listed in Section 5.</p>
+      </div>
+    </section>
+
+    <!-- AUTHOR -->
+    <div class="author-card">
+      <div class="author-avatar">SD</div>
+      <div>
+        <div class="author-name">Swetha Devi Sai Priya Bonu</div>
+        <div class="author-role">SOC Analyst · Detection Engineer · HTB CDSA</div>
+        <div class="author-links">
+          <a href="https://linkedin.com/in/bonu--devi-sai-priya" target="_blank" class="author-link">LinkedIn</a>
+          <a href="https://medium.com/@devi1125" target="_blank" class="author-link">Medium</a>
+          <a href="https://github.com/unabletofind" target="_blank" class="author-link">GitHub</a>
+        </div>
+      </div>
+    </div>
+
+    <footer class="post-footer">
+      Written by <strong>Swetha Devi</strong> · SOC Analyst &amp; Detection Engineer<br>
+      Portfolio: <a href="https://unabletofind.github.io">unabletofind.github.io</a><br><br>
+      Sources: <a href="https://securelist.com">Kaspersky Securelist</a> · <a href="https://breakglass.tech">Breakglass Intelligence</a> · <a href="https://www.esentire.com">eSentire TRU</a> · <a href="https://www.cyderes.com">CYDERES Howler Cell</a> · <a href="https://vxunderground.org">vx-underground</a> · <a href="https://www.malwarebytes.com">Malwarebytes</a> · <a href="https://thehackernews.com">The Hacker News</a> · <a href="https://www.helpnetsecurity.com">Help Net Security</a> · <a href="https://broadcom.com">Symantec / Broadcom</a> · <a href="https://www.reddit.com/r/pcmasterrace">r/pcmasterrace</a>
+    </footer>
+
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="toc-box">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#overview">01 · What Happened</a></li>
+        <li><a href="#timeline">02 · Campaign Timeline</a></li>
+        <li><a href="#technical">03 · Infection Chain</a></li>
+        <li><a href="#stxrat">04 · STX RAT Analysis</a></li>
+        <li><a href="#iocs">05 · IOCs + Signatures</a></li>
+        <li><a href="#detection">06 · Detection &amp; Response</a></li>
+        <li><a href="#mitre">07 · MITRE ATT&amp;CK</a></li>
+        <li><a href="#actor">08 · Actor Profile</a></li>
+        <li><a href="#verdict">09 · Analyst Verdict</a></li>
+      </ul>
+    </div>
+
+    <div class="meta-box">
+      <div class="meta-row"><div class="meta-key">Published</div><div class="meta-val">April 14, 2026</div></div>
+      <div class="meta-row"><div class="meta-key">Breach Window</div><div class="meta-val">Apr 9 ~15:00 UTC – Apr 10 ~10:00 UTC</div></div>
+      <div class="meta-row"><div class="meta-key">Category</div><div class="meta-val">Supply Chain / Watering Hole</div></div>
+      <div class="meta-row"><div class="meta-key">Threat Actor</div><div class="meta-val">Unknown — Russian-speaking, financially motivated or IAB</div></div>
+      <div class="meta-row"><div class="meta-key">Malware</div><div class="meta-val">STX RAT (eSentire TRU documented Apr 8, 2026)</div></div>
+      <div class="meta-row"><div class="meta-key">Products Affected</div><div class="meta-val">CPU-Z 2.19, HWMonitor 1.63, HWMonitor Pro 1.57, PerfMonitor 2.04, PowerMAX</div></div>
+      <div class="meta-row"><div class="meta-key">Victims</div><div class="meta-val">150+ confirmed — retail, manufacturing, telecom, consulting, agriculture</div></div>
+      <div class="meta-row"><div class="meta-key">C2</div><div class="meta-val" style="color: var(--accent-red); font-size: 9px;">95.216.51.236:31415<br>welcome.supp0v3.com</div></div>
+      <div class="meta-row"><div class="meta-key">Campaign Start</div><div class="meta-val">July 2025 (10 months)</div></div>
+      <div class="meta-row"><div class="meta-key">Prior Campaign</div><div class="meta-val">Fake FileZilla (Mar 2026) — same C2</div></div>
+      <div class="meta-row"><div class="meta-key">Status</div><div class="meta-val" style="color: var(--accent-green);">CPUID Remediated ✓ Apr 10, 2026</div></div>
+      <div class="meta-row"><div class="meta-key">Read Time</div><div class="meta-val">~18 min</div></div>
+    </div>
+
+    <div class="sources-box">
+      <span class="src-title">Sources</span>
+      <div class="src-item"><span class="src-badge src-kaspersky">Kaspersky</span><span class="src-name">Securelist — Primary technical analysis, victim telemetry, IOCs</span></div>
+      <div class="src-item"><span class="src-badge src-breakglass">Breakglass</span><span class="src-name">Breakglass Intelligence — 10-month timeline, actor profile, Mynymbox hosting</span></div>
+      <div class="src-item"><span class="src-badge src-esentire">eSentire</span><span class="src-name">TRU — Original STX RAT documentation, C2 crypto, packer analysis</span></div>
+      <div class="src-item"><span class="src-badge src-cyderes">CYDERES</span><span class="src-name">Howler Cell — 5-stage chain, XOR keys, campaign metadata</span></div>
+      <div class="src-item"><span class="src-badge src-vxug">vx-ug</span><span class="src-name">vx-underground — First public confirmation; NTDLL proxying discovery</span></div>
+      <div class="src-item"><span class="src-badge src-media">Media</span><span class="src-name">THN, HNS, Cybernews, Malwarebytes, Symantec, Reddit r/pcmasterrace</span></div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+  /* Progress bar */
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }, { passive: true });
+
+  /* Active TOC highlight */
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const anchors  = document.querySelectorAll('.section-anchor');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    anchors.forEach(a => { if (window.scrollY >= a.offsetTop - 120) current = a.id; });
+    tocLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+
+  /* Verdict bar animation on scroll into view */
+  const verdictObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.verdict-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => bar.style.width = w, 200);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const verdictSection = document.querySelector('#verdict');
+  if (verdictSection) verdictObserver.observe(verdictSection);
+</script>
+</body>
+</html>
