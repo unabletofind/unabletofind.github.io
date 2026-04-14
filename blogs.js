@@ -1,20 +1,20 @@
 const blogs = [
 
   {
-    id: 'lockbit',
-    url: 'lockbit.html',
-    cat: 'ransomware',
-    catLabel: 'Ransomware',
+    id: 'Cpuid',
+    url: 'CPUID.html',
+    cat: 'Trojan',
+    catLabel: 'Trojan',
     catColor: 'rgba(244,63,94,0.12)',
     catBorder: 'rgba(244,63,94,0.2)',
     catText: '#f43f5e',
     icon: 'fas fa-skull',
-    readTime: '8 min',
-    title: 'LockBit 3.0: Complete Attack Chain',
-    date: 'March 2025',
+    readTime: '20 min',
+    title: 'CPUID Breach: STX RAT Delivered via Trojanized CPU-Z & HWMonitor Downloads',
+    date: 'April 2026',
     featured: true,
-    excerpt: 'Double extortion tactics, defense evasion via Terminator driver (BYOVD), lateral movement via PsExec/WMI, and detection rules to catch LockBit affiliates in enterprise environments.',
-    mitre: ['T1562.001', 'T1021.002', 'T1486', 'T1071'],
+    excerpt: 'A threat actor compromised CPUID's secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT',
+    mitre: ['T1195.002', 'T1204.002', 'T1027.002', 'T1571'],
   },
 
 ];
