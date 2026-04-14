@@ -31,62 +31,7 @@ const blogs = [
     featured: true,
     excerpt: 'Double extortion tactics, defense evasion via Terminator driver (BYOVD), lateral movement via PsExec/WMI, and detection rules to catch LockBit affiliates in enterprise environments.',
     mitre: ['T1562.001', 'T1021.002', 'T1486', 'T1070'],
-    content: `
-      <h2>LockBit 3.0 Ransomware — Deep Dive</h2>
-      <p class="modal-date"><i class="fas fa-calendar-alt"></i> &nbsp;March 2025</p>
-      <hr>
-      <h3>Overview</h3>
-      <p>LockBit 3.0, also known as LockBit Black, is the most prolific ransomware-as-a-service (RaaS) operation globally. It introduced a bug bounty program, an encryptor written in C, and the notorious Terminator anti-EDR tool (BYOVD). Targets span healthcare, finance, critical infrastructure, and legal sectors worldwide.</p>
-      <h3>Attack Chain</h3>
-      <p>Initial Access via RDP brute-force or phishing → Privilege Escalation using UAC bypass → Defense Evasion (Terminator driver kills EDR processes) → Lateral Movement via PsExec and WMI → Data Exfiltration using Mega/rclone → Encryption with .lockbit extension.</p>
-      <h3>MITRE ATT&CK Coverage</h3>
-      <div class="mitre-grid">
-        <span class="mitre-tag">T1562.001 — Disable/Modify Tools</span>
-        <span class="mitre-tag">T1021.002 — SMB/Admin Shares</span>
-        <span class="mitre-tag">T1486 — Data Encrypted for Impact</span>
-        <span class="mitre-tag">T1070 — Indicator Removal</span>
-        <span class="mitre-tag">T1059 — Command &amp; Scripting Interpreter</span>
-      </div>
-      <h3>Vulnerability / Weakness Exploited</h3>
-      <p>Exposed RDP (port 3389) with weak or reused credentials. Absence of MFA on administrative accounts. Misconfigured EDR policies allowing kernel driver loading. No network segmentation enabling lateral movement once inside. Backup systems reachable from production network.</p>
-      <h3>Methodology (How It Happened)</h3>
-      <p>Adversary leverages living-off-the-land binaries: certutil, BITSAdmin, mshta.exe. Disables Windows Defender, SIEM agents, and backup services. Drops Terminator.sys (BYOVD — Bring Your Own Vulnerable Driver) to kill EDR kernel callbacks via IOCTL abuse. Uses LOTL for C2 communication over encrypted channels. Deletes VSS shadow copies with vssadmin before encryption begins.</p>
-      <h3>Impact</h3>
-      <p>Critical data leakage, prolonged operational downtime, multi-million dollar ransom demands. Double extortion: pay to decrypt AND pay to prevent public leak. Targets healthcare, finance, and energy sectors globally — often causing direct patient safety risks in hospital environments.</p>
-      <h3>Mitigation & Hardening</h3>
-      <p>Block RDP externally; use VPN + MFA for remote access. Enforce application allowlisting to prevent unauthorized driver loading. Enable Credential Guard and LSA Protection. Store immutable backups offline or in a separate network segment. Monitor for suspicious SMB lateral movement patterns and PsExec usage.</p>
-      <h3>Incident Response Actions</h3>
-      <p>Immediate containment: isolate affected hosts via MDE or network VLAN change. Revoke compromised credentials and disable affected accounts. Restore from immutable backups offline. Block IOCs (C2 domains, driver hashes), hunt for LOLBin anomalies, check scheduled tasks and services for persistence. Preserve forensic images before remediation.</p>
-      <h3>Detection Rules</h3>
-      <pre>// Sigma — Suspicious BITSAdmin Transfer
-title: BITSAdmin Unusual File Transfer
-logsource:
-  product: windows
-  category: process_creation
-detection:
-  selection:
-    Image|endswith: '\\bitsadmin.exe'
-    CommandLine|contains: '/transfer'
-  condition: selection
-level: high
-
-// KQL — LSASS Dump Detection (Sentinel / MDE)
-DeviceProcessEvents
-| where ProcessCommandLine contains "comsvcs.dll"
-  and ProcessCommandLine contains "MiniDump"
-| project Timestamp, DeviceName, AccountName, ProcessCommandLine
-
-// KQL — VSS Shadow Copy Deletion
-DeviceProcessEvents
-| where ProcessCommandLine has_any ("delete shadows", "resize shadowstorage", "vssadmin delete")
-| project Timestamp, DeviceName, InitiatingProcessAccountName, ProcessCommandLine
-
-// SPL — Terminator BYOVD Driver Load
-index=wineventlog EventCode=7045
-| eval svc=lower(ServiceName)
-| where svc="zamguard64" OR svc="zam64"
-| table _time, host, ServiceName, ImagePath</pre>
-    `
+        `
   },
 
   // ── POST 2 ─────────────────────────────────────────────────
