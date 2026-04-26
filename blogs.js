@@ -1,5 +1,4 @@
 const blogs = [
-
   {
     id: 'Cpuid',
     url: 'CPUID.html',
@@ -16,5 +15,72 @@ const blogs = [
     excerpt: 'A threat actor compromised CPUID\'s secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT',
     mitre: ['T1195.002', 'T1204.002', 'T1027.002', 'T1571'],
   },
-
+  /* ── Add new posts below this line ──────────────────────────────────────
+  {
+    id: 'your-post-id',
+    url: 'your-post.html',
+    cat: 'Phishing',          // used for filter buttons
+    catLabel: 'Phishing',
+    catColor: 'rgba(245,158,11,0.12)',
+    catBorder: 'rgba(245,158,11,0.2)',
+    catText: '#f59e0b',
+    icon: 'fas fa-fish',
+    readTime: '15 min',
+    title: 'Your Post Title Here',
+    date: 'May 2026',
+    featured: false,
+    excerpt: 'Short summary shown on the card...',
+    mitre: ['T1566.001', 'T1078'],
+  },
+  ─────────────────────────────────────────────────────────────────────── */
 ];
+
+/* ─────────────────────────────────────────────
+   Render blog cards into #blogGrid
+   Call buildBlogCards(limit) — pass a number to
+   show only the latest N, or omit for all.
+   ───────────────────────────────────────────── */
+function buildBlogCards(limit) {
+  const grid = document.getElementById('blogGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  const list = limit ? blogs.slice(0, limit) : blogs;
+
+  list.forEach((b, i) => {
+    const card = document.createElement('div');
+    card.className = 'blog-card';
+    card.style.transitionDelay = (i * 0.1) + 's';
+    card.innerHTML = `
+      <span class="blog-cat-badge" style="background:${b.catColor};border-color:${b.catBorder};color:${b.catText}">
+        <i class="${b.icon}" style="font-size:9px"></i> ${b.catLabel}
+      </span>
+      <div class="blog-title">${b.title}</div>
+      <div class="blog-meta">
+        <span><i class="far fa-calendar-alt"></i> ${b.date}</span>
+        <span><i class="fas fa-clock"></i> ${b.readTime} read</span>
+      </div>
+      <div class="blog-excerpt">${b.excerpt}</div>
+      <div class="blog-footer">
+        <span class="blog-read">Read Analysis <i class="fas fa-arrow-right"></i></span>
+        <div class="blog-tags">${b.mitre.map(m => `<span class="blog-tag">${m}</span>`).join('')}</div>
+      </div>`;
+    card.addEventListener('click', () => window.location.href = b.url);
+    grid.appendChild(card);
+  });
+
+  /* Sync the "Published Research" counter in the stats bar */
+  const countEl = document.getElementById('researchCount');
+  if (countEl) {
+    countEl.dataset.count = blogs.length;
+    countEl.dataset.counted = '';
+  }
+}
+
+/* Auto-render on DOMContentLoaded */
+document.addEventListener('DOMContentLoaded', () => {
+  /* index.html shows latest 3; research.html shows all */
+  const isIndex = document.getElementById('blogGrid') &&
+                  document.querySelector('.view-all-wrap');
+  buildBlogCards(isIndex ? 3 : undefined);
+});
