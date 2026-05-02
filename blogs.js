@@ -1,6 +1,11 @@
+/* =================================================
+   BLOG / RESEARCH POSTS — central data source
+   Add new posts to this array. Both index.html and
+   research.html will pick them up automatically.
+   ================================================= */
 const blogs = [
   {
-    id: 'Cpuid',
+    id: 'cpuid-stx-rat',
     url: 'CPUID.html',
     cat: 'Trojan',
     catLabel: 'Trojan',
@@ -12,7 +17,7 @@ const blogs = [
     title: 'CPUID Breach: STX RAT Delivered via Trojanized CPU-Z & HWMonitor Downloads',
     date: 'April 2026',
     featured: true,
-    excerpt: 'A threat actor compromised CPUID\'s secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT',
+    excerpt: 'A threat actor compromised CPUID\'s secondary download API for approximately six hours, redirecting users to Cloudflare R2-hosted trojanized installers for CPU-Z, HWMonitor, HWMonitor Pro, and PerfMonitor. The payload was STX RAT — a multi-stage in-memory RAT with credential theft and browser harvesting.',
     mitre: ['T1195.002', 'T1204.002', 'T1027.002', 'T1571'],
   },
   /* ── Add new posts below this line ──────────────────────────────────────
@@ -35,18 +40,18 @@ const blogs = [
   ─────────────────────────────────────────────────────────────────────── */
 ];
 
-/* ─────────────────────────────────────────────
+/* =================================================
    Render blog cards into #blogGrid
-   Call buildBlogCards(limit) — pass a number to
-   show only the latest N, or omit for all.
-   ───────────────────────────────────────────── */
+   buildBlogCards(limit) — pass a number to show
+   only the latest N, or omit for all.
+   Note: index.html has its own renderer; this is
+   used by other pages that want auto-render.
+   ================================================= */
 function buildBlogCards(limit) {
   const grid = document.getElementById('blogGrid');
   if (!grid) return;
   grid.innerHTML = '';
-
   const list = limit ? blogs.slice(0, limit) : blogs;
-
   list.forEach((b, i) => {
     const card = document.createElement('div');
     card.className = 'blog-card';
@@ -76,11 +81,3 @@ function buildBlogCards(limit) {
     countEl.dataset.counted = '';
   }
 }
-
-/* Auto-render on DOMContentLoaded */
-document.addEventListener('DOMContentLoaded', () => {
-  /* index.html shows latest 3; research.html shows all */
-  const isIndex = document.getElementById('blogGrid') &&
-                  document.querySelector('.view-all-wrap');
-  buildBlogCards(isIndex ? 3 : undefined);
-});
