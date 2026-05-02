@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Research | Swetha Devi — Attack Deep Dives</title>
 <meta name="description" content="Security research, attack chain analysis, detection rules, and IR playbooks by Swetha Devi.">
+<meta name="theme-color" content="#020b16">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -14,6 +15,7 @@
   --accent:#00ffe5;--accent2:#3b82f6;--red:#f43f5e;
   --amber:#f59e0b;--green:#22c55e;--text:#e8f4ff;
   --muted:#5a7a9a;--border:rgba(0,255,229,0.08);
+  --border-bright:rgba(0,255,229,0.18);
   --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth}
@@ -21,8 +23,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 #bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);pointer-events:none;z-index:1}
 
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,255,229,0.3)}
+
+#scrollProgress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:999;transition:width .1s ease;box-shadow:0 0 10px rgba(0,255,229,0.6)}
+
 nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(2,11,22,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1240px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
 .logo-shield{width:40px;height:40px;background:rgba(0,255,229,0.1);border:1px solid rgba(0,255,229,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}
 .logo-name{font-size:15px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
@@ -34,95 +43,94 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(2,11,22,0.85
 .nav-cta{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25);padding:8px 18px;border-radius:8px;font-weight:600;font-size:12px;text-decoration:none;transition:.2s;display:flex;align-items:center;gap:7px;font-family:var(--mono)}
 .nav-cta:hover{background:rgba(0,255,229,0.15)}
 
-.container{max-width:1240px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+.container{max-width:1280px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
 
-.page-header{padding:110px 0 60px;position:relative;z-index:2}
+.page-header{padding:120px 0 60px;position:relative;z-index:2}
 .page-header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .ph-pretitle{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:12px}
-.ph-title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:700;letter-spacing:-0.04em;line-height:1.1}
+.ph-title{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:700;letter-spacing:-0.04em;line-height:1.1}
 .ph-title span{-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(90deg,var(--accent),var(--accent2))}
-.ph-sub{font-size:.9rem;color:var(--muted);margin-top:14px;max-width:540px;line-height:1.7}
-.ph-count{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
-.ph-count .count-num{display:block;font-size:2.8rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1}
+.ph-sub{font-size:.95rem;color:var(--muted);margin-top:14px;max-width:580px;line-height:1.7}
+.ph-count{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;letter-spacing:.05em}
+.ph-count .count-num{display:block;font-size:3rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1;font-family:var(--mono)}
 
+/* TOOLBAR */
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:32px;position:relative;z-index:2}
+.search-wrap{position:relative;flex:1;min-width:240px}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px 12px 42px;font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:.2s}
+.search-input::placeholder{color:var(--muted)}
+.search-input:focus{border-color:var(--border-bright);background:var(--surface2)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;cursor:pointer;display:none;background:none;border:none;padding:4px}
+.search-clear.show{display:block}
+
+.sort-select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:10px;font-family:var(--mono);font-size:12px;cursor:pointer;outline:none;min-width:160px}
+.sort-select:focus{border-color:var(--border-bright)}
+
+/* FILTERS */
 .filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;position:relative;z-index:2}
 .filter-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 16px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:.2s;letter-spacing:.04em}
 .filter-btn:hover{border-color:rgba(0,255,229,0.2);color:var(--text)}
-.filter-btn.active{background:rgba(0,255,229,0.08);border-color:rgba(0,255,229,0.25);color:var(--accent)}
+.filter-btn.active{background:rgba(0,255,229,0.08);border-color:var(--border-bright);color:var(--accent)}
+.filter-btn .count{font-size:10px;opacity:.7;margin-left:4px}
 
-.search-wrap{position:relative;margin-bottom:32px;z-index:2}
-.search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px 12px 42px;font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:.2s}
-.search-input::placeholder{color:var(--muted)}
-.search-input:focus{border-color:rgba(0,255,229,0.25);background:var(--surface2)}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
-
-.stats-row{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:40px;position:relative;z-index:2}
-.mini-stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px}
-.mini-stat-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.mini-stat-num{font-family:var(--mono);font-size:1.3rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2))}
-.mini-stat-label{font-size:11px;color:var(--muted)}
+.stats-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;position:relative;z-index:2}
+.mini-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:14px;flex:1;min-width:200px;transition:.2s}
+.mini-stat:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.mini-stat-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.mini-stat-num{font-family:var(--mono);font-size:1.5rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1}
+.mini-stat-label{font-size:11px;color:var(--muted);margin-top:3px}
 
 /* BLOG GRID */
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;position:relative;z-index:2}
 .blog-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;cursor:pointer;transition:.3s;display:flex;flex-direction:column;position:relative;overflow:hidden}
 .blog-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:.35s ease}
 .blog-card:hover::before{transform:scaleX(1)}
-.blog-card:hover{border-color:rgba(0,255,229,0.15);transform:translateY(-6px);background:var(--surface2)}
+.blog-card:hover{border-color:var(--border-bright);transform:translateY(-6px);background:var(--surface2)}
 
 /* FEATURED CARD */
-.blog-card.featured{grid-column:1/-1;flex-direction:row;gap:32px;align-items:flex-start}
+.blog-card.featured{grid-column:1/-1;flex-direction:row;gap:32px;align-items:stretch;padding:32px}
 .blog-card.featured .blog-content{flex:1}
 .featured-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;color:var(--amber);background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.15);padding:4px 10px;border-radius:100px;margin-bottom:12px}
-.featured-visual{width:200px;flex-shrink:0;background:linear-gradient(135deg,rgba(0,255,229,0.04),rgba(59,130,246,0.04));border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:56px;color:rgba(0,255,229,0.15);align-self:stretch}
+.featured-visual{width:240px;flex-shrink:0;background:linear-gradient(135deg,rgba(0,255,229,0.04),rgba(59,130,246,0.04));border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:64px;color:rgba(0,255,229,0.2);position:relative;overflow:hidden}
+.featured-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(244,63,94,0.08),transparent 70%);pointer-events:none}
 
 .blog-cat-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;padding:4px 10px;border-radius:100px;border:1px solid}
-.blog-title{font-size:1.05rem;font-weight:600;margin-bottom:10px;line-height:1.4}
-.blog-meta{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:12px}
-.blog-excerpt{font-size:13px;color:var(--muted);line-height:1.65;flex:1}
-.blog-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.blog-title{font-size:1.1rem;font-weight:600;margin-bottom:10px;line-height:1.4}
+.blog-card.featured .blog-title{font-size:1.4rem;margin-bottom:14px}
+.blog-meta{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.blog-excerpt{font-size:13px;color:var(--muted);line-height:1.7;flex:1}
+.blog-card.featured .blog-excerpt{font-size:14px}
+.blog-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px}
 .blog-read{color:var(--accent);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);transition:.2s}
 .blog-card:hover .blog-read{gap:9px}
 .blog-tags{display:flex;gap:5px;flex-wrap:wrap}
 .blog-tag{background:rgba(0,255,229,0.04);border:1px solid rgba(0,255,229,0.09);padding:2px 7px;border-radius:3px;font-size:9px;font-family:var(--mono);color:var(--accent)}
 
-.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--mono);font-size:13px}
-.empty-state i{font-size:36px;margin-bottom:16px;opacity:.3;display:block}
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;background:var(--surface);border:1px dashed var(--border);border-radius:16px}
+.empty-state i{font-size:42px;margin-bottom:18px;opacity:.4;display:block;color:var(--accent)}
+.empty-state-title{color:var(--text);font-size:15px;margin-bottom:6px;font-family:var(--font);font-weight:600}
 
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,5,14,0.95);backdrop-filter:blur(20px);z-index:1000;overflow-y:auto;padding:40px 20px}
-.modal-overlay.open{display:block}
-.modal-box{max-width:880px;margin:0 auto;background:#010d1a;border:1px solid rgba(0,255,229,0.15);border-radius:20px;overflow:hidden;animation:modal-in .28s ease}
-@keyframes modal-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.modal-top-bar{background:#000a14;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(0,255,229,0.06)}
-.modal-path{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;align-items:center;gap:8px}
-.modal-path span{color:var(--accent)}
-.modal-close{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-size:18px;cursor:pointer;padding:4px 10px;transition:.2s;border-radius:6px;line-height:1}
-.modal-close:hover{color:var(--text);background:rgba(255,255,255,0.08)}
-.modal-body{padding:38px}
-.modal-body h2{font-size:1.65rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.025em;line-height:1.2}
-.modal-body h3{font-size:1rem;font-weight:600;color:var(--accent);margin:28px 0 10px;display:flex;align-items:center;gap:8px;font-family:var(--mono)}
-.modal-body h3::before{content:'//';color:rgba(0,255,229,0.3);font-size:.9rem}
-.modal-body p{color:var(--muted);font-size:13.5px;line-height:1.85;margin-bottom:12px}
-.modal-body pre{background:#000810;border:1px solid rgba(0,255,229,0.1);border-left:2px solid var(--accent);padding:20px;border-radius:10px;overflow-x:auto;font-size:11.5px;font-family:var(--mono);line-height:1.75;color:#7ac4b8;margin:16px 0}
-.modal-body hr{border:none;border-top:1px solid rgba(0,255,229,0.06);margin:26px 0}
-.modal-date{font-family:var(--mono);font-size:11px;color:var(--muted)}
-.mitre-grid{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
-.mitre-tag{background:rgba(244,63,94,0.06);border:1px solid rgba(244,63,94,0.15);padding:4px 11px;border-radius:5px;font-family:var(--mono);font-size:10px;color:var(--red)}
-
-footer{border-top:1px solid var(--border);padding:28px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);position:relative;z-index:2}
+footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);position:relative;z-index:2;margin-top:80px}
 footer span{color:var(--accent)}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
 
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
 @media(max-width:768px){
   .nav-links{display:none}
   .blog-card.featured{flex-direction:column}
-  .featured-visual{display:none}
+  .featured-visual{width:100%;height:160px;font-size:48px}
   .blog-grid{grid-template-columns:1fr}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .sort-select{width:100%}
 }
 </style>
 </head>
 <body>
 <canvas id="bgCanvas"></canvas>
+<div id="scrollProgress"></div>
 
 <nav>
   <div class="nav-inner">
@@ -148,7 +156,7 @@ footer span{color:var(--accent)}
         <div>
           <div class="ph-pretitle">// Research · Attack Deep Dives</div>
           <h1 class="ph-title">Security <span>Research</span></h1>
-          <p class="ph-sub">In-depth analysis of real-world attack chains, TTPs, detection engineering, and incident response playbooks. MITRE ATT&CK-mapped throughout.</p>
+          <p class="ph-sub">In-depth analysis of real-world attack chains, TTPs, detection engineering, and incident response playbooks. MITRE ATT&CK-mapped throughout. New posts published monthly.</p>
         </div>
         <div class="ph-count">
           <span class="count-num" id="visibleCount">0</span>
@@ -159,7 +167,7 @@ footer span{color:var(--accent)}
   </div>
 
   <div class="container">
-    <!-- Stats — auto-populated from blogs.js -->
+    <!-- Stats — auto-populated -->
     <div class="stats-row">
       <div class="mini-stat">
         <div class="mini-stat-icon" style="background:rgba(0,255,229,0.08);color:var(--accent)"><i class="fas fa-virus"></i></div>
@@ -179,40 +187,37 @@ footer span{color:var(--accent)}
       </div>
     </div>
 
-    <!-- Search -->
-    <div class="search-wrap">
-      <i class="fas fa-search search-icon"></i>
-      <input type="text" class="search-input" id="searchInput" placeholder="Search posts, techniques, CVEs, categories...">
+    <!-- Search + Sort -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search by title, technique, CVE, or category...">
+        <button class="search-clear" id="searchClear" title="Clear"><i class="fas fa-times"></i></button>
+      </div>
+      <select class="sort-select" id="sortSelect">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="featured">Featured first</option>
+        <option value="readtime">Read time (long → short)</option>
+      </select>
     </div>
 
-    <!-- Filters — all categories auto-generated from blogs.js -->
+    <!-- Filters -->
     <div class="filter-bar" id="filterBar">
-      <button class="filter-btn active" data-cat="all">All Posts</button>
+      <button class="filter-btn active" data-cat="all">All Posts <span class="count" id="cntAll"></span></button>
     </div>
 
-    <!-- Blog Grid — fully populated from blogs.js -->
+    <!-- Blog Grid -->
     <div class="blog-grid" id="blogGrid"></div>
   </div>
 </div>
 
-<footer style="margin-top:80px">
+<footer>
   <div class="container">
-    <p>© 2026 <span>Swetha Devi Sai Priya Bonu</span> &nbsp;·&nbsp; <a href="index.html" style="color:var(--accent);text-decoration:none">← Back to Portfolio</a></p>
+    <p>© 2026 <span>Swetha Devi Sai Priya Bonu</span> &nbsp;·&nbsp; <a href="index.html">← Back to Portfolio</a></p>
   </div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal">
-  <div class="modal-box">
-    <div class="modal-top-bar">
-      <div class="modal-path"><i class="fas fa-folder-open" style="color:var(--accent);font-size:12px"></i> research / <span id="modalPathName">deep-dive</span></div>
-      <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-  </div>
-</div>
-
-<!-- blogs.js MUST come before this script -->
 <script src="blogs.js"></script>
 <script>
 /* CANVAS */
@@ -225,23 +230,30 @@ resize();window.addEventListener('resize',resize);
 function draw(){ctx.clearRect(0,0,W,H);nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0)n.x=W;if(n.x>W)n.x=0;if(n.y<0)n.y=H;if(n.y>H)n.y=0;n.pulse+=.015;const a=.12+Math.sin(n.pulse)*.08;ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=n.c===0?`rgba(0,255,229,${a})`:`rgba(59,130,246,${a})`;ctx.fill()});for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j];const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,255,229,${.04*(1-d/110)})`;ctx.lineWidth=.4;ctx.stroke()}}}requestAnimationFrame(draw)}
 draw();
 
-/* AUTO-GENERATE FILTER BUTTONS from unique cats in blogs.js */
+/* SCROLL PROGRESS */
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('scrollProgress').style.width = pct + '%';
+}, { passive: true });
+
+/* AUTO-GENERATE FILTER BUTTONS with counts */
 (function buildFilters() {
   const bar = document.getElementById('filterBar');
-  const seen = new Set();
-  blogs.forEach(b => {
-    if (!seen.has(b.cat)) {
-      seen.add(b.cat);
-      const btn = document.createElement('button');
-      btn.className = 'filter-btn';
-      btn.dataset.cat = b.cat;
-      btn.textContent = b.catLabel;
-      bar.appendChild(btn);
-    }
+  const counts = {};
+  blogs.forEach(b => { counts[b.cat] = (counts[b.cat] || 0) + 1 });
+  document.getElementById('cntAll').textContent = '(' + blogs.length + ')';
+  Object.keys(counts).forEach(cat => {
+    const sample = blogs.find(b => b.cat === cat);
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.cat = cat;
+    btn.innerHTML = `${sample.catLabel} <span class="count">(${counts[cat]})</span>`;
+    bar.appendChild(btn);
   });
 })();
 
-/* AUTO-CALCULATE STATS from blogs.js */
+/* AUTO-CALCULATE STATS */
 (function calcStats() {
   const totalMitre = new Set(blogs.flatMap(b => b.mitre)).size;
   document.getElementById('statTotal').textContent = blogs.length;
@@ -249,12 +261,31 @@ draw();
   document.getElementById('statPlaybooks').textContent = blogs.length;
 })();
 
+/* PARSE DATE — handles "April 2026" format */
+function parseDate(str) {
+  const months = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  const parts = str.toLowerCase().split(' ');
+  const m = months[parts[0]?.slice(0,3)] ?? 0;
+  const y = parseInt(parts[1]) || 2026;
+  return new Date(y, m, 1);
+}
+
+/* PARSE READ TIME */
+function parseReadTime(str) {
+  return parseInt(str) || 0;
+}
+
 /* BUILD BLOG GRID */
 function buildBlogs(data) {
   const grid = document.getElementById('blogGrid');
   grid.innerHTML = '';
   if (!data.length) {
-    grid.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i>No posts match your search.</div>';
+    grid.innerHTML = `
+      <div class="empty-state">
+        <i class="fas fa-search"></i>
+        <div class="empty-state-title">No posts match your search</div>
+        <div>Try a different keyword or clear filters.</div>
+      </div>`;
     document.getElementById('visibleCount').textContent = '0';
     return;
   }
@@ -269,7 +300,7 @@ function buildBlogs(data) {
         <div class="blog-content">
           <div class="featured-badge"><i class="fas fa-star" style="font-size:9px"></i> Featured Post</div>
           <span class="blog-cat-badge" style="background:${b.catColor};border-color:${b.catBorder};color:${b.catText}">
-            <i class="${b.icon}" style="font-size:9px"></i>${b.catLabel}
+            <i class="${b.icon}" style="font-size:9px"></i> ${b.catLabel}
           </span>
           <div class="blog-title">${b.title}</div>
           <div class="blog-meta">
@@ -286,7 +317,7 @@ function buildBlogs(data) {
     } else {
       card.innerHTML = `
         <span class="blog-cat-badge" style="background:${b.catColor};border-color:${b.catBorder};color:${b.catText}">
-          <i class="${b.icon}" style="font-size:9px"></i>${b.catLabel}
+          <i class="${b.icon}" style="font-size:9px"></i> ${b.catLabel}
         </span>
         <div class="blog-title">${b.title}</div>
         <div class="blog-meta">
@@ -305,20 +336,39 @@ function buildBlogs(data) {
 }
 buildBlogs(blogs);
 
-/* FILTER + SEARCH */
+/* FILTER + SEARCH + SORT */
 let activeCat = 'all';
+let activeSort = 'newest';
+
 document.getElementById('filterBar').addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
   activeCat = btn.dataset.cat;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  filterBlogs();
+  applyAll();
 });
-document.getElementById('searchInput').addEventListener('input', filterBlogs);
-function filterBlogs() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = blogs.filter(b => {
+
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+searchInput.addEventListener('input', () => {
+  searchClear.classList.toggle('show', searchInput.value.length > 0);
+  applyAll();
+});
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchClear.classList.remove('show');
+  applyAll();
+});
+
+document.getElementById('sortSelect').addEventListener('change', e => {
+  activeSort = e.target.value;
+  applyAll();
+});
+
+function applyAll() {
+  const q = searchInput.value.toLowerCase().trim();
+  let result = blogs.filter(b => {
     const catMatch = activeCat === 'all' || b.cat === activeCat;
     const searchMatch = !q ||
       b.title.toLowerCase().includes(q) ||
@@ -327,21 +377,19 @@ function filterBlogs() {
       b.catLabel.toLowerCase().includes(q);
     return catMatch && searchMatch;
   });
-  buildBlogs(filtered);
-}
 
-/* MODAL */
-const modal = document.getElementById('modal');
-const modalBody = document.getElementById('modalBody');
-const modalPathName = document.getElementById('modalPathName');
-document.getElementById('modalClose').addEventListener('click', () => modal.classList.remove('open'));
-modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open') });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open') });
-function openModal(b) {
-  modalBody.innerHTML = b.content;
-  modalPathName.textContent = b.id;
-  modal.classList.add('open');
-  modal.scrollTop = 0;
+  // Sort
+  if (activeSort === 'newest') {
+    result.sort((a, b) => parseDate(b.date) - parseDate(a.date));
+  } else if (activeSort === 'oldest') {
+    result.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+  } else if (activeSort === 'featured') {
+    result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  } else if (activeSort === 'readtime') {
+    result.sort((a, b) => parseReadTime(b.readTime) - parseReadTime(a.readTime));
+  }
+
+  buildBlogs(result);
 }
 </script>
 </body>
