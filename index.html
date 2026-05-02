@@ -364,6 +364,73 @@ section{padding:90px 0}
 .reveal.visible{opacity:1;transform:none}
 
 /* ============================================= */
+/* DETECTION RULES */
+/* ============================================= */
+.det-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.det-filter{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 14px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:none;transition:.2s;letter-spacing:.04em}
+.det-filter:hover{color:var(--text);border-color:rgba(0,255,229,0.2)}
+.det-filter.active{background:rgba(0,255,229,0.1);border-color:rgba(0,255,229,0.35);color:var(--accent)}
+.det-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px}
+.det-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;transition:.3s;position:relative;overflow:hidden}
+.det-card:hover{border-color:var(--border-bright);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,255,229,0.06)}
+.det-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.det-card-title{font-size:15px;font-weight:600;color:var(--text);line-height:1.35}
+.det-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:3px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0;font-weight:600}
+.det-platform.kql{background:rgba(0,120,212,0.15);color:#4ab6ff;border:1px solid rgba(0,120,212,0.3)}
+.det-platform.sigma{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
+.det-platform.yara{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.det-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px;min-height:48px}
+.det-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.det-tag{font-family:var(--mono);font-size:9.5px;color:var(--accent);background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.12);padding:3px 7px;border-radius:4px;letter-spacing:.04em}
+.det-sev{font-family:var(--mono);font-size:9.5px;padding:3px 7px;border-radius:4px;letter-spacing:.06em;font-weight:600}
+.det-sev.high{background:rgba(244,63,94,0.12);color:#fb7185;border:1px solid rgba(244,63,94,0.3)}
+.det-sev.medium{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.det-sev.low{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}
+.det-code{background:#020a14;border:1px solid rgba(0,255,229,0.08);border-radius:8px;padding:12px;font-family:var(--mono);font-size:11px;color:#a8d8e8;line-height:1.55;overflow-x:auto;white-space:pre;max-height:130px;overflow-y:auto;margin-bottom:12px;position:relative}
+.det-code::-webkit-scrollbar{width:5px;height:5px}
+.det-code::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.2);border-radius:3px}
+.det-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:10.5px}
+.det-mitre{color:var(--muted);letter-spacing:.04em}
+.det-copy{background:rgba(0,255,229,0.06);color:var(--accent);border:1px solid rgba(0,255,229,0.15);padding:5px 12px;border-radius:6px;font-family:var(--mono);font-size:10px;cursor:none;transition:.2s;letter-spacing:.06em;font-weight:600}
+.det-copy:hover{background:rgba(0,255,229,0.12);border-color:rgba(0,255,229,0.35)}
+.det-copy.copied{background:rgba(34,197,94,0.12);color:#4ade80;border-color:rgba(34,197,94,0.3)}
+
+/* ============================================= */
+/* LABS & CTFs */
+/* ============================================= */
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.lab-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;transition:.25s;display:flex;gap:14px;align-items:flex-start;cursor:none;text-decoration:none;color:inherit;position:relative;overflow:hidden}
+.lab-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--surface2)}
+.lab-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--platform-color,var(--accent));opacity:0;transition:.25s}
+.lab-card:hover::before{opacity:1}
+.lab-icon{width:42px;height:42px;border-radius:9px;background:var(--platform-bg,rgba(0,255,229,0.08));display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--platform-color,var(--accent));flex-shrink:0;border:1px solid var(--platform-border,rgba(0,255,229,0.18))}
+.lab-body{flex:1;min-width:0}
+.lab-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+.lab-platform{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.lab-foot{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:10px;flex-wrap:wrap}
+.lab-diff{padding:2px 7px;border-radius:4px;letter-spacing:.04em;font-weight:600;text-transform:uppercase;font-size:9.5px}
+.lab-diff.easy{background:rgba(34,197,94,0.12);color:#4ade80}
+.lab-diff.medium{background:rgba(245,158,11,0.12);color:#fbbf24}
+.lab-diff.hard{background:rgba(244,63,94,0.12);color:#fb7185}
+.lab-diff.insane{background:rgba(168,85,247,0.15);color:#c084fc}
+.lab-date{color:var(--faint);font-size:9.5px}
+
+/* ============================================= */
+/* CURRENTLY LEARNING */
+/* ============================================= */
+.now-strip{background:linear-gradient(135deg,rgba(168,85,247,0.05),rgba(0,255,229,0.04));border:1px solid rgba(168,85,247,0.15);border-radius:14px;padding:24px;margin-bottom:32px;position:relative;overflow:hidden}
+.now-strip::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.08),transparent 70%);pointer-events:none}
+.now-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative}
+.now-pulse{width:9px;height:9px;background:#c084fc;border-radius:50%;box-shadow:0 0 12px rgba(168,85,247,0.6);animation:nowPulse 2s ease-in-out infinite}
+@keyframes nowPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.3)}}
+.now-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:#c084fc;text-transform:uppercase;font-weight:600}
+.now-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;position:relative}
+.now-sub{font-size:13px;color:var(--muted);line-height:1.7;position:relative}
+.now-sub strong{color:var(--text);font-weight:500}
+.now-progress{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;position:relative}
+.now-chip{font-family:var(--mono);font-size:10px;background:rgba(168,85,247,0.1);color:#c084fc;border:1px solid rgba(168,85,247,0.2);padding:4px 10px;border-radius:100px;letter-spacing:.04em}
+
+/* ============================================= */
 /* FOOTER */
 /* ============================================= */
 footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;z-index:2;background:rgba(0,0,0,0.2)}
@@ -477,8 +544,10 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
+      <li><a href="#detections">Detections</a></li>
+      <li><a href="#labs">Labs</a></li>
       <li><a href="#research">Research</a></li>
+      <li><a href="now.html">Now</a></li>
       <li><a href="#connect">Connect</a></li>
     </ul>
     <div class="nav-right">
@@ -804,12 +873,72 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 </section>
 
 <!-- ============================================= -->
+<!-- DETECTION RULES -->
+<!-- ============================================= -->
+<section id="detections">
+  <div class="container">
+    <div class="now-strip reveal">
+      <div class="now-head">
+        <span class="now-pulse"></span>
+        <span class="now-label">// Currently Learning</span>
+      </div>
+      <div class="now-title">Malware Analysis · TCM Security</div>
+      <div class="now-sub">Working through the <strong>Practical Malware Analysis & Triage</strong> course — static & dynamic analysis, unpacking, behavioral detection, and reverse engineering with x32dbg + Ghidra. Goal: be able to triage a sample end-to-end and write the YARA rule that catches the next variant.</div>
+      <div class="now-progress">
+        <span class="now-chip">x32dbg</span>
+        <span class="now-chip">Ghidra</span>
+        <span class="now-chip">PE Analysis</span>
+        <span class="now-chip">YARA</span>
+        <span class="now-chip">Sandboxing</span>
+        <a href="now.html" class="now-chip" style="text-decoration:none;cursor:none">→ See full /now</a>
+      </div>
+    </div>
+
+    <div class="sec-header reveal">
+      <div class="sec-meta"><div class="sec-tag">// 06 — Detections</div><h2 class="sec-title">Detection Rules</h2></div>
+      <div class="sec-line"></div>
+    </div>
+
+    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hunting queries and detection logic I've written or adapted while triaging real alerts. Mapped to MITRE, severity-tagged, and ready to paste into your SIEM.</p>
+
+    <div class="det-toolbar reveal">
+      <button class="det-filter active" data-platform="all">All</button>
+      <button class="det-filter" data-platform="kql">KQL · Sentinel</button>
+      <button class="det-filter" data-platform="sigma">Sigma</button>
+      <button class="det-filter" data-platform="yara">YARA</button>
+    </div>
+
+    <div class="det-grid reveal" id="detGrid"></div>
+
+    <div class="reveal" style="text-align:center;margin-top:30px">
+      <a href="https://github.com/unabletofind" target="_blank" rel="noopener" class="btn-viewall"><i class="fab fa-github"></i> See all rules on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- LABS & CTFs -->
+<!-- ============================================= -->
+<section id="labs">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-meta"><div class="sec-tag">// 07 — Labs</div><h2 class="sec-title">CTFs & Labs</h2></div>
+      <div class="sec-line"></div>
+    </div>
+
+    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hands-on practice across blue team and offensive labs. Each one teaches something I take back to the SOC desk.</p>
+
+    <div class="lab-grid reveal" id="labGrid"></div>
+  </div>
+</section>
+
+<!-- ============================================= -->
 <!-- EXPERIENCE -->
 <!-- ============================================= -->
 <section id="experience">
   <div class="container">
     <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">// 06 — Timeline</div><h2 class="sec-title">Experience</h2></div>
+      <div class="sec-meta"><div class="sec-tag">// 08 — Timeline</div><h2 class="sec-title">Experience</h2></div>
       <div class="sec-line"></div>
     </div>
     <div class="timeline">
@@ -864,7 +993,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 
     <div style="margin-top:48px">
       <div class="sec-header reveal">
-        <div class="sec-meta"><div class="sec-tag">// 06b — Certs</div><h2 class="sec-title" style="font-size:1.4rem">Certifications</h2></div>
+        <div class="sec-meta"><div class="sec-tag">// 08b — Certs</div><h2 class="sec-title" style="font-size:1.4rem">Certifications</h2></div>
         <div class="sec-line"></div>
       </div>
       <div class="cert-grid reveal">
@@ -882,7 +1011,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 <section id="research">
   <div class="container">
     <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">// 07 — Research</div><h2 class="sec-title">Attack Deep Dives</h2></div>
+      <div class="sec-meta"><div class="sec-tag">// 09 — Research</div><h2 class="sec-title">Attack Deep Dives</h2></div>
       <div class="sec-line"></div>
     </div>
     <p class="reveal" style="color:var(--muted);margin-bottom:30px;font-size:13px;font-family:var(--mono)">Showing latest publications. In-depth analysis covering attack chain, methodology, detection rules, and IR playbooks.</p>
@@ -899,7 +1028,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 <section id="connect">
   <div class="container">
     <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">// 08 — Contact</div><h2 class="sec-title">Connect</h2></div>
+      <div class="sec-meta"><div class="sec-tag">// 10 — Contact</div><h2 class="sec-title">Connect</h2></div>
       <div class="sec-line"></div>
     </div>
 
@@ -939,9 +1068,10 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <h4>// Sections</h4>
         <a href="#about">About</a>
         <a href="#services">Services</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
+        <a href="#detections">Detections</a>
+        <a href="#labs">Labs & CTFs</a>
         <a href="#research">Research</a>
+        <a href="now.html">/now</a>
       </div>
       <div class="footer-col">
         <h4>// Connect</h4>
@@ -1629,6 +1759,224 @@ document.querySelectorAll('a').forEach(link => {
       buffer = '';
     }
   });
+})();
+
+/* ============================================= */
+/* DETECTION RULES DATA & RENDER */
+/* ============================================= */
+const DETECTION_RULES = [
+  {
+    title: 'Suspicious PowerShell Encoded Command Execution',
+    platform: 'kql',
+    desc: 'Catches base64-encoded PowerShell payloads — a classic loader pattern used by Emotet, Qakbot, and modern AiTM kits.',
+    severity: 'high',
+    mitre: ['T1059.001', 'T1027'],
+    tags: ['PowerShell', 'Defense Evasion', 'Sentinel'],
+    code: `DeviceProcessEvents
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine has_any ("-enc", "-EncodedCommand", "-e ")
+| where ProcessCommandLine matches regex @"[A-Za-z0-9+/]{50,}={0,2}"
+| project Timestamp, DeviceName, AccountName,
+          InitiatingProcessFileName, ProcessCommandLine
+| order by Timestamp desc`
+  },
+  {
+    title: 'AiTM Phishing — Suspicious Sign-in from New ASN',
+    platform: 'kql',
+    desc: 'Hunts adversary-in-the-middle session hijacks by flagging sign-ins where the user authenticates from a brand-new ASN within minutes of a known-good one.',
+    severity: 'high',
+    mitre: ['T1557', 'T1078.004'],
+    tags: ['Identity', 'AiTM', 'EntraID'],
+    code: `let lookback = 1h;
+SigninLogs
+| where TimeGenerated > ago(lookback)
+| where ResultType == 0
+| summarize ASNs = make_set(NetworkLocationDetails)
+            by UserPrincipalName, bin(TimeGenerated, 5m)
+| where array_length(ASNs) > 1
+| extend Suspicious = "Multi-ASN signin within 5 min"`
+  },
+  {
+    title: 'OneNote Spawning Suspicious Child Process',
+    platform: 'sigma',
+    desc: 'OneNote attachments became a favored phishing payload after macro restrictions. This rule fires when ONENOTE.EXE spawns scripting engines or LOLBins.',
+    severity: 'high',
+    mitre: ['T1204.002', 'T1059'],
+    tags: ['Phishing', 'Initial Access', 'OneNote'],
+    code: `title: OneNote Suspicious Child Process
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    ParentImage|endswith: '\\\\ONENOTE.EXE'
+    Image|endswith:
+      - '\\\\powershell.exe'
+      - '\\\\cmd.exe'
+      - '\\\\wscript.exe'
+      - '\\\\mshta.exe'
+  condition: selection
+level: high`
+  },
+  {
+    title: 'STX RAT — CPUID-based Anti-VM Strings',
+    platform: 'yara',
+    desc: 'Static rule for the STX RAT family I analyzed in the CPUID writeup. Matches the unique CPUID instruction pattern used to evade sandbox detonation.',
+    severity: 'medium',
+    mitre: ['T1497.001'],
+    tags: ['Malware', 'Anti-VM', 'STX'],
+    code: `rule STX_RAT_CPUID_AntiVM
+{
+  meta:
+    author = "Swetha Devi"
+    description = "Detects STX RAT CPUID anti-analysis"
+    date = "2026-04"
+
+  strings:
+    $cpuid_check = { 0F A2 81 FB ?? ?? ?? ?? }
+    $vbox = "VBoxService" ascii wide
+    $vmware = "vmtoolsd" ascii wide
+
+  condition:
+    uint16(0) == 0x5A4D and
+    $cpuid_check and any of ($vbox, $vmware)
+}`
+  },
+  {
+    title: 'Office Application Spawning rundll32',
+    platform: 'kql',
+    desc: 'Word/Excel spawning rundll32.exe is a common Cobalt Strike + macro loader pattern. Low false-positive rate in most enterprises.',
+    severity: 'medium',
+    mitre: ['T1218.011', 'T1204.002'],
+    tags: ['Macros', 'Office', 'CobaltStrike'],
+    code: `DeviceProcessEvents
+| where InitiatingProcessFileName in~
+    ("winword.exe","excel.exe","powerpnt.exe","outlook.exe")
+| where FileName =~ "rundll32.exe"
+| project Timestamp, DeviceName, AccountName,
+          InitiatingProcessFileName, ProcessCommandLine
+| order by Timestamp desc`
+  },
+  {
+    title: 'Impossible Travel — Sentinel Built-in Tuned',
+    platform: 'kql',
+    desc: 'Tightened version of the built-in impossible-travel rule. Filters out known VPN egress IPs and SaaS automation accounts to cut noise ~70%.',
+    severity: 'low',
+    mitre: ['T1078'],
+    tags: ['Identity', 'Travel', 'Tuning'],
+    code: `SigninLogs
+| where ResultType == 0
+| where AppDisplayName !in ("Microsoft Graph", "PowerShell")
+| extend Country = tostring(LocationDetails.countryOrRegion)
+| summarize Countries = make_set(Country),
+            FirstSeen = min(TimeGenerated),
+            LastSeen = max(TimeGenerated)
+            by UserPrincipalName, bin(TimeGenerated, 1h)
+| where array_length(Countries) > 1
+| where datetime_diff('minute', LastSeen, FirstSeen) < 60`
+  }
+];
+
+(function renderDetections(){
+  const grid = document.getElementById('detGrid');
+  if(!grid) return;
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function render(filter){
+    const list = filter === 'all' ? DETECTION_RULES : DETECTION_RULES.filter(r => r.platform === filter);
+    if(!list.length){
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px">// no rules in this category yet</div>';
+      return;
+    }
+    grid.innerHTML = list.map((r, i) => `
+      <div class="det-card">
+        <div class="det-card-head">
+          <div class="det-card-title">${escapeHtml(r.title)}</div>
+          <div class="det-platform ${r.platform}">${r.platform === 'kql' ? 'KQL' : r.platform === 'sigma' ? 'Sigma' : 'YARA'}</div>
+        </div>
+        <div class="det-desc">${escapeHtml(r.desc)}</div>
+        <div class="det-meta">
+          <span class="det-sev ${r.severity}">${r.severity.toUpperCase()}</span>
+          ${r.tags.map(t => `<span class="det-tag">${escapeHtml(t)}</span>`).join('')}
+        </div>
+        <pre class="det-code"><code>${escapeHtml(r.code)}</code></pre>
+        <div class="det-actions">
+          <span class="det-mitre">MITRE: ${r.mitre.join(' · ')}</span>
+          <button class="det-copy" data-idx="${i}" data-filter="${filter}"><i class="fas fa-copy"></i> Copy</button>
+        </div>
+      </div>
+    `).join('');
+
+    // wire up copy buttons
+    grid.querySelectorAll('.det-copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.idx);
+        const f = btn.dataset.filter;
+        const sourceList = f === 'all' ? DETECTION_RULES : DETECTION_RULES.filter(r => r.platform === f);
+        const rule = sourceList[idx];
+        if(!rule) return;
+        navigator.clipboard.writeText(rule.code).then(() => {
+          btn.classList.add('copied');
+          btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+          }, 1800);
+        });
+      });
+    });
+  }
+
+  // filter buttons
+  document.querySelectorAll('.det-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.det-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render(btn.dataset.platform);
+    });
+  });
+
+  render('all');
+})();
+
+/* ============================================= */
+/* LABS / CTFs DATA & RENDER */
+/* ============================================= */
+const LABS = [
+  { name: 'CDSA Certification', platform: 'Hack The Box', icon: 'fa-shield-halved', diff: 'medium', date: 'Mar 2026', color: '#9fef00', bg: 'rgba(159,239,0,0.08)', border: 'rgba(159,239,0,0.25)' },
+  { name: 'SOC Analyst Path', platform: 'TryHackMe', icon: 'fa-route', diff: 'medium', date: 'Feb 2026', color: '#88cc14', bg: 'rgba(136,204,20,0.08)', border: 'rgba(136,204,20,0.25)' },
+  { name: 'Practical Malware Analysis', platform: 'TCM Security', icon: 'fa-bug', diff: 'hard', date: 'In Progress', color: '#c084fc', bg: 'rgba(168,85,247,0.1)', border: 'rgba(168,85,247,0.25)' },
+  { name: 'Phishing Email Investigation', platform: 'Blue Team Labs', icon: 'fa-envelope-open', diff: 'medium', date: 'Jan 2026', color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', border: 'rgba(59,130,246,0.25)' },
+  { name: 'Sysmon Threat Hunting', platform: 'CyberDefenders', icon: 'fa-magnifying-glass', diff: 'medium', date: 'Dec 2025', color: '#06b6d4', bg: 'rgba(6,182,212,0.08)', border: 'rgba(6,182,212,0.25)' },
+  { name: 'Active Directory Attacks', platform: 'TryHackMe', icon: 'fa-network-wired', diff: 'hard', date: 'Nov 2025', color: '#88cc14', bg: 'rgba(136,204,20,0.08)', border: 'rgba(136,204,20,0.25)' },
+  { name: 'Memory Forensics — Volatility', platform: 'CyberDefenders', icon: 'fa-microchip', diff: 'hard', date: 'Oct 2025', color: '#06b6d4', bg: 'rgba(6,182,212,0.08)', border: 'rgba(6,182,212,0.25)' },
+  { name: 'Junior Penetration Tester', platform: 'TryHackMe', icon: 'fa-user-ninja', diff: 'medium', date: 'Sep 2025', color: '#88cc14', bg: 'rgba(136,204,20,0.08)', border: 'rgba(136,204,20,0.25)' }
+];
+
+(function renderLabs(){
+  const grid = document.getElementById('labGrid');
+  if(!grid) return;
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  grid.innerHTML = LABS.map(lab => `
+    <div class="lab-card" style="--platform-color:${lab.color};--platform-bg:${lab.bg};--platform-border:${lab.border}">
+      <div class="lab-icon"><i class="fas ${lab.icon}"></i></div>
+      <div class="lab-body">
+        <div class="lab-title">${escapeHtml(lab.name)}</div>
+        <div class="lab-platform">${escapeHtml(lab.platform)}</div>
+        <div class="lab-foot">
+          <span class="lab-diff ${lab.diff}">${lab.diff}</span>
+          <span class="lab-date">${escapeHtml(lab.date)}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 })();
 </script>
 </body>
