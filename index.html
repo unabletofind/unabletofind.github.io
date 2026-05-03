@@ -1397,7 +1397,7 @@ setTimeout(type, 700);
     if (c.startsWith('cat ')) {
       const f = c.slice(4).trim();
       if (f === 'contact.txt') { print(responses.contact); }
-      else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume...</span>`); window.location.href = 'resume.html'; }
+      else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume...</span>`); window.location.href = 'Resume.html'; }
       else if (f === '.secrets') { print(`<span class="tc-red">Access denied. Nice try though 🔒</span>`); }
       else { print(`<span class="tc-red">cat: ${f}: No such file or directory</span>`); }
       const blank = document.createElement('p'); blank.className = 'lt-line'; blank.innerHTML = '&nbsp;'; body.appendChild(blank);
@@ -1752,7 +1752,7 @@ document.querySelectorAll('a').forEach(link => {
       if (target) {
         document.querySelector(target)?.scrollIntoView({behavior:'smooth'});
       } else if (action === 'resume') {
-        window.location.href = 'resume.html';
+        window.location.href = 'Resume.html';
       }
       menu.classList.remove('open');
     });
