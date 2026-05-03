@@ -1062,7 +1062,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
           <p>Open to SOC analyst roles, incident response collaboration, and speaking opportunities. Reach out via email or LinkedIn — I respond within 24 hours.</p>
         </div>
         <div class="contact-actions">
-          <a href="Resume.html" class="btn-ghost"><i class="fas fa-file-pdf"></i> View Resume</a>
+          <a href="resume.html" class="btn-ghost"><i class="fas fa-file-pdf"></i> View Resume</a>
           <a href="mailto:swethadevi1125@gmail.com" class="btn-solid"><i class="fas fa-paper-plane"></i> Send Message</a>
         </div>
       </div>
@@ -1279,11 +1279,11 @@ setTimeout(type, 700);
   const history = [];
   let histIdx = -1;
 
-  const banner = `<span class="tc-green">  ____  ___   ____  ___ </span>
-<span class="tc-green"> / ___|/ _ \\ / ___|/ _ \\</span>   <span class="tc-yellow">SWETHA DEVI</span>
-<span class="tc-green"> \\___ \\ | | | |   | (_) |</span>  <span class="tc-blue">SOC Analyst Terminal · v2.1</span>
-<span class="tc-green">  ___) | |_| | |___ \\__, |</span>  <span class="tc-purple">github.com/unabletofind</span>
-<span class="tc-green"> |____/ \\___/ \\____|  /_/ </span>
+  const banner = `<span class="tc-green">┌────────────────────────────────────────────────────┐</span>
+<span class="tc-green">│</span>  <span class="tc-yellow">SWETHA DEVI SAI PRIYA BONU</span>                     <span class="tc-green">│</span>
+<span class="tc-green">│</span>  <span class="tc-blue">SOC Analyst · Incident Response · Alert Triage</span> <span class="tc-green">│</span>
+<span class="tc-green">│</span>  <span class="tc-purple">@unabletofind</span> · <span class="tc-gray">Hyderabad, IN</span> · <span class="tc-gray">v2.1</span>          <span class="tc-green">│</span>
+<span class="tc-green">└───────────────────────────────────────────────────────┘</span>
 
 <span class="tc-gray">Type </span><span class="tc-yellow">help</span><span class="tc-gray"> to see available commands.</span>`;
 
@@ -1397,7 +1397,7 @@ setTimeout(type, 700);
     if (c.startsWith('cat ')) {
       const f = c.slice(4).trim();
       if (f === 'contact.txt') { print(responses.contact); }
-      else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume...</span>`); window.location.href = 'Resume.html'; }
+      else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume...</span>`); window.location.href = 'resume.html'; }
       else if (f === '.secrets') { print(`<span class="tc-red">Access denied. Nice try though 🔒</span>`); }
       else { print(`<span class="tc-red">cat: ${f}: No such file or directory</span>`); }
       const blank = document.createElement('p'); blank.className = 'lt-line'; blank.innerHTML = '&nbsp;'; body.appendChild(blank);
@@ -1752,7 +1752,7 @@ document.querySelectorAll('a').forEach(link => {
       if (target) {
         document.querySelector(target)?.scrollIntoView({behavior:'smooth'});
       } else if (action === 'resume') {
-        window.location.href = 'Resume.html';
+        window.location.href = 'resume.html';
       }
       menu.classList.remove('open');
     });
