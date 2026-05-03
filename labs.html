@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Labs & CTFs | Swetha Devi — Hands-On Practice</title>
-<meta name="description" content="Blue team labs, CTF writeups, and hands-on cybersecurity practice by Swetha Devi.">
+<title>CTFs & Labs · Swetha Devi</title>
+<meta name="description" content="Hands-on cybersecurity labs and CTF challenges completed by Swetha Devi.">
 <meta name="theme-color" content="#020b16">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -14,123 +14,91 @@
   --bg:#020b16;--surface:#071324;--surface2:#0c1c30;
   --accent:#00ffe5;--accent2:#3b82f6;--accent3:#a855f7;
   --red:#f43f5e;--amber:#f59e0b;--green:#22c55e;
-  --text:#e8f4ff;--muted:#5a7a9a;
+  --text:#e8f4ff;--muted:#5a7a9a;--faint:#3a5a78;
   --border:rgba(0,255,229,0.08);--border-bright:rgba(0,255,229,0.18);
   --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
-#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);pointer-events:none;z-index:1}
-::-webkit-scrollbar{width:10px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:5px}
-::-webkit-scrollbar-thumb:hover{background:rgba(0,255,229,0.3)}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;min-height:100vh;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at top,rgba(0,255,229,0.04),transparent 50%),radial-gradient(ellipse at bottom right,rgba(168,85,247,0.04),transparent 50%);pointer-events:none;z-index:0}
 
-#scrollProgress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:999;transition:width .1s ease;box-shadow:0 0 10px rgba(0,255,229,0.6)}
+.scroll-prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3));width:0;z-index:1000;transition:width .1s}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(2,11,22,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
-.nav-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-shield{width:40px;height:40px;background:rgba(0,255,229,0.1);border:1px solid rgba(0,255,229,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}
-.logo-name{font-size:15px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
-.logo-tag{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:-1px}
-.nav-links{display:flex;gap:2px;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;transition:.2s}
-.nav-links a:hover{color:var(--accent);background:rgba(0,255,229,0.06)}
-.nav-links a.active{color:var(--accent)}
-.nav-cta{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25);padding:8px 18px;border-radius:8px;font-weight:600;font-size:12px;text-decoration:none;transition:.2s;display:flex;align-items:center;gap:7px;font-family:var(--mono)}
-.nav-cta:hover{background:rgba(0,255,229,0.15)}
+nav{padding:20px 0;border-bottom:1px solid var(--border);background:rgba(2,11,22,0.85);backdrop-filter:blur(18px);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+.logo-shield{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,rgba(0,255,229,0.15),rgba(168,85,247,0.1));border:1px solid rgba(0,255,229,0.25);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:15px}
+.logo-name{font-size:14px;font-weight:600}
+.logo-tag{font-size:9.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.06em}
+.nav-back{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:.2s}
+.nav-back:hover{color:var(--accent)}
 
-.container{max-width:1280px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+.container{max-width:1200px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:2}
 
-.page-header{padding:120px 0 60px;position:relative;z-index:2}
-.page-header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.ph-pretitle{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:12px}
-.ph-title{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:700;letter-spacing:-0.04em;line-height:1.1}
-.ph-title span{-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(90deg,var(--accent),var(--accent2))}
-.ph-sub{font-size:.95rem;color:var(--muted);margin-top:14px;max-width:580px;line-height:1.7}
-.ph-count{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;letter-spacing:.05em}
-.ph-count .count-num{display:block;font-size:3rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1;font-family:var(--mono)}
+.page-head{margin-bottom:32px}
+.page-tag{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;margin-bottom:12px}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:700;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
+h1 span{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.page-intro{font-size:15px;color:var(--muted);max-width:680px;line-height:1.75}
 
-.stats-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;position:relative;z-index:2}
-.mini-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:14px;flex:1;min-width:200px;transition:.2s}
-.mini-stat:hover{border-color:var(--border-bright);transform:translateY(-2px)}
-.mini-stat-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.mini-stat-num{font-family:var(--mono);font-size:1.5rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1}
-.mini-stat-label{font-size:11px;color:var(--muted);margin-top:3px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:32px 0 28px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.stat-num{font-family:var(--mono);font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
 
-.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:32px;position:relative;z-index:2}
-.search-wrap{position:relative;flex:1;min-width:240px}
-.search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px 12px 42px;font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:.2s}
-.search-input::placeholder{color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;align-items:center}
+.search-wrap{flex:1;min-width:220px;position:relative}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 38px 11px 38px;border-radius:10px;font-family:var(--mono);font-size:12px;outline:none;transition:.2s}
 .search-input:focus{border-color:var(--border-bright);background:var(--surface2)}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none}
 .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;cursor:pointer;display:none;background:none;border:none;padding:4px}
-.search-clear.show{display:block}
 .sort-select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:10px;font-family:var(--mono);font-size:12px;cursor:pointer;outline:none;min-width:160px}
-.sort-select:focus{border-color:var(--border-bright)}
 
-.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;position:relative;z-index:2}
-.filter-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 16px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:.2s;letter-spacing:.04em}
-.filter-btn:hover{border-color:rgba(0,255,229,0.2);color:var(--text)}
-.filter-btn.active{background:rgba(0,255,229,0.08);border-color:var(--border-bright);color:var(--accent)}
+.platform-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.platform-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 14px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:.2s;letter-spacing:.04em}
+.platform-btn:hover{color:var(--text);border-color:rgba(0,255,229,0.2)}
+.platform-btn.active{background:rgba(0,255,229,0.1);border-color:rgba(0,255,229,0.35);color:var(--accent)}
 
-/* LAB CARDS */
-.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;position:relative;z-index:2}
-
-.lab-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;transition:.3s;display:flex;flex-direction:column;gap:0;position:relative;overflow:hidden;text-decoration:none;color:inherit}
-.lab-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--platform-color,var(--accent));opacity:0;transition:.3s}
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.lab-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;transition:.25s;display:flex;gap:16px;align-items:flex-start;text-decoration:none;color:inherit;position:relative;overflow:hidden}
+.lab-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--surface2)}
+.lab-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--platform-color,var(--accent));opacity:0;transition:.25s}
 .lab-card:hover::before{opacity:1}
-.lab-card:hover{border-color:var(--border-bright);transform:translateY(-4px);background:var(--surface2);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+.lab-icon{width:48px;height:48px;border-radius:10px;background:var(--platform-bg,rgba(0,255,229,0.08));display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--platform-color,var(--accent));flex-shrink:0;border:1px solid var(--platform-border,rgba(0,255,229,0.18))}
+.lab-body{flex:1;min-width:0}
+.lab-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
+.lab-platform{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.lab-summary{font-size:12.5px;color:var(--muted);line-height:1.6;margin:8px 0 12px}
+.lab-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.lab-tag{font-family:var(--mono);font-size:9.5px;color:var(--accent);background:rgba(0,255,229,0.04);border:1px solid rgba(0,255,229,0.1);padding:2px 7px;border-radius:4px;letter-spacing:.04em}
+.lab-foot{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:10px;flex-wrap:wrap}
+.lab-diff{padding:2px 7px;border-radius:4px;letter-spacing:.04em;font-weight:600;text-transform:uppercase;font-size:9.5px}
+.lab-diff.easy{background:rgba(34,197,94,0.12);color:#4ade80}
+.lab-diff.medium{background:rgba(245,158,11,0.12);color:#fbbf24}
+.lab-diff.hard{background:rgba(244,63,94,0.12);color:#fb7185}
+.lab-diff.insane{background:rgba(168,85,247,0.15);color:#c084fc}
+.lab-date{color:var(--faint);font-size:9.5px}
+.lab-writeup{margin-left:auto;color:var(--accent);text-decoration:none;font-size:10px;cursor:pointer;transition:.2s}
+.lab-writeup:hover{text-decoration:underline}
 
-/* Active / in-progress card */
-.lab-card.active-lab{border-color:rgba(168,85,247,0.3);background:linear-gradient(135deg,rgba(168,85,247,0.04),var(--surface))}
-.lab-card.active-lab::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(168,85,247,0.5),transparent)}
+.empty-state{text-align:center;padding:80px 20px;color:var(--muted);font-family:var(--mono);font-size:13px}
+.empty-state i{font-size:42px;color:rgba(0,255,229,0.18);margin-bottom:18px}
+.empty-state h3{color:var(--text);font-family:var(--font);font-size:18px;margin-bottom:8px;font-weight:500}
+.empty-state p{font-size:12px;color:var(--faint)}
 
-.lab-card-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
-.lab-icon{width:46px;height:46px;border-radius:11px;background:var(--platform-bg,rgba(0,255,229,0.08));border:1px solid var(--platform-border,rgba(0,255,229,0.18));display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--platform-color,var(--accent));flex-shrink:0}
-.lab-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:3px}
-.lab-platform{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-
-.lab-summary{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:16px;flex:1}
-
-.lab-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
-.lab-tag{font-family:var(--mono);font-size:9.5px;color:var(--accent);background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.12);padding:3px 8px;border-radius:4px}
-
-.lab-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border)}
-.lab-diff{font-family:var(--mono);font-size:9.5px;padding:3px 9px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.lab-diff.easy{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.25)}
-.lab-diff.medium{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.25)}
-.lab-diff.hard{background:rgba(244,63,94,0.12);color:#fb7185;border:1px solid rgba(244,63,94,0.25)}
-.lab-diff.insane{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.25)}
-.lab-date{font-family:var(--mono);font-size:10px;color:var(--muted)}
-.lab-status-active{font-family:var(--mono);font-size:9px;color:#c084fc;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);padding:3px 8px;border-radius:4px;display:flex;align-items:center;gap:5px}
-.lab-status-active::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#c084fc;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.lab-link{font-family:var(--mono);font-size:10px;color:var(--accent);display:flex;align-items:center;gap:5px;transition:.2s}
-.lab-card:hover .lab-link{gap:8px}
-
-.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;background:var(--surface);border:1px dashed var(--border);border-radius:16px}
-.empty-state i{font-size:42px;margin-bottom:18px;opacity:.4;display:block;color:var(--accent)}
-.empty-state-title{color:var(--text);font-size:15px;margin-bottom:6px;font-family:var(--font);font-weight:600}
-
-footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);position:relative;z-index:2;margin-top:80px}
-footer span{color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:36px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:60px}
 footer a{color:var(--accent);text-decoration:none}
 footer a:hover{text-decoration:underline}
 
-@media(max-width:768px){
-  .nav-links{display:none}
+@media(max-width:640px){
+  .container{padding:32px 18px 60px}
   .lab-grid{grid-template-columns:1fr}
-  .toolbar{flex-direction:column;align-items:stretch}
-  .sort-select,.search-wrap{width:100%}
 }
 </style>
 </head>
 <body>
-<canvas id="bgCanvas"></canvas>
-<div id="scrollProgress"></div>
+
+<div class="scroll-prog" id="scrollProg"></div>
 
 <nav>
   <div class="nav-inner">
@@ -138,209 +106,158 @@ footer a:hover{text-decoration:underline}
       <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
       <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div>
     </a>
-    <ul class="nav-links">
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#skills">Skills</a></li>
-      <li><a href="detections.html">Detections</a></li>
-      <li><a href="labs.html" class="active">Labs</a></li>
-      <li><a href="research.html">Research</a></li>
-      <li><a href="index.html#connect">Connect</a></li>
-    </ul>
-    <a href="mailto:swethadevi1125@gmail.com" class="nav-cta"><i class="fas fa-terminal"></i> Hire Me</a>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-left"></i> Back to portfolio</a>
   </div>
 </nav>
 
-<div style="padding-top:64px;position:relative;z-index:2">
-  <div class="page-header">
-    <div class="container">
-      <div class="page-header-inner">
-        <div>
-          <div class="ph-pretitle">// Labs · CTFs · Hands-On Practice</div>
-          <h1 class="ph-title">CTFs & <span>Labs</span></h1>
-          <p class="ph-sub">Hands-on practice across blue team and offensive platforms. Each one teaches something I take back to the SOC desk — real telemetry, real techniques, real detections.</p>
-        </div>
-        <div class="ph-count">
-          <span class="count-num" id="visibleCount">0</span>
-          labs
-        </div>
-      </div>
-    </div>
+<main class="container">
+
+  <div class="page-head">
+    <div class="page-tag">// LABS</div>
+    <h1>CTFs & <span>Labs</span></h1>
+    <p class="page-intro">Hands-on practice across blue team and offensive security platforms. Each lab teaches something I take back to the SOC desk — from memory forensics to Active Directory attack chains.</p>
   </div>
 
-  <div class="container">
-    <div class="stats-row">
-      <div class="mini-stat">
-        <div class="mini-stat-icon" style="background:rgba(0,255,229,0.08);color:var(--accent)"><i class="fas fa-flask"></i></div>
-        <div><div class="mini-stat-num" id="statTotal">0</div><div class="mini-stat-label">Total Labs</div></div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-icon" style="background:rgba(168,85,247,0.08);color:#c084fc"><i class="fas fa-spinner"></i></div>
-        <div><div class="mini-stat-num" id="statActive">0</div><div class="mini-stat-label">In Progress</div></div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-icon" style="background:rgba(244,63,94,0.08);color:var(--red)"><i class="fas fa-fire"></i></div>
-        <div><div class="mini-stat-num" id="statHard">0</div><div class="mini-stat-label">Hard / Insane</div></div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-icon" style="background:rgba(34,197,94,0.08);color:var(--green)"><i class="fas fa-check-circle"></i></div>
-        <div><div class="mini-stat-num" id="statDone">0</div><div class="mini-stat-label">Completed</div></div>
-      </div>
-    </div>
-
-    <div class="toolbar">
-      <div class="search-wrap">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" class="search-input" id="searchInput" placeholder="Search by name, platform, tag, or difficulty...">
-        <button class="search-clear" id="searchClear" title="Clear"><i class="fas fa-times"></i></button>
-      </div>
-      <select class="sort-select" id="sortSelect">
-        <option value="newest">Newest first</option>
-        <option value="oldest">Oldest first</option>
-        <option value="active">Active first</option>
-        <option value="difficulty">Difficulty (hard → easy)</option>
-      </select>
-    </div>
-
-    <!-- Platform filters — auto-built -->
-    <div class="filter-bar" id="filterBar">
-      <button class="filter-btn active" data-filter="all">All <span id="cntAll"></span></button>
-      <button class="filter-btn" data-filter="diff:hard">Hard <span id="cntHard"></span></button>
-      <button class="filter-btn" data-filter="diff:medium">Medium <span id="cntMed"></span></button>
-      <button class="filter-btn" data-filter="status:active">In Progress <span id="cntActive"></span></button>
-    </div>
-
-    <div class="lab-grid" id="labGrid"></div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num" id="statTotal">0</div><div class="stat-label">// Total Labs</div></div>
+    <div class="stat-box"><div class="stat-num" id="statPlatforms">0</div><div class="stat-label">// Platforms</div></div>
+    <div class="stat-box"><div class="stat-num" id="statHard">0</div><div class="stat-label">// Hard+</div></div>
+    <div class="stat-box"><div class="stat-num" id="statActive">0</div><div class="stat-label">// In Progress</div></div>
   </div>
-</div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search by name, platform, or tag...">
+      <button class="search-clear" id="searchClear" aria-label="Clear search">×</button>
+    </div>
+    <select class="sort-select" id="sortSelect">
+      <option value="newest">↓ Newest first</option>
+      <option value="oldest">↑ Oldest first</option>
+      <option value="difficulty">⚠ Difficulty (hard → easy)</option>
+      <option value="featured">★ Featured first</option>
+    </select>
+  </div>
+
+  <div class="platform-filters" id="filterBar"></div>
+
+  <div class="lab-grid" id="labGrid"></div>
+
+</main>
 
 <footer>
-  <div class="container">
-    <p>© 2026 <span>Swetha Devi Sai Priya Bonu</span> &nbsp;·&nbsp; <a href="index.html">← Back to Portfolio</a></p>
-  </div>
+  <p>© 2026 <a href="index.html">Swetha Devi Sai Priya Bonu</a> · CTFs &amp; Labs · <a href="https://github.com/unabletofind" target="_blank">GitHub</a></p>
 </footer>
 
 <script src="labs.js"></script>
 <script>
-/* CANVAS */
-const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
-let W,H,nodes=[];
-function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;initNodes()}
-function initNodes(){nodes=[];const n=Math.floor(W*H/22000);for(let i=0;i<n;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.13,r:Math.random()*1.4+.5,pulse:Math.random()*Math.PI*2,c:Math.random()>.55?0:1})}
-resize();window.addEventListener('resize',resize);
-function draw(){ctx.clearRect(0,0,W,H);nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0)n.x=W;if(n.x>W)n.x=0;if(n.y<0)n.y=H;if(n.y>H)n.y=0;n.pulse+=.015;const a=.12+Math.sin(n.pulse)*.08;ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=n.c===0?`rgba(0,255,229,${a})`:`rgba(59,130,246,${a})`;ctx.fill()});for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,255,229,${.04*(1-d/110)})`;ctx.lineWidth=.4;ctx.stroke()}}}requestAnimationFrame(draw)}
-draw();
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('scrollProg').style.width = pct + '%';
+});
 
-window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('scrollProgress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+(function init(){
+  const all = window.LABS || [];
 
-/* STATS */
-(function(){
-  const total  = labs.length;
-  const active = labs.filter(l=>l.status==='active').length;
-  const hard   = labs.filter(l=>l.diff==='hard'||l.diff==='insane').length;
-  const done   = labs.filter(l=>l.status==='done').length;
-  const med    = labs.filter(l=>l.diff==='medium').length;
-  document.getElementById('statTotal').textContent  = total;
-  document.getElementById('statActive').textContent = active;
-  document.getElementById('statHard').textContent   = hard;
-  document.getElementById('statDone').textContent   = done;
-  document.getElementById('cntAll').textContent     = '('+total+')';
-  document.getElementById('cntHard').textContent    = '('+hard+')';
-  document.getElementById('cntMed').textContent     = '('+med+')';
-  document.getElementById('cntActive').textContent  = '('+active+')';
-})();
+  // stats
+  document.getElementById('statTotal').textContent = all.length;
+  const platforms = [...new Set(all.map(l => l.platform))];
+  document.getElementById('statPlatforms').textContent = platforms.length;
+  document.getElementById('statHard').textContent = all.filter(l => l.diff === 'hard' || l.diff === 'insane').length;
+  document.getElementById('statActive').textContent = all.filter(l => l.date === 'In Progress').length;
 
-/* HELPERS */
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-const diffOrder={insane:0,hard:1,medium:2,easy:3};
-function parseDate(str){
-  if(!str||str==='In Progress')return new Date(9999,0,1);
-  const m={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
-  const p=str.toLowerCase().split(' ');
-  return new Date(parseInt(p[1])||2026,(m[p[0]?.slice(0,3)]??0),1);
-}
+  // platform filter buttons
+  const filterBar = document.getElementById('filterBar');
+  const buttons = [{key:'all', label:'All'}].concat(platforms.map(p => ({key:p, label:p})));
+  filterBar.innerHTML = buttons.map(b => {
+    const count = b.key === 'all' ? all.length : all.filter(l => l.platform === b.key).length;
+    return `<button class="platform-btn ${b.key === 'all' ? 'active' : ''}" data-platform="${b.key}">${b.label} (${count})</button>`;
+  }).join('');
 
-/* BUILD GRID */
-function buildGrid(data){
-  const grid=document.getElementById('labGrid');
-  grid.innerHTML='';
-  document.getElementById('visibleCount').textContent=data.length;
-  if(!data.length){
-    grid.innerHTML=`<div class="empty-state"><i class="fas fa-flask"></i><div class="empty-state-title">No labs match your search</div><div>Try a different keyword or clear filters.</div></div>`;
-    return;
+  let currentPlatform = 'all';
+  let currentSort = 'newest';
+
+  function diffRank(d){ return d === 'insane' ? 4 : d === 'hard' ? 3 : d === 'medium' ? 2 : 1; }
+
+  function rerender(){
+    let list = all.slice();
+
+    if(currentPlatform !== 'all') list = list.filter(l => l.platform === currentPlatform);
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if(q){
+      list = list.filter(l =>
+        l.name.toLowerCase().includes(q) ||
+        l.platform.toLowerCase().includes(q) ||
+        (l.summary || '').toLowerCase().includes(q) ||
+        (l.tags || []).some(t => t.toLowerCase().includes(q))
+      );
+    }
+
+    if(currentSort === 'newest') list.sort((a,b) => window.parseLabDate(b.date) - window.parseLabDate(a.date));
+    else if(currentSort === 'oldest') list.sort((a,b) => window.parseLabDate(a.date) - window.parseLabDate(b.date));
+    else if(currentSort === 'difficulty') list.sort((a,b) => diffRank(b.diff) - diffRank(a.diff));
+    else if(currentSort === 'featured') list.sort((a,b) => (b.featured?1:0) - (a.featured?1:0));
+
+    const grid = document.getElementById('labGrid');
+    if(!list.length){
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-flag"></i><h3>No labs match your filter</h3><p>Try clearing the search</p></div>';
+      return;
+    }
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    grid.innerHTML = list.map(lab => {
+      const wrapTag = lab.writeup ? 'a' : 'div';
+      const wrapAttrs = lab.writeup ? `href="${lab.writeup}" target="_blank" rel="noopener"` : '';
+      return `
+        <${wrapTag} class="lab-card" ${wrapAttrs} style="--platform-color:${lab.color};--platform-bg:${lab.bg};--platform-border:${lab.border}">
+          <div class="lab-icon"><i class="fas ${lab.icon}"></i></div>
+          <div class="lab-body">
+            <div class="lab-title">${escapeHtml(lab.name)}</div>
+            <div class="lab-platform">${escapeHtml(lab.platform)}</div>
+            ${lab.summary ? `<div class="lab-summary">${escapeHtml(lab.summary)}</div>` : ''}
+            ${(lab.tags || []).length ? `<div class="lab-tags">${lab.tags.map(t => `<span class="lab-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+            <div class="lab-foot">
+              <span class="lab-diff ${lab.diff}">${lab.diff}</span>
+              <span class="lab-date">${escapeHtml(lab.date)}</span>
+              ${lab.writeup ? `<span class="lab-writeup">writeup →</span>` : ''}
+            </div>
+          </div>
+        </${wrapTag}>
+      `;
+    }).join('');
   }
-  data.forEach(lab=>{
-    const isActive=lab.status==='active';
-    const card=document.createElement(lab.url?'a':'div');
-    card.className='lab-card'+(isActive?' active-lab':'');
-    if(lab.url){card.href=lab.url;}
-    card.style.cssText=`--platform-color:${lab.color};--platform-bg:${lab.bg};--platform-border:${lab.border}`;
-    card.innerHTML=`
-      <div class="lab-card-head">
-        <div class="lab-icon"><i class="fas ${esc(lab.icon)}"></i></div>
-        <div>
-          <div class="lab-title">${esc(lab.name)}</div>
-          <div class="lab-platform">${esc(lab.platform)}</div>
-        </div>
-      </div>
-      <div class="lab-summary">${esc(lab.summary)}</div>
-      <div class="lab-tags">${lab.tags.map(t=>`<span class="lab-tag">${esc(t)}</span>`).join('')}</div>
-      <div class="lab-footer">
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <span class="lab-diff ${esc(lab.diff)}">${esc(lab.diff)}</span>
-          ${isActive?'<span class="lab-status-active">Active</span>':''}
-        </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="lab-date">${esc(lab.date)}</span>
-          ${lab.url?'<span class="lab-link">View <i class="fas fa-arrow-right" style="font-size:9px"></i></span>':''}
-        </div>
-      </div>`;
-    grid.appendChild(card);
+
+  filterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.platform-btn');
+    if(!btn) return;
+    filterBar.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPlatform = btn.dataset.platform;
+    rerender();
   });
-}
-
-/* FILTER + SEARCH + SORT */
-let activeFilter='all', activeSort='newest';
-
-document.getElementById('filterBar').addEventListener('click',e=>{
-  const btn=e.target.closest('.filter-btn');
-  if(!btn)return;
-  activeFilter=btn.dataset.filter;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  applyAll();
-});
-
-const searchInput=document.getElementById('searchInput');
-const searchClear=document.getElementById('searchClear');
-searchInput.addEventListener('input',()=>{
-  searchClear.classList.toggle('show',searchInput.value.length>0);
-  applyAll();
-});
-searchClear.addEventListener('click',()=>{searchInput.value='';searchClear.classList.remove('show');applyAll();});
-document.getElementById('sortSelect').addEventListener('change',e=>{activeSort=e.target.value;applyAll();});
-
-function applyAll(){
-  const q=searchInput.value.toLowerCase().trim();
-  let result=labs.filter(l=>{
-    let filterMatch=true;
-    if(activeFilter==='status:active') filterMatch=l.status==='active';
-    else if(activeFilter.startsWith('diff:')) filterMatch=l.diff===activeFilter.split(':')[1];
-    const searchMatch=!q||
-      l.name.toLowerCase().includes(q)||
-      l.platform.toLowerCase().includes(q)||
-      l.summary.toLowerCase().includes(q)||
-      l.tags.some(t=>t.toLowerCase().includes(q))||
-      l.diff.toLowerCase().includes(q);
-    return filterMatch&&searchMatch;
+  document.getElementById('sortSelect').addEventListener('change', e => {
+    currentSort = e.target.value;
+    rerender();
   });
-  if(activeSort==='newest') result.sort((a,b)=>parseDate(a.date)-parseDate(b.date)||0).reverse();
-  else if(activeSort==='oldest') result.sort((a,b)=>parseDate(a.date)-parseDate(b.date));
-  else if(activeSort==='active') result.sort((a,b)=>(a.status==='active'?-1:1)-(b.status==='active'?-1:1));
-  else if(activeSort==='difficulty') result.sort((a,b)=>(diffOrder[a.diff]??9)-(diffOrder[b.diff]??9));
-  buildGrid(result);
-}
+  const searchInput = document.getElementById('searchInput');
+  const searchClear = document.getElementById('searchClear');
+  searchInput.addEventListener('input', () => {
+    searchClear.style.display = searchInput.value ? 'block' : 'none';
+    rerender();
+  });
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClear.style.display = 'none';
+    rerender();
+  });
 
-buildGrid(labs);
+  rerender();
+})();
 </script>
+
 </body>
 </html>
