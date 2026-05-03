@@ -9,7 +9,7 @@
 
 <!-- Open Graph -->
 <meta property="og:title" content="Swetha Devi | SOC Analyst · Incident Response">
-<meta property="og:description" content="SOC Analyst with 1.5+ year of experience in threat detection, KQL hunting, and incident response. HTB CDSA certified.">
+<meta property="og:description" content="SOC Analyst with 1+ year of experience in threat detection, KQL hunting, and incident response. HTB CDSA certified.">
 <meta property="og:type" content="website">
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1062,7 +1062,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
           <p>Open to SOC analyst roles, incident response collaboration, and speaking opportunities. Reach out via email or LinkedIn — I respond within 24 hours.</p>
         </div>
         <div class="contact-actions">
-          <a href="https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view?usp=sharing" target="_blank" class="btn-ghost"><i class="fas fa-file-pdf"></i> Download Resume</a>
+          <a href="resume.html" class="btn-ghost"><i class="fas fa-file-pdf"></i> View Resume</a>
           <a href="mailto:swethadevi1125@gmail.com" class="btn-solid"><i class="fas fa-paper-plane"></i> Send Message</a>
         </div>
       </div>
@@ -1112,7 +1112,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
     <div class="ai-cmd" data-target="#experience"><i class="fas fa-clock"></i> Experience</div>
     <div class="ai-cmd" data-target="#research"><i class="fas fa-book-open"></i> Research</div>
     <div class="ai-cmd" data-target="#connect"><i class="fas fa-envelope"></i> Contact Me</div>
-    <div class="ai-cmd" data-action="resume"><i class="fas fa-file-pdf"></i> Download Resume</div>
+    <div class="ai-cmd" data-action="resume"><i class="fas fa-file-pdf"></i> View Resume</div>
   </div>
   <div id="aiChatBubble" title="Quick Navigation">
     <i class="fas fa-terminal" style="color:var(--accent)"></i>
@@ -1397,7 +1397,7 @@ setTimeout(type, 700);
     if (c.startsWith('cat ')) {
       const f = c.slice(4).trim();
       if (f === 'contact.txt') { print(responses.contact); }
-      else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume in new tab...</span>`); window.open('https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view','_blank'); }
+      else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume...</span>`); window.location.href = 'resume.html'; }
       else if (f === '.secrets') { print(`<span class="tc-red">Access denied. Nice try though 🔒</span>`); }
       else { print(`<span class="tc-red">cat: ${f}: No such file or directory</span>`); }
       const blank = document.createElement('p'); blank.className = 'lt-line'; blank.innerHTML = '&nbsp;'; body.appendChild(blank);
@@ -1752,7 +1752,7 @@ document.querySelectorAll('a').forEach(link => {
       if (target) {
         document.querySelector(target)?.scrollIntoView({behavior:'smooth'});
       } else if (action === 'resume') {
-        window.open('https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view','_blank');
+        window.location.href = 'resume.html';
       }
       menu.classList.remove('open');
     });
