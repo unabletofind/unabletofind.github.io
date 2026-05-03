@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detection Rules | Swetha Devi — KQL · Sigma · YARA</title>
+<meta name="description" content="KQL hunts, Sigma rules, and YARA signatures by Swetha Devi. MITRE ATT&CK mapped, severity tagged, copy-paste ready.">
+<meta name="theme-color" content="#020b16">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020b16;--surface:#071324;--surface2:#0c1c30;
+  --accent:#00ffe5;--accent2:#3b82f6;--accent3:#a855f7;
+  --red:#f43f5e;--amber:#f59e0b;--green:#22c55e;
+  --text:#e8f4ff;--muted:#5a7a9a;
+  --border:rgba(0,255,229,0.08);--border-bright:rgba(0,255,229,0.18);
+  --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);pointer-events:none;z-index:1}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,255,229,0.3)}
+
+#scrollProgress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));z-index:999;transition:width .1s ease;box-shadow:0 0 10px rgba(0,255,229,0.6)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(2,11,22,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-shield{width:40px;height:40px;background:rgba(0,255,229,0.1);border:1px solid rgba(0,255,229,0.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}
+.logo-name{font-size:15px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
+.logo-tag{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:-1px}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;transition:.2s}
+.nav-links a:hover{color:var(--accent);background:rgba(0,255,229,0.06)}
+.nav-links a.active{color:var(--accent)}
+.nav-cta{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25);padding:8px 18px;border-radius:8px;font-weight:600;font-size:12px;text-decoration:none;transition:.2s;display:flex;align-items:center;gap:7px;font-family:var(--mono)}
+.nav-cta:hover{background:rgba(0,255,229,0.15)}
+
+.container{max-width:1280px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+.page-header{padding:120px 0 60px;position:relative;z-index:2}
+.page-header-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ph-pretitle{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.18em;margin-bottom:12px}
+.ph-title{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:700;letter-spacing:-0.04em;line-height:1.1}
+.ph-title span{-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(90deg,var(--accent),var(--accent2))}
+.ph-sub{font-size:.95rem;color:var(--muted);margin-top:14px;max-width:580px;line-height:1.7}
+.ph-count{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right;letter-spacing:.05em}
+.ph-count .count-num{display:block;font-size:3rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1;font-family:var(--mono)}
+
+.stats-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px;position:relative;z-index:2}
+.mini-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 22px;display:flex;align-items:center;gap:14px;flex:1;min-width:200px;transition:.2s}
+.mini-stat:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.mini-stat-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.mini-stat-num{font-family:var(--mono);font-size:1.5rem;font-weight:700;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(135deg,var(--accent),var(--accent2));line-height:1}
+.mini-stat-label{font-size:11px;color:var(--muted);margin-top:3px}
+
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:32px;position:relative;z-index:2}
+.search-wrap{position:relative;flex:1;min-width:240px}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px 12px 42px;font-family:var(--mono);font-size:13px;color:var(--text);outline:none;transition:.2s}
+.search-input::placeholder{color:var(--muted)}
+.search-input:focus{border-color:var(--border-bright);background:var(--surface2)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;cursor:pointer;display:none;background:none;border:none;padding:4px}
+.search-clear.show{display:block}
+.sort-select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 16px;border-radius:10px;font-family:var(--mono);font-size:12px;cursor:pointer;outline:none;min-width:160px}
+.sort-select:focus{border-color:var(--border-bright)}
+
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;position:relative;z-index:2}
+.filter-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 16px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:.2s;letter-spacing:.04em}
+.filter-btn:hover{border-color:rgba(0,255,229,0.2);color:var(--text)}
+.filter-btn.active{background:rgba(0,255,229,0.08);border-color:var(--border-bright);color:var(--accent)}
+
+/* DETECTION CARDS */
+.det-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px;position:relative;z-index:2}
+.det-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px;transition:.3s;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.det-card:hover{border-color:var(--border-bright);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,255,229,0.06)}
+.det-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:.3s;transform:scaleX(0);transform-origin:left}
+.det-card:hover::before{opacity:1;transform:scaleX(1)}
+.det-card[data-platform="kql"]::before{background:linear-gradient(90deg,#4ab6ff,#3b82f6)}
+.det-card[data-platform="sigma"]::before{background:linear-gradient(90deg,#c084fc,#a855f7)}
+.det-card[data-platform="yara"]::before{background:linear-gradient(90deg,#fbbf24,#f59e0b)}
+
+.det-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.det-card-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.4}
+.det-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:3px 9px;border-radius:4px;text-transform:uppercase;flex-shrink:0;font-weight:600}
+.det-platform.kql{background:rgba(0,120,212,0.15);color:#4ab6ff;border:1px solid rgba(0,120,212,0.3)}
+.det-platform.sigma{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
+.det-platform.yara{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+
+.det-desc{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:14px}
+.det-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.det-tag{font-family:var(--mono);font-size:9.5px;color:var(--accent);background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.12);padding:3px 7px;border-radius:4px}
+.det-sev{font-family:var(--mono);font-size:9.5px;padding:3px 7px;border-radius:4px;font-weight:600}
+.det-sev.high{background:rgba(244,63,94,0.12);color:#fb7185;border:1px solid rgba(244,63,94,0.3)}
+.det-sev.medium{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.det-sev.low{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}
+
+.det-code-wrap{position:relative;margin-bottom:14px;flex:1}
+.det-code{background:#020a14;border:1px solid rgba(0,255,229,0.08);border-radius:10px;padding:14px;font-family:var(--mono);font-size:11px;color:#a8d8e8;line-height:1.6;overflow-x:auto;white-space:pre;max-height:160px;overflow-y:auto}
+.det-code::-webkit-scrollbar{width:4px;height:4px}
+.det-code::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.2);border-radius:2px}
+
+.det-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--border)}
+.det-mitre{color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.04em}
+.det-date{color:var(--muted);font-family:var(--mono);font-size:10px}
+.det-copy{background:rgba(0,255,229,0.06);color:var(--accent);border:1px solid rgba(0,255,229,0.15);padding:6px 14px;border-radius:7px;font-family:var(--mono);font-size:10px;cursor:pointer;transition:.2s;font-weight:600;display:flex;align-items:center;gap:6px}
+.det-copy:hover{background:rgba(0,255,229,0.12);border-color:rgba(0,255,229,0.35)}
+.det-copy.copied{background:rgba(34,197,94,0.12);color:#4ade80;border-color:rgba(34,197,94,0.3)}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--muted);font-family:var(--mono);font-size:13px;background:var(--surface);border:1px dashed var(--border);border-radius:16px}
+.empty-state i{font-size:42px;margin-bottom:18px;opacity:.4;display:block;color:var(--accent)}
+.empty-state-title{color:var(--text);font-size:15px;margin-bottom:6px;font-family:var(--font);font-weight:600}
+
+footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);position:relative;z-index:2;margin-top:80px}
+footer span{color:var(--accent)}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .det-grid{grid-template-columns:1fr}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .sort-select,.search-wrap{width:100%}
+}
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div id="scrollProgress"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
+      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#detections" class="active">Detections</a></li>
+      <li><a href="labs.html">Labs</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="index.html#connect">Connect</a></li>
+    </ul>
+    <a href="mailto:swethadevi1125@gmail.com" class="nav-cta"><i class="fas fa-terminal"></i> Hire Me</a>
+  </div>
+</nav>
+
+<div style="padding-top:64px;position:relative;z-index:2">
+  <div class="page-header">
+    <div class="container">
+      <div class="page-header-inner">
+        <div>
+          <div class="ph-pretitle">// Detection Engineering · KQL · Sigma · YARA</div>
+          <h1 class="ph-title">Detection <span>Rules</span></h1>
+          <p class="ph-sub">KQL hunts, Sigma rules, and YARA signatures I've written or adapted while triaging real alerts. MITRE ATT&CK mapped, severity tagged, copy-paste ready.</p>
+        </div>
+        <div class="ph-count">
+          <span class="count-num" id="visibleCount">0</span>
+          rules
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-row">
+      <div class="mini-stat">
+        <div class="mini-stat-icon" style="background:rgba(0,120,212,0.08);color:#4ab6ff"><i class="fas fa-database"></i></div>
+        <div><div class="mini-stat-num" id="statKql">0</div><div class="mini-stat-label">KQL · Sentinel</div></div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-icon" style="background:rgba(168,85,247,0.08);color:#c084fc"><i class="fas fa-code"></i></div>
+        <div><div class="mini-stat-num" id="statSigma">0</div><div class="mini-stat-label">Sigma Rules</div></div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-icon" style="background:rgba(245,158,11,0.08);color:var(--amber)"><i class="fas fa-bug"></i></div>
+        <div><div class="mini-stat-num" id="statYara">0</div><div class="mini-stat-label">YARA Signatures</div></div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-icon" style="background:rgba(244,63,94,0.08);color:var(--red)"><i class="fas fa-crosshairs"></i></div>
+        <div><div class="mini-stat-num" id="statMitre">0</div><div class="mini-stat-label">MITRE Techniques</div></div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search by title, tag, MITRE ID, or platform...">
+        <button class="search-clear" id="searchClear" title="Clear"><i class="fas fa-times"></i></button>
+      </div>
+      <select class="sort-select" id="sortSelect">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="severity">Severity (high → low)</option>
+      </select>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-platform="all">All <span id="cntAll"></span></button>
+      <button class="filter-btn" data-platform="kql">KQL · Sentinel <span id="cntKql"></span></button>
+      <button class="filter-btn" data-platform="sigma">Sigma <span id="cntSigma"></span></button>
+      <button class="filter-btn" data-platform="yara">YARA <span id="cntYara"></span></button>
+    </div>
+
+    <div class="det-grid" id="detGrid"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p>© 2026 <span>Swetha Devi Sai Priya Bonu</span> &nbsp;·&nbsp; <a href="index.html">← Back to Portfolio</a> &nbsp;·&nbsp; <a href="https://github.com/unabletofind" target="_blank"><i class="fab fa-github"></i> GitHub</a></p>
+  </div>
+</footer>
+
+<script src="detections.js"></script>
+<script>
+/* CANVAS */
+const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
+let W,H,nodes=[];
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;initNodes()}
+function initNodes(){nodes=[];const n=Math.floor(W*H/22000);for(let i=0;i<n;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.13,r:Math.random()*1.4+.5,pulse:Math.random()*Math.PI*2,c:Math.random()>.55?0:1})}
+resize();window.addEventListener('resize',resize);
+function draw(){ctx.clearRect(0,0,W,H);nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0)n.x=W;if(n.x>W)n.x=0;if(n.y<0)n.y=H;if(n.y>H)n.y=0;n.pulse+=.015;const a=.12+Math.sin(n.pulse)*.08;ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=n.c===0?`rgba(0,255,229,${a})`:`rgba(59,130,246,${a})`;ctx.fill()});for(let i=0;i<nodes.length;i++){for(let j=i+1;j<nodes.length;j++){const a=nodes[i],b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,255,229,${.04*(1-d/110)})`;ctx.lineWidth=.4;ctx.stroke()}}}requestAnimationFrame(draw)}
+draw();
+
+window.addEventListener('scroll',()=>{const h=document.documentElement;document.getElementById('scrollProgress').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'},{passive:true});
+
+/* STATS */
+(function(){
+  const kql   = detections.filter(d=>d.platform==='kql').length;
+  const sigma = detections.filter(d=>d.platform==='sigma').length;
+  const yara  = detections.filter(d=>d.platform==='yara').length;
+  const mitre = new Set(detections.flatMap(d=>d.mitre)).size;
+  document.getElementById('statKql').textContent   = kql;
+  document.getElementById('statSigma').textContent = sigma;
+  document.getElementById('statYara').textContent  = yara;
+  document.getElementById('statMitre').textContent = mitre + '+';
+  document.getElementById('cntAll').textContent    = '(' + detections.length + ')';
+  document.getElementById('cntKql').textContent    = '(' + kql + ')';
+  document.getElementById('cntSigma').textContent  = '(' + sigma + ')';
+  document.getElementById('cntYara').textContent   = '(' + yara + ')';
+})();
+
+/* HELPERS */
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const sevOrder = {high:0,medium:1,low:2};
+function parseDate(str){
+  const m={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+  const p=str.toLowerCase().split(' ');
+  return new Date(parseInt(p[1])||2026,(m[p[0]?.slice(0,3)]??0),1);
+}
+
+/* BUILD GRID */
+function buildGrid(data){
+  const grid=document.getElementById('detGrid');
+  grid.innerHTML='';
+  document.getElementById('visibleCount').textContent=data.length;
+  if(!data.length){
+    grid.innerHTML=`<div class="empty-state"><i class="fas fa-shield-halved"></i><div class="empty-state-title">No rules match your search</div><div>Try a different keyword or clear filters.</div></div>`;
+    return;
+  }
+  data.forEach(r=>{
+    const card=document.createElement('div');
+    card.className='det-card';
+    card.dataset.platform=r.platform;
+    card.innerHTML=`
+      <div class="det-card-head">
+        <div class="det-card-title">${esc(r.title)}</div>
+        <div class="det-platform ${r.platform}">${r.platform==='kql'?'KQL':r.platform==='sigma'?'Sigma':'YARA'}</div>
+      </div>
+      <div class="det-desc">${esc(r.desc)}</div>
+      <div class="det-meta">
+        <span class="det-sev ${r.severity}">${r.severity.toUpperCase()}</span>
+        ${r.tags.map(t=>`<span class="det-tag">${esc(t)}</span>`).join('')}
+      </div>
+      <div class="det-code-wrap">
+        <pre class="det-code"><code>${esc(r.code)}</code></pre>
+      </div>
+      <div class="det-footer">
+        <div>
+          <div class="det-mitre">MITRE: ${r.mitre.join(' · ')}</div>
+          <div class="det-date">${r.date}</div>
+        </div>
+        <button class="det-copy" data-code="${esc(r.code)}"><i class="fas fa-copy"></i> Copy</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.det-copy').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const code=btn.dataset.code.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+      navigator.clipboard.writeText(code).then(()=>{
+        btn.classList.add('copied');btn.innerHTML='<i class="fas fa-check"></i> Copied';
+        setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="fas fa-copy"></i> Copy';},1800);
+      });
+    });
+  });
+}
+
+/* FILTER + SEARCH + SORT */
+let activePlatform='all', activeSort='newest';
+
+document.getElementById('filterBar').addEventListener('click',e=>{
+  const btn=e.target.closest('.filter-btn');
+  if(!btn)return;
+  activePlatform=btn.dataset.platform;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyAll();
+});
+
+const searchInput=document.getElementById('searchInput');
+const searchClear=document.getElementById('searchClear');
+searchInput.addEventListener('input',()=>{
+  searchClear.classList.toggle('show',searchInput.value.length>0);
+  applyAll();
+});
+searchClear.addEventListener('click',()=>{searchInput.value='';searchClear.classList.remove('show');applyAll();});
+document.getElementById('sortSelect').addEventListener('change',e=>{activeSort=e.target.value;applyAll();});
+
+function applyAll(){
+  const q=searchInput.value.toLowerCase().trim();
+  let result=detections.filter(r=>{
+    const platMatch=activePlatform==='all'||r.platform===activePlatform;
+    const searchMatch=!q||
+      r.title.toLowerCase().includes(q)||
+      r.desc.toLowerCase().includes(q)||
+      r.tags.some(t=>t.toLowerCase().includes(q))||
+      r.mitre.some(m=>m.toLowerCase().includes(q))||
+      r.platform.toLowerCase().includes(q);
+    return platMatch&&searchMatch;
+  });
+  if(activeSort==='newest') result.sort((a,b)=>parseDate(b.date)-parseDate(a.date));
+  else if(activeSort==='oldest') result.sort((a,b)=>parseDate(a.date)-parseDate(b.date));
+  else if(activeSort==='severity') result.sort((a,b)=>(sevOrder[a.severity]??9)-(sevOrder[b.severity]??9));
+  buildGrid(result);
+}
+
+buildGrid(detections);
+</script>
+</body>
+</html>
