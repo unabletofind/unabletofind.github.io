@@ -66,6 +66,7 @@ h1 span{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-
 .det-card-title{font-size:15px;font-weight:600;color:var(--text);line-height:1.35}
 .det-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:3px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0;font-weight:600}
 .det-platform.kql{background:rgba(0,120,212,0.15);color:#4ab6ff;border:1px solid rgba(0,120,212,0.3)}
+.det-platform.spl{background:rgba(101,166,55,0.15);color:#8ec74e;border:1px solid rgba(101,166,55,0.35)}
 .det-platform.sigma{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
 .det-platform.yara{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
 .det-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px;min-height:48px}
@@ -107,7 +108,7 @@ footer a:hover{text-decoration:underline}
   <div class="nav-inner">
     <a href="index.html" class="logo">
       <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
-      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div>
+      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Incident Response</div></div>
     </a>
     <a href="index.html" class="nav-back"><i class="fas fa-arrow-left"></i> Back to portfolio</a>
   </div>
@@ -124,6 +125,7 @@ footer a:hover{text-decoration:underline}
   <div class="stats-row">
     <div class="stat-box"><div class="stat-num" id="statTotal">0</div><div class="stat-label">// Total Rules</div></div>
     <div class="stat-box"><div class="stat-num" id="statKql">0</div><div class="stat-label">// KQL Queries</div></div>
+    <div class="stat-box"><div class="stat-num" id="statSpl">0</div><div class="stat-label">// SPL Searches</div></div>
     <div class="stat-box"><div class="stat-num" id="statSigma">0</div><div class="stat-label">// Sigma Rules</div></div>
     <div class="stat-box"><div class="stat-num" id="statYara">0</div><div class="stat-label">// YARA Rules</div></div>
     <div class="stat-box"><div class="stat-num" id="statMitre">0</div><div class="stat-label">// MITRE TTPs</div></div>
@@ -168,6 +170,7 @@ window.addEventListener('scroll', () => {
   // stats
   document.getElementById('statTotal').textContent = all.length;
   document.getElementById('statKql').textContent = all.filter(r => r.platform === 'kql').length;
+  document.getElementById('statSpl').textContent = all.filter(r => r.platform === 'spl').length;
   document.getElementById('statSigma').textContent = all.filter(r => r.platform === 'sigma').length;
   document.getElementById('statYara').textContent = all.filter(r => r.platform === 'yara').length;
   const mitreSet = new Set();
@@ -178,6 +181,7 @@ window.addEventListener('scroll', () => {
   const platforms = [
     { key: 'all', label: 'All' },
     { key: 'kql', label: 'KQL · Sentinel' },
+    { key: 'spl', label: 'SPL · Splunk' },
     { key: 'sigma', label: 'Sigma' },
     { key: 'yara', label: 'YARA' }
   ];
@@ -227,7 +231,7 @@ window.addEventListener('scroll', () => {
       <div class="det-card">
         <div class="det-card-head">
           <div class="det-card-title">${escapeHtml(r.title)}</div>
-          <div class="det-platform ${r.platform}">${r.platform === 'kql' ? 'KQL' : r.platform === 'sigma' ? 'Sigma' : 'YARA'}</div>
+          <div class="det-platform ${r.platform}">${({kql:'KQL',spl:'SPL',sigma:'Sigma',yara:'YARA'})[r.platform] || r.platform.toUpperCase()}</div>
         </div>
         <div class="det-desc">${escapeHtml(r.desc)}</div>
         <div class="det-meta">
