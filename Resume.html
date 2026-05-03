@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume · Swetha Devi Sai Priya Bonu</title>
+<meta name="description" content="Resume of Swetha Devi Sai Priya Bonu — SOC Analyst specializing in incident response and alert triage.">
+<meta name="theme-color" content="#020b16">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020b16;--surface:#071324;--surface2:#0c1c30;
+  --accent:#00ffe5;--accent2:#3b82f6;--accent3:#a855f7;
+  --red:#f43f5e;--amber:#f59e0b;--green:#22c55e;
+  --text:#e8f4ff;--muted:#5a7a9a;--faint:#3a5a78;
+  --border:rgba(0,255,229,0.08);--border-bright:rgba(0,255,229,0.18);
+  --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;position:relative}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at top,rgba(0,255,229,0.04),transparent 50%);pointer-events:none;z-index:0}
+
+nav{padding:20px 0;border-bottom:1px solid var(--border);background:rgba(2,11,22,0.85);backdrop-filter:blur(18px);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+.logo-shield{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,rgba(0,255,229,0.15),rgba(168,85,247,0.1));border:1px solid rgba(0,255,229,0.25);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:15px}
+.logo-name{font-size:14px;font-weight:600}
+.logo-tag{font-size:9.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.06em}
+.nav-back{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:.2s}
+.nav-back:hover{color:var(--accent)}
+
+.container{max-width:1100px;margin:0 auto;padding:36px 24px 60px;position:relative;z-index:2}
+
+.head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:24px;flex-wrap:wrap}
+.head-left{flex:1;min-width:220px}
+.head-tag{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;margin-bottom:8px}
+h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+h1 span{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.head-sub{font-size:13px;color:var(--muted);font-family:var(--mono);letter-spacing:.04em}
+
+.btn-group{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:8px;font-family:var(--mono);font-size:11.5px;text-decoration:none;transition:.25s;letter-spacing:.04em;cursor:pointer;border:none}
+.btn-primary{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25)}
+.btn-primary:hover{background:rgba(0,255,229,0.15);border-color:rgba(0,255,229,0.5)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border-bright)}
+
+.pdf-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.4);position:relative}
+.pdf-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pdf-toolbar .file-info{display:flex;align-items:center;gap:8px}
+.pdf-toolbar .file-info i{color:var(--red)}
+.pdf-toolbar .file-info .name{color:var(--text)}
+.pdf-toolbar .badge{background:rgba(34,197,94,0.1);color:#4ade80;border:1px solid rgba(34,197,94,0.25);padding:3px 9px;border-radius:100px;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+
+.pdf-frame{width:100%;height:78vh;min-height:580px;border:none;background:#1f2937;display:block}
+
+.fallback{padding:60px 20px;text-align:center;color:var(--muted)}
+.fallback i{font-size:48px;color:rgba(0,255,229,0.2);margin-bottom:18px}
+.fallback h3{font-family:var(--font);color:var(--text);font-size:18px;margin-bottom:10px;font-weight:500}
+.fallback p{font-size:13px;max-width:420px;margin:0 auto 18px}
+
+.callout{margin-top:28px;background:linear-gradient(135deg,rgba(168,85,247,0.05),rgba(0,255,229,0.03));border:1px solid rgba(168,85,247,0.15);border-radius:12px;padding:22px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.callout-icon{width:46px;height:46px;border-radius:10px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);display:flex;align-items:center;justify-content:center;color:#c084fc;font-size:18px;flex-shrink:0}
+.callout-body{flex:1;min-width:220px}
+.callout-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.callout-text{font-size:12.5px;color:var(--muted);line-height:1.6}
+.callout-text a{color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(0,255,229,0.3)}
+.callout-text a:hover{border-bottom-style:solid}
+
+footer{border-top:1px solid var(--border);padding:32px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:60px}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media(max-width:640px){
+  .container{padding:28px 16px 50px}
+  .pdf-frame{height:65vh;min-height:480px}
+  .head-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
+      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Incident Response</div></div>
+    </a>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-left"></i> Back to portfolio</a>
+  </div>
+</nav>
+
+<main class="container">
+
+  <div class="head-row">
+    <div class="head-left">
+      <div class="head-tag">// RESUME</div>
+      <h1>Swetha Devi <span>Sai Priya Bonu</span></h1>
+      <p class="head-sub">SOC Analyst · Incident Response · Hyderabad, IN</p>
+    </div>
+    <div class="btn-group">
+      <a href="https://drive.google.com/uc?export=download&id=177ygV8M8qZZ216KSVevIao0-l33AN7km" class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</a>
+      <a href="https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view" target="_blank" rel="noopener" class="btn btn-ghost"><i class="fas fa-arrow-up-right-from-square"></i> Open in Drive</a>
+    </div>
+  </div>
+
+  <div class="pdf-wrap">
+    <div class="pdf-toolbar">
+      <div class="file-info">
+        <i class="fas fa-file-pdf"></i>
+        <span class="name">Swetha_Devi_Resume.pdf</span>
+      </div>
+      <span class="badge"><i class="fas fa-circle" style="font-size:6px;margin-right:4px"></i> Live</span>
+    </div>
+    <iframe
+      class="pdf-frame"
+      src="https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/preview"
+      title="Swetha Devi Resume"
+      allow="autoplay">
+    </iframe>
+  </div>
+
+  <div class="callout">
+    <div class="callout-icon"><i class="fas fa-handshake"></i></div>
+    <div class="callout-body">
+      <div class="callout-title">Open to opportunities</div>
+      <div class="callout-text">Looking for SOC Analyst, Tier 1/Tier 2, or Incident Response roles. Reach out via <a href="mailto:swethadevi1125@gmail.com">email</a> or <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" rel="noopener">LinkedIn</a> — I respond within 24 hours.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>© 2026 <a href="index.html">Swetha Devi Sai Priya Bonu</a> · <a href="mailto:swethadevi1125@gmail.com">swethadevi1125@gmail.com</a></p>
+</footer>
+
+</body>
+</html>
