@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Swetha Devi | SOC Analyst · Threat Hunter · Detection Engineer</title>
-<meta name="description" content="Swetha Devi — SOC Analyst & Threat Hunter. Microsoft Sentinel, MDE, KQL. HTB CDSA certified. Threat research, attack chains, detection rules, IR playbooks.">
+<title>Swetha Devi | SOC Analyst | Microsoft Security Stack</title>
+<meta name="description" content="Swetha Devi — SOC Analyst. Microsoft Sentinel, MDE, KQL. HTB CDSA certified. Threat research, attack chains, detection rules, IR playbooks.">
 <meta name="theme-color" content="#020b16">
-<meta property="og:title" content="Swetha Devi | SOC Analyst · Threat Hunter">
-<meta property="og:description" content="SOC Analyst with 1+ year of experience in threat detection, KQL hunting, and incident response. HTB CDSA certified.">
+<meta property="og:title" content="Swetha Devi | SOC Analyst">
+<meta property="og:description" content="SOC Analyst with 1+ year of experience in alert triage and response. HTB CDSA certified.">
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -154,13 +154,11 @@ section{padding:90px 0}
 .term-bar{background:#000810;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.04)}
 .term-dot{width:12px;height:12px;border-radius:50%}
 .term-path{margin-left:auto;font-size:11px;color:var(--muted)}
-/* FIX: pre-wrap so \n in template literals renders as newlines */
 .tc-green{color:var(--accent)}.tc-blue{color:var(--accent2)}.tc-yellow{color:var(--amber)}.tc-gray{color:var(--muted)}.tc-white{color:#fff}.tc-dim{color:#3a5a6a}.tc-red{color:var(--red)}.tc-amber{color:var(--amber)}.tc-purple{color:var(--accent3)}
 #liveTerm{background:#000e1a;border:1px solid rgba(0,255,229,0.2);border-radius:16px;overflow:hidden;font-family:var(--mono)}
 #liveTermBody{padding:20px 24px;min-height:280px;max-height:440px;overflow-y:auto;font-size:12px;line-height:1.9;scrollbar-width:thin;scrollbar-color:rgba(0,255,229,0.15) transparent}
 #liveTermBody::-webkit-scrollbar{width:4px}
 #liveTermBody::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:2px}
-/* KEY FIX: white-space pre-wrap so newlines in HTML strings render properly */
 .lt-line{margin:0;white-space:pre-wrap;font-family:var(--mono)}
 .lt-input-row{display:flex;align-items:center;gap:6px;padding:10px 24px;border-top:1px solid rgba(0,255,229,0.06)}
 .lt-prompt{color:var(--accent);font-family:var(--mono);font-size:12px;white-space:nowrap}
@@ -374,7 +372,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 .footer-bottom{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
 .footer-bottom span{color:var(--accent)}
 
-/* REVEAL */
+/* REVEAL — fixed gap: threshold lowered to 0.05 in JS */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:none}
 
@@ -445,13 +443,13 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   <div class="nav-inner">
     <a href="index.html" class="logo">
       <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
-      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div>
+      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Incident Response</div></div>
     </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#detections">Detections</a></li>
+      <li><a href="#detections">Patterns</a></li>
       <li><a href="#labs">Labs</a></li>
       <li><a href="#research">Research</a></li>
       <li><a href="now.html">Now</a></li>
@@ -472,13 +470,13 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
     <div class="hero-grid">
       <div class="hero-content">
         <div class="status-bar"><span class="status-dot"></span> Open to Opportunities · Hyderabad, India</div>
-        <div class="hero-pretitle">// SOC Analyst & Threat Hunter</div>
+        <div class="hero-pretitle">// SOC Analyst</div>
         <h1 class="hero-title"><span class="line1">Swetha Devi</span><span class="line2">Sai Priya Bonu</span></h1>
         <div class="typewriter-wrap"><span class="typewriter-prefix">$ role —&gt;&nbsp;</span><span id="tw-text"></span><span class="cursor"></span></div>
         <div class="tw2-wrap"><span class="tw2-prefix">$ tool —&gt;&nbsp;</span><span id="tw2-text"></span><span class="cursor2"></span></div>
-        <p class="hero-bio">SOC Analyst with <strong>1+ year</strong> of experience in threat detection, alert triage, and incident investigation across enterprise environments. Hands-on with the <strong>Microsoft Security Stack</strong> — MDE, Sentinel, Defender for O365, Entra ID, MDCA. <strong>HTB CDSA</strong> certified. MITRE ATT&CK-aligned across identity, endpoint, and email vectors.</p>
+        <p class="hero-bio">SOC Analyst with <strong>1+ year</strong> of experience in alert triage, incident investigation, and incident response across enterprise environments. Hands-on with the <strong>Microsoft Security Stack</strong> — MDE, Sentinel, Defender for O365, Entra ID, MDCA. <strong>HTB CDSA</strong> certified. MITRE ATT&CK-aligned across identity, endpoint, and email vectors.</p>
         <div class="badge-row">
-          <span class="badge">MITRE ATT&CK</span><span class="badge">Microsoft Sentinel</span><span class="badge">MDE / Defender XDR</span><span class="badge">KQL</span><span class="badge">Incident Response</span><span class="badge">Threat Hunting</span><span class="badge">Python / Bash</span><span class="badge cert">★ HTB CDSA</span><span class="badge cert">★ CAP</span>
+          <span class="badge">MITRE ATT&CK</span><span class="badge">Microsoft Sentinel</span><span class="badge">MDE / Defender XDR</span><span class="badge">Email Security</span><span class="badge">Incident Response</span><span class="badge">Python / Bash</span><span class="badge cert">★ HTB CDSA</span><span class="badge cert">★ CAP</span>
         </div>
         <div class="hero-actions">
           <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="btn-ghost"><i class="fab fa-linkedin"></i> LinkedIn</a>
@@ -494,7 +492,6 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         </div>
       </div>
 
-      <!-- IDENTITY CARD — FIXED: Now shows malware analysis, not BTL2/AiTM -->
       <div class="identity-card reveal">
         <div class="id-card-bar"><span class="dot-r"></span><span>OPERATOR PROFILE</span><span style="margin-left:auto;color:var(--accent)">v2.1</span></div>
         <div class="id-avatar">SD</div>
@@ -502,7 +499,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="id-handle">@unabletofind</div>
         <div class="id-divider"></div>
         <div class="id-row"><span class="id-row-key">ROLE</span><span class="id-row-val">SOC Analyst</span></div>
-        <div class="id-row"><span class="id-row-key">FOCUS</span><span class="id-row-val accent">Threat Intel · Malware RE</span></div>
+        <div class="id-row"><span class="id-row-key">FOCUS</span><span class="id-row-val accent">Alert Triage · Incident Response · Malware RE</span></div>
         <div class="id-row"><span class="id-row-key">LOC</span><span class="id-row-val">Hyderabad, IN</span></div>
         <div class="id-row"><span class="id-row-key">CLEARANCE</span><span class="id-row-val accent">CDSA · CAP</span></div>
         <div class="id-row"><span class="id-row-key">STATUS</span><span class="id-row-val green">⬤ Available</span></div>
@@ -665,11 +662,10 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </section>
 
-<!-- DETECTION RULES — FIXED: section heading above strip, strip above heading -->
+<!-- DETECTION PATTERNS -->
 <section id="detections" style="padding-top:20px">
   <div class="container">
 
-    <!-- Currently Learning strip — FIXED: now has its own heading context -->
     <div class="now-strip reveal">
       <div class="now-head"><span class="now-pulse"></span><span class="now-label">// Currently Learning</span></div>
       <div class="now-strip-title">Malware Analysis · TCM Security</div>
@@ -680,13 +676,12 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
       </div>
     </div>
 
-    <!-- Detection Rules section heading — FIXED: now appears after strip, not missing -->
     <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">// 06 — Detections</div><h2 class="sec-title">Detection Rules</h2></div>
+      <div class="sec-meta"><div class="sec-tag">// 06 — Patterns</div><h2 class="sec-title">Detection Patterns Studied</h2></div>
       <div class="sec-line"></div>
     </div>
 
-    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">KQL hunts, Sigma rules, and YARA signatures I've written or adapted while triaging real alerts. Mapped to MITRE, severity-tagged, copy-paste ready.</p>
+    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">KQL hunts, Sigma rules, and YARA signatures I'm actively learning and practicing while triaging real alerts. Mapped to MITRE, severity-tagged, copy-paste ready.</p>
 
     <div class="det-toolbar reveal">
       <button class="det-filter active" data-platform="all">All</button>
@@ -819,14 +814,14 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#" class="logo"><div class="logo-shield"><i class="fas fa-shield-halved"></i></div><div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div></a>
-        <p class="footer-tagline">SOC Analyst & Detection Engineer based in Hyderabad. Hunting threats across the Microsoft Security stack — alert by alert, IOC by IOC.</p>
+        <a href="#" class="logo"><div class="logo-shield"><i class="fas fa-shield-halved"></i></div><div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Incident Response</div></div></a>
+        <p class="footer-tagline">SOC Analyst based in Hyderabad. Investigating and responding to threats across the Microsoft Security stack — alert by alert, IOC by IOC.</p>
       </div>
       <div class="footer-col">
         <h4>// Sections</h4>
         <a href="#about">About</a>
         <a href="#services">Services</a>
-        <a href="#detections">Detections</a>
+        <a href="#detections">Patterns</a>
         <a href="#labs">Labs & CTFs</a>
         <a href="#research">Research</a>
         <a href="now.html">/now</a>
@@ -922,11 +917,7 @@ setTimeout(type, 700);
   setTimeout(type2, 1300);
 })();
 
-/* ═══════════════════════════════════════════════
-   TERMINAL — FIXED: white-space pre-wrap on .lt-line
-   means \n in template literals now renders correctly.
-   help and banner both display vertically.
-   ═══════════════════════════════════════════════ */
+/* TERMINAL */
 (function initLiveTerm() {
   const body = document.getElementById('liveTermBody');
   const input = document.getElementById('ltInput');
@@ -934,14 +925,12 @@ setTimeout(type, 700);
   const history = [];
   let histIdx = -1;
 
-  /* FIXED banner — box drawing chars aligned, renders vertically via pre-wrap */
   const banner = `<span class="tc-green">╔══════════════════════════════════════════╗
 ║  <span class="tc-yellow">SWETHA DEVI · SOC ANALYST TERMINAL</span>    ║
 ║  <span class="tc-blue">v2.1 · Microsoft Security Stack</span>        ║
 ║  <span class="tc-purple">github.com/unabletofind</span>                ║
 ╚══════════════════════════════════════════╝</span>`;
 
-  /* FIXED help — each command on its own line via \n, renders with pre-wrap */
   const responses = {
     help: `<span class="tc-yellow">Available commands:</span>
 
@@ -960,10 +949,10 @@ setTimeout(type, 700);
 
     whoami: `<span class="tc-yellow">[ IDENTITY ]</span>
   Name     : <span class="tc-white">Swetha Devi Sai Priya Bonu</span>
-  Role     : <span class="tc-green">SOC Analyst & Detection Engineer</span>
+  Role     : <span class="tc-green">SOC Analyst</span>
   Location : <span class="tc-white">Hyderabad, India</span>
   Status   : <span class="tc-green">Open to Opportunities</span>
-  Focus    : <span class="tc-blue">Threat Intel · Malware Analysis · ATT&CK</span>`,
+  Focus    : <span class="tc-blue">Alert Triage · Incident Response · Malware Analysis</span>`,
 
     skills: `<span class="tc-yellow">[ CORE SKILLS ]</span>
   Detection   : <span class="tc-green">Alert Triage · IOC Extraction · IR · Email Analysis</span>
@@ -1079,7 +1068,6 @@ setTimeout(type, 700);
   document.getElementById('liveTerm')?.addEventListener('click', () => input.focus());
   document.querySelectorAll('.lt-suggest-item').forEach(el => el.addEventListener('click', () => { runCmd(el.dataset.cmd); input.focus(); }));
 
-  /* Show banner then hint on load */
   setTimeout(() => print(banner), 200);
   setTimeout(() => print(`<span class="tc-gray">Type </span><span class="tc-yellow">help</span><span class="tc-gray"> for available commands · Use ↑↓ for history</span>`), 700);
 })();
@@ -1117,7 +1105,7 @@ setTimeout(type, 700);
   });
 })();
 
-/* BLOG CARDS — shows latest 3 */
+/* BLOG CARDS */
 (function() {
   const grid = document.getElementById('blogGrid');
   if (!grid || typeof blogs === 'undefined') return;
@@ -1143,16 +1131,14 @@ setTimeout(type, 700);
   if (el) el.dataset.count = blogs.length;
 })();
 
-/* DETECTION RULES — shows latest 3 from detections.js */
+/* DETECTION RULES */
 (function() {
   const grid = document.getElementById('detGrid');
   if (!grid || typeof detections === 'undefined') return;
-
   function esc(s) { return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
   function render(filter) {
     let list = filter === 'all' ? detections : detections.filter(r => r.platform === filter);
-    list = list.slice(0, 3); /* homepage: show only 3 */
+    list = list.slice(0, 3);
     if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px">// no rules in this category yet</div>'; return; }
     grid.innerHTML = list.map((r, i) => `
       <div class="det-card">
@@ -1171,7 +1157,6 @@ setTimeout(type, 700);
           <button class="det-copy" data-code="${esc(r.code)}"><i class="fas fa-copy"></i> Copy</button>
         </div>
       </div>`).join('');
-
     grid.querySelectorAll('.det-copy').forEach(btn => {
       btn.addEventListener('click', () => {
         const code = btn.dataset.code.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
@@ -1182,7 +1167,6 @@ setTimeout(type, 700);
       });
     });
   }
-
   document.querySelectorAll('.det-filter').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.det-filter').forEach(b => b.classList.remove('active'));
@@ -1193,7 +1177,7 @@ setTimeout(type, 700);
   render('all');
 })();
 
-/* LABS — shows latest 3 from labs.js */
+/* LABS */
 (function() {
   const grid = document.getElementById('labGrid');
   if (!grid || typeof labs === 'undefined') return;
@@ -1218,7 +1202,7 @@ setTimeout(type, 700);
   });
 })();
 
-/* SCROLL REVEAL + SKILL BARS */
+/* SCROLL REVEAL + SKILL BARS — threshold lowered to 0.05 to fix black gaps */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1226,7 +1210,7 @@ const observer = new IntersectionObserver(entries => {
       e.target.querySelectorAll('.skill-bar-fill').forEach(b => b.style.width = b.dataset.w + '%');
     }
   });
-}, { threshold: .12 });
+}, { threshold: 0.05 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 /* ANIMATED COUNTERS */
@@ -1246,7 +1230,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }
   const cObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){animateCount(e.target);cObs.unobserve(e.target);} });
-  }, { threshold: 0.3 });
+  }, { threshold: 0.1 });
   document.querySelectorAll('[data-count]').forEach(el => { el.textContent='0'; cObs.observe(el); });
 })();
 
@@ -1335,7 +1319,7 @@ document.querySelectorAll('a').forEach(link => {
   });
 })();
 
-/* EASTER EGG — type "matrix" anywhere */
+/* EASTER EGG */
 (function() {
   let buf = '';
   document.addEventListener('keydown', e => {
