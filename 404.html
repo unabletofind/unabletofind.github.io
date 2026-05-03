@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 · Page Not Found · Swetha Devi</title>
+<meta name="description" content="404 — the page you're looking for doesn't exist.">
+<meta name="theme-color" content="#020b16">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020b16;--surface:#071324;--surface2:#0c1c30;
+  --accent:#00ffe5;--accent2:#3b82f6;--accent3:#a855f7;
+  --red:#f43f5e;--amber:#f59e0b;--green:#22c55e;
+  --text:#e8f4ff;--muted:#5a7a9a;--faint:#3a5a78;
+  --border:rgba(0,255,229,0.08);--border-bright:rgba(0,255,229,0.18);
+  --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;position:relative;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at top,rgba(244,63,94,0.06),transparent 50%),radial-gradient(ellipse at bottom right,rgba(0,255,229,0.04),transparent 50%);pointer-events:none;z-index:0}
+
+/* matrix-style noise grid */
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,229,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,229,0.025) 1px,transparent 1px);background-size:40px 40px;opacity:.5;pointer-events:none;z-index:0}
+
+main{position:relative;z-index:2;max-width:600px}
+
+.glitch-tag{font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:.25em;margin-bottom:18px;display:inline-flex;align-items:center;gap:10px}
+.glitch-tag::before{content:'';width:8px;height:8px;background:var(--red);border-radius:50%;box-shadow:0 0 12px rgba(244,63,94,0.6);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.code{font-family:var(--mono);font-size:clamp(5rem,18vw,11rem);font-weight:700;line-height:1;letter-spacing:-.04em;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;position:relative}
+.code::after{content:'404';position:absolute;left:0;right:0;top:0;background:linear-gradient(135deg,var(--red),var(--amber));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0;animation:glitch 4s infinite;mix-blend-mode:screen}
+@keyframes glitch{
+  0%,90%,100%{opacity:0;transform:translate(0,0)}
+  92%{opacity:.6;transform:translate(-2px,1px)}
+  94%{opacity:.6;transform:translate(2px,-1px)}
+  96%{opacity:0;transform:translate(0,0)}
+}
+
+h1{font-size:clamp(1.5rem,4vw,2rem);font-weight:600;margin-bottom:14px;letter-spacing:-.01em}
+.sub{font-size:14px;color:var(--muted);max-width:480px;margin:0 auto 28px;line-height:1.7}
+
+.terminal-line{font-family:var(--mono);font-size:12.5px;color:var(--muted);background:rgba(2,11,22,0.8);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:36px;display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;text-align:left;max-width:540px}
+.terminal-line .prompt{color:var(--accent);flex-shrink:0}
+.terminal-line .cmd{color:var(--text)}
+.terminal-line .err{color:var(--red);font-size:11px}
+
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:9px;font-family:var(--mono);font-size:12px;text-decoration:none;transition:.25s;letter-spacing:.04em}
+.btn-primary{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25)}
+.btn-primary:hover{background:rgba(0,255,229,0.15);transform:translateY(-2px);border-color:rgba(0,255,229,0.5)}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border-bright)}
+
+.quick-links{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.04em}
+.quick-links span{color:var(--muted)}
+.quick-links a{color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(0,255,229,0.25);margin:0 8px;transition:.2s}
+.quick-links a:hover{border-bottom-style:solid}
+
+@media(max-width:540px){
+  .terminal-line{font-size:11px;padding:12px 14px}
+  .quick-links a{display:inline-block;margin:4px 6px}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<main>
+  <div class="glitch-tag">// SIGNAL LOST · TARGET MISSING</div>
+
+  <div class="code">404</div>
+
+  <h1>This page got dropped.</h1>
+  <p class="sub">Either the URL was mistyped, the page moved, or someone's link rotted. Either way — let's get you back to known-good territory.</p>
+
+  <div class="terminal-line">
+    <span class="prompt">swetha@soc:~$</span>
+    <span class="cmd">locate <span id="lostPath" style="color:var(--amber)"></span></span>
+    <span class="err">→ no such file or directory</span>
+  </div>
+
+  <div class="cta-row">
+    <a href="index.html" class="btn btn-primary"><i class="fas fa-house"></i> Back to portfolio</a>
+    <a href="research.html" class="btn btn-ghost"><i class="fas fa-flask"></i> Browse research</a>
+  </div>
+
+  <div class="quick-links">
+    <span>Or jump to:</span>
+    <a href="index.html#about">About</a>·
+    <a href="detections.html">Detections</a>·
+    <a href="labs.html">Labs</a>·
+    <a href="research.html">Research</a>·
+    <a href="now.html">/now</a>·
+    <a href="index.html#connect">Connect</a>
+  </div>
+</main>
+
+<script>
+// Show whatever the user tried to access in the fake terminal
+const path = window.location.pathname.replace(/^\//, '') || 'unknown';
+document.getElementById('lostPath').textContent = path;
+</script>
+
+</body>
+</html>
