@@ -7,6 +7,28 @@
 
 window.DETECTIONS = [
   {
+    id: 'splunk-password-spray',
+    title: 'Password Spray — Failed Auth Burst Followed by Success',
+    platform: 'spl',
+    desc: 'Hunts password spray attacks in Splunk by flagging accounts with 10+ failed Windows logons followed by a successful auth from the same source within 15 minutes.',
+    severity: 'high',
+    mitre: ['T1110.003'],
+    tags: ['Splunk', 'Brute Force', 'Identity'],
+    date: 'May 2026',
+    featured: true,
+    code: `index=wineventlog (EventCode=4625 OR EventCode=4624)
+| eval status=if(EventCode=4625,"failed","success")
+| bin _time span=15m
+| stats count(eval(status="failed")) as failed,
+        count(eval(status="success")) as success,
+        values(src_ip) as src_ips,
+        values(EventCode) as codes
+        by _time, user
+| where failed >= 10 AND success >= 1
+| eval risk="password_spray_likely"
+| sort - failed`
+  },
+  {
     id: 'powershell-encoded-cmd',
     title: 'Suspicious PowerShell Encoded Command Execution',
     platform: 'kql',
@@ -140,7 +162,7 @@ level: high`
    * {
    *   id: 'unique-slug-here',
    *   title: 'Rule Title',
-   *   platform: 'kql',           // 'kql' | 'sigma' | 'yara'
+   *   platform: 'kql',           // 'kql' | 'spl' | 'sigma' | 'yara'
    *   desc: 'What this rule detects and why it matters.',
    *   severity: 'high',          // 'high' | 'medium' | 'low'
    *   mitre: ['T1059.001'],
@@ -205,7 +227,7 @@ window.buildDetectionCards = function(targetId, opts){
     <div class="det-card">
       <div class="det-card-head">
         <div class="det-card-title">${escapeHtml(r.title)}</div>
-        <div class="det-platform ${r.platform}">${r.platform === 'kql' ? 'KQL' : r.platform === 'sigma' ? 'Sigma' : 'YARA'}</div>
+        <div class="det-platform ${r.platform}">${({kql:'KQL',spl:'SPL',sigma:'Sigma',yara:'YARA'})[r.platform] || r.platform.toUpperCase()}</div>
       </div>
       <div class="det-desc">${escapeHtml(r.desc)}</div>
       <div class="det-meta">
