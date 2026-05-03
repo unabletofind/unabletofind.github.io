@@ -24,7 +24,7 @@ const blogs = [
   {
     id: 'your-post-id',
     url: 'your-post.html',
-    cat: 'Phishing',          // used for filter buttons
+    cat: 'Phishing',
     catLabel: 'Phishing',
     catColor: 'rgba(245,158,11,0.12)',
     catBorder: 'rgba(245,158,11,0.2)',
