@@ -6,18 +6,12 @@
 <title>Swetha Devi | SOC Analyst · Threat Hunter · Detection Engineer</title>
 <meta name="description" content="Swetha Devi — SOC Analyst & Threat Hunter. Microsoft Sentinel, MDE, KQL. HTB CDSA certified. Threat research, attack chains, detection rules, IR playbooks.">
 <meta name="theme-color" content="#020b16">
-
-<!-- Open Graph -->
 <meta property="og:title" content="Swetha Devi | SOC Analyst · Threat Hunter">
 <meta property="og:description" content="SOC Analyst with 1+ year of experience in threat detection, KQL hunting, and incident response. HTB CDSA certified.">
 <meta property="og:type" content="website">
-
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ============================================= */
-/* BASE RESET & VARIABLES */
-/* ============================================= */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#020b16;--surface:#071324;--surface2:#0c1c30;--surface3:#0e2238;
@@ -31,23 +25,15 @@ html{scroll-behavior:smooth}
 body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;cursor:none}
 #bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);pointer-events:none;z-index:1}
-
-/* selection */
 ::selection{background:rgba(0,255,229,0.25);color:var(--text)}
-
-/* scrollbar */
-::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar{width:10px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:5px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(0,255,229,0.3)}
-
 #matrixCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0;transition:opacity 2s ease}
-
 #mouseGlow{position:fixed;width:500px;height:500px;border-radius:50%;pointer-events:none;z-index:1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(0,255,229,0.045) 0%,rgba(59,130,246,0.025) 40%,transparent 70%);transition:opacity 0.4s ease;opacity:0;mix-blend-mode:screen}
 
-/* ============================================= */
 /* PAGE LOADER */
-/* ============================================= */
 #pageLoader{position:fixed;inset:0;background:var(--bg);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;transition:opacity .5s ease}
 #pageLoader.done{opacity:0;pointer-events:none}
 .loader-shield{width:64px;height:64px;border:2px solid rgba(0,255,229,0.15);border-top-color:var(--accent);border-radius:14px;animation:loaderSpin 1s linear infinite;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:24px}
@@ -55,14 +41,10 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .loader-text{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase}
 .loader-text span{color:var(--accent)}
 
-/* ============================================= */
 /* SCROLL PROGRESS */
-/* ============================================= */
 #scrollProgress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3));z-index:999;transition:width .1s ease;box-shadow:0 0 10px rgba(0,255,229,0.6)}
 
-/* ============================================= */
 /* NAV */
-/* ============================================= */
 nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(2,11,22,0.85);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
@@ -72,48 +54,59 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;background:rgba(2,11,22,0.85
 .logo-name{font-size:15px;font-weight:700;letter-spacing:-0.02em;color:var(--text)}
 .logo-tag{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:-1px}
 .nav-links{display:flex;gap:2px;list-style:none}
-.nav-links a{color:var(--muted);text-decoration:none;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;transition:.2s;position:relative}
+.nav-links a{color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:7px;font-size:12px;font-weight:500;transition:.2s;position:relative;cursor:none}
 .nav-links a:hover{color:var(--accent);background:rgba(0,255,229,0.06)}
 .nav-links a.active{color:var(--accent)}
-.nav-links a.active::after{content:'';position:absolute;bottom:-2px;left:14px;right:14px;height:2px;background:var(--accent);border-radius:2px}
+.nav-links a.active::after{content:'';position:absolute;bottom:-2px;left:12px;right:12px;height:2px;background:var(--accent);border-radius:2px}
 .nav-right{display:flex;align-items:center;gap:10px}
 .nav-status{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--green);background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);padding:5px 12px;border-radius:100px}
 .nav-sdot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite;display:inline-block}
-.nav-cta{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25);padding:8px 18px;border-radius:8px;font-weight:600;font-size:12px;text-decoration:none;transition:.2s;display:flex;align-items:center;gap:7px;font-family:var(--mono)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+.nav-cta{background:rgba(0,255,229,0.08);color:var(--accent);border:1px solid rgba(0,255,229,0.25);padding:8px 18px;border-radius:8px;font-weight:600;font-size:12px;text-decoration:none;transition:.2s;display:flex;align-items:center;gap:7px;font-family:var(--mono);cursor:none}
 .nav-cta:hover{background:rgba(0,255,229,0.15);transform:translateY(-1px)}
-.nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:20px;cursor:none}
 
-/* ============================================= */
 /* SYSTEM STATUS WIDGET */
-/* ============================================= */
 #sysStatusWidget{position:fixed;top:78px;right:16px;z-index:800;background:rgba(2,11,22,0.92);border:1px solid rgba(0,255,229,0.18);border-radius:10px;padding:10px 14px;font-family:var(--mono);min-width:200px;backdrop-filter:blur(12px);box-shadow:0 4px 24px rgba(0,0,0,0.4)}
 .sws-row{display:flex;align-items:center;gap:7px;font-size:10px}
 .sws-online{color:var(--green);font-weight:600;letter-spacing:.08em}
 .sws-clock{color:var(--accent);margin-left:auto;font-size:11px}
 
-/* ============================================= */
 /* LAYOUT */
-/* ============================================= */
 .container{max-width:1280px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
 section{padding:90px 0}
 .hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;padding-bottom:40px;position:relative;z-index:2}
 
-/* ============================================= */
-/* HERO — TWO COLUMN */
-/* ============================================= */
+/* HERO */
 .hero-grid{display:grid;grid-template-columns:1fr 360px;gap:60px;align-items:center;width:100%}
-.hero-content{max-width:780px}
 .status-bar{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,229,0.04);border:1px solid rgba(0,255,229,0.15);padding:5px 14px;border-radius:100px;font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:32px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.4s infinite}
 .hero-pretitle{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px}
 .hero-title{font-size:clamp(2.4rem,5.2vw,4rem);font-weight:700;letter-spacing:-0.04em;line-height:1.05;margin-bottom:12px}
 .hero-title .line1{display:block;color:var(--text)}
-.hero-title .line2{display:block;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(90deg,var(--accent) 0%,var(--accent2) 100%)}
+.hero-title .line2{display:block;-webkit-text-fill-color:transparent;-webkit-background-clip:text;background-clip:text;background-image:linear-gradient(90deg,var(--accent),var(--accent2))}
+.typewriter-wrap{height:34px;margin:20px 0 10px;font-family:var(--mono);font-size:1rem;color:var(--accent2);display:flex;align-items:center;gap:6px}
+.typewriter-prefix{color:var(--muted);font-size:.85rem}
+#tw-text{font-weight:500}
+.cursor{display:inline-block;width:2px;height:18px;background:var(--accent2);vertical-align:middle;animation:cursorPulse 1s ease-in-out infinite}
+@keyframes cursorPulse{0%,100%{opacity:1}50%{opacity:0}}
+.tw2-wrap{height:26px;margin:0 0 26px;font-family:var(--mono);font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.tw2-prefix{color:rgba(90,122,154,0.7);font-size:.75rem}
+.cursor2{display:inline-block;width:2px;height:14px;background:var(--muted);vertical-align:middle;animation:cursorPulse 1.3s ease-in-out infinite}
+.hero-bio{font-size:.95rem;color:var(--muted);max-width:640px;line-height:1.75;margin-bottom:28px}
+.hero-bio strong{color:var(--text);font-weight:500}
+.badge-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px}
+.badge{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:4px 13px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);transition:.2s;cursor:default}
+.badge:hover{border-color:rgba(0,255,229,0.3);color:var(--accent);background:rgba(0,255,229,0.04)}
+.badge.cert{border-color:rgba(245,158,11,0.25);color:var(--amber);background:rgba(245,158,11,0.04)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);padding:9px 18px;border-radius:9px;color:var(--text);text-decoration:none;font-size:13px;font-weight:500;transition:.25s;cursor:none}
+.btn-ghost:hover{border-color:rgba(0,255,229,0.3);color:var(--accent);background:rgba(0,255,229,0.04);transform:translateY(-2px)}
+.btn-solid{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,229,0.1);color:var(--accent);border:1px solid rgba(0,255,229,0.3);padding:9px 20px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;transition:.25s;cursor:none;position:relative;overflow:hidden}
+.btn-solid::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,229,0.3),transparent);transition:.5s}
+.btn-solid:hover::before{left:100%}
+.btn-solid:hover{background:rgba(0,255,229,0.18);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,229,0.1)}
 
-/* ============================================= */
-/* HERO RIGHT — IDENTITY CARD */
-/* ============================================= */
+/* IDENTITY CARD */
 .identity-card{background:linear-gradient(180deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border-bright);border-radius:18px;padding:24px;position:relative;overflow:hidden}
 .identity-card::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:radial-gradient(ellipse at top,rgba(0,255,229,0.12),transparent 70%);pointer-events:none}
 .id-card-bar{display:flex;align-items:center;gap:6px;margin-bottom:18px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
@@ -129,36 +122,11 @@ section{padding:90px 0}
 .id-row-val{color:var(--text);font-weight:500}
 .id-row-val.green{color:var(--green)}
 .id-row-val.accent{color:var(--accent)}
-.id-now-card{margin-top:14px;padding:12px;background:rgba(0,255,229,0.04);border:1px solid rgba(0,255,229,0.12);border-radius:10px}
-.id-now-label{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.id-now-label .pulse{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:blink 1.6s infinite}
+.id-now-card{margin-top:14px;padding:12px;background:rgba(168,85,247,0.05);border:1px solid rgba(168,85,247,0.18);border-radius:10px}
+.id-now-label{font-family:var(--mono);font-size:9px;color:#c084fc;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.id-now-label .pulse{width:6px;height:6px;border-radius:50%;background:#c084fc;box-shadow:0 0 8px rgba(168,85,247,0.6);animation:blink 1.6s infinite}
 .id-now-text{font-size:11.5px;color:var(--muted);line-height:1.55}
 .id-now-text strong{color:var(--text);font-weight:500}
-
-/* TYPEWRITER */
-.typewriter-wrap{height:34px;margin:20px 0 10px;font-family:var(--mono);font-size:1rem;color:var(--accent2);display:flex;align-items:center;gap:6px}
-.typewriter-prefix{color:var(--muted);font-size:.85rem}
-#tw-text{font-weight:500}
-.cursor{display:inline-block;width:2px;height:18px;background:var(--accent2);vertical-align:middle;animation:cursorPulse 1s ease-in-out infinite}
-@keyframes cursorPulse{0%,100%{opacity:1;box-shadow:0 0 4px var(--accent2),0 0 12px rgba(59,130,246,0.7)}50%{opacity:0;box-shadow:none}}
-.tw2-wrap{height:26px;margin:0 0 26px;font-family:var(--mono);font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:6px}
-.tw2-prefix{color:rgba(90,122,154,0.7);font-size:.75rem}
-#tw2-text{color:var(--muted)}
-.cursor2{display:inline-block;width:2px;height:14px;background:var(--muted);vertical-align:middle;animation:cursorPulse 1.3s ease-in-out infinite}
-
-.hero-bio{font-size:.95rem;color:var(--muted);max-width:640px;line-height:1.75;margin-bottom:28px}
-.hero-bio strong{color:var(--text);font-weight:500}
-.badge-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px}
-.badge{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:4px 13px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);transition:.2s;cursor:default}
-.badge:hover{border-color:rgba(0,255,229,0.3);color:var(--accent);background:rgba(0,255,229,0.04)}
-.badge.cert{border-color:rgba(245,158,11,0.25);color:var(--amber);background:rgba(245,158,11,0.04)}
-.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
-.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,0.1);padding:9px 18px;border-radius:9px;color:var(--text);text-decoration:none;font-size:13px;font-weight:500;transition:.25s;cursor:none}
-.btn-ghost:hover{border-color:rgba(0,255,229,0.3);color:var(--accent);background:rgba(0,255,229,0.04);transform:translateY(-2px)}
-.btn-solid{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,229,0.1);color:var(--accent);border:1px solid rgba(0,255,229,0.3);padding:9px 20px;border-radius:9px;font-size:13px;font-weight:700;text-decoration:none;transition:.25s;cursor:none;position:relative;overflow:hidden}
-.btn-solid::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,229,0.3),transparent);transition:.5s}
-.btn-solid:hover::before{left:100%}
-.btn-solid:hover{background:rgba(0,255,229,0.18);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,255,229,0.1)}
 
 /* STATS BAR */
 .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(0,255,229,0.06);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:52px}
@@ -171,7 +139,6 @@ section{padding:90px 0}
 @keyframes statPulse{0%{filter:brightness(1)}40%{filter:brightness(1.8) drop-shadow(0 0 8px rgba(0,255,229,0.8))}100%{filter:brightness(1)}}
 .stat-num.pulse-done{animation:statPulse .8s ease forwards}
 
-/* SCROLL HINT */
 .scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.7;animation:scrollFloat 2.4s ease-in-out infinite}
 .scroll-hint i{color:var(--accent)}
 @keyframes scrollFloat{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
@@ -183,15 +150,26 @@ section{padding:90px 0}
 .sec-title{font-size:1.95rem;font-weight:700;letter-spacing:-0.03em}
 .sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border-bright),transparent);margin-bottom:6px}
 
-/* TERMINAL SHARED */
+/* TERMINAL */
 .term-bar{background:#000810;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.04)}
 .term-dot{width:12px;height:12px;border-radius:50%}
 .term-path{margin-left:auto;font-size:11px;color:var(--muted)}
+/* FIX: pre-wrap so \n in template literals renders as newlines */
 .tc-green{color:var(--accent)}.tc-blue{color:var(--accent2)}.tc-yellow{color:var(--amber)}.tc-gray{color:var(--muted)}.tc-white{color:#fff}.tc-dim{color:#3a5a6a}.tc-red{color:var(--red)}.tc-amber{color:var(--amber)}.tc-purple{color:var(--accent3)}
+#liveTerm{background:#000e1a;border:1px solid rgba(0,255,229,0.2);border-radius:16px;overflow:hidden;font-family:var(--mono)}
+#liveTermBody{padding:20px 24px;min-height:280px;max-height:440px;overflow-y:auto;font-size:12px;line-height:1.9;scrollbar-width:thin;scrollbar-color:rgba(0,255,229,0.15) transparent}
+#liveTermBody::-webkit-scrollbar{width:4px}
+#liveTermBody::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:2px}
+/* KEY FIX: white-space pre-wrap so newlines in HTML strings render properly */
+.lt-line{margin:0;white-space:pre-wrap;font-family:var(--mono)}
+.lt-input-row{display:flex;align-items:center;gap:6px;padding:10px 24px;border-top:1px solid rgba(0,255,229,0.06)}
+.lt-prompt{color:var(--accent);font-family:var(--mono);font-size:12px;white-space:nowrap}
+#ltInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:12px;caret-color:var(--accent);cursor:none}
+.lt-suggest{display:flex;flex-wrap:wrap;gap:6px;padding:8px 24px 14px;border-top:1px solid rgba(0,255,229,0.04)}
+.lt-suggest-item{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(0,255,229,0.04);border:1px solid rgba(0,255,229,0.08);padding:3px 9px;border-radius:5px;cursor:none;transition:.15s}
+.lt-suggest-item:hover{color:var(--accent);background:rgba(0,255,229,0.08);border-color:rgba(0,255,229,0.18)}
 
-/* ============================================= */
-/* WHAT I DO — SERVICES */
-/* ============================================= */
+/* SERVICES */
 .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
 .service-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;transition:.3s;position:relative;overflow:hidden;cursor:none}
 .service-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,255,229,0.06),transparent 50%);opacity:0;transition:.3s;pointer-events:none}
@@ -203,10 +181,8 @@ section{padding:90px 0}
 .service-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
 .service-tag{font-family:var(--mono);font-size:9px;color:var(--accent);background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.1);padding:2px 8px;border-radius:4px}
 
-/* ============================================= */
-/* FEATURED CASE STUDY */
-/* ============================================= */
-.case-study{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border:1px solid var(--border-bright);border-radius:20px;padding:40px;display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;position:relative;overflow:hidden}
+/* CASE STUDY */
+.case-study{background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border-bright);border-radius:20px;padding:40px;display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:center;position:relative;overflow:hidden}
 .case-study::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(244,63,94,0.06),transparent 60%);pointer-events:none}
 .case-study-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--red);background:rgba(244,63,94,0.06);border:1px solid rgba(244,63,94,0.15);padding:4px 10px;border-radius:100px;margin-bottom:14px;letter-spacing:.1em;text-transform:uppercase}
 .case-study-title{font-size:1.5rem;font-weight:700;line-height:1.25;margin-bottom:14px;letter-spacing:-0.02em}
@@ -218,24 +194,7 @@ section{padding:90px 0}
 .case-icon-bg{width:200px;height:200px;background:linear-gradient(135deg,rgba(244,63,94,0.08),rgba(245,158,11,0.06));border:1px solid rgba(244,63,94,0.15);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:80px;color:rgba(244,63,94,0.5);position:relative}
 .case-icon-bg::after{content:'';position:absolute;inset:-8px;border:1px dashed rgba(244,63,94,0.15);border-radius:30px;animation:spin 20s linear infinite}
 
-/* ============================================= */
-/* LIVE INTERACTIVE TERMINAL */
-/* ============================================= */
-#liveTerm{background:#000e1a;border:1px solid rgba(0,255,229,0.2);border-radius:16px;overflow:hidden;font-family:var(--mono)}
-#liveTermBody{padding:20px 24px;min-height:280px;max-height:440px;overflow-y:auto;font-size:12px;line-height:2;scrollbar-width:thin;scrollbar-color:rgba(0,255,229,0.15) transparent}
-#liveTermBody::-webkit-scrollbar{width:4px}
-#liveTermBody::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.15);border-radius:2px}
-.lt-line{margin:0}
-.lt-input-row{display:flex;align-items:center;gap:6px;padding:10px 24px;border-top:1px solid rgba(0,255,229,0.06)}
-.lt-prompt{color:var(--accent);font-family:var(--mono);font-size:12px;white-space:nowrap}
-#ltInput{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--mono);font-size:12px;caret-color:var(--accent);cursor:none}
-.lt-suggest{display:flex;flex-wrap:wrap;gap:6px;padding:0 24px 14px;border-top:1px solid rgba(0,255,229,0.04)}
-.lt-suggest-item{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(0,255,229,0.04);border:1px solid rgba(0,255,229,0.08);padding:3px 9px;border-radius:5px;cursor:none;transition:.15s}
-.lt-suggest-item:hover{color:var(--accent);background:rgba(0,255,229,0.08);border-color:rgba(0,255,229,0.18)}
-
-/* ============================================= */
 /* SKILLS */
-/* ============================================= */
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px}
 .skill-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px;transition:border-color .3s,background .3s;position:relative;overflow:hidden}
 .skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:.3s}
@@ -243,16 +202,14 @@ section{padding:90px 0}
 .skill-card:hover{border-color:var(--border-bright);background:var(--surface2)}
 .skill-card-head{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .skill-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
-.skill-title{font-size:13px;font-weight:600;letter-spacing:0.01em}
+.skill-title{font-size:13px;font-weight:600}
 .skill-bar-item{margin-bottom:14px}
 .skill-bar-top{display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px}
 .skill-bar-name{color:var(--muted)}
 .skill-bar-pct{color:var(--accent);font-family:var(--mono);font-weight:600}
-.skill-bar-track{height:3px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;position:relative}
+.skill-bar-track{height:3px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden}
 .skill-bar-fill{height:100%;border-radius:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1.3s cubic-bezier(.16,1,.3,1);position:relative}
 .skill-bar-fill::after{content:'';position:absolute;top:0;right:0;width:6px;height:100%;background:var(--accent);box-shadow:0 0 8px var(--accent);border-radius:3px;opacity:.8}
-
-/* TOOLS GRID */
 .tools-section{margin-top:50px}
 .tools-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px;text-align:center}
 .tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px}
@@ -261,9 +218,7 @@ section{padding:90px 0}
 .tool-pill i{font-size:20px;color:var(--accent);margin-bottom:6px;display:block}
 .tool-pill-name{font-size:10.5px;color:var(--muted);font-family:var(--mono)}
 
-/* ============================================= */
 /* ACTIVITY HEATMAP */
-/* ============================================= */
 .activity-section{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px}
 .activity-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .activity-title{font-size:1rem;font-weight:600;display:flex;align-items:center;gap:10px}
@@ -273,7 +228,7 @@ section{padding:90px 0}
 .legend-cell{width:11px;height:11px;border-radius:2px}
 .heatmap-wrap{overflow-x:auto;padding-bottom:8px}
 .heatmap-grid{display:grid;grid-template-columns:repeat(53,1fr);grid-template-rows:repeat(7,1fr);gap:3px;min-width:760px}
-.heat-cell{width:11px;height:11px;border-radius:2px;background:rgba(255,255,255,0.03);transition:.2s;cursor:pointer;position:relative}
+.heat-cell{width:11px;height:11px;border-radius:2px;background:rgba(255,255,255,0.03);transition:.2s;cursor:pointer}
 .heat-cell:hover{transform:scale(1.4);z-index:5}
 .heat-cell[data-level="1"]{background:rgba(0,255,229,0.12)}
 .heat-cell[data-level="2"]{background:rgba(0,255,229,0.30)}
@@ -284,9 +239,88 @@ section{padding:90px 0}
 .heat-stat-num{font-size:1.2rem;color:var(--accent);font-weight:700}
 .heat-stat-lbl{font-size:10px;color:var(--muted);letter-spacing:.05em;margin-top:2px}
 
-/* ============================================= */
+/* CURRENTLY LEARNING STRIP */
+.now-strip{background:linear-gradient(135deg,rgba(168,85,247,0.05),rgba(0,255,229,0.04));border:1px solid rgba(168,85,247,0.15);border-radius:14px;padding:24px;margin-bottom:32px;position:relative;overflow:hidden}
+.now-strip::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.08),transparent 70%);pointer-events:none}
+.now-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative}
+.now-pulse{width:9px;height:9px;background:#c084fc;border-radius:50%;box-shadow:0 0 12px rgba(168,85,247,0.6);animation:nowPulse 2s ease-in-out infinite}
+@keyframes nowPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.3)}}
+.now-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:#c084fc;text-transform:uppercase;font-weight:600}
+.now-strip-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;position:relative}
+.now-sub{font-size:13px;color:var(--muted);line-height:1.7;position:relative}
+.now-sub strong{color:var(--text);font-weight:500}
+.now-progress{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;position:relative}
+.now-chip{font-family:var(--mono);font-size:10px;background:rgba(168,85,247,0.1);color:#c084fc;border:1px solid rgba(168,85,247,0.2);padding:4px 10px;border-radius:100px;letter-spacing:.04em;text-decoration:none}
+
+/* DETECTION RULES */
+.det-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.det-filter{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 14px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:none;transition:.2s;letter-spacing:.04em}
+.det-filter:hover{color:var(--text);border-color:rgba(0,255,229,0.2)}
+.det-filter.active{background:rgba(0,255,229,0.1);border-color:rgba(0,255,229,0.35);color:var(--accent)}
+.det-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:18px}
+.det-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;transition:.3s;position:relative;overflow:hidden}
+.det-card:hover{border-color:var(--border-bright);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,255,229,0.06)}
+.det-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.det-card-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.35}
+.det-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:3px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0;font-weight:600}
+.det-platform.kql{background:rgba(0,120,212,0.15);color:#4ab6ff;border:1px solid rgba(0,120,212,0.3)}
+.det-platform.sigma{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
+.det-platform.yara{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.det-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.det-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.det-tag{font-family:var(--mono);font-size:9.5px;color:var(--accent);background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.12);padding:3px 7px;border-radius:4px}
+.det-sev{font-family:var(--mono);font-size:9.5px;padding:3px 7px;border-radius:4px;font-weight:600}
+.det-sev.high{background:rgba(244,63,94,0.12);color:#fb7185;border:1px solid rgba(244,63,94,0.3)}
+.det-sev.medium{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.det-sev.low{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}
+.det-code{background:#020a14;border:1px solid rgba(0,255,229,0.08);border-radius:8px;padding:12px;font-family:var(--mono);font-size:11px;color:#a8d8e8;line-height:1.55;overflow-x:auto;white-space:pre;max-height:120px;overflow-y:auto;margin-bottom:12px}
+.det-code::-webkit-scrollbar{width:5px;height:5px}
+.det-code::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.2);border-radius:3px}
+.det-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:10.5px}
+.det-mitre{color:var(--muted);letter-spacing:.04em}
+.det-copy{background:rgba(0,255,229,0.06);color:var(--accent);border:1px solid rgba(0,255,229,0.15);padding:5px 12px;border-radius:6px;font-family:var(--mono);font-size:10px;cursor:none;transition:.2s;font-weight:600}
+.det-copy:hover{background:rgba(0,255,229,0.12);border-color:rgba(0,255,229,0.35)}
+.det-copy.copied{background:rgba(34,197,94,0.12);color:#4ade80;border-color:rgba(34,197,94,0.3)}
+
+/* LABS */
+.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.lab-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;transition:.25s;display:flex;gap:14px;align-items:flex-start;cursor:none;text-decoration:none;color:inherit;position:relative;overflow:hidden}
+.lab-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--surface2)}
+.lab-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--platform-color,var(--accent));opacity:0;transition:.25s}
+.lab-card:hover::before{opacity:1}
+.lab-icon{width:42px;height:42px;border-radius:9px;background:var(--platform-bg,rgba(0,255,229,0.08));display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--platform-color,var(--accent));flex-shrink:0;border:1px solid var(--platform-border,rgba(0,255,229,0.18))}
+.lab-body{flex:1;min-width:0}
+.lab-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3}
+.lab-platform{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.lab-foot{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:10px;flex-wrap:wrap}
+.lab-diff{padding:2px 7px;border-radius:4px;letter-spacing:.04em;font-weight:600;text-transform:uppercase;font-size:9.5px}
+.lab-diff.easy{background:rgba(34,197,94,0.12);color:#4ade80}
+.lab-diff.medium{background:rgba(245,158,11,0.12);color:#fbbf24}
+.lab-diff.hard{background:rgba(244,63,94,0.12);color:#fb7185}
+.lab-diff.insane{background:rgba(168,85,247,0.15);color:#c084fc}
+.lab-date{color:var(--faint);font-size:9.5px}
+.lab-status-active{font-family:var(--mono);font-size:9px;color:#c084fc;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.25);padding:2px 7px;border-radius:4px}
+
+/* BLOG CARDS */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+.blog-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;cursor:none;transition:.3s;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.blog-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:.35s ease}
+.blog-card:hover::before{transform:scaleX(1)}
+.blog-card:hover{border-color:var(--border-bright);transform:translateY(-6px);background:var(--surface2)}
+.blog-cat-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;padding:4px 10px;border-radius:100px;border:1px solid}
+.blog-title{font-size:1.05rem;font-weight:600;margin-bottom:10px;line-height:1.4}
+.blog-meta{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.blog-excerpt{font-size:13px;color:var(--muted);line-height:1.65;flex:1}
+.blog-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.blog-read{color:var(--accent);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);transition:.2s}
+.blog-card:hover .blog-read{gap:10px}
+.blog-tags{display:flex;gap:5px;flex-wrap:wrap}
+.blog-tag{background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.1);padding:2px 7px;border-radius:3px;font-size:9px;font-family:var(--mono);color:var(--accent)}
+.view-all-wrap{text-align:center;margin-top:30px}
+.btn-viewall{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(0,255,229,0.15);padding:10px 24px;border-radius:9px;color:var(--accent);text-decoration:none;font-size:12px;font-family:var(--mono);transition:.25s;cursor:none}
+.btn-viewall:hover{background:rgba(0,255,229,0.06);border-color:rgba(0,255,229,0.3);gap:14px}
+
 /* TIMELINE */
-/* ============================================= */
 .timeline{position:relative;padding-left:30px}
 .timeline::before{content:'';position:absolute;left:0;top:8px;bottom:0;width:1px;background:linear-gradient(to bottom,var(--accent),rgba(0,255,229,0.05))}
 .tl-item{position:relative;margin-bottom:32px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:.3s}
@@ -304,30 +338,7 @@ section{padding:90px 0}
 .tl-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .tl-tag{background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.13);padding:3px 9px;border-radius:100px;font-size:10px;font-family:var(--mono);color:var(--accent2)}
 
-/* ============================================= */
-/* BLOG */
-/* ============================================= */
-.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
-.blog-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;cursor:none;transition:.3s;display:flex;flex-direction:column;position:relative;overflow:hidden}
-.blog-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:.35s ease}
-.blog-card:hover::before{transform:scaleX(1)}
-.blog-card:hover{border-color:var(--border-bright);transform:translateY(-6px);background:var(--surface2)}
-.blog-cat-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:14px;padding:4px 10px;border-radius:100px;border:1px solid}
-.blog-title{font-size:1.05rem;font-weight:600;margin-bottom:10px;line-height:1.4}
-.blog-meta{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.blog-excerpt{font-size:13px;color:var(--muted);line-height:1.65;flex:1}
-.blog-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-.blog-read{color:var(--accent);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);transition:.2s}
-.blog-card:hover .blog-read{gap:10px}
-.blog-tags{display:flex;gap:5px;flex-wrap:wrap}
-.blog-tag{background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.1);padding:2px 7px;border-radius:3px;font-size:9px;font-family:var(--mono);color:var(--accent)}
-.view-all-wrap{text-align:center;margin-top:36px}
-.btn-viewall{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(0,255,229,0.15);padding:10px 24px;border-radius:9px;color:var(--accent);text-decoration:none;font-size:12px;font-family:var(--mono);transition:.25s;cursor:none}
-.btn-viewall:hover{background:rgba(0,255,229,0.06);border-color:rgba(0,255,229,0.3);gap:14px}
-
-/* ============================================= */
 /* CERTS & CONNECT */
-/* ============================================= */
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
 .cert-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:18px 20px;display:flex;align-items:center;gap:14px;transition:.25s;position:relative;overflow:hidden}
 .cert-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent);transform:scaleY(0);transition:.3s;transform-origin:bottom}
@@ -336,7 +347,6 @@ section{padding:90px 0}
 .cert-icon{width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .cert-name{font-weight:600;font-size:13px;margin-bottom:2px}
 .cert-issuer{font-size:11px;color:var(--muted)}
-
 .connect-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
 .connect-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:22px;text-align:center;transition:.3s;text-decoration:none;color:var(--text);display:block;cursor:none;position:relative;overflow:hidden}
 .connect-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,229,0.05),transparent 40%);opacity:0;transition:.3s}
@@ -345,10 +355,6 @@ section{padding:90px 0}
 .connect-icon{width:46px;height:46px;border-radius:11px;background:rgba(0,255,229,0.06);border:1px solid rgba(0,255,229,0.12);display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--accent);margin:0 auto 14px}
 .connect-name{font-weight:600;font-size:14px;margin-bottom:4px}
 .connect-sub{font-size:11px;color:var(--muted)}
-
-/* ============================================= */
-/* CONTACT FORM CARD */
-/* ============================================= */
 .contact-card{margin-top:20px;padding:32px;background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border-bright);border-radius:18px;position:relative;overflow:hidden}
 .contact-card::before{content:'';position:absolute;top:-50%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(0,255,229,0.05),transparent 60%);pointer-events:none}
 .contact-grid{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;position:relative;z-index:1}
@@ -357,82 +363,7 @@ section{padding:90px 0}
 .contact-text .accent{color:var(--accent)}
 .contact-actions{display:flex;flex-direction:column;gap:10px;min-width:200px}
 
-/* ============================================= */
-/* REVEAL */
-/* ============================================= */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
-.reveal.visible{opacity:1;transform:none}
-
-/* ============================================= */
-/* DETECTION RULES */
-/* ============================================= */
-.det-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
-.det-filter{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:6px 14px;border-radius:100px;font-size:11px;font-family:var(--mono);color:var(--muted);cursor:none;transition:.2s;letter-spacing:.04em}
-.det-filter:hover{color:var(--text);border-color:rgba(0,255,229,0.2)}
-.det-filter.active{background:rgba(0,255,229,0.1);border-color:rgba(0,255,229,0.35);color:var(--accent)}
-.det-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px}
-.det-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px;transition:.3s;position:relative;overflow:hidden}
-.det-card:hover{border-color:var(--border-bright);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,255,229,0.06)}
-.det-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
-.det-card-title{font-size:15px;font-weight:600;color:var(--text);line-height:1.35}
-.det-platform{font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:3px 8px;border-radius:4px;text-transform:uppercase;flex-shrink:0;font-weight:600}
-.det-platform.kql{background:rgba(0,120,212,0.15);color:#4ab6ff;border:1px solid rgba(0,120,212,0.3)}
-.det-platform.sigma{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
-.det-platform.yara{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
-.det-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px;min-height:48px}
-.det-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.det-tag{font-family:var(--mono);font-size:9.5px;color:var(--accent);background:rgba(0,255,229,0.05);border:1px solid rgba(0,255,229,0.12);padding:3px 7px;border-radius:4px;letter-spacing:.04em}
-.det-sev{font-family:var(--mono);font-size:9.5px;padding:3px 7px;border-radius:4px;letter-spacing:.06em;font-weight:600}
-.det-sev.high{background:rgba(244,63,94,0.12);color:#fb7185;border:1px solid rgba(244,63,94,0.3)}
-.det-sev.medium{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
-.det-sev.low{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}
-.det-code{background:#020a14;border:1px solid rgba(0,255,229,0.08);border-radius:8px;padding:12px;font-family:var(--mono);font-size:11px;color:#a8d8e8;line-height:1.55;overflow-x:auto;white-space:pre;max-height:130px;overflow-y:auto;margin-bottom:12px;position:relative}
-.det-code::-webkit-scrollbar{width:5px;height:5px}
-.det-code::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.2);border-radius:3px}
-.det-actions{display:flex;gap:8px;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:10.5px}
-.det-mitre{color:var(--muted);letter-spacing:.04em}
-.det-copy{background:rgba(0,255,229,0.06);color:var(--accent);border:1px solid rgba(0,255,229,0.15);padding:5px 12px;border-radius:6px;font-family:var(--mono);font-size:10px;cursor:none;transition:.2s;letter-spacing:.06em;font-weight:600}
-.det-copy:hover{background:rgba(0,255,229,0.12);border-color:rgba(0,255,229,0.35)}
-.det-copy.copied{background:rgba(34,197,94,0.12);color:#4ade80;border-color:rgba(34,197,94,0.3)}
-
-/* ============================================= */
-/* LABS & CTFs */
-/* ============================================= */
-.lab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.lab-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;transition:.25s;display:flex;gap:14px;align-items:flex-start;cursor:none;text-decoration:none;color:inherit;position:relative;overflow:hidden}
-.lab-card:hover{border-color:var(--border-bright);transform:translateY(-2px);background:var(--surface2)}
-.lab-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--platform-color,var(--accent));opacity:0;transition:.25s}
-.lab-card:hover::before{opacity:1}
-.lab-icon{width:42px;height:42px;border-radius:9px;background:var(--platform-bg,rgba(0,255,229,0.08));display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--platform-color,var(--accent));flex-shrink:0;border:1px solid var(--platform-border,rgba(0,255,229,0.18))}
-.lab-body{flex:1;min-width:0}
-.lab-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;line-height:1.3}
-.lab-platform{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-.lab-foot{display:flex;gap:10px;align-items:center;font-family:var(--mono);font-size:10px;flex-wrap:wrap}
-.lab-diff{padding:2px 7px;border-radius:4px;letter-spacing:.04em;font-weight:600;text-transform:uppercase;font-size:9.5px}
-.lab-diff.easy{background:rgba(34,197,94,0.12);color:#4ade80}
-.lab-diff.medium{background:rgba(245,158,11,0.12);color:#fbbf24}
-.lab-diff.hard{background:rgba(244,63,94,0.12);color:#fb7185}
-.lab-diff.insane{background:rgba(168,85,247,0.15);color:#c084fc}
-.lab-date{color:var(--faint);font-size:9.5px}
-
-/* ============================================= */
-/* CURRENTLY LEARNING */
-/* ============================================= */
-.now-strip{background:linear-gradient(135deg,rgba(168,85,247,0.05),rgba(0,255,229,0.04));border:1px solid rgba(168,85,247,0.15);border-radius:14px;padding:24px;margin-bottom:32px;position:relative;overflow:hidden}
-.now-strip::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.08),transparent 70%);pointer-events:none}
-.now-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative}
-.now-pulse{width:9px;height:9px;background:#c084fc;border-radius:50%;box-shadow:0 0 12px rgba(168,85,247,0.6);animation:nowPulse 2s ease-in-out infinite}
-@keyframes nowPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.3)}}
-.now-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:#c084fc;text-transform:uppercase;font-weight:600}
-.now-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px;position:relative}
-.now-sub{font-size:13px;color:var(--muted);line-height:1.7;position:relative}
-.now-sub strong{color:var(--text);font-weight:500}
-.now-progress{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;position:relative}
-.now-chip{font-family:var(--mono);font-size:10px;background:rgba(168,85,247,0.1);color:#c084fc;border:1px solid rgba(168,85,247,0.2);padding:4px 10px;border-radius:100px;letter-spacing:.04em}
-
-/* ============================================= */
 /* FOOTER */
-/* ============================================= */
 footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;z-index:2;background:rgba(0,0,0,0.2)}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border)}
 .footer-brand .logo{margin-bottom:14px}
@@ -443,23 +374,26 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 .footer-bottom{text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
 .footer-bottom span{color:var(--accent)}
 
-/* ============================================= */
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+
 /* CUSTOM CURSOR */
-/* ============================================= */
 .custom-cursor{position:fixed;pointer-events:none;z-index:9999;transform:translate(-2px,-2px);width:20px;height:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M2 2 L2 16 L6.5 11.5 L10 18 L12.5 16.8 L9 10 L15 10 Z' fill='%2300ffe5' stroke='%2300ffe5' stroke-width='0.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-size:contain;filter:drop-shadow(0 0 6px #00ffe5) drop-shadow(0 0 12px rgba(0,255,229,0.6));transition:filter .15s ease}
 .custom-cursor.clicking{filter:drop-shadow(0 0 10px #00ffe5) drop-shadow(0 0 20px rgba(0,255,229,0.9));transform:translate(-2px,-2px) scale(0.85)}
-.cursor-dot{width:6px;height:6px;background:rgba(0,255,229,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);box-shadow:0 0 8px #00ffe5,0 0 16px rgba(0,255,229,0.4)}
+.cursor-dot{width:6px;height:6px;background:rgba(0,255,229,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);box-shadow:0 0 8px #00ffe5}
+.page-transition{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9998;pointer-events:none;animation:ptFade 0.4s ease forwards}
+@keyframes ptFade{from{opacity:0}to{opacity:1}}
 
-.page-transition{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,var(--accent),var(--bg));z-index:9998;transform:scaleY(0);transform-origin:top;pointer-events:none;animation:modal-in 0.5s ease forwards}
-@keyframes modal-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* TOOLTIP */
+.tooltip{position:fixed;background:rgba(7,19,36,0.97);border:1px solid var(--border-bright);border-radius:6px;padding:6px 10px;font-family:var(--mono);font-size:10px;color:var(--text);pointer-events:none;z-index:9997;opacity:0;transition:opacity .15s;backdrop-filter:blur(8px);transform:translate(-50%,-130%)}
+.tooltip.show{opacity:1}
 
-/* ============================================= */
-/* AI CHAT BUBBLE */
-/* ============================================= */
+/* AI BUBBLE */
 #aiChat{position:fixed;bottom:24px;left:24px;z-index:950}
 #aiChatBubble{width:52px;height:52px;border-radius:50%;background:rgba(0,255,229,0.1);border:1px solid rgba(0,255,229,0.35);display:flex;align-items:center;justify-content:center;cursor:none;font-size:20px;box-shadow:0 0 20px rgba(0,255,229,0.15);transition:transform .2s,box-shadow .2s;animation:bubblePop 3s ease-in-out infinite}
 @keyframes bubblePop{0%,100%{box-shadow:0 0 20px rgba(0,255,229,0.15)}50%{box-shadow:0 0 34px rgba(0,255,229,0.38)}}
-#aiChatBubble:hover{transform:scale(1.1);box-shadow:0 0 36px rgba(0,255,229,0.4)}
+#aiChatBubble:hover{transform:scale(1.1)}
 #aiChatMenu{display:none;position:absolute;bottom:62px;left:0;background:rgba(7,19,36,0.97);border:1px solid rgba(0,255,229,0.18);border-radius:14px;padding:14px;width:240px;backdrop-filter:blur(16px);font-family:var(--mono);font-size:12px;animation:menuSlide .2s ease}
 @keyframes menuSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 #aiChatMenu.open{display:block}
@@ -468,15 +402,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 .ai-cmd:hover{background:rgba(0,255,229,0.06);color:var(--text);border-color:rgba(0,255,229,0.12)}
 .ai-cmd i{color:var(--accent);width:14px;text-align:center}
 
-/* ============================================= */
-/* TOOLTIP */
-/* ============================================= */
-.tooltip{position:fixed;background:rgba(7,19,36,0.97);border:1px solid var(--border-bright);border-radius:6px;padding:6px 10px;font-family:var(--mono);font-size:10px;color:var(--text);pointer-events:none;z-index:9997;opacity:0;transition:opacity .15s;backdrop-filter:blur(8px);transform:translate(-50%,-130%)}
-.tooltip.show{opacity:1}
-
-/* ============================================= */
 /* RESPONSIVE */
-/* ============================================= */
 @media(max-width:1024px){
   .hero-grid{grid-template-columns:1fr;gap:30px}
   .identity-card{max-width:380px}
@@ -487,12 +413,11 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 @media(max-width:768px){
   body{cursor:auto}
   .custom-cursor,.cursor-dot{display:none}
-  .btn-ghost,.btn-solid,.btn-viewall,.connect-card,.blog-card,#ltInput,.lt-suggest-item,#aiChatBubble,.ai-cmd,.service-card,.footer-col a{cursor:pointer}
+  .btn-ghost,.btn-solid,.btn-viewall,.connect-card,.blog-card,#ltInput,.lt-suggest-item,#aiChatBubble,.ai-cmd,.service-card,.footer-col a,.det-filter,.det-copy,.lab-card,.nav-links a,.nav-cta{cursor:pointer}
   .nav-links,.nav-status{display:none}
-  .nav-toggle{display:block}
   .stats-bar{grid-template-columns:repeat(2,1fr)}
   .hero-title{font-size:2.2rem}
-  .blog-grid{grid-template-columns:1fr}
+  .blog-grid,.det-grid,.lab-grid{grid-template-columns:1fr}
   #sysStatusWidget{display:none}
   #aiChat{bottom:16px;left:16px}
   .contact-grid{grid-template-columns:1fr;gap:20px}
@@ -506,34 +431,16 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 </head>
 <body>
 
-<!-- Page Loader -->
-<div id="pageLoader">
-  <div class="loader-shield"><i class="fas fa-shield-halved"></i></div>
-  <div class="loader-text">Initializing <span>secure session</span>...</div>
-</div>
-
-<!-- Scroll Progress -->
+<div id="pageLoader"><div class="loader-shield"><i class="fas fa-shield-halved"></i></div><div class="loader-text">Initializing <span>secure session</span>...</div></div>
 <div id="scrollProgress"></div>
-
-<!-- Particle canvas -->
 <canvas id="bgCanvas"></canvas>
-
-<!-- Matrix rain canvas -->
 <canvas id="matrixCanvas"></canvas>
-
-<!-- Mouse glow -->
 <div id="mouseGlow"></div>
-
-<!-- Custom cursor -->
 <div class="custom-cursor" id="customCursor"></div>
 <div class="cursor-dot" id="cursorDot"></div>
-
-<!-- Tooltip -->
 <div class="tooltip" id="tooltip"></div>
 
-<!-- ============================================= -->
 <!-- NAV -->
-<!-- ============================================= -->
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="logo">
@@ -557,60 +464,28 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </nav>
 
-<!-- System Status Widget -->
-<div id="sysStatusWidget">
-  <div class="sws-row">
-    <span class="nav-sdot"></span>
-    <span class="sws-online">SYSTEM ONLINE</span>
-    <span class="sws-clock" id="swsClock">00:00:00</span>
-  </div>
-</div>
+<div id="sysStatusWidget"><div class="sws-row"><span class="nav-sdot"></span><span class="sws-online">SYSTEM ONLINE</span><span class="sws-clock" id="swsClock">00:00:00</span></div></div>
 
-<!-- ============================================= -->
 <!-- HERO -->
-<!-- ============================================= -->
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content">
         <div class="status-bar"><span class="status-dot"></span> Open to Opportunities · Hyderabad, India</div>
         <div class="hero-pretitle">// SOC Analyst & Threat Hunter</div>
-        <h1 class="hero-title">
-          <span class="line1">Swetha Devi</span>
-          <span class="line2">Sai Priya Bonu</span>
-        </h1>
-
-        <div class="typewriter-wrap">
-          <span class="typewriter-prefix">$ role —&gt;&nbsp;</span>
-          <span id="tw-text"></span><span class="cursor"></span>
-        </div>
-
-        <div class="tw2-wrap">
-          <span class="tw2-prefix">$ tool —&gt;&nbsp;</span>
-          <span id="tw2-text"></span><span class="cursor2"></span>
-        </div>
-
+        <h1 class="hero-title"><span class="line1">Swetha Devi</span><span class="line2">Sai Priya Bonu</span></h1>
+        <div class="typewriter-wrap"><span class="typewriter-prefix">$ role —&gt;&nbsp;</span><span id="tw-text"></span><span class="cursor"></span></div>
+        <div class="tw2-wrap"><span class="tw2-prefix">$ tool —&gt;&nbsp;</span><span id="tw2-text"></span><span class="cursor2"></span></div>
         <p class="hero-bio">SOC Analyst with <strong>1+ year</strong> of experience in threat detection, alert triage, and incident investigation across enterprise environments. Hands-on with the <strong>Microsoft Security Stack</strong> — MDE, Sentinel, Defender for O365, Entra ID, MDCA. <strong>HTB CDSA</strong> certified. MITRE ATT&CK-aligned across identity, endpoint, and email vectors.</p>
-
         <div class="badge-row">
-          <span class="badge">MITRE ATT&CK</span>
-          <span class="badge">Microsoft Sentinel</span>
-          <span class="badge">MDE / Defender XDR</span>
-          <span class="badge">KQL</span>
-          <span class="badge">Incident Response</span>
-          <span class="badge">Threat Hunting</span>
-          <span class="badge">Python / Bash</span>
-          <span class="badge cert">★ HTB CDSA</span>
-          <span class="badge cert">★ CAP</span>
+          <span class="badge">MITRE ATT&CK</span><span class="badge">Microsoft Sentinel</span><span class="badge">MDE / Defender XDR</span><span class="badge">KQL</span><span class="badge">Incident Response</span><span class="badge">Threat Hunting</span><span class="badge">Python / Bash</span><span class="badge cert">★ HTB CDSA</span><span class="badge cert">★ CAP</span>
         </div>
-
         <div class="hero-actions">
           <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="btn-ghost"><i class="fab fa-linkedin"></i> LinkedIn</a>
           <a href="https://medium.com/@swethadevi1125" target="_blank" class="btn-ghost"><i class="fab fa-medium"></i> Medium</a>
           <a href="#research" class="btn-ghost"><i class="fas fa-book-open"></i> Research</a>
           <a href="mailto:swethadevi1125@gmail.com" class="btn-solid"><i class="fas fa-envelope"></i> Get in Touch</a>
         </div>
-
         <div class="stats-bar reveal">
           <div class="stat"><div class="stat-num" data-count="1" data-suffix="yr+">0</div><div class="stat-label">SOC Experience</div></div>
           <div class="stat"><div class="stat-num" data-count="3">0</div><div class="stat-label">Certifications</div></div>
@@ -619,42 +494,29 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         </div>
       </div>
 
-      <!-- Identity Card on the right -->
+      <!-- IDENTITY CARD — FIXED: Now shows malware analysis, not BTL2/AiTM -->
       <div class="identity-card reveal">
-        <div class="id-card-bar">
-          <span class="dot-r"></span>
-          <span>OPERATOR PROFILE</span>
-          <span style="margin-left:auto;color:var(--accent)">v2.1</span>
-        </div>
+        <div class="id-card-bar"><span class="dot-r"></span><span>OPERATOR PROFILE</span><span style="margin-left:auto;color:var(--accent)">v2.1</span></div>
         <div class="id-avatar">SD</div>
         <div class="id-name">Swetha Devi S.P. Bonu</div>
         <div class="id-handle">@unabletofind</div>
-
         <div class="id-divider"></div>
-
         <div class="id-row"><span class="id-row-key">ROLE</span><span class="id-row-val">SOC Analyst</span></div>
-        <div class="id-row"><span class="id-row-key">FOCUS</span><span class="id-row-val accent">Threat Hunting</span></div>
+        <div class="id-row"><span class="id-row-key">FOCUS</span><span class="id-row-val accent">Threat Intel · Malware RE</span></div>
         <div class="id-row"><span class="id-row-key">LOC</span><span class="id-row-val">Hyderabad, IN</span></div>
         <div class="id-row"><span class="id-row-key">CLEARANCE</span><span class="id-row-val accent">CDSA · CAP</span></div>
         <div class="id-row"><span class="id-row-key">STATUS</span><span class="id-row-val green">⬤ Available</span></div>
-
         <div class="id-now-card">
           <div class="id-now-label"><span class="pulse"></span> Now</div>
-          <div class="id-now-text">Studying <strong>BTL2</strong>, hunting <strong>AiTM phishing</strong> patterns in Sentinel, and publishing detection rules on GitHub.</div>
+          <div class="id-now-text">Learning <strong>Malware Analysis</strong> with TCM Security — x32dbg, Ghidra, YARA. Building toward Threat Intel Researcher.</div>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="scroll-hint">
-    <span>scroll</span>
-    <i class="fas fa-chevron-down"></i>
-  </div>
+  <div class="scroll-hint"><span>scroll</span><i class="fas fa-chevron-down"></i></div>
 </section>
 
-<!-- ============================================= -->
-<!-- INTERACTIVE TERMINAL -->
-<!-- ============================================= -->
+<!-- TERMINAL -->
 <section id="about">
   <div class="container">
     <div class="sec-header reveal">
@@ -668,20 +530,18 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="term-dot" style="background:#22c55e"></div>
         <span class="term-path">swetha@soc:~$ <span style="color:var(--accent)">interactive shell</span></span>
       </div>
-      <div id="liveTermBody">
-        <p class="lt-line tc-green">Welcome to Swetha's interactive terminal. Type <span class="tc-yellow">help</span> to get started, or click a suggestion below.</p>
-      </div>
+      <div id="liveTermBody"></div>
       <div class="lt-input-row">
         <span class="lt-prompt">swetha@soc:~$&nbsp;</span>
         <input id="ltInput" type="text" autocomplete="off" spellcheck="false" placeholder="type a command and press Enter...">
       </div>
       <div class="lt-suggest">
+        <span class="lt-suggest-item" data-cmd="help">help</span>
         <span class="lt-suggest-item" data-cmd="whoami">whoami</span>
         <span class="lt-suggest-item" data-cmd="skills">skills</span>
         <span class="lt-suggest-item" data-cmd="experience">experience</span>
         <span class="lt-suggest-item" data-cmd="research">research</span>
         <span class="lt-suggest-item" data-cmd="contact">contact</span>
-        <span class="lt-suggest-item" data-cmd="banner">banner</span>
         <span class="lt-suggest-item" data-cmd="hire">hire</span>
         <span class="lt-suggest-item" data-cmd="sudo">sudo</span>
       </div>
@@ -689,72 +549,31 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </section>
 
-<!-- ============================================= -->
-<!-- WHAT I DO / SERVICES -->
-<!-- ============================================= -->
+<!-- SERVICES -->
 <section id="services">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 02 — Services</div><h2 class="sec-title">What I Do</h2></div>
       <div class="sec-line"></div>
     </div>
-
     <div class="services-grid">
-      <div class="service-card reveal">
-        <div class="service-icon" style="background:rgba(0,255,229,0.08);color:var(--accent)"><i class="fas fa-bell"></i></div>
-        <div class="service-title">Alert Triage & Investigation</div>
-        <div class="service-desc">Structured incident analysis across identity, endpoint, and email vectors. Validate alerts, extract IOCs, and build context-rich timelines.</div>
-        <div class="service-tags"><span class="service-tag">MDE</span><span class="service-tag">Sentinel</span><span class="service-tag">MDCA</span></div>
-      </div>
-
-      <div class="service-card reveal" style="transition-delay:.05s">
-        <div class="service-icon" style="background:rgba(244,63,94,0.08);color:var(--red)"><i class="fas fa-spider"></i></div>
-        <div class="service-title">Threat Hunting</div>
-        <div class="service-desc">Proactive hunts mapped to MITRE ATT&CK. KQL queries across endpoint and identity telemetry to surface stealthy attacker behavior.</div>
-        <div class="service-tags"><span class="service-tag">KQL</span><span class="service-tag">ATT&CK</span><span class="service-tag">Sigma</span></div>
-      </div>
-
-      <div class="service-card reveal" style="transition-delay:.1s">
-        <div class="service-icon" style="background:rgba(59,130,246,0.08);color:var(--accent2)"><i class="fas fa-shield-virus"></i></div>
-        <div class="service-title">Incident Response</div>
-        <div class="service-desc">Endpoint isolation, account disable, session revocation, URL blocking, and live response. Containment-first with documented playbooks.</div>
-        <div class="service-tags"><span class="service-tag">Live Response</span><span class="service-tag">Entra ID</span><span class="service-tag">Jira</span></div>
-      </div>
-
-      <div class="service-card reveal" style="transition-delay:.15s">
-        <div class="service-icon" style="background:rgba(245,158,11,0.08);color:var(--amber)"><i class="fas fa-envelope-open-text"></i></div>
-        <div class="service-title">Email Threat Analysis</div>
-        <div class="service-desc">Header inspection, SPF/DKIM/DMARC validation, sender reputation, URL detonation. Specialized in AiTM phishing and BEC patterns.</div>
-        <div class="service-tags"><span class="service-tag">MDO</span><span class="service-tag">URL Sandbox</span><span class="service-tag">VT</span></div>
-      </div>
-
-      <div class="service-card reveal" style="transition-delay:.2s">
-        <div class="service-icon" style="background:rgba(168,85,247,0.08);color:var(--accent3)"><i class="fas fa-code"></i></div>
-        <div class="service-title">Detection Engineering</div>
-        <div class="service-desc">Author and tune analytics rules. Convert ATT&CK techniques into KQL hunts, Sigma rules, and automated playbooks for the SOC.</div>
-        <div class="service-tags"><span class="service-tag">KQL</span><span class="service-tag">Sigma</span><span class="service-tag">Python</span></div>
-      </div>
-
-      <div class="service-card reveal" style="transition-delay:.25s">
-        <div class="service-icon" style="background:rgba(34,197,94,0.08);color:var(--green)"><i class="fas fa-graduation-cap"></i></div>
-        <div class="service-title">Cybersecurity Mentoring</div>
-        <div class="service-desc">Teach SOC operations, IAM fundamentals, and ethical hacking with hands-on labs. Bridge theory and real-world workflows.</div>
-        <div class="service-tags"><span class="service-tag">SOC</span><span class="service-tag">IAM</span><span class="service-tag">Labs</span></div>
-      </div>
+      <div class="service-card reveal"><div class="service-icon" style="background:rgba(0,255,229,0.08);color:var(--accent)"><i class="fas fa-bell"></i></div><div class="service-title">Alert Triage & Investigation</div><div class="service-desc">Structured incident analysis across identity, endpoint, and email vectors. Validate alerts, extract IOCs, and build context-rich timelines.</div><div class="service-tags"><span class="service-tag">MDE</span><span class="service-tag">Sentinel</span><span class="service-tag">MDCA</span></div></div>
+      <div class="service-card reveal" style="transition-delay:.05s"><div class="service-icon" style="background:rgba(244,63,94,0.08);color:var(--red)"><i class="fas fa-spider"></i></div><div class="service-title">Threat Hunting</div><div class="service-desc">Proactive hunts mapped to MITRE ATT&CK. KQL queries across endpoint and identity telemetry to surface stealthy attacker behavior.</div><div class="service-tags"><span class="service-tag">KQL</span><span class="service-tag">ATT&CK</span><span class="service-tag">Sigma</span></div></div>
+      <div class="service-card reveal" style="transition-delay:.1s"><div class="service-icon" style="background:rgba(59,130,246,0.08);color:var(--accent2)"><i class="fas fa-shield-virus"></i></div><div class="service-title">Incident Response</div><div class="service-desc">Endpoint isolation, account disable, session revocation, URL blocking, and live response. Containment-first with documented playbooks.</div><div class="service-tags"><span class="service-tag">Live Response</span><span class="service-tag">Entra ID</span><span class="service-tag">Jira</span></div></div>
+      <div class="service-card reveal" style="transition-delay:.15s"><div class="service-icon" style="background:rgba(245,158,11,0.08);color:var(--amber)"><i class="fas fa-envelope-open-text"></i></div><div class="service-title">Email Threat Analysis</div><div class="service-desc">Header inspection, SPF/DKIM/DMARC validation, sender reputation, URL detonation. Specialized in AiTM phishing and BEC patterns.</div><div class="service-tags"><span class="service-tag">MDO</span><span class="service-tag">URL Sandbox</span><span class="service-tag">VT</span></div></div>
+      <div class="service-card reveal" style="transition-delay:.2s"><div class="service-icon" style="background:rgba(168,85,247,0.08);color:var(--accent3)"><i class="fas fa-code"></i></div><div class="service-title">Detection Engineering</div><div class="service-desc">Author and tune analytics rules. Convert ATT&CK techniques into KQL hunts, Sigma rules, and automated playbooks for the SOC.</div><div class="service-tags"><span class="service-tag">KQL</span><span class="service-tag">Sigma</span><span class="service-tag">Python</span></div></div>
+      <div class="service-card reveal" style="transition-delay:.25s"><div class="service-icon" style="background:rgba(34,197,94,0.08);color:var(--green)"><i class="fas fa-graduation-cap"></i></div><div class="service-title">Cybersecurity Mentoring</div><div class="service-desc">Teach SOC operations, IAM fundamentals, and ethical hacking with hands-on labs. Bridge theory and real-world workflows.</div><div class="service-tags"><span class="service-tag">SOC</span><span class="service-tag">IAM</span><span class="service-tag">Labs</span></div></div>
     </div>
   </div>
 </section>
 
-<!-- ============================================= -->
-<!-- FEATURED CASE STUDY -->
-<!-- ============================================= -->
+<!-- CASE STUDY -->
 <section id="case-study" style="padding-top:0">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 03 — Featured Investigation</div><h2 class="sec-title">Case Study</h2></div>
       <div class="sec-line"></div>
     </div>
-
     <div class="case-study reveal">
       <div>
         <div class="case-study-tag"><i class="fas fa-skull"></i> Supply Chain · Confirmed</div>
@@ -768,23 +587,18 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         </div>
         <a href="CPUID.html" class="btn-solid"><i class="fas fa-play"></i> Read Full Investigation</a>
       </div>
-      <div class="case-study-visual">
-        <div class="case-icon-bg"><i class="fas fa-virus"></i></div>
-      </div>
+      <div class="case-study-visual"><div class="case-icon-bg"><i class="fas fa-virus"></i></div></div>
     </div>
   </div>
 </section>
 
-<!-- ============================================= -->
 <!-- SKILLS -->
-<!-- ============================================= -->
 <section id="skills">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 04 — Arsenal</div><h2 class="sec-title">Skills & Tools</h2></div>
       <div class="sec-line"></div>
     </div>
-
     <div class="skills-grid">
       <div class="skill-card reveal">
         <div class="skill-card-head"><div class="skill-icon" style="background:rgba(0,255,229,0.08);color:var(--accent)"><i class="fas fa-crosshairs"></i></div><div class="skill-title">Detection & Investigation</div></div>
@@ -793,7 +607,6 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">IOC Extraction & Enrichment</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div></div>
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Incident Response</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
       </div>
-
       <div class="skill-card reveal" style="transition-delay:.1s">
         <div class="skill-card-head"><div class="skill-icon" style="background:rgba(59,130,246,0.08);color:var(--accent2)"><i class="fas fa-server"></i></div><div class="skill-title">Microsoft Security Stack</div></div>
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Microsoft Sentinel</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div></div>
@@ -801,7 +614,6 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Defender for Office 365</span><span class="skill-bar-pct">86%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="86"></div></div></div>
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Entra ID / MDCA</span><span class="skill-bar-pct">82%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="82"></div></div></div>
       </div>
-
       <div class="skill-card reveal" style="transition-delay:.2s">
         <div class="skill-card-head"><div class="skill-icon" style="background:rgba(244,63,94,0.08);color:var(--red)"><i class="fas fa-spider"></i></div><div class="skill-title">Threat Intelligence</div></div>
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">MITRE ATT&CK</span><span class="skill-bar-pct">93%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="93"></div></div></div>
@@ -810,8 +622,6 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="skill-bar-item"><div class="skill-bar-top"><span class="skill-bar-name">Cyber Kill Chain</span><span class="skill-bar-pct">88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="88"></div></div></div>
       </div>
     </div>
-
-    <!-- Tools Grid -->
     <div class="tools-section reveal">
       <div class="tools-label">// Daily Toolkit</div>
       <div class="tools-grid">
@@ -832,36 +642,19 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </section>
 
-<!-- ============================================= -->
-<!-- ACTIVITY HEATMAP -->
-<!-- ============================================= -->
+<!-- ACTIVITY -->
 <section id="activity">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 05 — Pulse</div><h2 class="sec-title">SOC Activity</h2></div>
       <div class="sec-line"></div>
     </div>
-
     <div class="activity-section reveal">
       <div class="activity-head">
         <div class="activity-title"><i class="fas fa-chart-simple"></i> Last 12 months · Investigations, hunts, and research</div>
-        <div class="activity-legend">
-          Less
-          <div class="legend-cells">
-            <div class="legend-cell" style="background:rgba(255,255,255,0.03)"></div>
-            <div class="legend-cell" data-level="1" style="background:rgba(0,255,229,0.12)"></div>
-            <div class="legend-cell" data-level="2" style="background:rgba(0,255,229,0.30)"></div>
-            <div class="legend-cell" data-level="3" style="background:rgba(0,255,229,0.55)"></div>
-            <div class="legend-cell" data-level="4" style="background:rgba(0,255,229,0.85)"></div>
-          </div>
-          More
-        </div>
+        <div class="activity-legend">Less<div class="legend-cells"><div class="legend-cell" style="background:rgba(255,255,255,0.03)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.12)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.30)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.55)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.85)"></div></div>More</div>
       </div>
-
-      <div class="heatmap-wrap">
-        <div class="heatmap-grid" id="heatmapGrid"></div>
-      </div>
-
+      <div class="heatmap-wrap"><div class="heatmap-grid" id="heatmapGrid"></div></div>
       <div class="heatmap-stats">
         <div class="heat-stat"><div class="heat-stat-num" id="heatTotal">0</div><div class="heat-stat-lbl">// Total Active Days</div></div>
         <div class="heat-stat"><div class="heat-stat-num" id="heatStreak">0</div><div class="heat-stat-lbl">// Longest Streak</div></div>
@@ -872,34 +665,28 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </section>
 
-<!-- ============================================= -->
-<!-- DETECTION RULES -->
-<!-- ============================================= -->
+<!-- DETECTION RULES — FIXED: section heading above strip, strip above heading -->
 <section id="detections">
   <div class="container">
+
+    <!-- Currently Learning strip — FIXED: now has its own heading context -->
     <div class="now-strip reveal">
-      <div class="now-head">
-        <span class="now-pulse"></span>
-        <span class="now-label">// Currently Learning</span>
-      </div>
-      <div class="now-title">Malware Analysis · TCM Security</div>
-      <div class="now-sub">Working through the <strong>Practical Malware Analysis & Triage</strong> course — static & dynamic analysis, unpacking, behavioral detection, and reverse engineering with x32dbg + Ghidra. Goal: be able to triage a sample end-to-end and write the YARA rule that catches the next variant.</div>
+      <div class="now-head"><span class="now-pulse"></span><span class="now-label">// Currently Learning</span></div>
+      <div class="now-strip-title">Malware Analysis · TCM Security</div>
+      <div class="now-sub">Working through the <strong>Practical Malware Analysis & Triage</strong> course — static & dynamic analysis, unpacking, behavioral detection, and reverse engineering with x32dbg + Ghidra. Goal: triage a sample end-to-end and write the YARA rule that catches the next variant.</div>
       <div class="now-progress">
-        <span class="now-chip">x32dbg</span>
-        <span class="now-chip">Ghidra</span>
-        <span class="now-chip">PE Analysis</span>
-        <span class="now-chip">YARA</span>
-        <span class="now-chip">Sandboxing</span>
-        <a href="now.html" class="now-chip" style="text-decoration:none;cursor:none">→ See full /now</a>
+        <span class="now-chip">x32dbg</span><span class="now-chip">Ghidra</span><span class="now-chip">PE Analysis</span><span class="now-chip">YARA</span><span class="now-chip">Sandboxing</span>
+        <a href="now.html" class="now-chip" style="cursor:none">→ See full /now</a>
       </div>
     </div>
 
+    <!-- Detection Rules section heading — FIXED: now appears after strip, not missing -->
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 06 — Detections</div><h2 class="sec-title">Detection Rules</h2></div>
       <div class="sec-line"></div>
     </div>
 
-    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hunting queries and detection logic I've written or adapted while triaging real alerts. Mapped to MITRE, severity-tagged, and ready to paste into your SIEM.</p>
+    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">KQL hunts, Sigma rules, and YARA signatures I've written or adapted while triaging real alerts. Mapped to MITRE, severity-tagged, copy-paste ready.</p>
 
     <div class="det-toolbar reveal">
       <button class="det-filter active" data-platform="all">All</button>
@@ -910,31 +697,29 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 
     <div class="det-grid reveal" id="detGrid"></div>
 
-    <div class="reveal" style="text-align:center;margin-top:30px">
-      <a href="https://github.com/unabletofind" target="_blank" rel="noopener" class="btn-viewall"><i class="fab fa-github"></i> See all rules on GitHub <i class="fas fa-arrow-right"></i></a>
+    <div class="reveal" style="text-align:center;margin-top:30px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="detections.html" class="btn-viewall"><i class="fas fa-shield-halved"></i> View All Detection Rules <i class="fas fa-arrow-right"></i></a>
+      <a href="https://github.com/unabletofind" target="_blank" rel="noopener" class="btn-viewall"><i class="fab fa-github"></i> GitHub</a>
     </div>
   </div>
 </section>
 
-<!-- ============================================= -->
 <!-- LABS & CTFs -->
-<!-- ============================================= -->
 <section id="labs">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 07 — Labs</div><h2 class="sec-title">CTFs & Labs</h2></div>
       <div class="sec-line"></div>
     </div>
-
-    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hands-on practice across blue team and offensive labs. Each one teaches something I take back to the SOC desk.</p>
-
+    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hands-on practice across blue team and offensive platforms. Each one teaches something I take back to the SOC desk.</p>
     <div class="lab-grid reveal" id="labGrid"></div>
+    <div class="view-all-wrap reveal">
+      <a href="labs.html" class="btn-viewall"><i class="fas fa-flask"></i> View All Labs &nbsp;→</a>
+    </div>
   </div>
 </section>
 
-<!-- ============================================= -->
 <!-- EXPERIENCE -->
-<!-- ============================================= -->
 <section id="experience">
   <div class="container">
     <div class="sec-header reveal">
@@ -944,53 +729,35 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
     <div class="timeline">
       <div class="tl-item reveal">
         <div class="tl-dot"></div>
-        <div class="tl-head">
-          <div><div class="tl-title">Cybersecurity Analyst — AI-Augmented SOC</div><div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> TriArmour AI Private Limited, Hyderabad</div></div>
-          <div class="tl-period">Nov 2024 – Present</div>
-        </div>
-        <div class="tl-body">Investigated identity, endpoint, and email security incidents using MDE, Microsoft Sentinel, Defender for Office 365, Entra ID, and MDCA. Performed structured incident analysis across anomalous sign-in activity, AiTM indicators, suspicious process execution, lateral movement, and phishing campaigns. Triaged alerts in MTO, managed incidents through USO, tracked tickets in Jira — executing endpoint isolation, account disable, session revocation, URL blocking, and live response. Validated suspicious emails via header inspection, SPF/DKIM/DMARC validation, sender reputation, and URL analysis. Correlated alerts with Mandiant IOCs, AlienVault OTX, VirusTotal, and AbuseIPDB.</div>
-
+        <div class="tl-head"><div><div class="tl-title">Cybersecurity Analyst — AI-Augmented SOC</div><div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> TriArmour AI Private Limited, Hyderabad</div></div><div class="tl-period">Nov 2024 – Present</div></div>
+        <div class="tl-body">Investigated identity, endpoint, and email security incidents using MDE, Microsoft Sentinel, Defender for Office 365, Entra ID, and MDCA. Performed structured incident analysis across anomalous sign-in activity, AiTM indicators, suspicious process execution, lateral movement, and phishing campaigns. Triaged alerts in MTO, managed incidents through USO, tracked tickets in Jira — executing endpoint isolation, account disable, session revocation, URL blocking, and live response. Validated suspicious emails via header inspection, SPF/DKIM/DMARC validation, sender reputation, and URL analysis.</div>
         <div class="tl-highlights">
           <div class="tl-hl-item"><span class="tl-hl-num">500+</span><span class="tl-hl-lbl">alerts triaged</span></div>
           <div class="tl-hl-item"><span class="tl-hl-num">5+</span><span class="tl-hl-lbl">platforms operated</span></div>
           <div class="tl-hl-item"><span class="tl-hl-num">24/7</span><span class="tl-hl-lbl">SOC coverage</span></div>
           <div class="tl-hl-item"><span class="tl-hl-num">MITRE</span><span class="tl-hl-lbl">aligned investigations</span></div>
         </div>
-
-        <div class="tl-tags"><span class="tl-tag">Microsoft Sentinel</span><span class="tl-tag">MDE</span><span class="tl-tag">Defender for O365</span><span class="tl-tag">Entra ID</span><span class="tl-tag">KQL</span><span class="tl-tag">Jira</span><span class="tl-tag">Forcepoint DLP</span><span class="tl-tag">MITRE ATT&CK</span></div>
+        <div class="tl-tags"><span class="tl-tag">Microsoft Sentinel</span><span class="tl-tag">MDE</span><span class="tl-tag">Defender for O365</span><span class="tl-tag">Entra ID</span><span class="tl-tag">KQL</span><span class="tl-tag">Jira</span><span class="tl-tag">Forcepoint DLP</span></div>
       </div>
-
       <div class="tl-item reveal" style="transition-delay:.08s">
         <div class="tl-dot" style="background:#a855f7;box-shadow:0 0 0 3px rgba(168,85,247,0.12),0 0 14px rgba(168,85,247,0.3)"></div>
-        <div class="tl-head">
-          <div><div class="tl-title">Cybersecurity Instructor</div><div class="tl-company"><i class="fas fa-chalkboard-teacher" style="font-size:11px"></i> Freelance / Academic Mentoring</div></div>
-          <div class="tl-period" style="color:#a855f7;background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.2)">2024 – Present</div>
-        </div>
-        <div class="tl-body">Taught core cybersecurity concepts to students and peers, covering SOC operations, Identity & Access Management (IAM) fundamentals with hands-on labs, Zscaler basics for cloud security, and ethical hacking foundations. Bridged the gap between theory and real-world SOC workflows, helping learners understand alert triage, access control principles, and network security posture.</div>
-        <div class="tl-tags"><span class="tl-tag">SOC Operations</span><span class="tl-tag">IAM</span><span class="tl-tag">Zscaler</span><span class="tl-tag">Ethical Hacking</span><span class="tl-tag">Lab Facilitation</span></div>
+        <div class="tl-head"><div><div class="tl-title">Cybersecurity Instructor</div><div class="tl-company"><i class="fas fa-chalkboard-teacher" style="font-size:11px"></i> Freelance / Academic Mentoring</div></div><div class="tl-period" style="color:#a855f7;background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.2)">2024 – Present</div></div>
+        <div class="tl-body">Teaching SOC operations, IAM fundamentals with hands-on labs, Zscaler basics, and ethical hacking foundations. Bridging the gap between theory and real-world SOC workflows for IT professionals with 15–20 years of experience.</div>
+        <div class="tl-tags"><span class="tl-tag">SOC Operations</span><span class="tl-tag">IAM</span><span class="tl-tag">Zscaler</span><span class="tl-tag">Ethical Hacking</span></div>
       </div>
-
       <div class="tl-item reveal" style="transition-delay:.1s">
         <div class="tl-dot" style="background:var(--accent2);box-shadow:0 0 0 3px rgba(59,130,246,0.12),0 0 14px rgba(59,130,246,0.3)"></div>
-        <div class="tl-head">
-          <div><div class="tl-title">Cybersecurity Intern</div><div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> GradeSpot IT</div></div>
-          <div class="tl-period" style="color:var(--accent2);background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.15)">Sep 2023 – Mar 2024</div>
-        </div>
-        <div class="tl-body">Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations. Completed hands-on training in ethical hacking and SOC operations. Contributed to security awareness training development and incident response playbook documentation.</div>
-        <div class="tl-tags"><span class="tl-tag">Nessus</span><span class="tl-tag">Ethical Hacking</span><span class="tl-tag">Vulnerability Assessment</span><span class="tl-tag">IR Playbooks</span><span class="tl-tag">GoPhish</span></div>
+        <div class="tl-head"><div><div class="tl-title">Cybersecurity Intern</div><div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> GradeSpot IT</div></div><div class="tl-period" style="color:var(--accent2);background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.15)">Sep 2023 – Mar 2024</div></div>
+        <div class="tl-body">Performed vulnerability assessments using Nessus, identifying high-risk misconfigurations. Completed hands-on training in ethical hacking and SOC operations. Contributed to security awareness training and IR playbook documentation.</div>
+        <div class="tl-tags"><span class="tl-tag">Nessus</span><span class="tl-tag">Ethical Hacking</span><span class="tl-tag">Vulnerability Assessment</span><span class="tl-tag">GoPhish</span></div>
       </div>
-
       <div class="tl-item reveal" style="transition-delay:.2s">
         <div class="tl-dot" style="background:var(--amber);box-shadow:0 0 0 3px rgba(245,158,11,0.12),0 0 14px rgba(245,158,11,0.3)"></div>
-        <div class="tl-head">
-          <div><div class="tl-title">B.Tech in Cyber Security</div><div class="tl-company"><i class="fas fa-graduation-cap" style="font-size:11px"></i> Sri Indu College of Engineering and Technology · CGPA: 8.12</div></div>
-          <div class="tl-period" style="color:var(--amber);background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.15)">Nov 2021 – May 2025</div>
-        </div>
+        <div class="tl-head"><div><div class="tl-title">B.Tech in Cyber Security</div><div class="tl-company"><i class="fas fa-graduation-cap" style="font-size:11px"></i> Sri Indu College of Engineering and Technology · CGPA: 8.12</div></div><div class="tl-period" style="color:var(--amber);background:rgba(245,158,11,0.07);border-color:rgba(245,158,11,0.15)">Nov 2021 – May 2025</div></div>
         <div class="tl-body">Specialized undergraduate degree in Cyber Security covering network security, ethical hacking, cryptography, digital forensics, and SOC operations.</div>
         <div class="tl-tags"><span class="tl-tag">Cyber Security</span><span class="tl-tag">Network Security</span><span class="tl-tag">Digital Forensics</span></div>
       </div>
     </div>
-
     <div style="margin-top:48px">
       <div class="sec-header reveal">
         <div class="sec-meta"><div class="sec-tag">// 08b — Certs</div><h2 class="sec-title" style="font-size:1.4rem">Certifications</h2></div>
@@ -1005,16 +772,14 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </section>
 
-<!-- ============================================= -->
-<!-- RESEARCH / BLOG -->
-<!-- ============================================= -->
+<!-- RESEARCH -->
 <section id="research">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 09 — Research</div><h2 class="sec-title">Attack Deep Dives</h2></div>
       <div class="sec-line"></div>
     </div>
-    <p class="reveal" style="color:var(--muted);margin-bottom:30px;font-size:13px;font-family:var(--mono)">Showing latest publications. In-depth analysis covering attack chain, methodology, detection rules, and IR playbooks.</p>
+    <p class="reveal" style="color:var(--muted);margin-bottom:30px;font-size:13px;font-family:var(--mono)">Latest publications · In-depth analysis covering attack chain, methodology, detection rules, and IR playbooks.</p>
     <div class="blog-grid reveal" id="blogGrid"></div>
     <div class="view-all-wrap reveal">
       <a href="research.html" class="btn-viewall"><i class="fas fa-layer-group"></i> View All Research Posts &nbsp;→</a>
@@ -1022,23 +787,19 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   </div>
 </section>
 
-<!-- ============================================= -->
 <!-- CONNECT -->
-<!-- ============================================= -->
 <section id="connect">
   <div class="container">
     <div class="sec-header reveal">
       <div class="sec-meta"><div class="sec-tag">// 10 — Contact</div><h2 class="sec-title">Connect</h2></div>
       <div class="sec-line"></div>
     </div>
-
     <div class="connect-grid reveal">
       <a href="mailto:swethadevi1125@gmail.com" class="connect-card"><div class="connect-icon"><i class="fas fa-envelope"></i></div><div class="connect-name">Email</div><div class="connect-sub">swethadevi1125@gmail.com</div></a>
       <a href="https://linkedin.com/in/bonu-swetha-devi-sai-priya" target="_blank" class="connect-card"><div class="connect-icon"><i class="fab fa-linkedin"></i></div><div class="connect-name">LinkedIn</div><div class="connect-sub">Connect professionally</div></a>
       <a href="https://medium.com/@swethadevi1125" target="_blank" class="connect-card"><div class="connect-icon"><i class="fab fa-medium"></i></div><div class="connect-name">Medium</div><div class="connect-sub">Security write-ups</div></a>
       <a href="https://github.com/unabletofind" target="_blank" class="connect-card"><div class="connect-icon"><i class="fab fa-github"></i></div><div class="connect-name">GitHub</div><div class="connect-sub">Detection rules & tools</div></a>
     </div>
-
     <div class="contact-card reveal">
       <div class="contact-grid">
         <div class="contact-text">
@@ -1058,10 +819,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#" class="logo">
-          <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
-          <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div>
-        </a>
+        <a href="#" class="logo"><div class="logo-shield"><i class="fas fa-shield-halved"></i></div><div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Threat Hunting</div></div></a>
         <p class="footer-tagline">SOC Analyst & Detection Engineer based in Hyderabad. Hunting threats across the Microsoft Security stack — alert by alert, IOC by IOC.</p>
       </div>
       <div class="footer-col">
@@ -1081,222 +839,140 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <a href="https://github.com/unabletofind" target="_blank">GitHub</a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 <span>Swetha Devi Sai Priya Bonu</span> &nbsp;·&nbsp; Built with passion for security &nbsp;·&nbsp; <span style="color:var(--green)">⬤ Available for hire</span></p>
-    </div>
+    <div class="footer-bottom"><p>© 2026 <span>Swetha Devi Sai Priya Bonu</span> &nbsp;·&nbsp; Built with passion for security &nbsp;·&nbsp; <span style="color:var(--green)">⬤ Available for hire</span></p></div>
   </div>
 </footer>
 
-<!-- AI CHAT BUBBLE -->
+<!-- AI BUBBLE -->
 <div id="aiChat">
   <div id="aiChatMenu">
     <div class="ai-menu-title">// Quick Navigation</div>
     <div class="ai-cmd" data-target="#services"><i class="fas fa-briefcase"></i> Services</div>
     <div class="ai-cmd" data-target="#skills"><i class="fas fa-crosshairs"></i> Skills & Tools</div>
-    <div class="ai-cmd" data-target="#experience"><i class="fas fa-clock"></i> Experience</div>
+    <div class="ai-cmd" data-target="#detections"><i class="fas fa-shield-halved"></i> Detections</div>
+    <div class="ai-cmd" data-target="#labs"><i class="fas fa-flask"></i> Labs & CTFs</div>
     <div class="ai-cmd" data-target="#research"><i class="fas fa-book-open"></i> Research</div>
     <div class="ai-cmd" data-target="#connect"><i class="fas fa-envelope"></i> Contact Me</div>
     <div class="ai-cmd" data-action="resume"><i class="fas fa-file-pdf"></i> Download Resume</div>
   </div>
-  <div id="aiChatBubble" title="Quick Navigation">
-    <i class="fas fa-terminal" style="color:var(--accent)"></i>
-  </div>
+  <div id="aiChatBubble"><i class="fas fa-terminal" style="color:var(--accent)"></i></div>
 </div>
 
 <script src="blogs.js"></script>
+<script src="detections.js"></script>
+<script src="labs.js"></script>
 <script>
-/* ─────────────────────────────────────────────
-   PAGE LOADER
-   ───────────────────────────────────────────── */
+/* PAGE LOADER */
 window.addEventListener('load', () => {
   setTimeout(() => {
     const loader = document.getElementById('pageLoader');
-    if (loader) {
-      loader.classList.add('done');
-      setTimeout(() => loader.remove(), 600);
-    }
+    if (loader) { loader.classList.add('done'); setTimeout(() => loader.remove(), 600); }
   }, 400);
 });
 
-/* ─────────────────────────────────────────────
-   SCROLL PROGRESS
-   ───────────────────────────────────────────── */
+/* SCROLL PROGRESS */
 window.addEventListener('scroll', () => {
   const h = document.documentElement;
-  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-  document.getElementById('scrollProgress').style.width = pct + '%';
+  document.getElementById('scrollProgress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
 }, { passive: true });
 
-/* ─────────────────────────────────────────────
-   PARTICLE CANVAS BACKGROUND
-   ───────────────────────────────────────────── */
+/* PARTICLE CANVAS */
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 let W, H, nodes = [];
-
-function resize() {
-  W = canvas.width = innerWidth;
-  H = canvas.height = innerHeight;
-  initNodes();
-}
-function initNodes() {
-  nodes = [];
-  const n = Math.floor(W * H / 22000);
-  for (let i = 0; i < n; i++) {
-    nodes.push({
-      x: Math.random()*W, y: Math.random()*H,
-      vx:(Math.random()-.5)*.2, vy:(Math.random()-.5)*.15,
-      r: Math.random()*1.5+.5, pulse: Math.random()*Math.PI*2,
-      color: Math.random()>.55 ? 0 : 1
-    });
-  }
-}
-resize();
-window.addEventListener('resize', resize);
-
+function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; initNodes(); }
+function initNodes() { nodes = []; const n = Math.floor(W * H / 22000); for (let i = 0; i < n; i++) nodes.push({ x: Math.random()*W, y: Math.random()*H, vx:(Math.random()-.5)*.2, vy:(Math.random()-.5)*.15, r: Math.random()*1.5+.5, pulse: Math.random()*Math.PI*2, color: Math.random()>.55?0:1 }); }
+resize(); window.addEventListener('resize', resize);
 function draw() {
   ctx.clearRect(0,0,W,H);
-  nodes.forEach(n => {
-    n.x+=n.vx; n.y+=n.vy;
-    if(n.x<0)n.x=W; if(n.x>W)n.x=0;
-    if(n.y<0)n.y=H; if(n.y>H)n.y=0;
-    n.pulse+=.015;
-    const a=.15+Math.sin(n.pulse)*.1;
-    ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-    ctx.fillStyle = n.color===0 ? `rgba(0,255,229,${a})` : `rgba(59,130,246,${a})`;
-    ctx.fill();
-  });
-  for(let i=0;i<nodes.length;i++) {
-    for(let j=i+1;j<nodes.length;j++) {
-      const a=nodes[i], b=nodes[j], d=Math.hypot(a.x-b.x,a.y-b.y);
-      if(d<120){
-        ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
-        ctx.strokeStyle=`rgba(0,255,229,${.05*(1-d/120)})`;
-        ctx.lineWidth=.4; ctx.stroke();
-      }
-    }
-  }
+  nodes.forEach(n => { n.x+=n.vx; n.y+=n.vy; if(n.x<0)n.x=W; if(n.x>W)n.x=0; if(n.y<0)n.y=H; if(n.y>H)n.y=0; n.pulse+=.015; const a=.15+Math.sin(n.pulse)*.1; ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fillStyle=n.color===0?`rgba(0,255,229,${a})`:`rgba(59,130,246,${a})`; ctx.fill(); });
+  for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++) { const a=nodes[i],b=nodes[j],d=Math.hypot(a.x-b.x,a.y-b.y); if(d<120) { ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.strokeStyle=`rgba(0,255,229,${.05*(1-d/120)})`; ctx.lineWidth=.4; ctx.stroke(); } }
   requestAnimationFrame(draw);
 }
 draw();
 
-/* ─────────────────────────────────────────────
-   PARALLAX
-   ───────────────────────────────────────────── */
-(function initParallax() {
+/* PARALLAX */
+(function() {
   let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const sy = window.scrollY;
-        canvas.style.transform = `translateY(${sy * 0.28}px)`;
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+  window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(() => { canvas.style.transform = `translateY(${window.scrollY * 0.28}px)`; ticking = false; }); ticking = true; } }, { passive: true });
 })();
 
-/* ─────────────────────────────────────────────
-   STATUS WIDGET CLOCK
-   ───────────────────────────────────────────── */
-(function initStatusWidget() {
-  const clockEl = document.getElementById('swsClock');
-  if (!clockEl) return;
-  function updateClock() {
-    clockEl.textContent = new Date().toLocaleTimeString('en-GB', {hour12:false});
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
+/* CLOCK */
+(function() {
+  const el = document.getElementById('swsClock');
+  if (!el) return;
+  function tick() { el.textContent = new Date().toLocaleTimeString('en-GB', {hour12:false}); }
+  setInterval(tick, 1000); tick();
 })();
 
-/* ─────────────────────────────────────────────
-   PRIMARY TYPEWRITER
-   ───────────────────────────────────────────── */
+/* TYPEWRITER 1 */
 const tw = document.getElementById('tw-text');
-const roles = [
-  'SOC Analyst · Threat Detection',
-  'Microsoft Sentinel · MDE · KQL',
-  'Incident Responder · IR Playbooks',
-  'Threat Hunter · MITRE ATT&CK',
-  'HTB CDSA Certified Analyst'
-];
-let ri=0, ci=0, del=false;
-function type() {
-  const cur = roles[ri];
-  if(del){ tw.textContent=cur.slice(0,--ci); if(!ci){del=false;ri=(ri+1)%roles.length;setTimeout(type,320);return;} }
-  else { tw.textContent=cur.slice(0,++ci); if(ci===cur.length){del=true;setTimeout(type,2200);return;} }
-  setTimeout(type, del?50:85);
-}
+const roles = ['SOC Analyst · Threat Detection','Microsoft Sentinel · MDE · KQL','Incident Responder · IR Playbooks','Threat Hunter · MITRE ATT&CK','HTB CDSA Certified Analyst'];
+let ri=0,ci=0,del=false;
+function type() { const cur=roles[ri]; if(del){tw.textContent=cur.slice(0,--ci);if(!ci){del=false;ri=(ri+1)%roles.length;setTimeout(type,320);return;}}else{tw.textContent=cur.slice(0,++ci);if(ci===cur.length){del=true;setTimeout(type,2200);return;}} setTimeout(type,del?50:85); }
 setTimeout(type, 700);
 
-/* SECOND TYPEWRITER */
-(function initTw2() {
+/* TYPEWRITER 2 */
+(function() {
   const el = document.getElementById('tw2-text');
   if (!el) return;
-  const tools = [
-    'Microsoft Sentinel', 'KQL Query Language', 'Defender for Endpoint',
-    'VirusTotal · AbuseIPDB', 'MITRE ATT&CK Navigator',
-    'Wireshark · Zeek', 'Sysmon · Event Viewer', 'Mandiant Threat Intel',
-    'Entra ID · MDCA', 'Forcepoint DLP'
-  ];
-  let ri=0, ci=0, del=false;
-  function type2() {
-    const cur = tools[ri];
-    if(del){ el.textContent=cur.slice(0,--ci); if(!ci){del=false;ri=(ri+1)%tools.length;setTimeout(type2,250);return;} }
-    else { el.textContent=cur.slice(0,++ci); if(ci===cur.length){del=true;setTimeout(type2,1800);return;} }
-    setTimeout(type2, del?40:70);
-  }
+  const tools = ['Microsoft Sentinel','KQL Query Language','Defender for Endpoint','VirusTotal · AbuseIPDB','MITRE ATT&CK Navigator','Sysmon · Event Viewer','Mandiant Threat Intel','Entra ID · MDCA','Forcepoint DLP','x32dbg · Ghidra'];
+  let ri=0,ci=0,del=false;
+  function type2() { const cur=tools[ri]; if(del){el.textContent=cur.slice(0,--ci);if(!ci){del=false;ri=(ri+1)%tools.length;setTimeout(type2,250);return;}}else{el.textContent=cur.slice(0,++ci);if(ci===cur.length){del=true;setTimeout(type2,1800);return;}} setTimeout(type2,del?40:70); }
   setTimeout(type2, 1300);
 })();
 
-/* ─────────────────────────────────────────────
-   LIVE INTERACTIVE TERMINAL
-   ───────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   TERMINAL — FIXED: white-space pre-wrap on .lt-line
+   means \n in template literals now renders correctly.
+   help and banner both display vertically.
+   ═══════════════════════════════════════════════ */
 (function initLiveTerm() {
   const body = document.getElementById('liveTermBody');
   const input = document.getElementById('ltInput');
   if (!body || !input) return;
-
   const history = [];
   let histIdx = -1;
 
-  const banner = `<span class="tc-green">
-  ╔════════════════════════════════════════════╗
-  ║   <span class="tc-yellow">SWETHA DEVI · SOC ANALYST TERMINAL</span>     ║
-  ║   <span class="tc-blue">v2.1 · Microsoft Security Stack</span>          ║
-  ║   <span class="tc-purple">github.com/unabletofind</span>                  ║
-  ╚════════════════════════════════════════════╝
-</span>`;
+  /* FIXED banner — box drawing chars aligned, renders vertically via pre-wrap */
+  const banner = `<span class="tc-green">╔══════════════════════════════════════════╗
+║  <span class="tc-yellow">SWETHA DEVI · SOC ANALYST TERMINAL</span>    ║
+║  <span class="tc-blue">v2.1 · Microsoft Security Stack</span>        ║
+║  <span class="tc-purple">github.com/unabletofind</span>                ║
+╚══════════════════════════════════════════╝</span>`;
 
+  /* FIXED help — each command on its own line via \n, renders with pre-wrap */
   const responses = {
     help: `<span class="tc-yellow">Available commands:</span>
-  <span class="tc-green">whoami</span>         — Identity & summary
-  <span class="tc-green">skills</span>         — Technical skill set
-  <span class="tc-green">certifications</span> — Earned certifications
-  <span class="tc-green">experience</span>     — Work history
-  <span class="tc-green">research</span>       — Published research & write-ups
-  <span class="tc-green">contact</span>        — How to reach me
-  <span class="tc-green">banner</span>         — Show terminal banner
-  <span class="tc-green">hire</span>           — Why hire me
-  <span class="tc-green">stack</span>          — Tools I use daily
-  <span class="tc-green">sudo</span>           — Try it 😉
-  <span class="tc-green">clear</span>          — Clear terminal`,
+
+  <span class="tc-green">whoami</span>          — Identity & summary
+  <span class="tc-green">skills</span>          — Technical skill set
+  <span class="tc-green">certifications</span>  — Earned certifications
+  <span class="tc-green">experience</span>      — Work history
+  <span class="tc-green">research</span>        — Published write-ups
+  <span class="tc-green">contact</span>         — How to reach me
+  <span class="tc-green">banner</span>          — Show terminal banner
+  <span class="tc-green">hire</span>            — Why hire me
+  <span class="tc-green">stack</span>           — Tools I use daily
+  <span class="tc-green">now</span>             — What I'm learning now
+  <span class="tc-green">sudo</span>            — Try it 😉
+  <span class="tc-green">clear</span>           — Clear terminal`,
 
     whoami: `<span class="tc-yellow">[ IDENTITY ]</span>
   Name     : <span class="tc-white">Swetha Devi Sai Priya Bonu</span>
   Role     : <span class="tc-green">SOC Analyst & Detection Engineer</span>
   Location : <span class="tc-white">Hyderabad, India</span>
   Status   : <span class="tc-green">Open to Opportunities</span>
-  Focus    : <span class="tc-blue">Microsoft Security Stack · ATT&CK · IR</span>`,
+  Focus    : <span class="tc-blue">Threat Intel · Malware Analysis · ATT&CK</span>`,
 
     skills: `<span class="tc-yellow">[ CORE SKILLS ]</span>
   Detection   : <span class="tc-green">Alert Triage · IOC Extraction · IR · Email Analysis</span>
   SIEM        : <span class="tc-green">Microsoft Sentinel · KQL · Splunk · Elastic</span>
-  EDR         : <span class="tc-green">MDE · Defender XDR · CrowdStrike · Live Response</span>
+  EDR         : <span class="tc-green">MDE · Defender XDR · Live Response</span>
   Threat Intel: <span class="tc-green">MITRE ATT&CK · VirusTotal · Mandiant · OTX</span>
   Scripting   : <span class="tc-green">Python · Bash · PowerShell</span>
-  Identity    : <span class="tc-green">Entra ID · MDCA · AiTM Detection</span>`,
+  Identity    : <span class="tc-green">Entra ID · MDCA · AiTM Detection</span>
+  RE (learning): <span class="tc-purple">x32dbg · Ghidra · YARA · PE Analysis</span>`,
 
     certifications: `<span class="tc-yellow">[ CERTIFICATIONS ]</span>
   ★ <span class="tc-green">HTB CDSA</span>      — Certified Defense Security Analyst
@@ -1312,11 +988,9 @@ setTimeout(type, 700);
     research: `<span class="tc-yellow">[ PUBLISHED RESEARCH ]</span>
   Platform : <span class="tc-blue">Medium · @swethadevi1125</span>
   Focus    : <span class="tc-green">Attack chains, detection rules, IR playbooks</span>
-  Topics   : <span class="tc-white">AiTM phishing · Identity attacks · Lateral movement</span>
-             <span class="tc-white">Email threat analysis · KQL detection rules</span>
-             <span class="tc-white">MITRE ATT&CK aligned deep dives</span>
-  <span class="tc-gray">» </span><span class="tc-green">medium.com/@swethadevi1125</span>
-  <span class="tc-gray">» Scroll to #research section or visit research.html</span>`,
+  Latest   : <span class="tc-white">CPUID Supply Chain Breach — STX RAT analysis</span>
+  » <span class="tc-green">medium.com/@swethadevi1125</span>
+  » Scroll to #research or visit research.html`,
 
     contact: `<span class="tc-yellow">[ CONTACT ]</span>
   Email    : <span class="tc-green">swethadevi1125@gmail.com</span>
@@ -1327,45 +1001,52 @@ setTimeout(type, 700);
     banner: banner,
 
     hire: `<span class="tc-yellow">[ WHY HIRE ME ]</span>
-  ✓ <span class="tc-green">Hands-on SOC experience</span> across MDE, Sentinel, MDO, Entra ID, MDCA
-  ✓ <span class="tc-green">CDSA certified</span> — practical defense skills (not just theory)
+  ✓ <span class="tc-green">Hands-on SOC experience</span> — MDE, Sentinel, MDO, Entra ID, MDCA
+  ✓ <span class="tc-green">CDSA certified</span> — practical defense, not just theory
   ✓ <span class="tc-green">MITRE ATT&CK fluent</span> — investigations mapped to tactics
   ✓ <span class="tc-green">Detection engineering</span> — author KQL hunts and Sigma rules
   ✓ <span class="tc-green">Threat research</span> — public write-ups with IOCs & playbooks
-  ✓ <span class="tc-green">Self-driven learner</span> — currently studying BTL2 & advanced KQL
-  
+  ✓ <span class="tc-green">Self-driven learner</span> — currently deep in malware analysis
+
   Reach out: <span class="tc-blue">swethadevi1125@gmail.com</span>`,
 
     stack: `<span class="tc-yellow">[ DAILY STACK ]</span>
-  SIEM  → <span class="tc-blue">Microsoft Sentinel</span>
-  EDR   → <span class="tc-blue">MDE / Defender XDR</span>
-  Email → <span class="tc-blue">Defender for Office 365</span>
-  IAM   → <span class="tc-blue">Entra ID</span>
-  CASB  → <span class="tc-blue">MDCA</span>
-  TI    → <span class="tc-blue">VirusTotal · AbuseIPDB · OTX · Mandiant</span>
-  Lang  → <span class="tc-blue">KQL · Python · PowerShell · Bash</span>
-  Track → <span class="tc-blue">Jira · ServiceNow</span>`,
+  SIEM   → <span class="tc-blue">Microsoft Sentinel</span>
+  EDR    → <span class="tc-blue">MDE / Defender XDR</span>
+  Email  → <span class="tc-blue">Defender for Office 365</span>
+  IAM    → <span class="tc-blue">Entra ID</span>
+  CASB   → <span class="tc-blue">MDCA</span>
+  TI     → <span class="tc-blue">VirusTotal · AbuseIPDB · OTX · Mandiant</span>
+  Lang   → <span class="tc-blue">KQL · Python · PowerShell · Bash</span>
+  RE     → <span class="tc-purple">x32dbg · Ghidra · PE-bear · YARA</span>
+  Track  → <span class="tc-blue">Jira · ServiceNow</span>`,
+
+    now: `<span class="tc-yellow">[ NOW — May 2026 ]</span>
+  Learning  : <span class="tc-purple">TCM Security — Practical Malware Analysis & Triage</span>
+  Progress  : <span class="tc-green">~42% · Module 5 of 12</span>
+  Tools     : <span class="tc-blue">x32dbg · Ghidra · PE-bear · FLOSS · YARA</span>
+  Reading   : <span class="tc-white">Practical Threat Intel (Costa-Gazcón)</span>
+  Building  : <span class="tc-green">Home lab — Wazuh + Sysmon + Atomic Red Team</span>
+  Queued    : <span class="tc-amber">BTL2 (Blue Team Level 2) — targeting Q3 2026</span>
+  » <span class="tc-green">Visit now.html for the full /now page</span>`,
 
     sudo: `<span class="tc-red">[sudo] password for swetha:</span>
-<span class="tc-amber">⚠  Permission denied. Even she can't <span class="tc-red">sudo</span> herself into being more awesome.</span>
-<span class="tc-gray">(but try anyway by hiring her — works every time)</span> 😄`,
+<span class="tc-amber">⚠  Permission denied. Even she can't sudo herself into being more awesome.</span>
+<span class="tc-gray">(hire her instead — works every time 😄)</span>`,
 
     ls: `<span class="tc-blue">drwxr-xr-x</span>  swetha  <span class="tc-green">skills/</span>
 <span class="tc-blue">drwxr-xr-x</span>  swetha  <span class="tc-green">research/</span>
-<span class="tc-blue">drwxr-xr-x</span>  swetha  <span class="tc-green">experience/</span>
+<span class="tc-blue">drwxr-xr-x</span>  swetha  <span class="tc-green">detections/</span>
+<span class="tc-blue">drwxr-xr-x</span>  swetha  <span class="tc-green">labs/</span>
 <span class="tc-blue">-rw-r--r--</span>  swetha  <span class="tc-white">resume.pdf</span>
 <span class="tc-blue">-rw-r--r--</span>  swetha  <span class="tc-white">contact.txt</span>
 <span class="tc-blue">-rwx------</span>  swetha  <span class="tc-red">.secrets</span>`,
-
-    cat: `<span class="tc-amber">cat: usage — try 'cat contact.txt' or just type 'contact'</span>`,
   };
 
   function print(html, isCmd=false) {
     const line = document.createElement('p');
     line.className = 'lt-line';
-    line.innerHTML = isCmd
-      ? `<span class="tc-green">swetha@soc:~$</span> <span class="tc-white">${html}</span>`
-      : html;
+    line.innerHTML = isCmd ? `<span class="tc-green">swetha@soc:~$</span> <span class="tc-white">${html}</span>` : html;
     body.appendChild(line);
     body.scrollTop = body.scrollHeight;
   }
@@ -1378,23 +1059,16 @@ setTimeout(type, 700);
     if (c === 'clear') { body.innerHTML = ''; return; }
     if (c.startsWith('cat ')) {
       const f = c.slice(4).trim();
-      if (f === 'contact.txt') { print(responses.contact); }
+      if (f === 'contact.txt') print(responses.contact);
       else if (f === 'resume.pdf') { print(`<span class="tc-amber">Opening resume in new tab...</span>`); window.open('https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view','_blank'); }
-      else if (f === '.secrets') { print(`<span class="tc-red">Access denied. Nice try though 🔒</span>`); }
-      else { print(`<span class="tc-red">cat: ${f}: No such file or directory</span>`); }
-      const blank = document.createElement('p'); blank.className = 'lt-line'; blank.innerHTML = '&nbsp;'; body.appendChild(blank);
-      return;
+      else if (f === '.secrets') print(`<span class="tc-red">Access denied. Nice try 🔒</span>`);
+      else print(`<span class="tc-red">cat: ${f}: No such file or directory</span>`);
+      print(''); return;
     }
     const resp = responses[c];
-    if (resp) {
-      print(resp);
-    } else {
-      print(`<span class="tc-red">command not found: ${c}</span> — try <span class="tc-yellow">help</span>`);
-    }
-    const blank = document.createElement('p');
-    blank.className = 'lt-line'; blank.innerHTML = '&nbsp;';
-    body.appendChild(blank);
-    body.scrollTop = body.scrollHeight;
+    if (resp) print(resp);
+    else print(`<span class="tc-red">command not found: ${c}</span> — try <span class="tc-yellow">help</span>`);
+    print('');
   }
 
   input.addEventListener('keydown', e => {
@@ -1402,97 +1076,52 @@ setTimeout(type, 700);
     else if (e.key === 'ArrowUp') { e.preventDefault(); if(histIdx<history.length-1) histIdx++; input.value=history[histIdx]||''; }
     else if (e.key === 'ArrowDown') { e.preventDefault(); if(histIdx>0) histIdx--; input.value=history[histIdx]||''; }
   });
-
   document.getElementById('liveTerm')?.addEventListener('click', () => input.focus());
+  document.querySelectorAll('.lt-suggest-item').forEach(el => el.addEventListener('click', () => { runCmd(el.dataset.cmd); input.focus(); }));
 
-  // Click suggestions
-  document.querySelectorAll('.lt-suggest-item').forEach(el => {
-    el.addEventListener('click', () => {
-      const cmd = el.dataset.cmd;
-      runCmd(cmd);
-      input.focus();
-    });
-  });
-
+  /* Show banner then hint on load */
   setTimeout(() => print(banner), 200);
-  setTimeout(() => print(`<span class="tc-gray">Type <span class="tc-yellow">help</span> for available commands. Use ↑↓ for history.</span>`), 600);
+  setTimeout(() => print(`<span class="tc-gray">Type </span><span class="tc-yellow">help</span><span class="tc-gray"> for available commands · Use ↑↓ for history</span>`), 700);
 })();
 
-/* ─────────────────────────────────────────────
-   ACTIVITY HEATMAP — generate 53 weeks × 7 days
-   ───────────────────────────────────────────── */
-(function initHeatmap() {
+/* HEATMAP */
+(function() {
   const grid = document.getElementById('heatmapGrid');
   if (!grid) return;
   const totalCells = 53 * 7;
-  const cells = [];
   let total = 0, streak = 0, maxStreak = 0;
-
-  // Bias activity to look realistic — denser in recent weeks
   for (let i = 0; i < totalCells; i++) {
-    const week = Math.floor(i / 7);
-    const recencyFactor = week / 53; // 0 to 1, higher = more recent
-    const r = Math.random();
-    let level = 0;
-    if (r < 0.45 - recencyFactor * 0.2) level = 0;
-    else if (r < 0.7) level = 1 + Math.floor(Math.random() * 2);
-    else if (r < 0.9) level = 3;
-    else level = 4;
-
-    // Less activity on weekends (col 0 = Sun, col 6 = Sat)
-    const day = i % 7;
-    if ((day === 0 || day === 6) && Math.random() > 0.5) level = Math.max(0, level - 1);
-
-    cells.push(level);
-    if (level > 0) { total++; streak++; maxStreak = Math.max(maxStreak, streak); }
-    else streak = 0;
-  }
-
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  cells.forEach((lv, i) => {
+    const week = Math.floor(i / 7), day = i % 7;
+    const recency = week / 53, r = Math.random();
+    let lv = 0;
+    if (r >= 0.45 - recency * 0.2) lv = r < 0.7 ? 1 + Math.floor(Math.random()*2) : r < 0.9 ? 3 : 4;
+    if ((day===0||day===6) && Math.random()>.5) lv = Math.max(0,lv-1);
     const c = document.createElement('div');
     c.className = 'heat-cell';
     if (lv > 0) c.dataset.level = lv;
-    const week = Math.floor(i / 7);
-    const day = i % 7;
-    const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    c.dataset.tip = `${lv} ${lv === 1 ? 'activity' : 'activities'} · ${dayNames[day]}, week ${week + 1}`;
+    c.dataset.tip = `${lv} ${lv===1?'activity':'activities'} · week ${week+1}`;
     grid.appendChild(c);
-  });
-
+    if (lv > 0) { total++; streak++; maxStreak = Math.max(maxStreak, streak); } else streak = 0;
+  }
   document.getElementById('heatTotal').textContent = total;
   document.getElementById('heatStreak').textContent = maxStreak + ' days';
 })();
 
-/* ─────────────────────────────────────────────
-   TOOLTIP for heatmap & tools
-   ───────────────────────────────────────────── */
-(function initTooltips() {
+/* TOOLTIP */
+(function() {
   const tip = document.getElementById('tooltip');
   document.querySelectorAll('.heat-cell, .tool-pill').forEach(el => {
-    el.addEventListener('mouseenter', e => {
-      const t = el.dataset.tip;
-      if (!t) return;
-      tip.textContent = t;
-      tip.classList.add('show');
-    });
-    el.addEventListener('mousemove', e => {
-      tip.style.left = e.clientX + 'px';
-      tip.style.top = e.clientY + 'px';
-    });
+    el.addEventListener('mouseenter', () => { const t = el.dataset.tip; if(!t) return; tip.textContent = t; tip.classList.add('show'); });
+    el.addEventListener('mousemove', e => { tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; });
     el.addEventListener('mouseleave', () => tip.classList.remove('show'));
   });
 })();
 
-/* ─────────────────────────────────────────────
-   BLOG CARDS — uses blogs.js
-   ───────────────────────────────────────────── */
-(function initBlogCards() {
+/* BLOG CARDS — shows latest 3 */
+(function() {
   const grid = document.getElementById('blogGrid');
   if (!grid || typeof blogs === 'undefined') return;
-
-  const list = blogs.slice(0, 3);
-  list.forEach((b, i) => {
+  blogs.slice(0, 3).forEach((b, i) => {
     const card = document.createElement('div');
     card.className = 'blog-card';
     card.style.transitionDelay = (i * 0.1) + 's';
@@ -1501,26 +1130,95 @@ setTimeout(type, 700);
         <i class="${b.icon}" style="font-size:9px"></i> ${b.catLabel}
       </span>
       <div class="blog-title">${b.title}</div>
-      <div class="blog-meta">
-        <span><i class="far fa-calendar-alt"></i> ${b.date}</span>
-        <span><i class="fas fa-clock"></i> ${b.readTime} read</span>
-      </div>
+      <div class="blog-meta"><span><i class="far fa-calendar-alt"></i> ${b.date}</span><span><i class="fas fa-clock"></i> ${b.readTime} read</span></div>
       <div class="blog-excerpt">${b.excerpt}</div>
       <div class="blog-footer">
         <span class="blog-read">Read Analysis <i class="fas fa-arrow-right"></i></span>
-        <div class="blog-tags">${b.mitre.map(m => `<span class="blog-tag">${m}</span>`).join('')}</div>
+        <div class="blog-tags">${b.mitre.map(m=>`<span class="blog-tag">${m}</span>`).join('')}</div>
       </div>`;
     card.addEventListener('click', () => window.location.href = b.url);
     grid.appendChild(card);
   });
-
-  const countEl = document.getElementById('researchCount');
-  if (countEl) countEl.dataset.count = blogs.length;
+  const el = document.getElementById('researchCount');
+  if (el) el.dataset.count = blogs.length;
 })();
 
-/* ─────────────────────────────────────────────
-   SCROLL REVEAL + SKILL BARS
-   ───────────────────────────────────────────── */
+/* DETECTION RULES — shows latest 3 from detections.js */
+(function() {
+  const grid = document.getElementById('detGrid');
+  if (!grid || typeof detections === 'undefined') return;
+
+  function esc(s) { return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function render(filter) {
+    let list = filter === 'all' ? detections : detections.filter(r => r.platform === filter);
+    list = list.slice(0, 3); /* homepage: show only 3 */
+    if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px">// no rules in this category yet</div>'; return; }
+    grid.innerHTML = list.map((r, i) => `
+      <div class="det-card">
+        <div class="det-card-head">
+          <div class="det-card-title">${esc(r.title)}</div>
+          <div class="det-platform ${r.platform}">${r.platform==='kql'?'KQL':r.platform==='sigma'?'Sigma':'YARA'}</div>
+        </div>
+        <div class="det-desc">${esc(r.desc)}</div>
+        <div class="det-meta">
+          <span class="det-sev ${r.severity}">${r.severity.toUpperCase()}</span>
+          ${r.tags.map(t=>`<span class="det-tag">${esc(t)}</span>`).join('')}
+        </div>
+        <pre class="det-code"><code>${esc(r.code)}</code></pre>
+        <div class="det-actions">
+          <span class="det-mitre">MITRE: ${r.mitre.join(' · ')}</span>
+          <button class="det-copy" data-code="${esc(r.code)}"><i class="fas fa-copy"></i> Copy</button>
+        </div>
+      </div>`).join('');
+
+    grid.querySelectorAll('.det-copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.dataset.code.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'");
+        navigator.clipboard.writeText(code).then(() => {
+          btn.classList.add('copied'); btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+          setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 1800);
+        });
+      });
+    });
+  }
+
+  document.querySelectorAll('.det-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.det-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      render(btn.dataset.platform);
+    });
+  });
+  render('all');
+})();
+
+/* LABS — shows latest 3 from labs.js */
+(function() {
+  const grid = document.getElementById('labGrid');
+  if (!grid || typeof labs === 'undefined') return;
+  function esc(s) { return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  labs.slice(0, 3).forEach(lab => {
+    const card = document.createElement('div');
+    card.className = 'lab-card';
+    card.style.cssText = `--platform-color:${lab.color};--platform-bg:${lab.bg};--platform-border:${lab.border}`;
+    card.innerHTML = `
+      <div class="lab-icon"><i class="fas ${lab.icon}"></i></div>
+      <div class="lab-body">
+        <div class="lab-title">${esc(lab.name)}</div>
+        <div class="lab-platform">${esc(lab.platform)}</div>
+        <div class="lab-foot">
+          <span class="lab-diff ${lab.diff}">${lab.diff}</span>
+          ${lab.status==='active'?'<span class="lab-status-active">● Active</span>':''}
+          <span class="lab-date">${esc(lab.date)}</span>
+        </div>
+      </div>`;
+    if (lab.url) card.addEventListener('click', () => window.location.href = lab.url);
+    grid.appendChild(card);
+  });
+})();
+
+/* SCROLL REVEAL + SKILL BARS */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -1531,452 +1229,120 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: .12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-/* ─────────────────────────────────────────────
-   ANIMATED COUNTERS
-   ───────────────────────────────────────────── */
-(function initCounters() {
-  function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+/* ANIMATED COUNTERS */
+(function() {
+  function easeOut(t) { return 1 - Math.pow(1-t, 3); }
   function animateCount(el) {
     if (el.dataset.counted === 'true') return;
     el.dataset.counted = 'true';
-    const target = parseInt(el.dataset.count) || 0;
-    const suffix = el.dataset.suffix || '';
-    const duration = 1600;
-    const start = performance.now();
+    const target = parseInt(el.dataset.count) || 0, suffix = el.dataset.suffix || '', duration = 1600, start = performance.now();
     function step(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      el.textContent = Math.round(easeOut(progress) * target) + suffix;
-      if (progress < 1) requestAnimationFrame(step);
-      else {
-        el.textContent = target + suffix;
-        el.classList.add('pulse-done');
-        setTimeout(() => el.classList.remove('pulse-done'), 900);
-      }
+      const p = Math.min((now-start)/duration, 1);
+      el.textContent = Math.round(easeOut(p)*target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+      else { el.textContent = target+suffix; el.classList.add('pulse-done'); setTimeout(()=>el.classList.remove('pulse-done'),900); }
     }
     requestAnimationFrame(step);
   }
-  const counterObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { animateCount(e.target); counterObs.unobserve(e.target); }
-    });
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){animateCount(e.target);cObs.unobserve(e.target);} });
   }, { threshold: 0.3 });
-  document.querySelectorAll('[data-count]').forEach(el => {
-    el.textContent = '0';
-    counterObs.observe(el);
-  });
+  document.querySelectorAll('[data-count]').forEach(el => { el.textContent='0'; cObs.observe(el); });
 })();
 
-/* ─────────────────────────────────────────────
-   SERVICE CARD — mouse tracker for radial glow
-   ───────────────────────────────────────────── */
+/* SERVICE CARD MOUSE GLOW */
 document.querySelectorAll('.service-card').forEach(card => {
   card.addEventListener('mousemove', e => {
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
-    card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+    card.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
   });
 });
 
-/* ─────────────────────────────────────────────
-   MATRIX RAIN
-   ───────────────────────────────────────────── */
-(function initMatrix() {
+/* MATRIX RAIN */
+(function() {
   const mc = document.getElementById('matrixCanvas');
   if (!mc) return;
   const mctx = mc.getContext('2d');
   let mW, mH, cols, drops;
-  function mResize() {
-    mW = mc.width = window.innerWidth;
-    mH = mc.height = window.innerHeight;
-    cols = Math.floor(mW / 16);
-    drops = Array(cols).fill(1);
-  }
-  mResize();
-  window.addEventListener('resize', mResize);
-  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF<>{}[]|/\\';
+  function mResize() { mW=mc.width=innerWidth; mH=mc.height=innerHeight; cols=Math.floor(mW/16); drops=Array(cols).fill(1); }
+  mResize(); window.addEventListener('resize', mResize);
+  const chars='アイウエオカキクケコ0123456789ABCDEF<>{}[]';
   let matInterval;
-  function drawMatrix() {
-    mctx.fillStyle = 'rgba(2,11,22,0.07)';
-    mctx.fillRect(0, 0, mW, mH);
-    mctx.fillStyle = 'rgba(0,255,229,0.55)';
-    mctx.font = '13px JetBrains Mono, monospace';
-    drops.forEach((y, i) => {
-      const ch = chars[Math.floor(Math.random() * chars.length)];
-      mctx.fillText(ch, i * 16, y * 16);
-      if (y * 16 > mH && Math.random() > 0.975) drops[i] = 0;
-      drops[i]++;
-    });
-  }
-  function showMatrix() {
-    mc.style.opacity = '0.16';
-    matInterval = setInterval(drawMatrix, 50);
-    setTimeout(hideMatrix, Math.random() * 8000 + 5000);
-  }
-  function hideMatrix() {
-    mc.style.opacity = '0';
-    clearInterval(matInterval);
-    setTimeout(() => { mctx.clearRect(0,0,mW,mH); drops.fill(1); }, 2000);
-    setTimeout(showMatrix, Math.random() * 18000 + 10000);
-  }
+  function drawMatrix() { mctx.fillStyle='rgba(2,11,22,0.07)'; mctx.fillRect(0,0,mW,mH); mctx.fillStyle='rgba(0,255,229,0.55)'; mctx.font='13px JetBrains Mono,monospace'; drops.forEach((y,i)=>{ const ch=chars[Math.floor(Math.random()*chars.length)]; mctx.fillText(ch,i*16,y*16); if(y*16>mH&&Math.random()>.975)drops[i]=0; drops[i]++; }); }
+  function showMatrix() { mc.style.opacity='0.16'; matInterval=setInterval(drawMatrix,50); setTimeout(hideMatrix,Math.random()*8000+5000); }
+  function hideMatrix() { mc.style.opacity='0'; clearInterval(matInterval); setTimeout(()=>{mctx.clearRect(0,0,mW,mH);drops.fill(1);},2000); setTimeout(showMatrix,Math.random()*18000+10000); }
   setTimeout(showMatrix, 8000);
 })();
 
-/* ─────────────────────────────────────────────
-   ACTIVE NAV
-   ───────────────────────────────────────────── */
+/* ACTIVE NAV */
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-links a');
 window.addEventListener('scroll', () => {
   let cur = '';
   sections.forEach(s => { if(scrollY >= s.offsetTop - 130) cur = s.id; });
-  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
 }, { passive: true });
 
-/* ─────────────────────────────────────────────
-   CUSTOM CURSOR
-   ───────────────────────────────────────────── */
+/* CUSTOM CURSOR */
 const customCursor = document.getElementById('customCursor');
 const cursorDot = document.getElementById('cursorDot');
-let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0;
-
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  customCursor.style.left = mouseX + 'px';
-  customCursor.style.top = mouseY + 'px';
-});
-
+let mouseX=0,mouseY=0,dotX=0,dotY=0;
+document.addEventListener('mousemove', e => { mouseX=e.clientX; mouseY=e.clientY; customCursor.style.left=mouseX+'px'; customCursor.style.top=mouseY+'px'; });
 document.addEventListener('mousedown', () => customCursor.classList.add('clicking'));
 document.addEventListener('mouseup', () => customCursor.classList.remove('clicking'));
-
-function animateDot() {
-  dotX += (mouseX - dotX) * 0.12;
-  dotY += (mouseY - dotY) * 0.12;
-  cursorDot.style.left = dotX + 'px';
-  cursorDot.style.top = dotY + 'px';
-  requestAnimationFrame(animateDot);
-}
+function animateDot() { dotX+=(mouseX-dotX)*.12; dotY+=(mouseY-dotY)*.12; cursorDot.style.left=dotX+'px'; cursorDot.style.top=dotY+'px'; requestAnimationFrame(animateDot); }
 animateDot();
+document.addEventListener('mouseleave', () => { customCursor.style.opacity='0'; cursorDot.style.opacity='0'; });
+document.addEventListener('mouseenter', () => { customCursor.style.opacity='1'; cursorDot.style.opacity='1'; });
 
-document.addEventListener('mouseleave', () => {
-  customCursor.style.opacity = '0';
-  cursorDot.style.opacity = '0';
-});
-document.addEventListener('mouseenter', () => {
-  customCursor.style.opacity = '1';
-  cursorDot.style.opacity = '1';
-});
-
-/* ─────────────────────────────────────────────
-   MOUSE GLOW
-   ───────────────────────────────────────────── */
-(function initMouseGlow() {
+/* MOUSE GLOW */
+(function() {
   const glow = document.getElementById('mouseGlow');
-  let glowX = 0, glowY = 0, targetX = 0, targetY = 0, visible = false;
-  document.addEventListener('mousemove', e => {
-    targetX = e.clientX; targetY = e.clientY;
-    if (!visible) { glow.style.opacity = '1'; visible = true; }
-  });
-  document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; visible = false; });
-  function animateGlow() {
-    glowX += (targetX - glowX) * 0.055;
-    glowY += (targetY - glowY) * 0.055;
-    glow.style.left = glowX + 'px';
-    glow.style.top = glowY + 'px';
-    requestAnimationFrame(animateGlow);
-  }
+  let glowX=0,glowY=0,targetX=0,targetY=0,visible=false;
+  document.addEventListener('mousemove', e => { targetX=e.clientX; targetY=e.clientY; if(!visible){glow.style.opacity='1';visible=true;} });
+  document.addEventListener('mouseleave', () => { glow.style.opacity='0'; visible=false; });
+  function animateGlow() { glowX+=(targetX-glowX)*.055; glowY+=(targetY-glowY)*.055; glow.style.left=glowX+'px'; glow.style.top=glowY+'px'; requestAnimationFrame(animateGlow); }
   animateGlow();
 })();
 
-/* ─────────────────────────────────────────────
-   PAGE TRANSITIONS
-   ───────────────────────────────────────────── */
+/* PAGE TRANSITIONS */
 document.querySelectorAll('a').forEach(link => {
-  if (link.hostname === window.location.hostname &&
-      link.getAttribute('href') && link.getAttribute('href') !== '#' &&
-      !link.getAttribute('href').startsWith('mailto:') &&
-      !link.getAttribute('href').startsWith('tel:') &&
-      !link.getAttribute('href').startsWith('#')) {
+  if (link.hostname===location.hostname && link.href && !link.href.startsWith('mailto:') && !link.href.startsWith('tel:') && !link.getAttribute('href')?.startsWith('#') && link.getAttribute('href') !== '#') {
     link.addEventListener('click', e => {
       const href = link.getAttribute('href');
       if (href && !href.startsWith('#')) {
         e.preventDefault();
-        const overlay = document.createElement('div');
-        overlay.className = 'page-transition';
-        document.body.appendChild(overlay);
-        setTimeout(() => { window.location.href = href; }, 300);
+        const overlay = document.createElement('div'); overlay.className='page-transition'; document.body.appendChild(overlay);
+        setTimeout(() => { window.location.href = href; }, 320);
       }
     });
   }
 });
 
-/* ─────────────────────────────────────────────
-   AI CHAT BUBBLE
-   ───────────────────────────────────────────── */
-(function initAiChat() {
-  const bubble = document.getElementById('aiChatBubble');
-  const menu = document.getElementById('aiChatMenu');
-
-  bubble.addEventListener('click', e => {
-    e.stopPropagation();
-    menu.classList.toggle('open');
-  });
-
-  document.addEventListener('click', e => {
-    const chat = document.getElementById('aiChat');
-    if (chat && !chat.contains(e.target)) menu.classList.remove('open');
-  });
-
+/* AI BUBBLE */
+(function() {
+  const bubble = document.getElementById('aiChatBubble'), menu = document.getElementById('aiChatMenu');
+  bubble.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
+  document.addEventListener('click', e => { if(!document.getElementById('aiChat').contains(e.target)) menu.classList.remove('open'); });
   document.querySelectorAll('.ai-cmd').forEach(cmd => {
     cmd.addEventListener('click', () => {
-      const target = cmd.dataset.target;
-      const action = cmd.dataset.action;
-      if (target) {
-        document.querySelector(target)?.scrollIntoView({behavior:'smooth'});
-      } else if (action === 'resume') {
-        window.open('https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view','_blank');
-      }
+      const target=cmd.dataset.target, action=cmd.dataset.action;
+      if(target) document.querySelector(target)?.scrollIntoView({behavior:'smooth'});
+      else if(action==='resume') window.open('https://drive.google.com/file/d/177ygV8M8qZZ216KSVevIao0-l33AN7km/view','_blank');
       menu.classList.remove('open');
     });
   });
 })();
 
-/* ─────────────────────────────────────────────
-   KONAMI CODE EASTER EGG — type "matrix" anywhere
-   ───────────────────────────────────────────── */
-(function initEasterEgg() {
-  let buffer = '';
+/* EASTER EGG — type "matrix" anywhere */
+(function() {
+  let buf = '';
   document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT') return;
-    buffer += e.key.toLowerCase();
-    if (buffer.length > 10) buffer = buffer.slice(-10);
-    if (buffer.includes('matrix')) {
-      const mc = document.getElementById('matrixCanvas');
-      if (mc) {
-        mc.style.opacity = '0.25';
-        setTimeout(() => { mc.style.opacity = '0'; }, 6000);
-      }
-      buffer = '';
-    }
+    if (e.target.tagName==='INPUT') return;
+    buf += e.key.toLowerCase(); if(buf.length>10) buf=buf.slice(-10);
+    if (buf.includes('matrix')) { const mc=document.getElementById('matrixCanvas'); if(mc){mc.style.opacity='0.25'; setTimeout(()=>mc.style.opacity='0',6000);} buf=''; }
   });
-})();
-
-/* ============================================= */
-/* DETECTION RULES DATA & RENDER */
-/* ============================================= */
-const DETECTION_RULES = [
-  {
-    title: 'Suspicious PowerShell Encoded Command Execution',
-    platform: 'kql',
-    desc: 'Catches base64-encoded PowerShell payloads — a classic loader pattern used by Emotet, Qakbot, and modern AiTM kits.',
-    severity: 'high',
-    mitre: ['T1059.001', 'T1027'],
-    tags: ['PowerShell', 'Defense Evasion', 'Sentinel'],
-    code: `DeviceProcessEvents
-| where FileName =~ "powershell.exe"
-| where ProcessCommandLine has_any ("-enc", "-EncodedCommand", "-e ")
-| where ProcessCommandLine matches regex @"[A-Za-z0-9+/]{50,}={0,2}"
-| project Timestamp, DeviceName, AccountName,
-          InitiatingProcessFileName, ProcessCommandLine
-| order by Timestamp desc`
-  },
-  {
-    title: 'AiTM Phishing — Suspicious Sign-in from New ASN',
-    platform: 'kql',
-    desc: 'Hunts adversary-in-the-middle session hijacks by flagging sign-ins where the user authenticates from a brand-new ASN within minutes of a known-good one.',
-    severity: 'high',
-    mitre: ['T1557', 'T1078.004'],
-    tags: ['Identity', 'AiTM', 'EntraID'],
-    code: `let lookback = 1h;
-SigninLogs
-| where TimeGenerated > ago(lookback)
-| where ResultType == 0
-| summarize ASNs = make_set(NetworkLocationDetails)
-            by UserPrincipalName, bin(TimeGenerated, 5m)
-| where array_length(ASNs) > 1
-| extend Suspicious = "Multi-ASN signin within 5 min"`
-  },
-  {
-    title: 'OneNote Spawning Suspicious Child Process',
-    platform: 'sigma',
-    desc: 'OneNote attachments became a favored phishing payload after macro restrictions. This rule fires when ONENOTE.EXE spawns scripting engines or LOLBins.',
-    severity: 'high',
-    mitre: ['T1204.002', 'T1059'],
-    tags: ['Phishing', 'Initial Access', 'OneNote'],
-    code: `title: OneNote Suspicious Child Process
-logsource:
-  product: windows
-  category: process_creation
-detection:
-  selection:
-    ParentImage|endswith: '\\\\ONENOTE.EXE'
-    Image|endswith:
-      - '\\\\powershell.exe'
-      - '\\\\cmd.exe'
-      - '\\\\wscript.exe'
-      - '\\\\mshta.exe'
-  condition: selection
-level: high`
-  },
-  {
-    title: 'STX RAT — CPUID-based Anti-VM Strings',
-    platform: 'yara',
-    desc: 'Static rule for the STX RAT family I analyzed in the CPUID writeup. Matches the unique CPUID instruction pattern used to evade sandbox detonation.',
-    severity: 'medium',
-    mitre: ['T1497.001'],
-    tags: ['Malware', 'Anti-VM', 'STX'],
-    code: `rule STX_RAT_CPUID_AntiVM
-{
-  meta:
-    author = "Swetha Devi"
-    description = "Detects STX RAT CPUID anti-analysis"
-    date = "2026-04"
-
-  strings:
-    $cpuid_check = { 0F A2 81 FB ?? ?? ?? ?? }
-    $vbox = "VBoxService" ascii wide
-    $vmware = "vmtoolsd" ascii wide
-
-  condition:
-    uint16(0) == 0x5A4D and
-    $cpuid_check and any of ($vbox, $vmware)
-}`
-  },
-  {
-    title: 'Office Application Spawning rundll32',
-    platform: 'kql',
-    desc: 'Word/Excel spawning rundll32.exe is a common Cobalt Strike + macro loader pattern. Low false-positive rate in most enterprises.',
-    severity: 'medium',
-    mitre: ['T1218.011', 'T1204.002'],
-    tags: ['Macros', 'Office', 'CobaltStrike'],
-    code: `DeviceProcessEvents
-| where InitiatingProcessFileName in~
-    ("winword.exe","excel.exe","powerpnt.exe","outlook.exe")
-| where FileName =~ "rundll32.exe"
-| project Timestamp, DeviceName, AccountName,
-          InitiatingProcessFileName, ProcessCommandLine
-| order by Timestamp desc`
-  },
-  {
-    title: 'Impossible Travel — Sentinel Built-in Tuned',
-    platform: 'kql',
-    desc: 'Tightened version of the built-in impossible-travel rule. Filters out known VPN egress IPs and SaaS automation accounts to cut noise ~70%.',
-    severity: 'low',
-    mitre: ['T1078'],
-    tags: ['Identity', 'Travel', 'Tuning'],
-    code: `SigninLogs
-| where ResultType == 0
-| where AppDisplayName !in ("Microsoft Graph", "PowerShell")
-| extend Country = tostring(LocationDetails.countryOrRegion)
-| summarize Countries = make_set(Country),
-            FirstSeen = min(TimeGenerated),
-            LastSeen = max(TimeGenerated)
-            by UserPrincipalName, bin(TimeGenerated, 1h)
-| where array_length(Countries) > 1
-| where datetime_diff('minute', LastSeen, FirstSeen) < 60`
-  }
-];
-
-(function renderDetections(){
-  const grid = document.getElementById('detGrid');
-  if(!grid) return;
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  function render(filter){
-    const list = filter === 'all' ? DETECTION_RULES : DETECTION_RULES.filter(r => r.platform === filter);
-    if(!list.length){
-      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px">// no rules in this category yet</div>';
-      return;
-    }
-    grid.innerHTML = list.map((r, i) => `
-      <div class="det-card">
-        <div class="det-card-head">
-          <div class="det-card-title">${escapeHtml(r.title)}</div>
-          <div class="det-platform ${r.platform}">${r.platform === 'kql' ? 'KQL' : r.platform === 'sigma' ? 'Sigma' : 'YARA'}</div>
-        </div>
-        <div class="det-desc">${escapeHtml(r.desc)}</div>
-        <div class="det-meta">
-          <span class="det-sev ${r.severity}">${r.severity.toUpperCase()}</span>
-          ${r.tags.map(t => `<span class="det-tag">${escapeHtml(t)}</span>`).join('')}
-        </div>
-        <pre class="det-code"><code>${escapeHtml(r.code)}</code></pre>
-        <div class="det-actions">
-          <span class="det-mitre">MITRE: ${r.mitre.join(' · ')}</span>
-          <button class="det-copy" data-idx="${i}" data-filter="${filter}"><i class="fas fa-copy"></i> Copy</button>
-        </div>
-      </div>
-    `).join('');
-
-    // wire up copy buttons
-    grid.querySelectorAll('.det-copy').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const idx = parseInt(btn.dataset.idx);
-        const f = btn.dataset.filter;
-        const sourceList = f === 'all' ? DETECTION_RULES : DETECTION_RULES.filter(r => r.platform === f);
-        const rule = sourceList[idx];
-        if(!rule) return;
-        navigator.clipboard.writeText(rule.code).then(() => {
-          btn.classList.add('copied');
-          btn.innerHTML = '<i class="fas fa-check"></i> Copied';
-          setTimeout(() => {
-            btn.classList.remove('copied');
-            btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
-          }, 1800);
-        });
-      });
-    });
-  }
-
-  // filter buttons
-  document.querySelectorAll('.det-filter').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.det-filter').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      render(btn.dataset.platform);
-    });
-  });
-
-  render('all');
-})();
-
-/* ============================================= */
-/* LABS / CTFs DATA & RENDER */
-/* ============================================= */
-const LABS = [
-  { name: 'CDSA Certification', platform: 'Hack The Box', icon: 'fa-shield-halved', diff: 'medium', date: 'Mar 2026', color: '#9fef00', bg: 'rgba(159,239,0,0.08)', border: 'rgba(159,239,0,0.25)' },
-  { name: 'SOC Analyst Path', platform: 'TryHackMe', icon: 'fa-route', diff: 'medium', date: 'Feb 2026', color: '#88cc14', bg: 'rgba(136,204,20,0.08)', border: 'rgba(136,204,20,0.25)' },
-  { name: 'Practical Malware Analysis', platform: 'TCM Security', icon: 'fa-bug', diff: 'hard', date: 'In Progress', color: '#c084fc', bg: 'rgba(168,85,247,0.1)', border: 'rgba(168,85,247,0.25)' },
-  { name: 'Phishing Email Investigation', platform: 'Blue Team Labs', icon: 'fa-envelope-open', diff: 'medium', date: 'Jan 2026', color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', border: 'rgba(59,130,246,0.25)' },
-  { name: 'Sysmon Threat Hunting', platform: 'CyberDefenders', icon: 'fa-magnifying-glass', diff: 'medium', date: 'Dec 2025', color: '#06b6d4', bg: 'rgba(6,182,212,0.08)', border: 'rgba(6,182,212,0.25)' },
-  { name: 'Active Directory Attacks', platform: 'TryHackMe', icon: 'fa-network-wired', diff: 'hard', date: 'Nov 2025', color: '#88cc14', bg: 'rgba(136,204,20,0.08)', border: 'rgba(136,204,20,0.25)' },
-  { name: 'Memory Forensics — Volatility', platform: 'CyberDefenders', icon: 'fa-microchip', diff: 'hard', date: 'Oct 2025', color: '#06b6d4', bg: 'rgba(6,182,212,0.08)', border: 'rgba(6,182,212,0.25)' },
-  { name: 'Junior Penetration Tester', platform: 'TryHackMe', icon: 'fa-user-ninja', diff: 'medium', date: 'Sep 2025', color: '#88cc14', bg: 'rgba(136,204,20,0.08)', border: 'rgba(136,204,20,0.25)' }
-];
-
-(function renderLabs(){
-  const grid = document.getElementById('labGrid');
-  if(!grid) return;
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  grid.innerHTML = LABS.map(lab => `
-    <div class="lab-card" style="--platform-color:${lab.color};--platform-bg:${lab.bg};--platform-border:${lab.border}">
-      <div class="lab-icon"><i class="fas ${lab.icon}"></i></div>
-      <div class="lab-body">
-        <div class="lab-title">${escapeHtml(lab.name)}</div>
-        <div class="lab-platform">${escapeHtml(lab.platform)}</div>
-        <div class="lab-foot">
-          <span class="lab-diff ${lab.diff}">${lab.diff}</span>
-          <span class="lab-date">${escapeHtml(lab.date)}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
 })();
 </script>
 </body>
