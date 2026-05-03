@@ -1,27 +1,25 @@
-/* =================================================
-   CTFs & LABS — central data source
-   Add new entries here. index.html shows latest 3.
-   labs.html shows all.
+/* ============================================= */
+/* CTFs & LABS DATA */
+/* ============================================= */
+/* Add a new lab/CTF entry by appending to the array below.
+   Required: id, name, platform, icon (FA class), diff (easy|medium|hard|insane), date, color, bg, border, summary.
+   Optional: featured (boolean), writeup (URL), tags[]. */
 
-   HOW TO ADD A NEW LAB:
-   Copy the template block, fill it in,
-   add at the TOP (newest first).
-   ================================================= */
-const labs = [
+window.LABS = [
   {
-    id: 'tcm-malware',
-    name: 'Practical Malware Analysis & Triage',
+    id: 'tcm-malware-analysis',
+    name: 'Practical Malware Analysis',
     platform: 'TCM Security',
     icon: 'fa-bug',
     diff: 'hard',
     date: 'In Progress',
-    status: 'active',
     color: '#c084fc',
     bg: 'rgba(168,85,247,0.1)',
     border: 'rgba(168,85,247,0.25)',
-    summary: 'Static & dynamic malware analysis. PE structure, x32dbg debugging, Ghidra RE, YARA rule writing. Learning to triage a sample end-to-end.',
-    tags: ['x32dbg', 'Ghidra', 'YARA', 'PE Analysis', 'Sandboxing'],
-    url: 'now.html',
+    summary: 'Static & dynamic malware analysis, unpacking, behavioral detection, and reverse engineering with x32dbg + Ghidra. Currently on Module 5.',
+    tags: ['Malware', 'Reverse Engineering', 'YARA'],
+    featured: true,
+    writeup: ''
   },
   {
     id: 'htb-cdsa',
@@ -30,28 +28,28 @@ const labs = [
     icon: 'fa-shield-halved',
     diff: 'medium',
     date: 'March 2026',
-    status: 'done',
     color: '#9fef00',
     bg: 'rgba(159,239,0,0.08)',
     border: 'rgba(159,239,0,0.25)',
-    summary: 'Certified Defense Security Analyst. Covered SOC operations, threat hunting, alert triage, and incident response across real-world scenarios.',
-    tags: ['SOC', 'Threat Hunting', 'IR', 'SIEM'],
-    url: '',
+    summary: 'End-to-end SOC analyst certification — alert triage, KQL hunting, IR, threat intel, and digital forensics. Cleared on first attempt.',
+    tags: ['SOC', 'IR', 'KQL'],
+    featured: true,
+    writeup: ''
   },
   {
-    id: 'tryhackme-soc',
+    id: 'thm-soc-path',
     name: 'SOC Analyst Path',
     platform: 'TryHackMe',
     icon: 'fa-route',
     diff: 'medium',
     date: 'February 2026',
-    status: 'done',
     color: '#88cc14',
     bg: 'rgba(136,204,20,0.08)',
     border: 'rgba(136,204,20,0.25)',
-    summary: 'Comprehensive SOC analyst learning path covering log analysis, SIEM, phishing investigation, and endpoint forensics.',
-    tags: ['SIEM', 'Log Analysis', 'Phishing', 'Forensics'],
-    url: '',
+    summary: 'Foundational SOC pathway covering log analysis, SIEM use, network monitoring, and incident response basics.',
+    tags: ['SOC', 'SIEM', 'Logs'],
+    featured: true,
+    writeup: ''
   },
   {
     id: 'btlo-phishing',
@@ -60,89 +58,183 @@ const labs = [
     icon: 'fa-envelope-open',
     diff: 'medium',
     date: 'January 2026',
-    status: 'done',
     color: '#3b82f6',
     bg: 'rgba(59,130,246,0.08)',
     border: 'rgba(59,130,246,0.25)',
-    summary: 'Investigated a multi-stage phishing campaign. Header analysis, URL detonation, IOC extraction, and full incident timeline.',
-    tags: ['Email Forensics', 'Headers', 'IOCs', 'SPF/DKIM'],
-    url: '',
+    summary: 'Email header analysis, SPF/DKIM/DMARC validation, IOC extraction, and writing a clear executive summary.',
+    tags: ['Phishing', 'Email', 'IOC'],
+    featured: false,
+    writeup: ''
   },
   {
-    id: 'cyberdef-sysmon',
+    id: 'cd-sysmon-hunt',
     name: 'Sysmon Threat Hunting',
     platform: 'CyberDefenders',
     icon: 'fa-magnifying-glass',
     diff: 'medium',
     date: 'December 2025',
-    status: 'done',
     color: '#06b6d4',
     bg: 'rgba(6,182,212,0.08)',
     border: 'rgba(6,182,212,0.25)',
-    summary: 'Used Sysmon telemetry to hunt for lateral movement and credential access. Identified LSASS dump and pass-the-hash attack chain.',
-    tags: ['Sysmon', 'Lateral Movement', 'Credential Access', 'EVTX'],
-    url: '',
+    summary: 'Hunting through Sysmon Event ID 1, 3, 7, 11 to reconstruct an attack chain. Learned to pivot fast on parent-child process trees.',
+    tags: ['Sysmon', 'Hunting', 'Forensics'],
+    featured: false,
+    writeup: ''
   },
   {
-    id: 'tryhackme-ad',
+    id: 'thm-ad-attacks',
     name: 'Active Directory Attacks',
     platform: 'TryHackMe',
     icon: 'fa-network-wired',
     diff: 'hard',
     date: 'November 2025',
-    status: 'done',
     color: '#88cc14',
     bg: 'rgba(136,204,20,0.08)',
     border: 'rgba(136,204,20,0.25)',
-    summary: 'Kerberoasting, AS-REP roasting, DCSync, BloodHound enumeration. Defender perspective: learned how each technique appears in logs.',
-    tags: ['Kerberos', 'BloodHound', 'DCSync', 'AD'],
-    url: '',
+    summary: 'Kerberoasting, AS-REP roasting, DCSync, and Golden Ticket — from the attacker side, so I know what to detect from the blue side.',
+    tags: ['AD', 'Kerberos', 'Lateral Movement'],
+    featured: false,
+    writeup: ''
   },
   {
-    id: 'cyberdef-volatility',
+    id: 'cd-volatility',
     name: 'Memory Forensics — Volatility',
     platform: 'CyberDefenders',
     icon: 'fa-microchip',
     diff: 'hard',
     date: 'October 2025',
-    status: 'done',
     color: '#06b6d4',
     bg: 'rgba(6,182,212,0.08)',
     border: 'rgba(6,182,212,0.25)',
-    summary: 'Memory dump analysis with Volatility. Extracted running processes, network connections, and injected shellcode from a compromised Windows image.',
-    tags: ['Volatility', 'Memory Forensics', 'Process Injection', 'DFIR'],
-    url: '',
+    summary: 'Pulling injected processes, hidden DLLs, and network artifacts straight from memory dumps. Volatility plugin chain mastery.',
+    tags: ['Memory', 'Forensics', 'Volatility'],
+    featured: false,
+    writeup: ''
   },
   {
-    id: 'tryhackme-jrpent',
+    id: 'thm-jr-pentester',
     name: 'Junior Penetration Tester',
     platform: 'TryHackMe',
     icon: 'fa-user-ninja',
     diff: 'medium',
     date: 'September 2025',
-    status: 'done',
     color: '#88cc14',
     bg: 'rgba(136,204,20,0.08)',
     border: 'rgba(136,204,20,0.25)',
-    summary: 'Full Jr PenTester path. Web app attacks, privilege escalation, network exploitation. Helps me understand attacker perspective for better detection logic.',
-    tags: ['Web App', 'PrivEsc', 'Exploitation', 'Recon'],
-    url: '',
-  },
-  /* ── Add new labs above this line ───────────────────────────────────────
-  {
-    id: 'your-lab-id',
-    name: 'Lab Name',
-    platform: 'Platform Name',
-    icon: 'fa-shield-halved',
-    diff: 'medium',          // 'easy' | 'medium' | 'hard' | 'insane'
-    date: 'May 2026',
-    status: 'done',          // 'done' | 'active'
-    color: '#00ffe5',
-    bg: 'rgba(0,255,229,0.08)',
-    border: 'rgba(0,255,229,0.25)',
-    summary: 'One or two sentences about what you learned.',
-    tags: ['Tag1', 'Tag2'],
-    url: '',                 // optional link to writeup
-  },
-  ─────────────────────────────────────────────────────────────────────── */
+    summary: 'Earned the certification through a hands-on offensive pathway — recon, exploitation, post-exploitation, and reporting.',
+    tags: ['Pentesting', 'Cert'],
+    featured: false,
+    writeup: ''
+  }
+  /* ----------------------------------------------------------------
+   * To add a new lab, copy this template:
+   *
+   * {
+   *   id: 'unique-slug-here',
+   *   name: 'Lab Name',
+   *   platform: 'Hack The Box',
+   *   icon: 'fa-flag',           // any Font Awesome 6 solid icon
+   *   diff: 'medium',            // 'easy' | 'medium' | 'hard' | 'insane'
+   *   date: 'May 2026',
+   *   color: '#9fef00',          // platform brand color (used for accent)
+   *   bg: 'rgba(159,239,0,0.08)',
+   *   border: 'rgba(159,239,0,0.25)',
+   *   summary: 'One sentence on what you learned.',
+   *   tags: ['Tag1', 'Tag2'],
+   *   featured: false,
+   *   writeup: ''                // optional URL to a writeup
+   * }
+   * ---------------------------------------------------------------- */
 ];
+
+/* Helper: parse "Month YYYY" or "In Progress" */
+window.parseLabDate = function(s){
+  if(s === 'In Progress') return new Date(2099, 0, 1); // pin to top
+  const months = {January:0,February:1,March:2,April:3,May:4,June:5,July:6,August:7,September:8,October:9,November:10,December:11};
+  const m = String(s||'').match(/(\w+)\s+(\d{4})/);
+  if(!m) return new Date(0);
+  return new Date(parseInt(m[2]), months[m[1]] || 0, 1);
+};
+
+/* Helper: render lab cards into a target grid */
+window.buildLabCards = function(targetId, opts){
+  opts = opts || {};
+  const grid = document.getElementById(targetId);
+  if(!grid) return;
+
+  let list = window.LABS.slice();
+
+  // Sort: In Progress first, then newest first
+  list.sort((a,b) => window.parseLabDate(b.date) - window.parseLabDate(a.date));
+
+  if(opts.featuredOnly){
+    list = list.filter(l => l.featured);
+  }
+  if(opts.platform && opts.platform !== 'all'){
+    list = list.filter(l => l.platform === opts.platform);
+  }
+  if(opts.search){
+    const q = opts.search.toLowerCase();
+    list = list.filter(l =>
+      l.name.toLowerCase().includes(q) ||
+      l.platform.toLowerCase().includes(q) ||
+      (l.summary || '').toLowerCase().includes(q) ||
+      (l.tags || []).some(t => t.toLowerCase().includes(q))
+    );
+  }
+  if(opts.limit){
+    list = list.slice(0, opts.limit);
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  if(!list.length){
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-family:var(--mono);font-size:12px">// no labs match the current filter</div>';
+    return;
+  }
+
+  // Compact card variant for homepage (no summary/tags), full for dedicated page
+  const compact = opts.compact;
+
+  grid.innerHTML = list.map(lab => {
+    const inner = compact
+      ? `
+        <div class="lab-icon"><i class="fas ${lab.icon}"></i></div>
+        <div class="lab-body">
+          <div class="lab-title">${escapeHtml(lab.name)}</div>
+          <div class="lab-platform">${escapeHtml(lab.platform)}</div>
+          <div class="lab-foot">
+            <span class="lab-diff ${lab.diff}">${lab.diff}</span>
+            <span class="lab-date">${escapeHtml(lab.date)}</span>
+          </div>
+        </div>
+      `
+      : `
+        <div class="lab-icon"><i class="fas ${lab.icon}"></i></div>
+        <div class="lab-body">
+          <div class="lab-title">${escapeHtml(lab.name)}</div>
+          <div class="lab-platform">${escapeHtml(lab.platform)}</div>
+          ${lab.summary ? `<div class="lab-summary">${escapeHtml(lab.summary)}</div>` : ''}
+          ${(lab.tags || []).length ? `<div class="lab-tags">${lab.tags.map(t => `<span class="lab-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+          <div class="lab-foot">
+            <span class="lab-diff ${lab.diff}">${lab.diff}</span>
+            <span class="lab-date">${escapeHtml(lab.date)}</span>
+            ${lab.writeup ? `<a href="${lab.writeup}" target="_blank" rel="noopener" class="lab-writeup">writeup →</a>` : ''}
+          </div>
+        </div>
+      `;
+
+    const wrapTag = lab.writeup && !compact ? 'a' : 'div';
+    const wrapAttrs = lab.writeup && !compact
+      ? `href="${lab.writeup}" target="_blank" rel="noopener"`
+      : '';
+
+    return `
+      <${wrapTag} class="lab-card" ${wrapAttrs} style="--platform-color:${lab.color};--platform-bg:${lab.bg};--platform-border:${lab.border}">
+        ${inner}
+      </${wrapTag}>
+    `;
+  }).join('');
+};
