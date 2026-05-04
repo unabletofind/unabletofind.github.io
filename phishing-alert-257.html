@@ -2,15 +2,15 @@
 <html lang="en">
 <!--
   ============================================================
-  LAB / CTF WRITEUP — Phishing Alert ID: 257 (LetsDefend)
+  LAB / CTF WRITEUP  Phishing Alert ID: 257 (LetsDefend)
   ============================================================
 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Phishing Alert — ID: 257 · Writeup · Swetha Devi</title>
-<meta name="description" content="Writeup for Phishing Alert ID: 257 from LetsDefend — investigating an alert with limited evidence and validating the full attack chain end to end.">
+<title>Phishing Alert  ID: 257 · Writeup · Swetha Devi</title>
+<meta name="description" content="Writeup for Phishing Alert ID: 257 from LetsDefend  investigating an alert with limited evidence and validating the full attack chain end to end.">
 <meta name="theme-color" content="#020b16">
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
   --border:rgba(0,255,229,0.08);--border-bright:rgba(0,255,229,0.18);
   --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
 
-  /* Platform color palette — LetsDefend (red/pink) */
+  /* Platform color palette  LetsDefend (red/pink) */
   /* Other options:
      HTB:        #9fef00 / rgba(159,239,0,0.08)  / rgba(159,239,0,0.25)
      TryHackMe:  #88cc14 / rgba(136,204,20,0.08) / rgba(136,204,20,0.25)
@@ -223,7 +223,7 @@ footer a:hover{text-decoration:underline}
 <header class="hero">
 
   <div class="breadcrumb">
-    <a href="index.html">Home</a><i class="fas fa-chevron-right"></i><a href="labs.html">Labs</a><i class="fas fa-chevron-right"></i><span>Phishing Alert — ID: 257</span>
+    <a href="index.html">Home</a><i class="fas fa-chevron-right"></i><a href="labs.html">Labs</a><i class="fas fa-chevron-right"></i><span>Phishing Alert  ID: 257</span>
   </div>
 
   <div class="hero-card">
@@ -235,7 +235,7 @@ footer a:hover{text-decoration:underline}
 
     <h1>Phishing Alert <span>ID: 257</span></h1>
 
-    <p class="hero-sub">In every organisation, email-related incidents are among the most common — attackers target users to manipulate them into clicking links or downloading attachments. This lab taught me that we don't always get the full picture of evidence; sometimes we have to investigate with limited sources and still reach a confident conclusion.</p>
+    <p class="hero-sub">In every organisation, email-related incidents are among the most common  attackers target users to manipulate them into clicking links or downloading attachments. This lab taught me that we don't always get the full picture of evidence; sometimes we have to investigate with limited sources and still reach a confident conclusion.</p>
 
     <div class="lab-stats">
       <div>
@@ -267,10 +267,10 @@ footer a:hover{text-decoration:underline}
   <div class="objectives">
     <div class="obj-head">// Lab Objectives</div>
     <ul class="obj-list">
-      <li><i class="fas fa-circle"></i><span><strong>Email analysis</strong> — inspecting headers, sender, subject, and body for indicators of phishing</span></li>
-      <li><i class="fas fa-circle"></i><span><strong>Understanding attack patterns</strong> — recognising social-engineering hooks like fake giveaways</span></li>
-      <li><i class="fas fa-circle"></i><span><strong>Email attachment analysis</strong> — handling password-protected ZIP payloads safely</span></li>
-      <li><i class="fas fa-circle"></i><span><strong>Confidence and validating alerts</strong> — making a verdict with limited evidence</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Email analysis</strong>  inspecting headers, sender, subject, and body for indicators of phishing</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Understanding attack patterns</strong>  recognising social-engineering hooks like fake giveaways</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Email attachment analysis</strong>  handling password-protected ZIP payloads safely</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Confidence and validating alerts</strong>  making a verdict with limited evidence</span></li>
     </ul>
   </div>
 
@@ -279,12 +279,12 @@ footer a:hover{text-decoration:underline}
 
   <p>The reason I wanted to solve this lab is that even when our security team and tools are working excellently, attackers can still get into an organisation by manipulating users. We need to educate employees, and at the same time we need to catch phishing emails <em>before</em> users click anything.</p>
 
-  <p>When I started this lab, I assumed I'd get all the necessary details handed to me. That's not how it works. There's a difference between real-world email alerts and the evidence we receive in labs — labs often give limited evidence. The trick is this: if you can validate correctly with limited details, then in the real world (with more evidence) validation becomes easier. Sometimes more evidence even creates more confusion if you don't have a method.</p>
+  <p>When I started this lab, I assumed I'd get all the necessary details handed to me. That's not how it works. There's a difference between real-world email alerts and the evidence we receive in labs  labs often give limited evidence. The trick is this: if you can validate correctly with limited details, then in the real world (with more evidence) validation becomes easier. Sometimes more evidence even creates more confusion if you don't have a method.</p>
 
   <!-- Tools -->
   <h2>Tools Used</h2>
 
-  <p>This lab didn't require any external tools — everything I needed (including a threat-intel platform) was provided inside the LetsDefend environment. The only external reference was the MITRE ATT&amp;CK framework for mapping techniques.</p>
+  <p>This lab didn't require any external tools  everything I needed (including a threat-intel platform) was provided inside the LetsDefend environment. The only external reference was the MITRE ATT&amp;CK framework for mapping techniques.</p>
 
   <div class="tools-grid">
     <span class="tool-chip"><i class="fas fa-envelope"></i> Email Entity</span>
@@ -306,7 +306,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-body">
       <p>I opened the alert page first. From there I pulled the basic facts: who the sender was, who the recipient was, and what the email subject said. Those three fields alone usually tell you whether something deserves a closer look.</p>
 
-      <p>I immediately searched the sender IP in the threat-intel platform provided by LetsDefend. While that was running, I re-read the subject line — and it was already a red flag. The wording was clearly engineered to push the user into clicking a URL or opening an attachment.</p>
+      <p>I immediately searched the sender IP in the threat-intel platform provided by LetsDefend. While that was running, I re-read the subject line  and it was already a red flag. The wording was clearly engineered to push the user into clicking a URL or opening an attachment.</p>
     </div>
   </div>
 
@@ -340,7 +340,7 @@ footer a:hover{text-decoration:underline}
         <i class="fas fa-triangle-exclamation callout-icon"></i>
         <div class="callout-body">
           <div class="callout-title">Where I got stuck</div>
-          <p class="callout-text">Initially I couldn't figure out how to confirm whether the user actually opened the attachment. I went through every process I could see and got nowhere. I almost started checking each artefact one by one — but in security, patience is the actual skill. I took a 2-minute break, looked at the UI as a whole, and that's when I noticed the Browser History tab. The download was right there.</p>
+          <p class="callout-text">Initially I couldn't figure out how to confirm whether the user actually opened the attachment. I went through every process I could see and got nowhere. I almost started checking each artefact one by one  but in security, patience is the actual skill. I took a 2-minute break, looked at the UI as a whole, and that's when I noticed the Browser History tab. The download was right there.</p>
         </div>
       </div>
     </div>
@@ -355,7 +355,7 @@ footer a:hover{text-decoration:underline}
 
       <div class="code-block">
         <div class="code-block-head">
-          <span class="code-block-lang">Terminal History — observed commands</span>
+          <span class="code-block-lang">Terminal History  observed commands</span>
           <button class="code-block-copy" data-copy><i class="fas fa-copy"></i> Copy</button>
         </div>
 <pre><code>systeminfo
@@ -394,7 +394,7 @@ wmic logicaldisk get name,size,freespace</code></pre>
 
     <div class="det-row">
       <div class="det-icon"><i class="fas fa-search"></i></div>
-      <div class="det-content"><strong>Validate, then respond fast</strong> — once the alert is confirmed as a true positive, immediately check whether the user clicked the link or downloaded the attachment. Response actions come right after; deeper investigation and the report come last.</div>
+      <div class="det-content"><strong>Validate, then respond fast</strong>  once the alert is confirmed as a true positive, immediately check whether the user clicked the link or downloaded the attachment. Response actions come right after; deeper investigation and the report come last.</div>
     </div>
 
     <div class="det-row">
@@ -446,7 +446,7 @@ wmic logicaldisk get name,size,freespace</code></pre>
   <!-- What's Next -->
   <h2>What's Next?</h2>
 
-  <p>This lab fits into my broader path of building strong fundamentals in email-borne threats and Tier-1 SOC triage. Next, I want to go deeper into <strong>email header analysis</strong> (SPF / DKIM / DMARC) and full <strong>attachment sandboxing</strong> — moving from "is this phishing?" to "what exactly does this payload do?"</p>
+  <p>This lab fits into my broader path of building strong fundamentals in email-borne threats and Tier-1 SOC triage. Next, I want to go deeper into <strong>email header analysis</strong> (SPF / DKIM / DMARC) and full <strong>attachment sandboxing</strong>  moving from "is this phishing?" to "what exactly does this payload do?"</p>
 
   <p>After that, I'll be working through more LetsDefend SOC alerts and plan to start the Blue Team Level 1 (BTL1) path to formalise the methodology.</p>
 
@@ -454,7 +454,7 @@ wmic logicaldisk get name,size,freespace</code></pre>
   <h2>References</h2>
 
   <ol>
-    <li><a href="https://app.letsdefend.io/monitoring" target="_blank">LetsDefend Monitoring — Event ID 257</a></li>
+    <li><a href="https://app.letsdefend.io/monitoring" target="_blank">LetsDefend Monitoring  Event ID 257</a></li>
     <li>MITRE ATT&amp;CK techniques: T1566.001 (Spearphishing Attachment), T1059 (Command &amp; Scripting Interpreter), T1082 (System Information Discovery), T1033 (System Owner/User Discovery), T1049 (System Network Connections Discovery), T1057 (Process Discovery), T1083 (File and Directory Discovery)</li>
   </ol>
 
