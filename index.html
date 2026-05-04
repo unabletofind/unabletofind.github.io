@@ -1279,11 +1279,11 @@ setTimeout(type, 700);
   const history = [];
   let histIdx = -1;
 
-  const banner = `<span class="tc-green">┌─────────────────────────────────────────────────────┐</span>
+  const banner = `<span class="tc-green">┌─────────────────────────────────────────────────┐</span>
 <span class="tc-green">│</span>  <span class="tc-yellow">SWETHA DEVI SAI PRIYA BONU</span>                     <span class="tc-green">│</span>
 <span class="tc-green">│</span>  <span class="tc-blue">SOC Analyst · Incident Response · Alert Triage</span> <span class="tc-green">│</span>
-<span class="tc-green">│</span>  <span class="tc-purple">@unabletofind</span> · <span class="tc-gray">Hyderabad, IN</span> · <span class="tc-gray">v2.1</span>           <span class="tc-green">│</span>
-<span class="tc-green">└──────────────────────────────────────────────────────┘</span>
+<span class="tc-green">│</span>  <span class="tc-purple">@unabletofind</span> · <span class="tc-gray">Hyderabad, IN</span> · <span class="tc-gray">v2.1</span>          <span class="tc-green">│</span>
+<span class="tc-green">└─────────────────────────────────────────────────┘</span>
 
 <span class="tc-gray">Type </span><span class="tc-yellow">help</span><span class="tc-gray"> to see available commands.</span>`;
 
@@ -1786,7 +1786,42 @@ if (typeof window.buildDetectionCards === 'function') {
   window.buildDetectionCards('detGrid', { limit: 3 });
 }
 if (typeof window.buildLabCards === 'function') {
-  window.buildLabCards('labGrid', { limit: 3 });
+  window.buildLabCards('labGrid', { limit: 3, compact: true });
+
+  /* Make compact lab cards on homepage clickable (like blog cards) */
+  setTimeout(() => {
+    const labGrid = document.getElementById('labGrid');
+    if (!labGrid || !window.LABS) return;
+
+    /* Sort the same way buildLabCards does, take latest 3 */
+    const list = window.LABS.slice()
+      .sort((a, b) => window.parseLabDate(b.date) - window.parseLabDate(a.date))
+      .slice(0, 3);
+
+    labGrid.querySelectorAll('.lab-card').forEach((card, i) => {
+      const lab = list[i];
+      if (!lab || !lab.writeup) return;
+
+      /* Make the card visually clickable */
+      card.style.cursor = 'none';
+      card.style.textDecoration = 'none';
+
+      /* Navigate to writeup on click */
+      card.addEventListener('click', () => {
+        window.location.href = lab.writeup;
+      });
+
+      /* Add a small "→" hint to show it's clickable */
+      const foot = card.querySelector('.lab-foot');
+      if (foot && !foot.querySelector('.lab-writeup-hint')) {
+        const hint = document.createElement('span');
+        hint.className = 'lab-writeup-hint';
+        hint.style.cssText = 'margin-left:auto;color:var(--accent);font-size:10px;font-family:var(--mono)';
+        hint.innerHTML = 'writeup →';
+        foot.appendChild(hint);
+      }
+    });
+  }, 50);
 }
 </script>
 </body>
