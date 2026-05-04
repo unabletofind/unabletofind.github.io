@@ -321,11 +321,11 @@ footer a:hover{text-decoration:underline}
         <i class="fas fa-lightbulb callout-icon"></i>
         <div class="callout-body">
           <div class="callout-title">Quick tip</div>
-          <p class="callout-text">Looking at the Email Entity confirmed the phishing verdict. The email contained a <code>.zip</code> attachment, the body offered a "free coffee" promotion (classic bait), and there was a "Redeem" URL button that redirected the user to download a password-protected malicious ZIP.</p>
+          <p class="callout-text">Looking at the Email Entity confirmed the phishing verdict. The email contained a <code>.zip</code> attachment, the body offered a 'free coffee' promotion, classic social engineering bait, and there was a "Redeem" URL button that redirected the user to download a password-protected malicious ZIP.</p>
         </div>
       </div>
 
-      <p>Even when something looks suspicious, people still click out of curiosity or temptation. Instead of clicking blindly, 3–5 minutes of basic investigation is usually enough to decide whether a URL or attachment is worth opening.</p>
+      <p>Even when something looks suspicious, people still click out of curiosity or temptation. Instead of clicking blindly, 3–5 minutes of basic investigation is usually enough to determine whether a URL or attachment is malicious.</p>
     </div>
   </div>
 
@@ -334,7 +334,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-num">3</div>
     <div class="step-title">Exploitation</div>
     <div class="step-body">
-      <p>Using the username, I searched the endpoint inventory and found the user's device. (In the real world I'd pivot on device ID or UPN, but in this lab the username was what I had.) Once on the device, I checked the browser history and confirmed the user had downloaded the attachment — which led to the device being compromised.</p>
+      <p>Using the username, I searched the endpoint inventory and found the user's device. (In the real world I'd pivot on device ID or UPN, but in this lab the username was what I had.) Once on the device, I checked the browser history and confirmed the user had downloaded the attachment, the likely entry point for the compromise.</p>
 
       <div class="callout warning">
         <i class="fas fa-triangle-exclamation callout-icon"></i>
@@ -351,7 +351,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-num">4</div>
     <div class="step-title">Post-Exploitation</div>
     <div class="step-body">
-      <p>After the attachment was opened, the attacker started discovery — system info, disk info, network info, running processes. Terminal history showed enumeration commands being executed back-to-back with only 5–6 seconds between them, which is a strong signal of automated/scripted activity rather than a human user.</p>
+      <p>After the attachment was opened, the attacker started discovery like system info, disk info, network info, running processes. Terminal history showed enumeration commands being executed back-to-back with only 5–6 seconds between them, which strongly suggests automated or scripted activity rather than manual user behaviour.</p>
 
       <div class="code-block">
         <div class="code-block-head">
@@ -399,12 +399,12 @@ wmic logicaldisk get name,size,freespace</code></pre>
 
     <div class="det-row">
       <div class="det-icon"><i class="fas fa-shield-halved"></i></div>
-      <div class="det-content"><strong>Detect password-protected archives in mail flow</strong> — alert on inbound emails containing <code>.zip</code> / <code>.rar</code> attachments where the password is included in the body. This bypasses most AV scanning and is a well-known phishing pattern.</div>
+      <div class="det-content"><strong>Detect password-protected archives in mail flow</strong> Alert on inbound emails containing <code>.zip</code> / <code>.rar</code> attachments where the password is embedded in the email body. This bypasses most AV scanning and is a well-known phishing pattern.</div>
     </div>
 
     <div class="det-row">
       <div class="det-icon"><i class="fas fa-eye"></i></div>
-      <div class="det-content"><strong>Detect rapid host-discovery sequences</strong> — chained execution of <code>systeminfo</code>, <code>whoami</code>, <code>ipconfig</code>, <code>tasklist</code>, and <code>netstat</code> within a short window from a single process tree is high-fidelity evidence of post-exploitation enumeration.</div>
+      <div class="det-content"><strong>Detect rapid host-discovery sequences</strong> chained execution of <code>systeminfo</code>, <code>whoami</code>, <code>ipconfig</code>, <code>tasklist</code>, and <code>netstat</code> within a short window from a single process tree is high-fidelity evidence of post-exploitation enumeration.</div>
     </div>
 
     <p style="font-size:13px;color:var(--muted);margin-top:18px;margin-bottom:0;font-style:italic">→ See the full set of related detection rules on the <a href="detections.html">Detections page</a>.</p>
@@ -448,7 +448,7 @@ wmic logicaldisk get name,size,freespace</code></pre>
 
   <p>This lab fits into my broader path of building strong fundamentals in email-borne threats and Tier-1 SOC triage. Next, I want to go deeper into <strong>email header analysis</strong> (SPF / DKIM / DMARC) and full <strong>attachment sandboxing</strong> — moving from "is this phishing?" to "what exactly does this payload do?"</p>
 
-  <p>After that, I'll be working through more LetsDefend SOC alerts and starting on the Blue Team Level 1 (BTL1) track to formalise the methodology.</p>
+  <p>After that, I'll be working through more LetsDefend SOC alerts and plan to start the Blue Team Level 1 (BTL1) path to formalise the methodology.</p>
 
   <!-- References -->
   <h2>References</h2>
