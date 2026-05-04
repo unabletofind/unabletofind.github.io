@@ -6,7 +6,106 @@
    Optional: featured (boolean) - shows on homepage with priority. */
 
 window.DETECTIONS = [
-  {
+   {
+  id: 'enum-burst-10s',
+  title: 'Post-Compromise Enumeration Burst — 2+ Commands in 10 Seconds',
+  platform: 'kql',
+  desc: 'Detects rapid execution of discovery commands within a 10-second window on a single device — strong indicator of post-exploitation scripted enumeration.',
+  severity: 'high',
+  mitre: ['T1082', 'T1016', 'T1083', 'T1033', 'T1057'],
+  tags: ['Enumeration', 'Post-Exploitation', 'Endpoint', 'MDE'],
+  date: 'May 2026',
+  featured: true,
+  code: `let EnumCommands = dynamic(["net view", "net user", "net group", "ipconfig",
+    "arp", "nslookup", "systeminfo", "hostname", "whoami", "nltest",
+    "netstat", "tasklist", "dir", "wmic"]);
+DeviceProcessEvents
+| where Timestamp > ago(24h)
+| where FileName in~ ("cmd.exe", "powershell.exe")
+| where InitiatingProcessCommandLine has_any (EnumCommands)
+    or ProcessCommandLine has_any (EnumCommands)
+| summarize
+    CommandCount = dcount(ProcessCommandLine),
+    CommandsRun = make_set(ProcessCommandLine),
+    FirstSeen = min(Timestamp),
+    LastSeen = max(Timestamp)
+    by DeviceName, AccountName, bin(Timestamp, 10s)
+| where CommandCount >= 2
+| extend TimeDiffSeconds = datetime_diff('second', LastSeen, FirstSeen)
+| where TimeDiffSeconds <= 10
+| project Timestamp, DeviceName, AccountName,
+    CommandCount, CommandsRun, TimeDiffSeconds
+| order by Timestamp desc`
+},
+
+{
+  id: 'zip-download-browser',
+  title: 'ZIP File Downloaded via Browser or Email Client',
+  platform: 'kql',
+  desc: 'Detects .zip file creation in user-accessible folders initiated by a browser or email client — common delivery mechanism for phishing payloads.',
+  severity: 'medium',
+  mitre: ['T1566.001', 'T1105'],
+  tags: ['Phishing', 'ZIP', 'Download', 'MDE'],
+  date: 'May 2026',
+  featured: false,
+  code: `DeviceFileEvents
+| where Timestamp > ago(24h)
+| where ActionType == "FileCreated"
+| where FileName endswith ".zip"
+| where InitiatingProcessFileName in~ (
+    "chrome.exe", "msedge.exe", "firefox.exe",
+    "outlook.exe", "iexplore.exe", "brave.exe"
+    )
+| where FolderPath has_any ("Downloads", "Temp", "AppData", "Desktop")
+| project
+    Timestamp,
+    DeviceName,
+    AccountName,
+    FileName,
+    FolderPath,
+    FileSize,
+    InitiatingProcessFileName,
+    InitiatingProcessCommandLine,
+    SHA256
+| extend VTLink = strcat("https://www.virustotal.com/gui/file/", SHA256)
+| order by Timestamp desc`
+},
+
+{
+  id: 'email-threat-intel-ip',
+  title: 'Inbound Email from Threat Intel Watchlist IP',
+  platform: 'kql',
+  desc: 'Detects inbound emails where the sender IP matches an entry in the Sentinel threat intelligence watchlist — high confidence phishing or BEC indicator.',
+  severity: 'high',
+  mitre: ['T1566.001', 'T1078'],
+  tags: ['Phishing', 'Threat Intel', 'Email', 'Sentinel'],
+  date: 'May 2026',
+  featured: true,
+  code: `let ThreatIntelIPs = _GetWatchlist('ThreatIntelFeed')
+| project SenderIP = SearchKey;
+EmailEvents
+| where Timestamp > ago(24h)
+| where EmailDirection == "Inbound"
+| extend SenderIP = tostring(parse_json(AuthenticationDetails).SenderIP)
+| join kind=inner ThreatIntelIPs on SenderIP
+| project
+    Timestamp,
+    SenderAddress,
+    SenderIP,
+    RecipientEmailAddress,
+    Subject,
+    DeliveryAction,
+    DeliveryLocation,
+    UrlCount,
+    AttachmentCount,
+    ThreatTypes,
+    DetectionMethods
+| extend
+    Urgency = "HIGH — Sender IP matches threat intel feed",
+    RecommendedAction = "Quarantine email, investigate recipient device"
+| order by Timestamp desc`
+},
+   {
     id: 'splunk-password-spray',
     title: 'Password Spray — Failed Auth Burst Followed by Success',
     platform: 'spl',
