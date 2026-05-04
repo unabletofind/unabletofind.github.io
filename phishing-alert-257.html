@@ -65,7 +65,7 @@ nav{padding:18px 0;border-bottom:1px solid var(--border);background:rgba(2,11,22
 .breadcrumb i{margin:0 8px;font-size:8px;color:var(--faint)}
 
 .hero-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;position:relative;overflow:hidden}
-.hero-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--plat-color)}
+.hero-card::{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--plat-color)}
 .hero-card::after{content:'';position:absolute;top:-40%;right:-10%;width:280px;height:280px;background:radial-gradient(circle,var(--plat-bg),transparent 70%);pointer-events:none}
 
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:18px;position:relative}
@@ -94,7 +94,7 @@ article{max-width:900px;margin:0 auto;padding:36px 24px 80px;position:relative;z
 /* Objectives card */
 .objectives{background:linear-gradient(135deg,var(--plat-bg),rgba(0,255,229,0.02));border:1px solid var(--plat-border);border-radius:14px;padding:24px 28px;margin:24px 0 36px}
 .obj-head{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--plat-color);text-transform:uppercase;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.obj-head::before{content:'';width:6px;height:6px;background:var(--plat-color);border-radius:50%;box-shadow:0 0 8px var(--plat-color)}
+.obj-head::{content:'';width:6px;height:6px;background:var(--plat-color);border-radius:50%;box-shadow:0 0 8px var(--plat-color)}
 .obj-list{list-style:none;padding:0}
 .obj-list li{font-size:14px;color:var(--text);line-height:1.7;padding:6px 0;display:flex;gap:11px;align-items:flex-start}
 .obj-list li i{color:var(--plat-color);font-size:11px;margin-top:7px;flex-shrink:0}
@@ -108,7 +108,7 @@ article{max-width:900px;margin:0 auto;padding:36px 24px 80px;position:relative;z
 
 /* Section headings */
 article h2{font-size:1.5rem;font-weight:700;margin:48px 0 16px;letter-spacing:-.01em;display:flex;align-items:center;gap:14px;line-height:1.3}
-article h2::before{content:'';display:inline-block;width:4px;height:22px;background:linear-gradient(180deg,var(--plat-color),var(--accent));border-radius:2px;flex-shrink:0}
+article h2::{content:'';display:inline-block;width:4px;height:22px;background:linear-gradient(180deg,var(--plat-color),var(--accent));border-radius:2px;flex-shrink:0}
 article h3{font-size:1.15rem;font-weight:600;margin:32px 0 12px;color:var(--text)}
 article h4{font-size:0.95rem;font-weight:600;margin:24px 0 10px;color:var(--accent);font-family:var(--mono);letter-spacing:.02em}
 
@@ -165,9 +165,9 @@ article code:not(pre code){background:rgba(0,255,229,0.08);color:var(--accent);p
 
 /* Defender takeaway block */
 .defender-block{background:linear-gradient(135deg,rgba(0,255,229,0.04),rgba(59,130,246,0.03));border:1px solid rgba(0,255,229,0.18);border-radius:14px;padding:28px;margin:32px 0;position:relative;overflow:hidden}
-.defender-block::before{content:'';position:absolute;top:-30%;right:-10%;width:280px;height:280px;background:radial-gradient(circle,rgba(0,255,229,0.05),transparent 70%);pointer-events:none}
+.defender-block::{content:'';position:absolute;top:-30%;right:-10%;width:280px;height:280px;background:radial-gradient(circle,rgba(0,255,229,0.05),transparent 70%);pointer-events:none}
 .defender-tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;position:relative}
-.defender-tag::before{content:'\f3ed';font-family:'Font Awesome 6 Free';font-weight:900;color:var(--accent);font-size:14px}
+.defender-tag::{content:'\f3ed';font-family:'Font Awesome 6 Free';font-weight:900;color:var(--accent);font-size:14px}
 .defender-block h3{margin-top:0;color:var(--text);font-size:1.15rem;position:relative}
 .defender-block .det-row{display:flex;gap:12px;align-items:flex-start;margin:14px 0;padding:14px 16px;background:rgba(2,11,22,0.5);border:1px solid var(--border);border-radius:8px;position:relative}
 .det-icon{width:28px;height:28px;border-radius:6px;background:rgba(0,255,229,0.08);border:1px solid rgba(0,255,229,0.2);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:11px;flex-shrink:0}
@@ -277,7 +277,7 @@ footer a:hover{text-decoration:underline}
   <!-- Background -->
   <h2>Background</h2>
 
-  <p>The reason I wanted to solve this lab is that even when our security team and tools are working excellently, attackers can still get into an organisation by manipulating users. We need to educate employees, and at the same time we need to catch phishing emails <em>before</em> users click anything.</p>
+  <p>The reason I wanted to solve this lab is that even when our security team and tools are working excellently, attackers can still get into an organisation by manipulating users. We need to educate employees, and at the same time we need to catch phishing emails <em> before </em> users click anything.</p>
 
   <p>When I started this lab, I assumed I'd get all the necessary details handed to me. That's not how it works. There's a difference between real-world email alerts and the evidence we receive in labs  labs often give limited evidence. The trick is this: if you can validate correctly with limited details, then in the real world (with more evidence) validation becomes easier. Sometimes more evidence even creates more confusion if you don't have a method.</p>
 
@@ -448,7 +448,7 @@ wmic logicaldisk get name,size,freespace</code></pre>
 
   <p>This lab fits into my broader path of building strong fundamentals in email-borne threats and Tier-1 SOC triage. Next, I want to go deeper into <strong>email header analysis</strong> (SPF / DKIM / DMARC) and full <strong>attachment sandboxing</strong>  moving from "is this phishing?" to "what exactly does this payload do?"</p>
 
-  <p>After that, I'll be working through more LetsDefend SOC alerts and plan to start the Blue Team Level 1 (BTL1) path to formalise the methodology.</p>
+  <p>After that, I'll be working through more LetsDefend SOC alerts to formalise the methodology.</p>
 
   <!-- References -->
   <h2>References</h2>
