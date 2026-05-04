@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+  ============================================================
+  LAB / CTF WRITEUP — Phishing Alert ID: 257 (LetsDefend)
+  ============================================================
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phishing Alert — ID: 257 · Writeup · Swetha Devi</title>
+<meta name="description" content="Writeup for Phishing Alert ID: 257 from LetsDefend — investigating an alert with limited evidence and validating the full attack chain end to end.">
+<meta name="theme-color" content="#020b16">
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#020b16;--surface:#071324;--surface2:#0c1c30;
+  --accent:#00ffe5;--accent2:#3b82f6;--accent3:#a855f7;
+  --red:#f43f5e;--amber:#f59e0b;--green:#22c55e;
+  --text:#e8f4ff;--muted:#5a7a9a;--faint:#3a5a78;
+  --border:rgba(0,255,229,0.08);--border-bright:rgba(0,255,229,0.18);
+  --font:'Space Grotesk',sans-serif;--mono:'JetBrains Mono',monospace;
+
+  /* Platform color palette — LetsDefend (red/pink) */
+  /* Other options:
+     HTB:        #9fef00 / rgba(159,239,0,0.08)  / rgba(159,239,0,0.25)
+     TryHackMe:  #88cc14 / rgba(136,204,20,0.08) / rgba(136,204,20,0.25)
+     TCM:        #c084fc / rgba(168,85,247,0.1)  / rgba(168,85,247,0.25)
+     BTLO:       #3b82f6 / rgba(59,130,246,0.08) / rgba(59,130,246,0.25)
+     CyberDef:   #06b6d4 / rgba(6,182,212,0.08)  / rgba(6,182,212,0.25)
+     LetsDefend: #f43f5e / rgba(244,63,94,0.08)  / rgba(244,63,94,0.25)
+  */
+  --plat-color:#f43f5e;
+  --plat-bg:rgba(244,63,94,0.08);
+  --plat-border:rgba(244,63,94,0.25);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;min-height:100vh;position:relative}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at top,var(--plat-bg),transparent 50%),radial-gradient(ellipse at bottom right,rgba(0,255,229,0.03),transparent 50%);pointer-events:none;z-index:0}
+
+/* ===== Scroll progress bar ===== */
+.scroll-prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--plat-color),var(--accent));width:0;z-index:1000;transition:width .1s}
+
+/* ===== Navigation ===== */
+nav{padding:18px 0;border-bottom:1px solid var(--border);background:rgba(2,11,22,0.85);backdrop-filter:blur(18px);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+.logo-shield{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,rgba(0,255,229,0.15),rgba(168,85,247,0.1));border:1px solid rgba(0,255,229,0.25);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:14px}
+.logo-name{font-size:13px;font-weight:600}
+.logo-tag{font-size:9.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.06em}
+.nav-back{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:.2s}
+.nav-back:hover{color:var(--accent)}
+
+/* ===== Hero ===== */
+.hero{max-width:900px;margin:0 auto;padding:48px 24px 28px;position:relative;z-index:2}
+
+.breadcrumb{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:24px}
+.breadcrumb a{color:var(--accent);text-decoration:none;transition:.2s}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb i{margin:0 8px;font-size:8px;color:var(--faint)}
+
+.hero-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;background:var(--plat-color)}
+.hero-card::after{content:'';position:absolute;top:-40%;right:-10%;width:280px;height:280px;background:radial-gradient(circle,var(--plat-bg),transparent 70%);pointer-events:none}
+
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:18px;position:relative}
+.platform-badge{display:inline-flex;align-items:center;gap:9px;padding:7px 14px;border-radius:100px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;font-weight:600;background:var(--plat-bg);color:var(--plat-color);border:1px solid var(--plat-border)}
+.platform-badge i{font-size:13px}
+
+.diff-badge{display:inline-flex;align-items:center;padding:5px 13px;border-radius:6px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;font-weight:600;text-transform:uppercase}
+.diff-badge.easy{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.3)}
+.diff-badge.medium{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)}
+.diff-badge.hard{background:rgba(244,63,94,0.12);color:#fb7185;border:1px solid rgba(244,63,94,0.3)}
+.diff-badge.insane{background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3)}
+
+.hero-card h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;line-height:1.2;letter-spacing:-.02em;margin-bottom:12px;position:relative}
+.hero-card h1 span{background:linear-gradient(135deg,var(--plat-color),var(--accent));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+.hero-sub{font-size:15px;color:var(--muted);max-width:680px;line-height:1.7;margin-bottom:22px;position:relative}
+
+/* Lab metadata stat row */
+.lab-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;padding-top:20px;border-top:1px dashed var(--border);position:relative}
+.lab-stat-num{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--plat-color);line-height:1;margin-bottom:4px}
+.lab-stat-label{font-family:var(--mono);font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+
+/* ===== Article body ===== */
+article{max-width:900px;margin:0 auto;padding:36px 24px 80px;position:relative;z-index:2}
+
+/* Objectives card */
+.objectives{background:linear-gradient(135deg,var(--plat-bg),rgba(0,255,229,0.02));border:1px solid var(--plat-border);border-radius:14px;padding:24px 28px;margin:24px 0 36px}
+.obj-head{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--plat-color);text-transform:uppercase;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.obj-head::before{content:'';width:6px;height:6px;background:var(--plat-color);border-radius:50%;box-shadow:0 0 8px var(--plat-color)}
+.obj-list{list-style:none;padding:0}
+.obj-list li{font-size:14px;color:var(--text);line-height:1.7;padding:6px 0;display:flex;gap:11px;align-items:flex-start}
+.obj-list li i{color:var(--plat-color);font-size:11px;margin-top:7px;flex-shrink:0}
+.obj-list li strong{color:var(--text);font-weight:500}
+
+/* Tools used grid */
+.tools-grid{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 32px}
+.tool-chip{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:.04em;transition:.2s}
+.tool-chip:hover{border-color:var(--border-bright);background:var(--surface2)}
+.tool-chip i{color:var(--accent);font-size:11px}
+
+/* Section headings */
+article h2{font-size:1.5rem;font-weight:700;margin:48px 0 16px;letter-spacing:-.01em;display:flex;align-items:center;gap:14px;line-height:1.3}
+article h2::before{content:'';display:inline-block;width:4px;height:22px;background:linear-gradient(180deg,var(--plat-color),var(--accent));border-radius:2px;flex-shrink:0}
+article h3{font-size:1.15rem;font-weight:600;margin:32px 0 12px;color:var(--text)}
+article h4{font-size:0.95rem;font-weight:600;margin:24px 0 10px;color:var(--accent);font-family:var(--mono);letter-spacing:.02em}
+
+article p{font-size:14.5px;color:#cfe0f0;line-height:1.85;margin-bottom:16px}
+article p strong{color:var(--text);font-weight:600}
+article p em{color:var(--accent);font-style:normal}
+article a{color:var(--accent);text-decoration:none;border-bottom:1px dashed rgba(0,255,229,0.3);transition:.2s}
+article a:hover{border-bottom-style:solid}
+
+/* Lists */
+article ul,article ol{margin:14px 0 22px 0;padding-left:24px}
+article li{font-size:14.5px;color:#cfe0f0;line-height:1.8;margin-bottom:7px}
+article li::marker{color:var(--accent)}
+
+/* Inline code */
+article code:not(pre code){background:rgba(0,255,229,0.08);color:var(--accent);padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:12.5px;border:1px solid rgba(0,255,229,0.12)}
+
+/* Code block */
+.code-block{background:#020a14;border:1px solid rgba(0,255,229,0.12);border-radius:10px;margin:18px 0;overflow:hidden}
+.code-block-head{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(0,255,229,0.03);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.04em}
+.code-block-lang{color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.12em}
+.code-block-copy{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--mono);font-size:10px;display:flex;align-items:center;gap:5px;transition:.2s;padding:4px 8px;border-radius:5px}
+.code-block-copy:hover{color:var(--accent);background:rgba(0,255,229,0.06)}
+.code-block-copy.copied{color:#4ade80}
+.code-block pre{padding:14px 18px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;color:#a8d8e8;line-height:1.65;margin:0;white-space:pre}
+.code-block pre::-webkit-scrollbar{height:6px}
+.code-block pre::-webkit-scrollbar-thumb{background:rgba(0,255,229,0.2);border-radius:3px}
+
+/* Step / numbered walkthrough block */
+.step{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--plat-color);border-radius:10px;padding:22px 26px;margin:20px 0;position:relative}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--plat-bg);border:1px solid var(--plat-border);color:var(--plat-color);border-radius:50%;font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:12px}
+.step-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.4}
+.step-body p{font-size:14px;color:#cfe0f0;line-height:1.75}
+
+/* Callouts */
+.callout{padding:16px 20px;border-radius:10px;margin:20px 0;display:flex;gap:14px;align-items:flex-start;border-left:3px solid}
+.callout-icon{font-size:15px;flex-shrink:0;margin-top:2px}
+.callout-body{flex:1}
+.callout-title{font-weight:600;font-size:13.5px;margin-bottom:4px;letter-spacing:.01em}
+.callout-text{font-size:13.5px;color:#cfe0f0;line-height:1.7;margin-bottom:0}
+.callout.info{background:rgba(59,130,246,0.04);border-color:var(--accent2)}
+.callout.info .callout-icon,.callout.info .callout-title{color:var(--accent2)}
+.callout.warning{background:rgba(245,158,11,0.04);border-color:var(--amber)}
+.callout.warning .callout-icon,.callout.warning .callout-title{color:var(--amber)}
+.callout.tip{background:rgba(34,197,94,0.04);border-color:var(--green)}
+.callout.tip .callout-icon,.callout.tip .callout-title{color:var(--green)}
+.callout.danger{background:rgba(244,63,94,0.04);border-color:var(--red)}
+.callout.danger .callout-icon,.callout.danger .callout-title{color:var(--red)}
+
+/* Image with caption */
+.fig{margin:24px 0;text-align:center}
+.fig img{max-width:100%;border-radius:10px;border:1px solid var(--border);display:block;margin:0 auto}
+.fig figcaption{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.04em;font-style:italic}
+
+/* Defender takeaway block */
+.defender-block{background:linear-gradient(135deg,rgba(0,255,229,0.04),rgba(59,130,246,0.03));border:1px solid rgba(0,255,229,0.18);border-radius:14px;padding:28px;margin:32px 0;position:relative;overflow:hidden}
+.defender-block::before{content:'';position:absolute;top:-30%;right:-10%;width:280px;height:280px;background:radial-gradient(circle,rgba(0,255,229,0.05),transparent 70%);pointer-events:none}
+.defender-tag{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px;position:relative}
+.defender-tag::before{content:'\f3ed';font-family:'Font Awesome 6 Free';font-weight:900;color:var(--accent);font-size:14px}
+.defender-block h3{margin-top:0;color:var(--text);font-size:1.15rem;position:relative}
+.defender-block .det-row{display:flex;gap:12px;align-items:flex-start;margin:14px 0;padding:14px 16px;background:rgba(2,11,22,0.5);border:1px solid var(--border);border-radius:8px;position:relative}
+.det-icon{width:28px;height:28px;border-radius:6px;background:rgba(0,255,229,0.08);border:1px solid rgba(0,255,229,0.2);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:11px;flex-shrink:0}
+.det-content{flex:1;font-size:13.5px;color:#cfe0f0;line-height:1.6}
+.det-content strong{color:var(--text)}
+
+/* Key learnings grid */
+.learnings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:20px 0 32px}
+.learning-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:.2s}
+.learning-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.learning-card-icon{width:34px;height:34px;border-radius:8px;background:var(--plat-bg);border:1px solid var(--plat-border);display:flex;align-items:center;justify-content:center;color:var(--plat-color);font-size:14px;margin-bottom:12px}
+.learning-card-title{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:6px}
+.learning-card-text{font-size:12.5px;color:var(--muted);line-height:1.6}
+
+/* Footer / sign-off */
+.signoff{margin-top:64px;padding-top:32px;border-top:1px solid var(--border)}
+.next-prev{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.np-card{display:block;padding:18px 22px;background:var(--surface);border:1px solid var(--border);border-radius:10px;text-decoration:none;transition:.2s}
+.np-card:hover{border-color:var(--border-bright);transform:translateY(-2px)}
+.np-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.np-title{font-size:13.5px;color:var(--text);font-weight:500;line-height:1.4}
+
+footer{border-top:1px solid var(--border);padding:36px 0;text-align:center;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:60px}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media(max-width:640px){
+  .hero{padding:32px 18px 20px}
+  .hero-card{padding:24px 22px}
+  article{padding:24px 18px 60px}
+  article h2{font-size:1.3rem;margin:36px 0 12px}
+  article p,article li{font-size:14px}
+  .next-prev{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-prog" id="scrollProg"></div>
+
+<!-- ===== Navigation ===== -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shield"><i class="fas fa-shield-halved"></i></div>
+      <div><div class="logo-name">Swetha Devi</div><div class="logo-tag">SOC · Incident Response</div></div>
+    </a>
+    <a href="labs.html" class="nav-back"><i class="fas fa-arrow-left"></i> All labs</a>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a><i class="fas fa-chevron-right"></i><a href="labs.html">Labs</a><i class="fas fa-chevron-right"></i><span>Phishing Alert — ID: 257</span>
+  </div>
+
+  <div class="hero-card">
+
+    <div class="hero-top">
+      <span class="platform-badge"><i class="fas fa-shield-halved"></i> LetsDefend</span>
+      <span class="diff-badge medium">Medium</span>
+    </div>
+
+    <h1>Phishing Alert <span>ID: 257</span></h1>
+
+    <p class="hero-sub">In every organisation, email-related incidents are among the most common — attackers target users to manipulate them into clicking links or downloading attachments. This lab taught me that we don't always get the full picture of evidence; sometimes we have to investigate with limited sources and still reach a confident conclusion.</p>
+
+    <div class="lab-stats">
+      <div>
+        <div class="lab-stat-num">2026</div>
+        <div class="lab-stat-label">// Completed</div>
+      </div>
+      <div>
+        <div class="lab-stat-num">~45 min</div>
+        <div class="lab-stat-label">// Time Taken</div>
+      </div>
+      <div>
+        <div class="lab-stat-num">5</div>
+        <div class="lab-stat-label">// Phases</div>
+      </div>
+      <div>
+        <div class="lab-stat-num"><i class="fas fa-flag"></i></div>
+        <div class="lab-stat-label">// Status: Done</div>
+      </div>
+    </div>
+
+  </div>
+
+</header>
+
+<!-- ===== Article body ===== -->
+<article>
+
+  <!-- Objectives -->
+  <div class="objectives">
+    <div class="obj-head">// Lab Objectives</div>
+    <ul class="obj-list">
+      <li><i class="fas fa-circle"></i><span><strong>Email analysis</strong> — inspecting headers, sender, subject, and body for indicators of phishing</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Understanding attack patterns</strong> — recognising social-engineering hooks like fake giveaways</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Email attachment analysis</strong> — handling password-protected ZIP payloads safely</span></li>
+      <li><i class="fas fa-circle"></i><span><strong>Confidence and validating alerts</strong> — making a verdict with limited evidence</span></li>
+    </ul>
+  </div>
+
+  <!-- Background -->
+  <h2>Background</h2>
+
+  <p>The reason I wanted to solve this lab is that even when our security team and tools are working excellently, attackers can still get into an organisation by manipulating users. We need to educate employees, and at the same time we need to catch phishing emails <em>before</em> users click anything.</p>
+
+  <p>When I started this lab, I assumed I'd get all the necessary details handed to me. That's not how it works. There's a difference between real-world email alerts and the evidence we receive in labs — labs often give limited evidence. The trick is this: if you can validate correctly with limited details, then in the real world (with more evidence) validation becomes easier. Sometimes more evidence even creates more confusion if you don't have a method.</p>
+
+  <!-- Tools -->
+  <h2>Tools Used</h2>
+
+  <p>This lab didn't require any external tools — everything I needed (including a threat-intel platform) was provided inside the LetsDefend environment. The only external reference was the MITRE ATT&amp;CK framework for mapping techniques.</p>
+
+  <div class="tools-grid">
+    <span class="tool-chip"><i class="fas fa-envelope"></i> Email Entity</span>
+    <span class="tool-chip"><i class="fas fa-database"></i> Threat Intel</span>
+    <span class="tool-chip"><i class="fas fa-magnifying-glass"></i> MITRE ATT&amp;CK</span>
+    <span class="tool-chip"><i class="fas fa-desktop"></i> Endpoint Logs</span>
+    <span class="tool-chip"><i class="fas fa-terminal"></i> Terminal History</span>
+  </div>
+
+  <!-- Walkthrough -->
+  <h2>Walkthrough</h2>
+
+  <p>The lab broke into 5 main phases. Here's how I approached each:</p>
+
+  <!-- Step 1 -->
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">Initial Reconnaissance</div>
+    <div class="step-body">
+      <p>I opened the alert page first. From there I pulled the basic facts: who the sender was, who the recipient was, and what the email subject said. Those three fields alone usually tell you whether something deserves a closer look.</p>
+
+      <p>I immediately searched the sender IP in the threat-intel platform provided by LetsDefend. While that was running, I re-read the subject line — and it was already a red flag. The wording was clearly engineered to push the user into clicking a URL or opening an attachment.</p>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">Email Entity Investigation</div>
+    <div class="step-body">
+      <p>Using the recipient's email ID, I went to the Email Security tab and searched for the user, which surfaced the phishing email itself.</p>
+
+      <div class="callout tip">
+        <i class="fas fa-lightbulb callout-icon"></i>
+        <div class="callout-body">
+          <div class="callout-title">Quick tip</div>
+          <p class="callout-text">Looking at the Email Entity confirmed the phishing verdict. The email contained a <code>.zip</code> attachment, the body offered a "free coffee" promotion (classic bait), and there was a "Redeem" URL button that redirected the user to download a password-protected malicious ZIP.</p>
+        </div>
+      </div>
+
+      <p>Even when something looks suspicious, people still click out of curiosity or temptation. Instead of clicking blindly, 3–5 minutes of basic investigation is usually enough to decide whether a URL or attachment is worth opening.</p>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">Exploitation</div>
+    <div class="step-body">
+      <p>Using the username, I searched the endpoint inventory and found the user's device. (In the real world I'd pivot on device ID or UPN, but in this lab the username was what I had.) Once on the device, I checked the browser history and confirmed the user had downloaded the attachment — which led to the device being compromised.</p>
+
+      <div class="callout warning">
+        <i class="fas fa-triangle-exclamation callout-icon"></i>
+        <div class="callout-body">
+          <div class="callout-title">Where I got stuck</div>
+          <p class="callout-text">Initially I couldn't figure out how to confirm whether the user actually opened the attachment. I went through every process I could see and got nowhere. I almost started checking each artefact one by one — but in security, patience is the actual skill. I took a 2-minute break, looked at the UI as a whole, and that's when I noticed the Browser History tab. The download was right there.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-title">Post-Exploitation</div>
+    <div class="step-body">
+      <p>After the attachment was opened, the attacker started discovery — system info, disk info, network info, running processes. Terminal history showed enumeration commands being executed back-to-back with only 5–6 seconds between them, which is a strong signal of automated/scripted activity rather than a human user.</p>
+
+      <div class="code-block">
+        <div class="code-block-head">
+          <span class="code-block-lang">Terminal History — observed commands</span>
+          <button class="code-block-copy" data-copy><i class="fas fa-copy"></i> Copy</button>
+        </div>
+<pre><code>systeminfo
+whoami /all
+net user
+ipconfig /all
+tasklist
+netstat -ano
+wmic logicaldisk get name,size,freespace</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-title">Response Actions</div>
+    <div class="step-body">
+      <p>Once the chain was confirmed, the response actions were:</p>
+      <ul>
+        <li>Isolate the device to prevent lateral movement.</li>
+        <li>Reset the user's credentials and revoke all active sessions.</li>
+        <li>Run a full antivirus / EDR scan on the host.</li>
+        <li>Add the malicious file hash and sender IP as IOCs.</li>
+        <li>After investigation is fully complete, wipe and rebuild the device.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Defender takeaways -->
+  <div class="defender-block">
+    <div class="defender-tag">// Defender Takeaways</div>
+    <h3>If I saw this in a real SOC, I'd handle it like this:</h3>
+
+    <p style="font-size:14px;color:#cfe0f0;margin-bottom:18px">Even though this was a lab, every step here leaves traces in real telemetry. Here's the playbook I'd apply on a live alert:</p>
+
+    <div class="det-row">
+      <div class="det-icon"><i class="fas fa-search"></i></div>
+      <div class="det-content"><strong>Validate, then respond fast</strong> — once the alert is confirmed as a true positive, immediately check whether the user clicked the link or downloaded the attachment. Response actions come right after; deeper investigation and the report come last.</div>
+    </div>
+
+    <div class="det-row">
+      <div class="det-icon"><i class="fas fa-shield-halved"></i></div>
+      <div class="det-content"><strong>Detect password-protected archives in mail flow</strong> — alert on inbound emails containing <code>.zip</code> / <code>.rar</code> attachments where the password is included in the body. This bypasses most AV scanning and is a well-known phishing pattern.</div>
+    </div>
+
+    <div class="det-row">
+      <div class="det-icon"><i class="fas fa-eye"></i></div>
+      <div class="det-content"><strong>Detect rapid host-discovery sequences</strong> — chained execution of <code>systeminfo</code>, <code>whoami</code>, <code>ipconfig</code>, <code>tasklist</code>, and <code>netstat</code> within a short window from a single process tree is high-fidelity evidence of post-exploitation enumeration.</div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);margin-top:18px;margin-bottom:0;font-style:italic">→ See the full set of related detection rules on the <a href="detections.html">Detections page</a>.</p>
+  </div>
+
+  <!-- Key Learnings -->
+  <h2>Key Learnings</h2>
+
+  <p>Beyond the lab itself, here's what I'm taking back to the SOC desk:</p>
+
+  <div class="learnings-grid">
+
+    <div class="learning-card">
+      <div class="learning-card-icon"><i class="fas fa-brain"></i></div>
+      <div class="learning-card-title">Limited evidence is still evidence</div>
+      <div class="learning-card-text">You won't always get the full picture. Build a verdict from what's in front of you and clearly state your confidence level.</div>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-card-icon"><i class="fas fa-tools"></i></div>
+      <div class="learning-card-title">Patience beats panic</div>
+      <div class="learning-card-text">When you're stuck, stop scrolling. Step back, look at the whole UI, and the missing artefact is usually one tab away.</div>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-card-icon"><i class="fas fa-bullseye"></i></div>
+      <div class="learning-card-title">Click vs. download is the key question</div>
+      <div class="learning-card-text">Confirming whether the user actually executed the payload changes the entire severity and response path of the incident.</div>
+    </div>
+
+    <div class="learning-card">
+      <div class="learning-card-icon"><i class="fas fa-flag-checkered"></i></div>
+      <div class="learning-card-title">Map to MITRE early</div>
+      <div class="learning-card-text">Tagging techniques (T1566.001, T1059, T1082, T1033, T1049, T1057, T1083) while investigating gives the report structure for free.</div>
+    </div>
+
+  </div>
+
+  <!-- What's Next -->
+  <h2>What's Next?</h2>
+
+  <p>This lab fits into my broader path of building strong fundamentals in email-borne threats and Tier-1 SOC triage. Next, I want to go deeper into <strong>email header analysis</strong> (SPF / DKIM / DMARC) and full <strong>attachment sandboxing</strong> — moving from "is this phishing?" to "what exactly does this payload do?"</p>
+
+  <p>After that, I'll be working through more LetsDefend SOC alerts and starting on the Blue Team Level 1 (BTL1) track to formalise the methodology.</p>
+
+  <!-- References -->
+  <h2>References</h2>
+
+  <ol>
+    <li><a href="https://app.letsdefend.io/monitoring" target="_blank">LetsDefend Monitoring — Event ID 257</a></li>
+    <li>MITRE ATT&amp;CK techniques: T1566.001 (Spearphishing Attachment), T1059 (Command &amp; Scripting Interpreter), T1082 (System Information Discovery), T1033 (System Owner/User Discovery), T1049 (System Network Connections Discovery), T1057 (Process Discovery), T1083 (File and Directory Discovery)</li>
+  </ol>
+
+  <!-- Sign-off -->
+  <div class="signoff">
+
+    <div class="next-prev">
+      <a href="labs.html" class="np-card">
+        <div class="np-label">← Back</div>
+        <div class="np-title">All Labs &amp; CTFs</div>
+      </a>
+      <a href="index.html#connect" class="np-card">
+        <div class="np-label">Have a question?</div>
+        <div class="np-title">Reach out →</div>
+      </a>
+    </div>
+
+  </div>
+
+</article>
+
+<footer>
+  <p>© 2026 <a href="index.html">Swetha Devi Sai Priya Bonu</a> · <a href="mailto:swethadevi1125@gmail.com">swethadevi1125@gmail.com</a> · <a href="https://github.com/unabletofind" target="_blank">GitHub</a></p>
+</footer>
+
+<script>
+// Scroll progress bar
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('scrollProg').style.width = pct + '%';
+});
+
+// Code block copy buttons
+document.querySelectorAll('.code-block-copy').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const code = btn.closest('.code-block').querySelector('pre code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+      }, 1800);
+    });
+  });
+});
+</script>
+
+</body>
+</html>
