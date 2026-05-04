@@ -8,7 +8,6 @@
 window.LABS = [
   {
     id: 'Phishing Alert, ID: 257',
-    url: 'Create Phishing Alert, ID: 257.html',
     name: 'Phishing Alert',
     platform: 'LetsDefend',
     icon: 'fa-shield-halved',
@@ -20,7 +19,7 @@ window.LABS = [
     summary: 'Phishing Email which led to user compromise by downloading the malicious attachment',
     tags: ['Phishing', 'Email', 'KQL'],
     featured: true,
-    writeup: ''
+    writeup: 'phishing-alert-257.html'
   },
   {
     id: 'htb-cdsa',
