@@ -143,7 +143,7 @@ section{padding:90px 0}
 
 /* STATS BAND */
 .stats-band{background:rgba(255,255,255,0.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 0;position:relative;z-index:2}
-.stats-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+.stats-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border)}
 .stat-item{background:var(--bg);padding:24px 20px;text-align:center;transition:.2s;position:relative;overflow:hidden}
 .stat-item::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:.3s}
 .stat-item:hover::before{transform:scaleX(1)}
@@ -494,7 +494,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   .case-study{grid-template-columns:1fr;gap:20px}
   .case-study-visual{display:none}
   .footer-grid{grid-template-columns:1fr 1fr;gap:30px}
-  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .stats-inner{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 }
 @media(max-width:768px){
   body{cursor:auto}
@@ -546,7 +546,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 <div class="tooltip" id="tooltip"></div>
 
 <!-- ============================================= -->
-<!-- NAV — reordered: About · Labs · Blogs · Detections · Currently Learning · Connect -->
+<!-- NAV — reordered: About · Writeups · Blogs · Detections · Currently Learning · Connect -->
 <!-- ============================================= -->
 <nav>
   <div class="nav-inner">
@@ -556,7 +556,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
     </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
-      <li><a href="#labs">Labs</a></li>
+      <li><a href="#writeups">Writeups</a></li>
       <li><a href="#research">Blogs</a></li>
       <li><a href="#detections">Detections</a></li>
       <li><a href="#learning">Currently Learning</a></li>
@@ -662,7 +662,8 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
     <div class="stat-item"><div class="stat-num" data-count="1" data-suffix="yr+">0</div><div class="stat-label">SOC Experience</div></div>
     <div class="stat-item"><div class="stat-num" data-count="3">0</div><div class="stat-label">Certifications</div></div>
     <div class="stat-item"><div class="stat-num" data-count="500" data-suffix="+">0</div><div class="stat-label">Alerts Triaged</div></div>
-    <div class="stat-item"><div class="stat-num" id="researchCount" data-count="0">0</div><div class="stat-label">Published Research</div></div>
+    <div class="stat-item"><div class="stat-num" id="researchCount" data-count="0">0</div><div class="stat-label">Published Blogs</div></div>
+    <div class="stat-item"><div class="stat-num" id="writeupsCount" data-count="0">0</div><div class="stat-label">Published Writeups</div></div>
   </div>
 </div>
 
@@ -813,18 +814,18 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 </section>
 
 <!-- ============================================= -->
-<!-- CLUSTER D (surface) — Labs + Blogs + Detections + Currently Learning + Experience -->
+<!-- CLUSTER D (surface) — Writeups + Blogs + Detections + Currently Learning + Experience -->
 <!-- ============================================= -->
-<section id="labs" class="cluster-surface">
+<section id="writeups" class="cluster-surface">
   <div class="container">
     <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">Labs</div><h2 class="sec-title">CTFs & Labs</h2></div>
+      <div class="sec-meta"><div class="sec-tag">Writeups</div><h2 class="sec-title">CTFs & Writeups</h2></div>
       <div class="sec-line"></div>
     </div>
     <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hands-on practice across blue team and offensive labs. Each one teaches something I take back to the SOC desk.</p>
     <div class="lab-grid reveal" id="labGrid"></div>
     <div class="reveal" style="text-align:center;margin-top:30px">
-      <a href="labs.html" class="btn-viewall"><i class="fas fa-flag"></i> View all labs &amp; CTFs <i class="fas fa-arrow-right"></i></a>
+      <a href="writeups.html" class="btn-viewall"><i class="fas fa-flag"></i> View all writeups <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -1024,7 +1025,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
       <div class="footer-col">
         <h4>Sections</h4>
         <a href="#about">About</a>
-        <a href="#labs">Labs</a>
+        <a href="#writeups">Writeups</a>
         <a href="#research">Blogs</a>
         <a href="#detections">Detections</a>
         <a href="#learning">Currently Learning</a>
@@ -1049,7 +1050,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   <div id="aiChatMenu">
     <div class="ai-menu-title">Quick Navigation</div>
     <div class="ai-cmd" data-target="#about"><i class="fas fa-user"></i> About</div>
-    <div class="ai-cmd" data-target="#labs"><i class="fas fa-flag"></i> Labs</div>
+    <div class="ai-cmd" data-target="#writeups"><i class="fas fa-flag"></i> Writeups</div>
     <div class="ai-cmd" data-target="#research"><i class="fas fa-book-open"></i> Blogs</div>
     <div class="ai-cmd" data-target="#detections"><i class="fas fa-shield-virus"></i> Detections</div>
     <div class="ai-cmd" data-target="#learning"><i class="fas fa-graduation-cap"></i> Currently Learning</div>
@@ -1063,7 +1064,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 
 <script src="blogs.js"></script>
 <script src="detections.js"></script>
-<script src="labs.js"></script>
+<script src="writeups.js"></script>
 <script>
 /* PAGE LOADER */
 window.addEventListener('load', () => {
@@ -1304,6 +1305,11 @@ draw();
   });
   const countEl = document.getElementById('researchCount');
   if (countEl) countEl.dataset.count = blogs.length;
+
+  /* Update writeups count from writeups.js array (LABS or WRITEUPS export) */
+  const writeupsCountEl = document.getElementById('writeupsCount');
+  const writeupsArr = window.WRITEUPS || window.LABS;
+  if (writeupsCountEl && Array.isArray(writeupsArr)) writeupsCountEl.dataset.count = writeupsArr.length;
 })();
 
 /* SCROLL REVEAL */
@@ -1420,25 +1426,32 @@ document.querySelectorAll('a').forEach(link => {
   });
 })();
 
-/* DETECTIONS & LABS PREVIEWS */
+/* DETECTIONS & WRITEUPS PREVIEWS */
 if (typeof window.buildDetectionCards === 'function') window.buildDetectionCards('detGrid', { limit: 3 });
-if (typeof window.buildLabCards === 'function') {
-  window.buildLabCards('labGrid', { limit: 3, compact: true });
+
+/* Resolve writeups data + builder (file may export LABS/buildLabCards or WRITEUPS/buildWriteupCards) */
+(function() {
+  const writeupsArr = window.WRITEUPS || window.LABS;
+  const buildFn = window.buildWriteupCards || window.buildLabCards;
+  const parseFn = window.parseWriteupDate || window.parseLabDate;
+
+  if (typeof buildFn !== 'function') return;
+  buildFn('labGrid', { limit: 3, compact: true });
   setTimeout(() => {
     const labGrid = document.getElementById('labGrid');
-    if (!labGrid || !window.LABS) return;
-    const list = window.LABS.slice().sort((a, b) => window.parseLabDate(b.date) - window.parseLabDate(a.date)).slice(0, 3);
+    if (!labGrid || !Array.isArray(writeupsArr) || typeof parseFn !== 'function') return;
+    const list = writeupsArr.slice().sort((a, b) => parseFn(b.date) - parseFn(a.date)).slice(0, 3);
     labGrid.querySelectorAll('.lab-card').forEach((card, i) => {
-      const lab = list[i]; if (!lab || !lab.writeup) return;
+      const item = list[i]; if (!item || !item.writeup) return;
       card.style.cursor = 'none';
-      card.addEventListener('click', () => { window.location.href = lab.writeup; });
+      card.addEventListener('click', () => { window.location.href = item.writeup; });
       const foot = card.querySelector('.lab-foot');
       if (foot && !foot.querySelector('.lab-writeup-hint')) {
         const hint = document.createElement('span'); hint.className = 'lab-writeup-hint'; hint.style.cssText = 'margin-left:auto;color:var(--accent);font-size:10px;font-family:var(--mono)'; hint.innerHTML = 'writeup →'; foot.appendChild(hint);
       }
     });
   }, 50);
-}
+})();
 </script>
 </body>
 </html>
