@@ -599,11 +599,14 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 
         <p class="hero-bio">SOC Analyst with <strong>1+ year</strong> of experience in threat detection, alert triage, and incident investigation across enterprise environments. Hands-on with the <strong>Microsoft Security Stack</strong> — MDE, Sentinel, Defender for O365, Entra ID, MDCA. <strong>HTB CDSA</strong> certified. MITRE ATT&CK-aligned across identity, endpoint, and email vectors.</p>
 
-        <!-- Trimmed hero badges: 3 top skills + 2 certs -->
         <div class="badge-row">
+          <span class="badge">MITRE ATT&CK</span>
           <span class="badge">Microsoft Sentinel</span>
-          <span class="badge">MDE</span>
+          <span class="badge">MDE / Defender XDR</span>
           <span class="badge">KQL</span>
+          <span class="badge">Incident Response</span>
+          <span class="badge">Alert Triage</span>
+          <span class="badge">Python / Bash</span>
           <span class="badge cert">★ HTB CDSA</span>
           <span class="badge cert">★ CAP</span>
         </div>
@@ -626,7 +629,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="id-card-bar">
           <span class="dot-r"></span>
           <span>OPERATOR PROFILE</span>
-          <span style="margin-left:auto;color:var(--accent)">2026</span>
+          <span style="margin-left:auto;color:var(--accent)">v2.1</span>
         </div>
         <div class="id-avatar">SD</div>
         <div class="id-name">Swetha Devi S.P. Bonu</div>
@@ -658,8 +661,8 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
   <div class="stats-inner">
     <div class="stat-item"><div class="stat-num" data-count="1" data-suffix="yr+">0</div><div class="stat-label">SOC Experience</div></div>
     <div class="stat-item"><div class="stat-num" data-count="3">0</div><div class="stat-label">Certifications</div></div>
-    <div class="stat-item"><div class="stat-num" data-count="6">0</div><div class="stat-label">Labs Solved</div></div>
-    <div class="stat-item"><div class="stat-num" id="researchCount" data-count="2">0</div><div class="stat-label">Published Research</div></div>
+    <div class="stat-item"><div class="stat-num" data-count="500" data-suffix="+">0</div><div class="stat-label">Alerts Triaged</div></div>
+    <div class="stat-item"><div class="stat-num" id="researchCount" data-count="0">0</div><div class="stat-label">Published Research</div></div>
   </div>
 </div>
 
@@ -790,12 +793,12 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 <section id="activity">
   <div class="container">
     <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">Pulse</div><h2 class="sec-title">GitHub Activity</h2></div>
+      <div class="sec-meta"><div class="sec-tag">Pulse</div><h2 class="sec-title">SOC Activity</h2></div>
       <div class="sec-line"></div>
     </div>
     <div class="activity-section reveal">
       <div class="activity-head">
-        <div class="activity-title"><i class="fab fa-github"></i> Last 12 months · Detection rules, lab writeups, and research commits</div>
+        <div class="activity-title"><i class="fas fa-chart-simple"></i> Last 12 months · Investigations, hunts, and research</div>
         <div class="activity-legend">Less<div class="legend-cells"><div class="legend-cell" style="background:rgba(255,255,255,0.03)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.12)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.30)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.55)"></div><div class="legend-cell" style="background:rgba(0,255,229,0.85)"></div></div>More</div>
       </div>
       <div class="heatmap-wrap"><div class="heatmap-grid" id="heatmapGrid"></div></div>
@@ -803,29 +806,15 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
         <div class="heat-stat"><div class="heat-stat-num" id="heatTotal">0</div><div class="heat-stat-lbl">Total Active Days</div></div>
         <div class="heat-stat"><div class="heat-stat-num" id="heatStreak">0</div><div class="heat-stat-lbl">Longest Streak</div></div>
         <div class="heat-stat"><div class="heat-stat-num">~12</div><div class="heat-stat-lbl">Avg / Week</div></div>
-        <div class="heat-stat"><a href="https://github.com/unabletofind" target="_blank" class="activity-github-link">View on GitHub →</a></div>
+        <div class="heat-stat"><div class="heat-stat-num" style="color:var(--green)">●</div><div class="heat-stat-lbl">Currently Active</div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============================================= -->
-<!-- CLUSTER D (surface) — Detections + Labs + Blogs + Currently Learning + Experience -->
+<!-- CLUSTER D (surface) — Labs + Blogs + Detections + Currently Learning + Experience -->
 <!-- ============================================= -->
-<section id="detections" class="cluster-surface">
-  <div class="container">
-    <div class="sec-header reveal">
-      <div class="sec-meta"><div class="sec-tag">Detections</div><h2 class="sec-title">Detection Rules</h2></div>
-      <div class="sec-line"></div>
-    </div>
-    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hunting queries and detection logic I've written or adapted while triaging real alerts. Mapped to MITRE, severity-tagged, and ready to paste into your SIEM.</p>
-    <div class="det-grid reveal" id="detGrid"></div>
-    <div class="reveal" style="text-align:center;margin-top:30px">
-      <a href="detections.html" class="btn-viewall"><i class="fas fa-shield-virus"></i> View all detection rules <i class="fas fa-arrow-right"></i></a>
-    </div>
-  </div>
-</section>
-
 <section id="labs" class="cluster-surface">
   <div class="container">
     <div class="sec-header reveal">
@@ -850,6 +839,20 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
     <div class="blog-grid reveal" id="blogGrid"></div>
     <div class="view-all-wrap reveal">
       <a href="research.html" class="btn-viewall"><i class="fas fa-layer-group"></i> View All Research Posts &nbsp;→</a>
+    </div>
+  </div>
+</section>
+
+<section id="detections" class="cluster-surface">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div class="sec-meta"><div class="sec-tag">Detections</div><h2 class="sec-title">Detection Rules</h2></div>
+      <div class="sec-line"></div>
+    </div>
+    <p class="reveal" style="color:var(--muted);font-size:14px;max-width:680px;margin-bottom:24px;line-height:1.7">Hunting queries and detection logic I've written or adapted while triaging real alerts. Mapped to MITRE, severity-tagged, and ready to paste into your SIEM.</p>
+    <div class="det-grid reveal" id="detGrid"></div>
+    <div class="reveal" style="text-align:center;margin-top:30px">
+      <a href="detections.html" class="btn-viewall"><i class="fas fa-shield-virus"></i> View all detection rules <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </section>
@@ -889,7 +892,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
           <div><div class="tl-title">Cybersecurity Analyst — AI-Augmented SOC</div><div class="tl-company"><i class="fas fa-building" style="font-size:11px"></i> TriArmour AI Private Limited, Hyderabad</div></div>
           <div class="tl-period">Nov 2024 – Present</div>
         </div>
-        <div class="tl-body">Investigated identity, endpoint, and email security incidents using MDE, Microsoft Sentinel, Defender for Office 365, Entra ID, and MDCA. Performed structured incident analysis across anomalous sign-in activity, AiTM indicators, suspicious process execution, lateral movement, and phishing campaigns. Triaged alerts in MTO, managed incidents through USO, tracked tickets in Jira — executing endpoint isolation, account disable, session revocation, URL blocking, and live response.</div>
+        <div class="tl-body">Investigated identity, endpoint, and email security incidents using MDE, Microsoft Sentinel, Defender for Office 365, Entra ID, and MDCA. Performed structured incident analysis across anomalous sign-in activity, AiTM indicators, suspicious process execution, lateral movement, and phishing campaigns. Triaged alerts in MTO, managed incidents through USO, tracked tickets in Jira — executing endpoint isolation, account disable, session revocation, URL blocking, and live response. Validated suspicious emails via header inspection, SPF/DKIM/DMARC validation, sender reputation, and URL analysis. Correlated alerts with Mandiant IOCs, AlienVault OTX, VirusTotal, and AbuseIPDB.</div>
         <div class="tl-highlights">
           <div class="tl-hl-item"><span class="tl-hl-num">500+</span><span class="tl-hl-lbl">alerts triaged</span></div>
           <div class="tl-hl-item"><span class="tl-hl-num">5+</span><span class="tl-hl-lbl">platforms operated</span></div>
@@ -904,7 +907,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
           <div><div class="tl-title">Cybersecurity Instructor</div><div class="tl-company"><i class="fas fa-chalkboard-teacher" style="font-size:11px"></i> Freelance / Academic Mentoring</div></div>
           <div class="tl-period" style="color:#a855f7;background:rgba(168,85,247,0.07);border-color:rgba(168,85,247,0.2)">2024 – Present</div>
         </div>
-        <div class="tl-body">Taught core cybersecurity concepts to students and peers, covering SOC operations, Identity & Access Management (IAM) fundamentals with hands-on labs, Zscaler basics for cloud security, and ethical hacking foundations.</div>
+        <div class="tl-body">Taught core cybersecurity concepts to students and peers, covering SOC operations, Identity & Access Management (IAM) fundamentals with hands-on labs, Zscaler basics for cloud security, and ethical hacking foundations. Bridged the gap between theory and real-world SOC workflows, helping learners understand alert triage, access control principles, and network security posture.</div>
         <div class="tl-tags"><span class="tl-tag">SOC Operations</span><span class="tl-tag">IAM</span><span class="tl-tag">Zscaler</span><span class="tl-tag">Ethical Hacking</span><span class="tl-tag">Lab Facilitation</span></div>
       </div>
       <div class="tl-item reveal" style="transition-delay:.1s">
@@ -929,7 +932,7 @@ footer{border-top:1px solid var(--border);padding:40px 0 28px;position:relative;
 
     <div style="margin-top:48px">
       <div class="sec-header reveal">
-        <div class="sec-meta"><div class="sec-tag">Credentials</div><h2 class="sec-title" style="font-size:1.4rem">Earned Certifications</h2></div>
+        <div class="sec-meta"><div class="sec-tag">Certs</div><h2 class="sec-title" style="font-size:1.4rem">Certifications</h2></div>
         <div class="sec-line"></div>
       </div>
       <div class="cert-grid reveal">
@@ -1135,7 +1138,7 @@ draw();
   const banner = `<span class="tc-green">┌─────────────────────────────────────────────────┐</span>
 <span class="tc-green">│</span>  <span class="tc-yellow">SWETHA DEVI SAI PRIYA BONU</span>                     <span class="tc-green">│</span>
 <span class="tc-green">│</span>  <span class="tc-blue">SOC Analyst · Incident Response · Alert Triage</span> <span class="tc-green">│</span>
-<span class="tc-green">│</span>  <span class="tc-purple">@unabletofind</span> · <span class="tc-gray">Hyderabad, IN</span> · <span class="tc-gray">2026</span>           <span class="tc-green">│</span>
+<span class="tc-green">│</span>  <span class="tc-purple">@unabletofind</span> · <span class="tc-gray">Hyderabad, IN</span> · <span class="tc-gray">v2.1</span>          <span class="tc-green">│</span>
 <span class="tc-green">└─────────────────────────────────────────────────┘</span>
 <span class="tc-gray">Type </span><span class="tc-yellow">help</span><span class="tc-gray"> to see available commands.</span>`;
   const responses = {
@@ -1159,8 +1162,8 @@ draw();
   Focus    : <span class="tc-blue">Microsoft Security Stack · ATT&CK · IR</span>`,
     skills:`<span class="tc-yellow">[ CORE SKILLS ]</span>
   Detection   : <span class="tc-green">Alert Triage · IOC Extraction · IR · Email Analysis</span>
-  SIEM        : <span class="tc-green">Microsoft Sentinel · KQL</span>
-  EDR         : <span class="tc-green">MDE · Defender XDR · Live Response</span>
+  SIEM        : <span class="tc-green">Microsoft Sentinel · KQL · Splunk · Elastic</span>
+  EDR         : <span class="tc-green">MDE · Defender XDR · CrowdStrike · Live Response</span>
   Threat Intel: <span class="tc-green">MITRE ATT&CK · VirusTotal · Mandiant · OTX</span>
   Scripting   : <span class="tc-green">Python · Bash · PowerShell</span>
   Identity    : <span class="tc-green">Entra ID · MDCA · AiTM Detection</span>`,
@@ -1177,7 +1180,10 @@ draw();
   Platform : <span class="tc-blue">Medium · @swethadevi1125</span>
   Focus    : <span class="tc-green">Attack chains, detection rules, IR playbooks</span>
   Topics   : <span class="tc-white">AiTM phishing · Identity attacks · Lateral movement</span>
-  <span class="tc-gray">» </span><span class="tc-green">medium.com/@swethadevi1125</span>`,
+             <span class="tc-white">Email threat analysis · KQL detection rules</span>
+             <span class="tc-white">MITRE ATT&CK aligned deep dives</span>
+  <span class="tc-gray">» </span><span class="tc-green">medium.com/@swethadevi1125</span>
+  <span class="tc-gray">» Scroll to #research section or visit research.html</span>`,
     contact:`<span class="tc-yellow">[ CONTACT ]</span>
   Email    : <span class="tc-green">swethadevi1125@gmail.com</span>
   LinkedIn : <span class="tc-blue">linkedin.com/in/bonu-swetha-devi-sai-priya</span>
@@ -1188,9 +1194,9 @@ draw();
   ✓ <span class="tc-green">Hands-on SOC experience</span> across MDE, Sentinel, MDO, Entra ID, MDCA
   ✓ <span class="tc-green">CDSA certified</span> — practical defense skills (not just theory)
   ✓ <span class="tc-green">MITRE ATT&CK fluent</span> — investigations mapped to tactics
-  ✓ <span class="tc-green">Incident response</span> — endpoint isolation, account containment
+  ✓ <span class="tc-green">Incident response</span> — endpoint isolation, account containment, IOC extraction
   ✓ <span class="tc-green">Threat research</span> — public write-ups with IOCs & playbooks
-  ✓ <span class="tc-green">Self-driven learner</span> — currently studying malware analysis
+  ✓ <span class="tc-green">Self-driven learner</span> — currently studying malware analysis (TCM)
   
   Reach out: <span class="tc-blue">swethadevi1125@gmail.com</span>`,
     stack:`<span class="tc-yellow">[ DAILY STACK ]</span>
@@ -1200,7 +1206,8 @@ draw();
   IAM   → <span class="tc-blue">Entra ID</span>
   CASB  → <span class="tc-blue">MDCA</span>
   TI    → <span class="tc-blue">VirusTotal · AbuseIPDB · OTX · Mandiant</span>
-  Lang  → <span class="tc-blue">KQL · Python · PowerShell · Bash</span>`,
+  Lang  → <span class="tc-blue">KQL · Python · PowerShell · Bash</span>
+  Track → <span class="tc-blue">Jira · ServiceNow</span>`,
     sudo:`<span class="tc-red">[sudo] password for swetha:</span>
 <span class="tc-amber">⚠  Permission denied. Even she can't sudo herself into being more awesome.</span>
 <span class="tc-gray">(but try anyway by hiring her — works every time)</span> 😄`,
@@ -1266,7 +1273,7 @@ draw();
     const c = document.createElement('div');
     c.className = 'heat-cell';
     if (level > 0) c.dataset.level = level;
-    c.dataset.tip = `${level} ${level === 1 ? 'commit' : 'commits'} · week ${Math.floor(i/7)+1}`;
+    c.dataset.tip = `${level} ${level === 1 ? 'activity' : 'activities'} · week ${Math.floor(i/7)+1}`;
     grid.appendChild(c);
     if (level > 0) { total++; streak++; maxStreak = Math.max(maxStreak, streak); } else streak = 0;
   }
@@ -1295,6 +1302,8 @@ draw();
     card.addEventListener('click', () => window.location.href = b.url);
     grid.appendChild(card);
   });
+  const countEl = document.getElementById('researchCount');
+  if (countEl) countEl.dataset.count = blogs.length;
 })();
 
 /* SCROLL REVEAL */
